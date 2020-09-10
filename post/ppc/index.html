@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.8.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Ladislas Nalborczyk">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="As put by Gelman et al. (2013, page 148): &#39;because a probability model can fail to reflect the process that generated the data in any number of ways, posterior predictive *p*-values can be computed for a variety of test quantities in order to evaluate more than one possible model failure&#39;.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="http://www.barelysignificant.com/post/ppc/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="rgb(0,51,102)">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-1/css/all.min.css" integrity="sha256-4w9DunooKSr3MFXHXWyFER38WmPdm361bQS/2KUWZbU=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" integrity="sha256-SHMGCYmST46SoyGgo4YR/9AlK1vf3ff84Aq9yK4hdqM=" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CMontserrat:400,400italic,700%7CRoboto+Mono&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-86650162-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-86650162-1', { 'anonymize_ip': true });
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="http://www.barelysignificant.com/post/ppc/">
+
+  
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@lnalborczyk">
+  <meta property="twitter:creator" content="@lnalborczyk">
+  
+  <meta property="og:site_name" content="BARELY SIGNIFICANT">
+  <meta property="og:url" content="http://www.barelysignificant.com/post/ppc/">
+  <meta property="og:title" content="Checking the asumption of independence in binomial trials using posterior predictive checking | BARELY SIGNIFICANT">
+  <meta property="og:description" content="As put by Gelman et al. (2013, page 148): &#39;because a probability model can fail to reflect the process that generated the data in any number of ways, posterior predictive *p*-values can be computed for a variety of test quantities in order to evaluate more than one possible model failure&#39;."><meta property="og:image" content="http://www.barelysignificant.com/img/icon.png">
+  <meta property="twitter:image" content="http://www.barelysignificant.com/img/icon.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2018-01-23T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2018-01-23T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://www.barelysignificant.com/post/ppc/"
+  },
+  "headline": "Checking the asumption of independence in binomial trials using posterior predictive checking",
+  
+  "datePublished": "2018-01-23T00:00:00Z",
+  "dateModified": "2018-01-23T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Ladislas Nalborczyk"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "BARELY SIGNIFICANT",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://www.barelysignificant.com/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png"
+    }
+  },
+  "description": "As put by Gelman et al. (2013, page 148): 'because a probability model can fail to reflect the process that generated the data in any number of ways, posterior predictive *p*-values can be computed for a variety of test quantities in order to evaluate more than one possible model failure'."
+}
+</script>
+
+  
+
+  
+
+
+  
+  
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js" integrity="sha256-5VhCqFam2Cn+yjw61zbBNrbHVJ6SRydPeKopYlngbiQ=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.css" integrity="sha256-zQ0LblD/Af8vOppw18+2anxsuaz3pWYyVWi+bTvTH8Q=" crossorigin="anonymous">
+  
+  <script>
+  window.addEventListener("load", function(){
+    window.cookieconsent.initialise({
+      "palette": {
+        "popup": {
+          "background": "rgb(0,51,102)",
+          "text": "#fff"
+        },
+        "button": {
+          "background": "#fff",
+          "text": "rgb(0,51,102)"
+        }
+      },
+      "theme": "classic",
+      "content": {
+        "message": "This website uses cookies to ensure you get the best experience on our website.",
+        "dismiss": "Got it!",
+        "link": "Learn more",
+        "href": "https://www.cookiesandyou.com"
+      }
+    })});
+  </script>
+
+
+
+  
+
+
+
+
+
+  <title>Checking the asumption of independence in binomial trials using posterior predictive checking | BARELY SIGNIFICANT</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">BARELY SIGNIFICANT</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">BARELY SIGNIFICANT</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>HOME</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#publications"><span>PUBLICATIONS</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#talks"><span>TALKS</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>BLOG</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/pdf/cv.pdf"><span>CV</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#teaching"><span>TEACHING</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>CONTACT</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Checking the asumption of independence in binomial trials using posterior predictive checking</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Jan 23, 2018
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    9 min read
+  </span>
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <a href="/post/ppc/#disqus_thread"></a>
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<div id="posterior-predictive-checking" class="section level2">
+<h2>Posterior predictive checking</h2>
+<p>What is a posterior predictive check ? According to Gelman et al. (2013, page 151), “Bayesian predictive checking generalizes classical hypothesis testing by averaging over the posterior distibution of the unknown parameters vector <span class="math inline">\(\theta\)</span> rather than fixing it at some estimate <span class="math inline">\(\hat{\theta}\)</span>”.</p>
+<p>To explore this idea in more details, we are going to extend an example presented in Gelman et al. (2013, page 147) to a case study I have already discussed in two previous blogposts (<a href="http://www.barelysignificant.com/post/absenteeism/">here</a> and <a href="http://www.barelysignificant.com/post/absenteeism2/">here</a>). Let’s say I am recruiting participants for a psychology study that is lasting for approximately half an hour. If everything goes smoothly, I can manage to recruit 2 participants per hour, and doing it between 9am and 6pm (having the first participant at 9am, the second one at 9.30am and the last one at 5.30pm) for a whole week (from Monday to Friday) would give me 90 potential participants.</p>
+</div>
+<div id="beta-binomial-model" class="section level2">
+<h2>Beta-Binomial model</h2>
+<p>We know that some participants won’t show up to the time slot they registered for. I am interested in knowing the mean probability of presence, that we will call <span class="math inline">\(\theta\)</span>.</p>
+<p>This sequence of binary outcomes (presence vs. absence) <span class="math inline">\(y_{1}, \dots, y_{n}\)</span> is modelled as <strong>a serie of independent trials</strong> with common probability of success (presence) <span class="math inline">\(\theta\)</span>, which is attributed a <a href="https://en.wikipedia.org/wiki/Conjugate_prior">conjugate</a> Beta prior, with shape parameters <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> (encoded in the second line of our model).</p>
+<p><span class="math display">\[
+\begin{aligned}
+y &amp;\sim \mathrm{Binomial}(n, \theta) \\
+\theta &amp;\sim \mathrm{Beta}(\alpha, \beta) \\
+\end{aligned}
+\]</span></p>
+<p>We could choose to give <span class="math inline">\(\theta\)</span> a uniform prior between 0 and 1 (to express our total ignorance about its value), but based on previous experiments I carried out, I know that participants tend to be present with a probability around <span class="math inline">\(\frac{1}{2}\)</span>. Thus, we will choose a probability distribution that represents this prior knowledge (here a <span class="math inline">\(\mathrm{Beta}(2,2)\)</span>, see the first figure for an illustration).</p>
+<pre class="r"><code>################################################################################
+# Checking the assumption of independence in binomial trials
+# Example inspired from Gelman et al. (2013, page 147)
+####################################################################
+
+library(tidyverse)
+
+y &lt;- # getting the data
+    c(
+        0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+        0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,
+        1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
+        0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0
+        )</code></pre>
+</div>
+<div id="the-problem" class="section level2">
+<h2>The problem</h2>
+<p>Our model is assuming independent trials, i.e., it’s assuming that the presence of a participant is independent of the presence of another participant, which is akin to say that the model is assuming no autocorrelation in the serie. Autocorrelation would be evidence that the model is flawed.</p>
+<p>One way to estimate the degree of autocorrelation in the serie is to simply count the number of switches between presence and absence (i.e., between zeros and ones). An abnormally low number of switches (for a particular <span class="math inline">\(n\)</span> and <span class="math inline">\(\theta\)</span>) would be evidence that some autocorrelation is present. Thus, the number of switches becomes a <strong>test quantity</strong> <span class="math inline">\(T(y)\)</span>, which describes the degree of autocorrelation in the serie, and a way of testing the assumptions of our model.</p>
+<pre class="r"><code># function to determine the number of switches in a numerical vector
+
+nb_switches &lt;- function(x) as.numeric(sum(diff(x) != 0) )
+
+# determining the number of switches Ty in observed data y
+
+(Ty &lt;- nb_switches(y) )</code></pre>
+<pre><code>## [1] 28</code></pre>
+<p>We observed 28 switches in our data. To know whether this number is surprising, given our number of observation and the mean probability of presence, we will use use posterior predictive checking. But first, we need to compute the posterior distribution <span class="math inline">\(p(\theta | y)\)</span>.</p>
+</div>
+<div id="computing-the-posterior-distribution" class="section level2">
+<h2>Computing the posterior distribution</h2>
+<p>We know that the posterior density under this model is given by:</p>
+<p><span class="math display">\[ p(\theta | y) \sim \mathrm{Beta}(\alpha + y, \beta + n - y) \]</span>
+where <span class="math inline">\(y\)</span> is the number of successes and <span class="math inline">\(n\)</span> is the total number of observations. In our case, the posterior distribution of <span class="math inline">\(\theta\)</span> given <span class="math inline">\(y\)</span> is then <span class="math inline">\(\mathrm{Beta}(2 + 55, 2 + 90 - 55) = \mathrm{Beta}(57, 37)\)</span>, which is plotted below.</p>
+<pre class="r"><code>###############################################################
+# computing the posterior
+#######################################################
+
+n &lt;- length(y) # number of trials
+z &lt;- sum(y) # number of 1s
+a &lt;- b &lt;- 2 # parameters of the beta prior
+
+grid &lt;- seq(from = 0, to = 1, by = 0.01) # defines grid
+
+################################################
+# analytic derivation of the posterior
+#########################################
+
+prior &lt;- dbeta(grid, a, b)
+posterior &lt;- dbeta(grid, z + a, n - z + b)
+
+data.frame(theta = grid, prior = prior, posterior = posterior) %&gt;%
+    gather(type, value, prior:posterior) %&gt;%
+    ggplot(aes(x = theta, y = value, colour = type, fill = type) ) +
+    geom_area(alpha = 0.8, position = &quot;identity&quot;, size = 1) +
+    theme_bw(base_size = 12) +
+    scale_fill_grey() +
+    scale_colour_grey() +
+    ylab(&quot;&quot;)</code></pre>
+<p><img src="/post/2018-01-23-ppc_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>The mean of the posterior distribution is given by <span class="math inline">\(\dfrac{\alpha + y}{\alpha + \beta + n}\)</span>, and is equal to <code>(a + z) / (a + b + n)</code> = 0.606, which can be interpreted as the mean probability of presence.</p>
+</div>
+<div id="conjugacy" class="section level2">
+<h2>Conjugacy</h2>
+<p>This example allows us to define what <strong>conjugacy</strong> is. Formally, if <span class="math inline">\(\mathcal{F}\)</span> is a class of sampling distributions <span class="math inline">\(p(y|\theta)\)</span>, and <span class="math inline">\(\mathcal{P}\)</span> is a class of prior distributions for <span class="math inline">\(\theta\)</span>, then the class <span class="math inline">\(\mathcal{P}\)</span> is <strong>conjugate</strong> fo <span class="math inline">\(\mathcal{F}\)</span> if</p>
+<p><span class="math display">\[p(\theta|y) \in \mathcal{P} \text{ for all } p(\cdot | \theta) \in \mathcal{F} \text{ and } p(\cdot) \in \mathcal{P}\]</span></p>
+<p>(Gelman et al., 2013, page 35). In other words, a prior is called a <em>conjugate prior</em> if, when converted to a posterior by being multiplied by the likelihood, it keeps the same form. In our case, the Beta prior is a conjugate prior for the Binomial likelihood, because the posterior is a Beta distribution as well.</p>
+</div>
+<div id="posterior-predictive-checking-1" class="section level2">
+<h2>Posterior predictive checking</h2>
+<p>How posterior predictive checking can help us to assess whether the assumption of indendence is respected in our observed data <span class="math inline">\(y\)</span> ? Well, our model is actually assuming independence, so we could ask our model to generate new observations, or <strong>replications</strong>, called <span class="math inline">\(y^{rep}\)</span>, to see whether these replications differ from the observed data. If they do, it would mean that the observed data are not well described by a model that is assuming independence.</p>
+<p>This is done in two steps. First, we generate possible values of <span class="math inline">\(\theta\)</span> from its posterior distribution (i.e., from a <span class="math inline">\(\mathrm{Beta}(57, 37)\)</span> distribution). Then, for each of these <span class="math inline">\(\theta\)</span> values, we generate a new set of observations <span class="math inline">\(y^{rep}\)</span> from a Binomial distribution.</p>
+<pre class="r"><code>########################################################
+# posterior predictive checks
+#######################################
+
+nsims &lt;- 1e4 # number of replicated samples
+
+# generating nsims theta values from posterior
+
+thetas &lt;- rbeta(nsims, a + z, b + n - z)
+
+# generating nsims new datasets (Yrep)
+
+Yrep &lt;-
+    sapply(
+        # for each theta
+        1:length(thetas),
+        # generating samples
+        function(i) sample(
+            c(0, 1),
+            # of the same length as y
+            length(y),
+            replace = TRUE,
+            # with prob of presence equals to theta
+            # and prob of absence equals to 1 - theta
+            prob = c(thetas[i], 1 - thetas[i])
+            )
+        )</code></pre>
+<p>Then, we can compute the number of switches (our test quantity) in each replicated sample, to check whether the number of switches computed on datasets <strong>generated under the assumption of independence</strong> differ from the number of switches computed on the observed dataset <span class="math inline">\(y\)</span>. We call the test quantities computed on replicated samples <span class="math inline">\(T(y^{rep})\)</span>.</p>
+<pre class="r"><code># for each new Yrep sample, computing the number of switches Trep, and
+# comparing it to observed number of switches Ty
+
+Trep &lt;- apply(Yrep, 2, nb_switches)
+
+Trep %&gt;%
+    BEST::plotPost(
+        compVal = Ty, breaks = 20,
+        col = &quot;#E6E6E6&quot;, xlab = expression(T(y^rep) ) )</code></pre>
+<p><img src="/post/2018-01-23-ppc_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>This histogram reveals that the mean number of switches accross the <code>nsims</code> replications is about 42.04, and the green vertical dotted line represents the position of <span class="math inline">\(T(y)\)</span> in the distribution of <span class="math inline">\(T(y^{rep})\)</span> values.</p>
+<p>To know whether the observed number of switches is surprising given the assumptions of our model (<em>represented</em> by its predictions), we can count the number of replications that lead to a greater number of switches than the number of switches <span class="math inline">\(T(y)\)</span> in the observed data.</p>
+<pre class="r"><code>sum(Trep &gt; Ty)</code></pre>
+<pre><code>## [1] 9929</code></pre>
+<p>Or we can compute a Bayesian <em>p</em>-value as (Gelman et al., 2013, page 146):</p>
+<p><span class="math display">\[p_{B} = \text{Pr}(T(y^{rep}, \theta) \geq T(y, \theta) | y)\]</span></p>
+<pre class="r"><code>1 - sum(Trep &gt; Ty) / nsims # equivalent to sum(Trep &lt;= Ty) / nsims</code></pre>
+<pre><code>## [1] 0.0071</code></pre>
+<p>Which gives the probability of observing this number of switches under our model. What does it mean ? Does it mean that our model is <em>wrong</em> ? Well, not exactly. Models are neither right or wrong (see Crane &amp; Martin, 2018). But our model does not seem to capture the full story, it does not seem to give a good representation of the process that generated our data (which is arguably one of the characteristics that contribute to the <em>soundness</em> of a model).</p>
+<p>More precisely, it misses the point that the probabilities of successive participants being present are not independent. This, in our case, seems to be due to temporal fluctuations of this probability throughout the day. For instance, the probability of a participant being present seems to be the lowest early in the morning or late in the afternoon, as well as between 12am and 2pm. This temporal dependency could be better taken into account by using gaussian process regression models, that generalise the varying effect strategy of multilevel models to continuous variables. In other words, it would allow to take into account that participants coming to the lab at similar hours (e.g., 9am and 9.30am) are more similar (in their probability of being present) than participants coming at very different hours (e.g., 9am and 3pm).</p>
+</div>
+<div id="conclusions" class="section level2">
+<h2>Conclusions</h2>
+<p>In this post we aimed to introduce the idea of posterior predictive checking by recycling an elegant and simple example from Gelman et al. (2013). It should be noted however that this kind of check can be done for any test quantity of interest (e.g., the mean or the max of a distribution, or its dispersion).</p>
+<p>As put by Gelman et al. (2013, page 148), “because a probability model can fail to reflect the process that generated the data in any number of ways, posterior predictive <em>p</em>-values can be computed for a variety of test quantities in order to evaluate more than one possible model failure”.</p>
+<p>So come on, let’s make <em>p</em>-values great again, they are not doomed to be used only as a point-null hypothesis test.</p>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<details>
+<p><summary>Click to expand</summary></p>
+<div markdown="1">
+<p>Crane, H., &amp; Martin, R. (2018, January 10). Is statistics meeting the needs of science?. Retrieved from psyarxiv.com/q2s5m</p>
+<p>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., &amp; Rubin, D. B. (2013). Bayesian Data Analysis, Third Edition. CRC Press.</p>
+</div>
+</details>
+</div>
+
+    </div>
+
+    
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/tutorial/">Tutorial</a>
+  
+  <a class="badge badge-light" href="/tags/r/">R</a>
+  
+  <a class="badge badge-light" href="/tags/bayesian/">Bayesian</a>
+  
+  <a class="badge badge-light" href="/tags/assumptions/">assumptions</a>
+  
+  <a class="badge badge-light" href="/tags/binomial/">binomial</a>
+  
+  <a class="badge badge-light" href="/tags/ppc/">PPC</a>
+  
+</div>
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=http://www.barelysignificant.com/post/ppc/&amp;text=Checking%20the%20asumption%20of%20independence%20in%20binomial%20trials%20using%20posterior%20predictive%20checking" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=http://www.barelysignificant.com/post/ppc/&amp;t=Checking%20the%20asumption%20of%20independence%20in%20binomial%20trials%20using%20posterior%20predictive%20checking" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Checking%20the%20asumption%20of%20independence%20in%20binomial%20trials%20using%20posterior%20predictive%20checking&amp;body=http://www.barelysignificant.com/post/ppc/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=http://www.barelysignificant.com/post/ppc/&amp;title=Checking%20the%20asumption%20of%20independence%20in%20binomial%20trials%20using%20posterior%20predictive%20checking" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Checking%20the%20asumption%20of%20independence%20in%20binomial%20trials%20using%20posterior%20predictive%20checking%20http://www.barelysignificant.com/post/ppc/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=http://www.barelysignificant.com/post/ppc/&amp;title=Checking%20the%20asumption%20of%20independence%20in%20binomial%20trials%20using%20posterior%20predictive%20checking" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hueeaeb0c1f8e0a8e455cffe30658aa100_974173_270x270_fill_q90_lanczos_center.jpeg" alt="Ladislas Nalborczyk">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="http://www.barelysignificant.com/">Ladislas Nalborczyk</a></h5>
+      <h6 class="card-subtitle">Postdoctoral researcher</h6>
+      <p class="card-text">My main research interests are spanning cognitive science and include motor cognition, speech production, inner speech, motor imagery, computational and statistical modelling, machine learning, and deep learning.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:ladislas.nalborczyk@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/lnalborczyk" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/citations?user=na-dkLYAAAAJ&amp;hl=en" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/lnalborczyk" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://orcid.org/0000-0002-7419-9855" target="_blank" rel="noopener">
+        <i class="ai ai-orcid"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://osf.io/ba8xt" target="_blank" rel="noopener">
+        <i class="ai ai-osf"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://publons.com/a/1319011/" target="_blank" rel="noopener">
+        <i class="ai ai-publons"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+<section id="comments">
+  
+    
+<div id="disqus_thread"></div>
+<script>
+  let disqus_config = function () {
+    
+    
+    
+  };
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+      return;
+    }
+    var d = document, s = d.createElement('script'); s.async = true;
+    s.src = 'https://' + "barely-significant" + '.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+</section>
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/post/glm/">Using R to make sense of the generalised linear model</a></li>
+      
+      <li><a href="/post/icc/">Three methods for computing the intra-class correlation in multilevel logistic regression</a></li>
+      
+      <li><a href="/post/absenteeism2/">Experimental absenteeism and logistic regression, part II</a></li>
+      
+      <li><a href="/post/absenteeism/">Experimental absenteeism and logistic regression, part I</a></li>
+      
+      <li><a href="/post/matchpoint/">On power and the &#39;match point situation&#39;</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js" integrity="sha256-eOgo0OtLL4cdq7RdwRUiGKLX9XsIJ7nGhWEKbohmVAQ=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/languages/r.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js" integrity="sha256-EErZamuLefUnbMBQbsEqu1USa+btR2oIlCpBJbyD4/g=" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    <script>const isSiteThemeDark = false;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    <script id="dsq-count-scr" src="https://barely-significant.disqus.com/count.js" async></script>
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.37431be2d92d7fb0160054761ab79602.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    © 2020, Ladislas Nalborczyk &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

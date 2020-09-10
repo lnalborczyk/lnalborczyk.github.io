@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>p-value | BARELY SIGNIFICANT</title>
+    <link>http://www.barelysignificant.com/tags/p-value/</link>
+      <atom:link href="http://www.barelysignificant.com/tags/p-value/index.xml" rel="self" type="application/rss+xml" />
+    <description>p-value</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2020, Ladislas Nalborczyk</copyright><lastBuildDate>Fri, 01 Jun 2018 16:00:00 +0000</lastBuildDate>
+    <image>
+      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <title>p-value</title>
+      <link>http://www.barelysignificant.com/tags/p-value/</link>
+    </image>
+    
+    <item>
+      <title>How to avoid common misinterpretations of p-values and Bayes factors</title>
+      <link>http://www.barelysignificant.com/talk/2018-interpretations/</link>
+      <pubDate>Fri, 01 Jun 2018 16:00:00 +0000</pubDate>
+      <guid>http://www.barelysignificant.com/talk/2018-interpretations/</guid>
+      <description>
+&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;&lt;em&gt;Abstract&lt;/em&gt;: Many authors have emphasised the limitations of null-hypothesis significance testing (NHST) and its application in Psychology. Beyond the methodological advantages and disadvantages of NHST compared to other paradigms of statistical inference, one of the main barriers to the correct use of the NHST procedure remains its complexity, often hidden by misleading intuitive interpretation. For instance, a &lt;em&gt;p&lt;/em&gt;-value does not indicate the probability of obtaining certain data “by chance”, nor the probability of “being wrong”. Similarly, a 95% confidence interval does not (usually) indicate the 95% most likely parameter values. Moreover, it is not correct to interpret a confidence interval by concluding that there is a 95% probability that the value of the parameter in the population lies within the interval. Some authors have suggested switching to Bayesian hypothesis testing via the Bayes factor as an alternative to the NHST procedure. Although Bayesian hypothesis testing offers some advantages over the NHST procedure (e.g., continuous quantification of relative evidence for / against a hypothesis, incorporation of prior information), its interpretation also presents several difficulties. For example, the Bayes factor does not indicate the relative probability of a hypothesis. In this presentation, I use simulation to illustrate the frequentist counterfactual reasoning and I showcase examples of data analysis situations that require the incorporation of prior information to illustrate the basic principles of Bayesian inference.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

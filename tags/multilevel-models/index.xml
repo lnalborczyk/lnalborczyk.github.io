@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>multilevel models | BARELY SIGNIFICANT</title>
+    <link>http://www.barelysignificant.com/tags/multilevel-models/</link>
+      <atom:link href="http://www.barelysignificant.com/tags/multilevel-models/index.xml" rel="self" type="application/rss+xml" />
+    <description>multilevel models</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2020, Ladislas Nalborczyk</copyright><lastBuildDate>Tue, 21 May 2019 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <title>multilevel models</title>
+      <link>http://www.barelysignificant.com/tags/multilevel-models/</link>
+    </image>
+    
+    <item>
+      <title>An introduction to Bayesian multilevel models using brms: A case study of gender effects on vowel variability in standard Indonesian</title>
+      <link>http://www.barelysignificant.com/publication/2019-nalborczyk-etal/</link>
+      <pubDate>Tue, 21 May 2019 00:00:00 +0000</pubDate>
+      <guid>http://www.barelysignificant.com/publication/2019-nalborczyk-etal/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

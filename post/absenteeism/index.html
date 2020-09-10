@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.8.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Ladislas Nalborczyk">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="This post aims to assess the average probability of participant presence in psychological experiments and, in the meantime, to introduce Bayesian logistic regression using R and the rethinking package.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="http://www.barelysignificant.com/post/absenteeism/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="rgb(0,51,102)">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-1/css/all.min.css" integrity="sha256-4w9DunooKSr3MFXHXWyFER38WmPdm361bQS/2KUWZbU=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" integrity="sha256-SHMGCYmST46SoyGgo4YR/9AlK1vf3ff84Aq9yK4hdqM=" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CMontserrat:400,400italic,700%7CRoboto+Mono&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-86650162-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-86650162-1', { 'anonymize_ip': true });
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="http://www.barelysignificant.com/post/absenteeism/">
+
+  
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@lnalborczyk">
+  <meta property="twitter:creator" content="@lnalborczyk">
+  
+  <meta property="og:site_name" content="BARELY SIGNIFICANT">
+  <meta property="og:url" content="http://www.barelysignificant.com/post/absenteeism/">
+  <meta property="og:title" content="Experimental absenteeism and logistic regression, part I | BARELY SIGNIFICANT">
+  <meta property="og:description" content="This post aims to assess the average probability of participant presence in psychological experiments and, in the meantime, to introduce Bayesian logistic regression using R and the rethinking package."><meta property="og:image" content="http://www.barelysignificant.com/img/icon.png">
+  <meta property="twitter:image" content="http://www.barelysignificant.com/img/icon.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2017-08-05T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2017-08-05T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://www.barelysignificant.com/post/absenteeism/"
+  },
+  "headline": "Experimental absenteeism and logistic regression, part I",
+  
+  "datePublished": "2017-08-05T00:00:00Z",
+  "dateModified": "2017-08-05T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Ladislas Nalborczyk"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "BARELY SIGNIFICANT",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://www.barelysignificant.com/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png"
+    }
+  },
+  "description": "This post aims to assess the average probability of participant presence in psychological experiments and, in the meantime, to introduce Bayesian logistic regression using R and the rethinking package."
+}
+</script>
+
+  
+
+  
+
+
+  
+  
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js" integrity="sha256-5VhCqFam2Cn+yjw61zbBNrbHVJ6SRydPeKopYlngbiQ=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.css" integrity="sha256-zQ0LblD/Af8vOppw18+2anxsuaz3pWYyVWi+bTvTH8Q=" crossorigin="anonymous">
+  
+  <script>
+  window.addEventListener("load", function(){
+    window.cookieconsent.initialise({
+      "palette": {
+        "popup": {
+          "background": "rgb(0,51,102)",
+          "text": "#fff"
+        },
+        "button": {
+          "background": "#fff",
+          "text": "rgb(0,51,102)"
+        }
+      },
+      "theme": "classic",
+      "content": {
+        "message": "This website uses cookies to ensure you get the best experience on our website.",
+        "dismiss": "Got it!",
+        "link": "Learn more",
+        "href": "https://www.cookiesandyou.com"
+      }
+    })});
+  </script>
+
+
+
+  
+
+
+
+
+
+  <title>Experimental absenteeism and logistic regression, part I | BARELY SIGNIFICANT</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">BARELY SIGNIFICANT</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">BARELY SIGNIFICANT</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>HOME</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#publications"><span>PUBLICATIONS</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#talks"><span>TALKS</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>BLOG</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/pdf/cv.pdf"><span>CV</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#teaching"><span>TEACHING</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>CONTACT</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Experimental absenteeism and logistic regression, part I</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Aug 5, 2017
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    12 min read
+  </span>
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <a href="/post/absenteeism/#disqus_thread"></a>
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>One of the greatest aspect of being a PhD student in experimental psychology is to have the immeasurable pleasure to carry experiments with human subjects. Sure, it comes with a few desagreements, like having to teach undergraduate students how to use online schedule appointers (e.g., <a href="https://doodle.com">doodle</a>), or spending a few hours per day answering clumsy e-mails asking for the location of the experimental room…and last but not least, being in a constant state of ignorance about the presence or the absence of the so-much expected student-guinea-pig.</p>
+<p>After many speculative and fruitless conversations about the rate of students’ participation to psychological studies, I have finally decided to make use of the data harvested along my PhD studies to answer the ultimate question: can we predict the participation of students?</p>
+<div id="which-strategy" class="section level2">
+<h2>Which strategy?</h2>
+<p>On a practical ground, I have took advantage of the fact that a friend and I had to recruit participants for some studies of our PhD. We then simply started to systematically write down which participants did or did not come to their appointment, as well as information about their participation, like the mode of recruitment (online versus IRL registration), the fact that we sent a reminder e-mail (or not), and the day of the week. To sum up, the basic question was to know whether we can estimate the <strong>probability</strong> that a registered participant will come to its appointment, based on the information we collected.</p>
+</div>
+<div id="what-is-a-logistic-regression" class="section level2">
+<h2>What is a logistic regression?</h2>
+<p>Logistic regression (also called a logit model) is used to model binary outcome variables (e.g., “absent” versus “present”), using the general regression framework.</p>
+<p>In the logit model, the <strong><a href="https://en.wikipedia.org/wiki/Odds">log-odds</a></strong> of the outcome <span class="math inline">\(p_{i}\)</span> are modeled as a linear combination of the predictor variables:</p>
+<p><span class="math display">\[logit(p_{i}) = log\Big(\frac{p_{i}}{1-p_{i}}\Big)= \alpha + \beta _{1} x_{1} + \cdots + \beta _{n} x_{n}\]</span></p>
+<p>Thus, although the observed dependent variable is a dichotomic variable, the logistic regression estimates the <strong>log-odds</strong>, as a continuous variable, that the dependent variable is in one state or the other.</p>
+<p>To clarify the mechanism of the logit model, we will go through a first simple example, trying to estimate the overall probability of participants being present.</p>
+</div>
+<div id="step-1-getting-the-data" class="section level2">
+<h2>Step 1: getting the data</h2>
+<p>Data can be retrieved in R directly from Github with:</p>
+<pre class="r"><code>(data &lt;- read.csv(&quot;http://raw.githubusercontent.com/lnalborczyk/old_blog/master/_posts/absenteeism/absence.csv&quot;, stringsAsFactors = FALSE) )</code></pre>
+<pre><code>##          day inscription reminder absence presence total
+## 1     Friday      doodle       no       7       11    18
+## 2     Friday      doodle      yes       0        2     2
+## 3     Friday       panel      yes       0       10    10
+## 4     Monday      doodle       no       5        4     9
+## 5     Monday      doodle      yes       2        6     8
+## 6     Monday       panel      yes       6       12    18
+## 7   Thursday      doodle       no       3       11    14
+## 8    Tuesday      doodle       no       4       10    14
+## 9    Tuesday      doodle      yes       1        7     8
+## 10   Tuesday       panel      yes       0        9     9
+## 11 Wednesday      doodle       no       6       11    17
+## 12 Wednesday      doodle      yes       0        4     4
+## 13 Wednesday       panel      yes       0       14    14</code></pre>
+<p>The <code>inscription</code> column describes the mode of inscription of students (i.e., whether they registered for the experiment online, or IRL) while the <code>reminder</code> column indicates whether a reminder e-mail was sent to the participant prior to the experiment. The three last columns represent counts of present, absent, and total number of participants, respectively, for a grand total of 145 participants.</p>
+</div>
+<div id="step-2-writing-down-a-first-model" class="section level2">
+<h2>Step 2: writing down a first model</h2>
+<p>The first step of every Bayesian analysis (oops, did I mention that this post will be Bayesian?) is to specify the full probability model. It starts with describing the data-generating process from which the data is issued (i.e., the <em>likelihood</em>). In our case, observations <span class="math inline">\(y_{i}\)</span> are distributed according to a Binomial distribution:</p>
+<p><span class="math display">\[y_{i} \sim \mathrm{Binomial}(n_{i}, p_{i})\]</span></p>
+<p>where <span class="math inline">\(y_{i}\)</span> is a count, <span class="math inline">\(p_{i}\)</span> is the probability of any particular “trial” and <span class="math inline">\(n_{i}\)</span> is the total number of observations. Our aim will be to predict the probability <span class="math inline">\(p_{i}\)</span> of each trial <span class="math inline">\(i\)</span>.</p>
+<p>With this first model, we want to estimate the mean probability of tha participant being present. We can model this situation by an intercept-only model, as following:</p>
+<p><span class="math display">\[
+\begin{aligned}
+y_{i} &amp;\sim \mathrm{Binomial}(n_{i}, p_{i}) \\
+logit(p_{i}) &amp;= \alpha \\
+\alpha &amp;\sim \mathrm{Normal}(0, 10) \\
+\end{aligned}
+\]</span></p>
+<p>In this model, we state that the <strong>log-odds</strong> (or the <strong>logit</strong>) of <span class="math inline">\(p_{i}\)</span> are given by a single parameter <span class="math inline">\(\alpha\)</span>, the intercept, on which we assign a very vague prior (note that this prior is expressed in the log-odds space, and not directly in the space of the outcome).</p>
+</div>
+<div id="step-3-fitting-the-model-with-rethinking" class="section level2">
+<h2>Step 3: fitting the model with rethinking</h2>
+<p>Throughout this post, we will use the <a href="https://github.com/rmcelreath/rethinking">rethinking package</a>, as it allows to fit a model using almost the same syntax as the mathematical one. For instance, the model we described above would look like:</p>
+<pre class="r"><code>library(rethinking)
+library(tidyverse)
+library(BEST)
+
+mod1 &lt;-
+    rethinking::map(
+        alist(
+            presence &lt;- dbinom(total, p),
+            logit(p) &lt;- a,
+            a ~ dnorm(0, 10) ),
+        data = data)        </code></pre>
+<p>The two first lines state that we fit the model using the <code>map</code> function, which requires a model expressed as an <code>alist</code> object (i.e., a non-evaluated <code>list</code> object). The three next lines describe the model very similarly to the mathematical description.</p>
+<p>A brief summary of the model can be obtained using the <code>precis</code> function.</p>
+<pre class="r"><code>precis(mod1, prob = 0.95)</code></pre>
+<pre><code>##   Mean StdDev 2.5% 97.5%
+## a 1.18    0.2  0.8  1.57</code></pre>
+<p>which gives the mode of the posterior distribution for the intercept <span class="math inline">\(\alpha\)</span> along with the standard deviation of the distribution as well as the credible intervals. The intercept represents the estimated <strong>log-odds</strong> of being present, which can be translated back to the overall probability of being present, as we know that:</p>
+<p><span class="math display">\[p = \exp(\alpha) / (1 + \exp(\alpha) )\]</span></p>
+<pre class="r"><code>exp(coef(mod1)) / (1 + exp(coef(mod1) ) )</code></pre>
+<pre><code>##         a 
+## 0.7654357</code></pre>
+<p>which is equivalent to using the <code>plogis</code> function:</p>
+<pre class="r"><code>plogis(coef(mod1) )</code></pre>
+<pre><code>##         a 
+## 0.7654357</code></pre>
+<p>So we already know that there is an estimated 0.77 probability that a registered participant will come to his appointment…and if the intercept represents the <strong>log-odds</strong> of being present, a simple exponential transformation allows to get back to odds:</p>
+<pre class="r"><code>exp(coef(mod1) ) # odds of presence</code></pre>
+<pre><code>##        a 
+## 3.263223</code></pre>
+<p>which can be interpreted directly by saying that the odds of a registered participant being present are of 3.26 (or 3.26:1)<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
+</div>
+<div id="step-4-adding-predictors" class="section level2">
+<h2>Step 4: adding predictors</h2>
+<p>Nice, but we said that the logistic regression allows to map a relationship between a binary outcome variable and a linear combination of predictor variables, so let’s add predictors.</p>
+<div id="effects-of-the-reminder" class="section level3">
+<h3>Effects of the reminder</h3>
+<p>For instance, we might be interested in knowing whether sending a reminder e-mail has an impact on the presence. We first start by dummy-coding our predictors.</p>
+<pre class="r"><code>data &lt;-
+    data %&gt;%
+    mutate(
+        reminder = ifelse(reminder == &quot;no&quot;, 0, 1),
+        inscription = ifelse(inscription == &quot;panel&quot;, 0, 1) )</code></pre>
+<p>The model that map the outcome and the effects of the reminder can be expressed as follows:</p>
+<p><span class="math display">\[
+\begin{aligned}
+y_{i} &amp;\sim \mathrm{Binomial}(n_{i}, p_{i}) \\
+logit(p_{i}) &amp;= \alpha + \beta \times \text{reminder} \\
+\alpha &amp;\sim \mathrm{Normal}(0, 10) \\
+\beta &amp;\sim \mathrm{Normal}(0, 10) \\
+\end{aligned}
+\]</span></p>
+<p>where the effects of the reminder on the log-odds of being present are realised through the slope <span class="math inline">\(\beta\)</span>, which is also assigned a very vague prior. This model is fitted with <code>rethinking</code> using a very similar syntax to previously:</p>
+<pre class="r"><code>mod2 &lt;-
+    rethinking::map(
+        alist(
+            presence &lt;- dbinom(total, p),
+            logit(p) &lt;- a + b * reminder,
+            a ~ dnorm(0, 10),
+            b ~ dnorm(0, 10) ),
+        data = data)</code></pre>
+<p>First, we might want to compare the <em>efficiency</em> of these two models. The <code>compare</code> function allows to compare models fit on the same data using the Wattanabe Akaike Information Criterion (WAIC; Watanabe, 2010), a generalisation of the AIC, previously discussed on this blog <a href="http://www.barelysignificant.com/aicbic/">here</a>. This criterion can be seen as an approximation of the out-of-sample deviance, and in simple words, of the predictive abilities of the model (McElreath, 2016).</p>
+<pre class="r"><code>compare(mod1, mod2) # yeah, model 2 wins</code></pre>
+<pre><code>##       WAIC pWAIC dWAIC weight    SE  dSE
+## mod2 151.4     2   0.0   0.99 12.92   NA
+## mod1 160.0     1   8.5   0.01 12.27 6.48</code></pre>
+<p>This comparison reveals that the second model is better in the sense of the WAIC (as for the deviance, the lower is the better), and that the parameter we added (i.e., the slope <span class="math inline">\(\beta\)</span>) improved the predictive abilities of the model.</p>
+<p>By adding a slope in the model, the intercept now represents the <strong>log-odds</strong> for the no-reminder condition (as it was coded as 0), while the coefficient for <code>reminder</code> represents the log odds-ratio between the reminder and the no-reminder groups. We can then obtain the <strong>odds-ratio</strong> by simply exponentiating the slope:</p>
+<pre class="r"><code>exp(coef(mod2)[2]) # odds ratio between no-reminder and reminder</code></pre>
+<pre><code>##        b 
+## 3.774528</code></pre>
+<p>which can be read as a propotionnal increase of 3.77 in the <strong>odds</strong> of being present when a reminder is sent. We also might be interested in the absolute change in probability, rather than the <strong>odds ratio</strong>. To answer this question, we first extract the samples from the posterior distribution estimated by this second model and store it in <code>post1</code>.</p>
+<pre class="r"><code>post1 &lt;- extract.samples(mod2) # extracting posterior samples</code></pre>
+<p>Then, from these posterior samples, we can compute almost all statistics of interest. For instance we can compute the probability of being present according to the reminder status.</p>
+<pre class="r"><code>p.no &lt;- plogis(post1$a) # mean probability of presence when no reminder
+p.yes &lt;- plogis(post1$a + post1$b) # mean probability of presence when reminder
+plotPost(p.yes - p.no, compVal = 0, showMode = TRUE, xlab = &quot;&quot;)      </code></pre>
+<p><img src="/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>This histogram depicts the posterior distribution of the difference of probability of being present by comparing the no-reminder and the reminder groups. In other words, it represents an estimation of the effect of the reminder, while the mode of the distribution informs us about the most probable value of increase in probability due to the reminder.</p>
+</div>
+<div id="effects-of-the-mode-of-inscription" class="section level3">
+<h3>Effects of the mode of inscription</h3>
+<p>Likewise, we could be interested in the maybe more subtle effects of the mode of inscription on the probability of presence. This model is expressed very similarly as the previous one:</p>
+<p><span class="math display">\[
+\begin{aligned}
+y_{i} &amp;\sim \mathrm{Binomial}(n_{i}, p_{i}) \\
+logit(p_{i}) &amp;= \alpha + \beta \times \text{inscription} \\
+\alpha &amp;\sim \mathrm{Normal}(0, 10) \\
+\beta &amp;\sim \mathrm{Normal}(0, 10) \\
+\end{aligned}
+\]</span></p>
+<p>where <span class="math inline">\(\beta\)</span> now represents the effects of the mode of inscription (i.e., online versus IRL).</p>
+<pre class="r"><code>mod3 &lt;-
+    rethinking::map(
+        alist(
+            presence &lt;- dbinom(total, p),
+            logit(p) &lt;- a + b * inscription,
+            a ~ dnorm(0, 10),
+            b ~ dnorm(0, 10) ),
+        data = data)</code></pre>
+<p>and we compare it to the intercept-only model in the same way as before:</p>
+<pre class="r"><code>compare(mod1, mod3) # yeah, model 3 wins</code></pre>
+<pre><code>##       WAIC pWAIC dWAIC weight    SE  dSE
+## mod3 155.4   1.9   0.0   0.91 12.52   NA
+## mod1 159.9   1.0   4.6   0.09 12.16 4.98</code></pre>
+<p>this time again the model comparison tells us that the inclusion of this predictor in the model improves the predictions abilities of the model.</p>
+<pre class="r"><code>post2 &lt;- extract.samples(mod2)
+p.panel &lt;- plogis(post2$a) # mean probability of presence for panel
+p.doodle &lt;- plogis(post2$a + post2$b) # mean probability of presence for doodle
+plotPost(p.doodle - p.panel, compVal = 0, showMode = TRUE, xlab = &quot;&quot;)    </code></pre>
+<p><img src="/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>We obtain an estimation of the effect similar to the effect of the reminder. In other words, the mode of inscription seems to be as much important as the reminder, to predict the presence of participants…</p>
+</div>
+</div>
+<div id="building-the-full-model-multi-what" class="section level2">
+<h2>Building the full model: multi-what?</h2>
+<p>We are now going to buil a last model that includes both <code>reminder</code> and <code>incription</code> as predictors.</p>
+<p><span class="math display">\[
+\begin{aligned}
+y_{i} &amp;\sim \mathrm{Binomial}(n_{i}, p_{i}) \\
+logit(p_{i}) &amp;= \alpha + \beta_{r} \times \text{reminder} + \beta_{i} \times \text{inscription} \\
+\alpha &amp;\sim \mathrm{Normal}(0, 10) \\
+\beta_{r} &amp;\sim \mathrm{Normal}(0, 10) \\
+\beta_{i} &amp;\sim \mathrm{Normal}(0, 10) \\
+\end{aligned}
+\]</span></p>
+<p>As previously, the <code>rethinking</code> model follows a similar syntax, with the only new thing here is the compact specification of the prior for the two slopes, using <code>c()</code>.</p>
+<pre class="r"><code>mod4 &lt;- rethinking::map(
+    alist(
+        presence &lt;- dbinom(total, p),
+        logit(p) &lt;- a + br * reminder + bi * inscription,
+        a ~ dnorm(0, 10),
+        c(br, bi) ~ dnorm(0, 10) ),
+    data = data)</code></pre>
+<p>Adding that the output of <code>precis</code> can be directly plotted.</p>
+<pre class="r"><code>plot(precis(mod4, prob = 0.95) )</code></pre>
+<p><img src="/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>This figure shows the mean of the posterior distribution of each parameter of the model along with 95% credible intervals. Wait…why <code>inscription</code> does not seem to have an influence anymore? Let’s compare the four models we built to better understand what’s happening here.</p>
+<pre class="r"><code>compare(mod1, mod2, mod3, mod4)</code></pre>
+<pre><code>##       WAIC pWAIC dWAIC weight    SE  dSE
+## mod2 151.6   2.0   0.0   0.66 12.93   NA
+## mod4 153.6   3.0   2.0   0.24 12.96 0.40
+## mod3 155.5   2.0   3.9   0.09 12.59 4.16
+## mod1 160.1   1.1   8.5   0.01 12.11 6.40</code></pre>
+<p>Ok so model 4 performs worse than the others, and the best model seems to be the second model (effet of <code>reminder</code> only). Why <code>inscription</code> does not seem to have an influence anymore, in the full model? Oh yeah… I forgot to tell you that we were two experimenters running experiments and collecting data about absenteeism. I am used to recruit participants only through doodle and this time I was too <del>busy</del> lazy to send a reminder to each participant (and so sometimes I forgot), while my colleague recruited participants through an IRL panel and sent an e-mail reminder to each participant. In other words, it means that the <code>reminder</code> and the <code>inscription</code> variables are almost perfectly counfounded (i.e., “correlated”).</p>
+<p>A simple way to realise how problematic is the situation is to draw the contingency table.</p>
+<pre class="r"><code>data %&gt;% # contingency table
+    group_by(inscription, reminder) %&gt;%
+    summarise(n = sum(total) ) %&gt;%
+    spread(key = reminder, value = n) %&gt;% data.frame</code></pre>
+<pre><code>##   inscription X0 X1
+## 1           0 NA 51
+## 2           1 72 22</code></pre>
+<p>We notice first that the amount of data in each condition is very disproportionnal and that we completely lack data for the condition <code>panel</code> and <code>no reminder</code>.</p>
+<p>We generally refer to this situation (when two or more predictors are highly correlated) as <strong>multi-collinearity</strong>. It basically mean that the two predictor variables carry almost the same information. What the model comparison is telling us is then simply that there is no benefit in adding a second predictor if it brings the same information as the first predictor… makes sense no?</p>
+<p>This redudancy can be illustrated by plotting the posterior samples of the two slopes each against the other:</p>
+<pre class="r"><code>extract.samples(mod4) %&gt;%
+    ggplot(aes(br, bi) ) +
+    geom_point(alpha = 0.6, color = &quot;steelblue&quot;) +
+    theme_bw()</code></pre>
+<p><img src="/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p>All we can say is that there is obviously an influence of at least one of the predictors on the probability of the participants being present, but as they are confounded, we can not tell whether it is an effect of the reminder or an effect of the mode of inscription. However, if I had to guess, I would go for the reminder effect. Otherwise, instead of being writing a blog post, I would be writing a manuscript on the beneficial motivationnal aspects of registering participants IRL compared to registering them via online platforms.</p>
+</div>
+<div id="conclusions" class="section level2">
+<h2>Conclusions</h2>
+<p>Well, know you now, sending a reminder e-mail <em>probably</em> increases the probability of participants being present, so don’t be <del>busy</del> lazy.</p>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<details>
+<p><summary>Click to expand</summary></p>
+<div markdown="1">
+<p>McElreath, R. (2016). Statistical Rethinking. Chapman; Hall/CRC.</p>
+<p>Watanabe, S. (2010). Asymptotic Equivalence of Bayes Cross Validation and Widely Applicable Information Criterion in Singular Learning Theory. <em>Journal of Machine Learning Research, 11</em>, 3571–3594.</p>
+</div>
+</details>
+</div>
+<div id="notes" class="section level2">
+<h2>Notes</h2>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>See the <a href="https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faq-how-do-i-interpret-odds-ratios-in-logistic-regression/">UCLA</a> page for more details on the interpretation of the odds and log-odds in the context of logistic regression.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+    </div>
+
+    
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/r/">R</a>
+  
+  <a class="badge badge-light" href="/tags/bayesian/">Bayesian</a>
+  
+  <a class="badge badge-light" href="/tags/rethinking/">rethinking</a>
+  
+  <a class="badge badge-light" href="/tags/logistic-regression/">logistic regression</a>
+  
+</div>
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=http://www.barelysignificant.com/post/absenteeism/&amp;text=Experimental%20absenteeism%20and%20logistic%20regression,%20part%20I" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=http://www.barelysignificant.com/post/absenteeism/&amp;t=Experimental%20absenteeism%20and%20logistic%20regression,%20part%20I" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Experimental%20absenteeism%20and%20logistic%20regression,%20part%20I&amp;body=http://www.barelysignificant.com/post/absenteeism/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=http://www.barelysignificant.com/post/absenteeism/&amp;title=Experimental%20absenteeism%20and%20logistic%20regression,%20part%20I" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Experimental%20absenteeism%20and%20logistic%20regression,%20part%20I%20http://www.barelysignificant.com/post/absenteeism/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=http://www.barelysignificant.com/post/absenteeism/&amp;title=Experimental%20absenteeism%20and%20logistic%20regression,%20part%20I" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hueeaeb0c1f8e0a8e455cffe30658aa100_974173_270x270_fill_q90_lanczos_center.jpeg" alt="Ladislas Nalborczyk">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="http://www.barelysignificant.com/">Ladislas Nalborczyk</a></h5>
+      <h6 class="card-subtitle">Postdoctoral researcher</h6>
+      <p class="card-text">My main research interests are spanning cognitive science and include motor cognition, speech production, inner speech, motor imagery, computational and statistical modelling, machine learning, and deep learning.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:ladislas.nalborczyk@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/lnalborczyk" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/citations?user=na-dkLYAAAAJ&amp;hl=en" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/lnalborczyk" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://orcid.org/0000-0002-7419-9855" target="_blank" rel="noopener">
+        <i class="ai ai-orcid"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://osf.io/ba8xt" target="_blank" rel="noopener">
+        <i class="ai ai-osf"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://publons.com/a/1319011/" target="_blank" rel="noopener">
+        <i class="ai ai-publons"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+<section id="comments">
+  
+    
+<div id="disqus_thread"></div>
+<script>
+  let disqus_config = function () {
+    
+    
+    
+  };
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+      return;
+    }
+    var d = document, s = d.createElement('script'); s.async = true;
+    s.src = 'https://' + "barely-significant" + '.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+</section>
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/post/matchpoint/">On power and the &#39;match point situation&#39;</a></li>
+      
+      <li><a href="/post/aicbic/">Why the Akaike Information Criterion is as much &#39;Bayesian&#39; as the Bayesian Information Criterion</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js" integrity="sha256-eOgo0OtLL4cdq7RdwRUiGKLX9XsIJ7nGhWEKbohmVAQ=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/languages/r.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js" integrity="sha256-EErZamuLefUnbMBQbsEqu1USa+btR2oIlCpBJbyD4/g=" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    <script>const isSiteThemeDark = false;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    <script id="dsq-count-scr" src="https://barely-significant.disqus.com/count.js" async></script>
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.37431be2d92d7fb0160054761ab79602.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    © 2020, Ladislas Nalborczyk &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
