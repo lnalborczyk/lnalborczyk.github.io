@@ -2071,6 +2071,7 @@ logit(p_{i}) &amp;amp;= \alpha + \beta_{r} \times \text{reminder} + \beta_{i} \t
       <description>
 &lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 &lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;http://www.barelysignificant.com/rmarkdown-libs/lightable/lightable.css&#34; rel=&#34;stylesheet&#34; /&gt;
 
 
 &lt;p&gt;We all have seen the opening scene from Woody Allen’s movie &lt;em&gt;Match Point&lt;/em&gt; (2005)&lt;/p&gt;
