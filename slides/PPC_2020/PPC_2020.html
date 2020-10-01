@@ -650,7 +650,7 @@ brm(y ~ x + (1|subject) + (1|item), data = d, family = gaussian() )
 
 # Example: Analysing the sleepstudy dataset
 
-The `sleepstudy` dataset data from the study described in [Belenky et al. (2003)](https://www.ncbi.nlm.nih.gov/pubmed/12603781). It describes the average reaction time on various cognitive tasks in a sleep deprivation context On day 0 the subjects had their normal amount of sleep. Starting that night they were restricted to 3 hours of sleep per night. The observations represent the average reaction time on a series of tests given each day to each subject.
+The `sleepstudy` dataset data from the study described in [Belenky et al. (2003)](https://www.ncbi.nlm.nih.gov/pubmed/12603781). It describes the average reaction time on various cognitive tasks in a sleep deprivation context. On day 0 the subjects had their normal amount of sleep. Starting that night they were restricted to 3 hours of sleep per night. The observations represent the average reaction time on a series of tests given each day to each subject.
 
 
 ```r
@@ -698,7 +698,7 @@ The `get_prior()` function returns a list of all priors to be specified given so
 
 ```r
 library(brms)
-get_prior(Reaction ~ Days + (1 + Days|Subject), sleepstudy)
+get_prior(Reaction ~ Days + (1 + Days | Subject), sleepstudy)
 ```
 
 ```
@@ -1287,13 +1287,13 @@ class: middle, center
 
 A meta-analysis is an analysis of analyses. It is (or can be) a linear model similar to those discussed previously, except that observations are (usually) already summarised by an effect size. We can treat these effect sizes as observations with a known variation (i.e., estimated and reported in the original articles included in the meta-analysis).
 
-There are (at least) two types of meta-analytic models:
+There are two main types of meta-analysis models:
 
-- **Constant-effect (aka fixed-effect) meta-analysis**: we consider that the effect size estimated in each study refers to the same population effect size
+- **Constant-effect (aka fixed-effect) meta-analysis**: We consider that the effect size estimated in each study refers to the same population effect size.
 
 --
 
-- **Varying-effect (aka random effect) meta-analysis**: we model the variability between studies and we exploit the similarities in extent groups (e.g., experiments from the same study or team) to improve the estimation of the overall effect (cf. the shrinkage magic). Note that a "fixed-effect" model" can be considered as a "random-effect" model with a fixed `\(\tau = 0\)`.
+- **Varying-effect (aka random effect) meta-analysis**: We model the variability between studies and we exploit the similarities in extent groups (e.g., experiments from the same study or team) to improve the estimation of the overall effect (cf. the shrinkage magic). Note that a "fixed-effect" model" can be considered as a "random-effect" model with a fixed `\(\tau = 0\)`.
 
 ---
 
