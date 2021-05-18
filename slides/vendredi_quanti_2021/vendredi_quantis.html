@@ -210,7 +210,7 @@ What's the change in water flow rate when we change either one of these valves? 
 
 # Sensitivity (with math)
 
-Sensitivity can be defined as the change in one thing per a one unit change in another thing (also known as the partial derivative, denoted `\(\partial\)`). For instance, change in shower flow rate per one unit change in the shower handle position. To make things simple, we will call the shower flow rate `\(y\)` and the shower handle position `\(h\)`. We call the flow rate in the house `\(x\)`, and the pressure in the water main `\(w\)`, and the position of the main valve `\(m\)`.
+Sensitivity can be defined as the change in one thing per a one unit change in another thing. For instance, change in shower flow rate per one unit change in the shower handle position. To make things simple, we will call the shower flow rate `\(y\)` and the shower handle position `\(h\)`. We call the flow rate in the house `\(x\)`, and the pressure in the water main `\(w\)`, and the position of the main valve `\(m\)`.
 
 &lt;img src="figures/sensitivity.png" width="50%" style="display: block; margin: auto;" /&gt;
 
@@ -246,7 +246,7 @@ This is known as the **chain rule**, which states that we can compute partial de
 
 # How far from ideal is the shower?
 
-Let's say that our ideal shower flow rate is a special value of `\(y\)`, which we call `\(y'\)`. We can calculate our deviation, how far away from this ideal value we are, by taking `\(y - y'\)`. To express our unhappiness with the current state of the water flow, we can use how far away it is from the ideal: the absolute value of `\(y - y'\)` or `\(|y - y'|\)`. We'll call this `\(E\)`, our error, and we would like for it to be zero. Our goal will be to adjust our valves `\(m\)` and `\(h\)` to make our shower flow rate perfect, drive `\(y\)` to be `\(y'\)`, and make `\(E\)` go to zero.
+Let's say that our ideal shower flow rate is a special value of `\(y\)`, which we call `\(y'\)`. We can calculate our deviation, how far away from this ideal value we are, by taking `\(y - y'\)`. To express our unhappiness with the current state of the water flow, we can use how far away it is from the ideal: the absolute value of `\(y - y'\)` or `\(|y - y'|\)`. We'll call this `\(E\)`, our error, and we would like it to be zero. Our goal will be to adjust our valves `\(m\)` and `\(h\)` to make our shower flow rate perfect, drive `\(y\)` to be `\(y'\)`, and make `\(E\)` go to zero.
 
 &lt;img src="figures/error.png" width="50%" style="display: block; margin: auto;" /&gt;
 
@@ -262,7 +262,7 @@ We can compute the sensitivity of `\(E\)` to changes in our shower flow rate. Th
 
 # How much should each valve be adjusted?
 
-Now we have one thing we want to change, the error, and two ways to change it. How do we go about it? This is where backpropagation comes in. The secret is to weight the adjustment (to each valve) by the sensitivity... The safest way to handle an uncertain, nonlinear, dynamic situation like this is to take tiny steps. Instead of trying to move the whole distance all at once, move 1/100, or 1/1000, or 1/10,000 of the way (the specific distance is governed by the learning rate `\(\eta\)`).
+Now we have one thing we want to change, the error, and two ways to change it. How do we go about it? This is where backpropagation comes in. The secret is to weight the adjustment (to each valve) by the sensitivity... The safest way to handle an uncertain, nonlinear, dynamic situation like this is to take tiny steps. Instead of trying to move the whole distance all at once, we move 1/100, or 1/1000, or 1/10,000 of the way (the specific distance is governed by the learning rate `\(\eta\)`).
 
 &lt;img src="figures/gradient_descent.png" width="50%" style="display: block; margin: auto;" /&gt;
 
@@ -285,6 +285,14 @@ We have seen how to apply backpropagation to two nodes (weights). In real settin
 - Observe the effects
 - Update the sensitivities throughout the network
 - And repeat
+
+---
+
+# Backpropagation in the real world
+
+Figure taken from https://baptiste-monpezat.github.io/blog/stochastic-gradient-descent-for-machine-learning-clearly-explained. In this animation, the blue line corresponds to stochastic gradient descent and the red one is a basic gradient descent algorithm. 
+
+&lt;img src="figures/sgd.gif" width="75%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -446,7 +454,7 @@ img &lt;- t(apply(img, 2, rev) )
 image(x = 1:28, y = 1:28, z = img, col = gray((0:255) / 255), xaxt = "n", yaxt = "n")
 ```
 
-&lt;img src="vendredi_quantis_files/figure-html/unnamed-chunk-27-1.svg" width="33%" style="display: block; margin: auto;" /&gt;
+&lt;img src="vendredi_quantis_files/figure-html/unnamed-chunk-28-1.svg" width="33%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -549,6 +557,11 @@ We then evaluate the accuracy of the predictions on the testing data.
 model %&gt;% evaluate(test_images, test_labels)
 ```
 
+```
+##     loss accuracy 
+## 0.351278 0.878800
+```
+
 ---
 
 # Making predictions
@@ -565,8 +578,8 @@ predictions[1, ]
 ```
 
 ```
-##  [1] 2.968934e-09 2.305400e-09 4.980908e-11 4.407274e-10 1.638812e-10
-##  [6] 4.436372e-04 2.716864e-10 1.902131e-02 6.819066e-10 9.805351e-01
+##  [1] 4.865854e-09 9.593115e-11 1.513373e-11 6.070010e-11 1.882907e-10
+##  [6] 2.057766e-02 1.021558e-10 3.933262e-03 6.321169e-08 9.754890e-01
 ```
 
 ```r
@@ -585,7 +598,7 @@ class_pred[1:20]
 ```
 
 ```
-##  [1] 9 2 1 1 6 1 4 6 5 7 4 5 7 3 4 1 2 2 8 0
+##  [1] 9 2 1 1 6 1 4 6 5 7 4 5 5 3 4 1 2 2 8 0
 ```
 
 ---
@@ -594,7 +607,7 @@ class_pred[1:20]
 
 Let's plot several test images with their predicted class. Correct prediction labels are green and incorrect prediction labels are red.
 
-&lt;img src="vendredi_quantis_files/figure-html/unnamed-chunk-30-1.svg" width="66%" style="display: block; margin: auto;" /&gt;
+&lt;img src="vendredi_quantis_files/figure-html/unnamed-chunk-31-1.svg" width="66%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -691,7 +704,7 @@ For each trial (1 sec), we have the EMG amplitude recorded over two facial muscl
 # train/test split (80%)
 b &lt;- 0.8 * nrow(x_reshaped)
 x_train &lt;- x_reshaped[1:b, , ]
-x_test &lt;- x_reshaped[(b+1):nrow(x_reshaped), , ]
+x_test &lt;- x_reshaped[(b + 1):nrow(x_reshaped), , ]
 c(dim(x_train), dim(x_test) )
 ```
 
@@ -706,7 +719,7 @@ y_categ &lt;- to_categorical(y = y, num_classes = num_classes)
 
 # train/test split
 y_train &lt;- y_categ[1:b, ]
-y_test &lt;- y_categ[(b+1):nrow(y_categ), ]
+y_test &lt;- y_categ[(b + 1):nrow(y_categ), ]
 ```
 
 ---
@@ -829,23 +842,23 @@ model %&gt;% evaluate(x_test, y_test)
 
 ```
 ##      loss  accuracy 
-## 0.2761604 0.8825758
+## 0.3230697 0.8939394
 ```
 
 
 ```r
-# makes predictions
+# making predictions
 predictions &lt;- model %&gt;% predict_classes(x_test)
 
 # confusion matrix
-table(predictions, y[(b+1):nrow(y_categ)])
+table(target = y[(b + 1):nrow(y_categ)], prediction = predictions)
 ```
 
 ```
-##            
-## predictions   0   1
-##           0 232  30
-##           1  32 234
+##       prediction
+## target   0   1
+##      0 239  25
+##      1  31 233
 ```
 
 ---
