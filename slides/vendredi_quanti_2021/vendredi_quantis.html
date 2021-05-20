@@ -210,7 +210,7 @@ What's the change in water flow rate when we change either one of these valves? 
 
 # Sensitivity (with math)
 
-Sensitivity can be defined as the change in one thing per a one unit change in another thing. For instance, change in shower flow rate per one unit change in the shower handle position. To make things simple, we will call the shower flow rate `\(y\)` and the shower handle position `\(h\)`. We call the flow rate in the house `\(x\)`, and the pressure in the water main `\(w\)`, and the position of the main valve `\(m\)`.
+Sensitivity can be defined as the change in one thing per a one unit change in another thing. For instance, change in shower flow rate per one unit change in the shower handle position. To make things simple, we will call the shower flow rate `\(y\)` and the shower handle position `\(h\)`. We call the flow rate in the house `\(x\)` and the position of the main valve `\(m\)`.
 
 &lt;img src="figures/sensitivity.png" width="50%" style="display: block; margin: auto;" /&gt;
 
@@ -218,7 +218,7 @@ Sensitivity can be defined as the change in one thing per a one unit change in a
 
 # Working backward
 
-Last slide, we have defined the shower flow rate as `\(y\)` and the shower handle position `\(h\)`. We called the flow rate in the house `\(x\)`. We define the pressure in the water `\(w\)` and the position of the main valve `\(m\)`. The sensitivity of the shower flow rate to the shower handle position was `\(\partial{y} / \partial{h}\)`. What's the sensitivity for the main house valve?
+Last slide, we have defined the shower flow rate as `\(y\)` and the shower handle position `\(h\)`. We called the flow rate in the house `\(x\)` and the position of the main valve `\(m\)`. The sensitivity of the shower flow rate to the shower handle position was `\(\partial{y} / \partial{h}\)`. What's the sensitivity for the main house valve?
 
 --
 
@@ -232,6 +232,8 @@ The output flow rate of the showerhead `\(y\)` depends both on the shower handle
 
 # Chain rule
 
+&lt;img src="figures/system.png" width="33%" style="display: block; margin: auto;" /&gt;
+
 We have a few different sensitivities, `\(\partial{y} / \partial{h}\)`, `\(\partial{y} / \partial{x}\)`, and `\(\partial{x} / \partial{m}\)`. But we do not know the sensitivity of the shower flow rate with respect to the main valve, `\(\partial{y} / \partial{m}\)`... but imagine we had measured `\(\partial{x} / \partial{m}\)` to be two and `\(\partial{y} / \partial{x}\)` to be `\(1/4\)`. We can multiply the two together to get the net result: `\(2 \times 1 / 4 = 1 / 2\)`.
 
 $$
@@ -240,7 +242,7 @@ $$
 
 --
 
-This is known as the **chain rule**, which states that we can compute partial derivatives for each layer as `\(\partial \text{layer}_{2} \times \partial \text{layer}_{1} \Rightarrow \partial f(g(x)) \times \partial g(x)\)`. In other words, we can chain together sensitivities by multiplying them.
+In other words, we can chain together sensitivities by multiplying them. This is known as the **chain rule**, which states that we can (for instance) compute partial derivatives for each layer of a network as `\(\partial \text{layer}_{2} \times \partial \text{layer}_{1} \Rightarrow \partial f(g(x)) \times \partial g(x)\)`.
 
 ---
 
@@ -262,7 +264,7 @@ We can compute the sensitivity of `\(E\)` to changes in our shower flow rate. Th
 
 # How much should each valve be adjusted?
 
-Now we have one thing we want to change, the error, and two ways to change it. How do we go about it? This is where backpropagation comes in. The secret is to weight the adjustment (to each valve) by the sensitivity... The safest way to handle an uncertain, nonlinear, dynamic situation like this is to take tiny steps. Instead of trying to move the whole distance all at once, we move 1/100, or 1/1000, or 1/10,000 of the way (the specific distance is governed by the learning rate `\(\eta\)`).
+Now we have one thing we want to change, the error, and two ways to change it. How do we go about it? This is where backpropagation comes in. The secret is to weight the adjustment (to each valve) by the sensitivity... The safest way to handle an uncertain, nonlinear, dynamic situation like this is to take tiny steps. Instead of trying to move the whole distance all at once, we move 1/100, or 1/1000, or 1/10000 of the way (the specific distance is governed by the learning rate `\(\eta\)`).
 
 &lt;img src="figures/gradient_descent.png" width="50%" style="display: block; margin: auto;" /&gt;
 
@@ -454,7 +456,7 @@ img &lt;- t(apply(img, 2, rev) )
 image(x = 1:28, y = 1:28, z = img, col = gray((0:255) / 255), xaxt = "n", yaxt = "n")
 ```
 
-&lt;img src="vendredi_quantis_files/figure-html/unnamed-chunk-28-1.svg" width="33%" style="display: block; margin: auto;" /&gt;
+&lt;img src="vendredi_quantis_files/figure-html/unnamed-chunk-29-1.svg" width="33%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -558,8 +560,8 @@ model %&gt;% evaluate(test_images, test_labels)
 ```
 
 ```
-##     loss accuracy 
-## 0.351278 0.878800
+##      loss  accuracy 
+## 0.3535064 0.8792000
 ```
 
 ---
@@ -578,8 +580,8 @@ predictions[1, ]
 ```
 
 ```
-##  [1] 4.865854e-09 9.593115e-11 1.513373e-11 6.070010e-11 1.882907e-10
-##  [6] 2.057766e-02 1.021558e-10 3.933262e-03 6.321169e-08 9.754890e-01
+##  [1] 2.903383e-08 6.454761e-10 1.274260e-11 2.984406e-09 1.510436e-11
+##  [6] 1.491865e-03 4.410875e-10 9.791809e-03 8.133487e-08 9.887162e-01
 ```
 
 ```r
@@ -598,7 +600,7 @@ class_pred[1:20]
 ```
 
 ```
-##  [1] 9 2 1 1 6 1 4 6 5 7 4 5 5 3 4 1 2 2 8 0
+##  [1] 9 2 1 1 6 1 4 6 5 7 4 5 7 3 4 1 2 2 8 0
 ```
 
 ---
@@ -607,7 +609,7 @@ class_pred[1:20]
 
 Let's plot several test images with their predicted class. Correct prediction labels are green and incorrect prediction labels are red.
 
-&lt;img src="vendredi_quantis_files/figure-html/unnamed-chunk-31-1.svg" width="66%" style="display: block; margin: auto;" /&gt;
+&lt;img src="vendredi_quantis_files/figure-html/unnamed-chunk-32-1.svg" width="66%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -828,7 +830,7 @@ history &lt;- model %&gt;%
 plot(history)
 ```
 
-&lt;img src="vendredi_quantis_files/figure-html/unnamed-chunk-38-1.svg" width="75%" style="display: block; margin: auto;" /&gt;
+&lt;img src="vendredi_quantis_files/figure-html/unnamed-chunk-39-1.svg" width="75%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -842,7 +844,7 @@ model %&gt;% evaluate(x_test, y_test)
 
 ```
 ##      loss  accuracy 
-## 0.3230697 0.8939394
+## 0.3499671 0.8750000
 ```
 
 
@@ -857,8 +859,8 @@ table(target = y[(b + 1):nrow(y_categ)], prediction = predictions)
 ```
 ##       prediction
 ## target   0   1
-##      0 239  25
-##      1  31 233
+##      0 242  22
+##      1  44 220
 ```
 
 ---
