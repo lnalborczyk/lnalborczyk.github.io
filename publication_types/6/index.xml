@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>6 | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/publication_types/6/</link>
-      <atom:link href="http://www.barelysignificant.com/publication_types/6/index.xml" rel="self" type="application/rss+xml" />
+    <link>/publication_types/6/</link>
+      <atom:link href="/publication_types/6/index.xml" rel="self" type="application/rss+xml" />
     <description>6</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright><lastBuildDate>Thu, 18 Oct 2018 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>6</title>
-      <link>http://www.barelysignificant.com/publication_types/6/</link>
+      <link>/publication_types/6/</link>
     </image>
     
     <item>
       <title>A Cognitive Neuroscience View of Inner Language: To Predict and to Hear, See, Feel</title>
-      <link>http://www.barelysignificant.com/publication/2018-loevenbruck-etal/</link>
+      <link>/publication/2018-loevenbruck-etal/</link>
       <pubDate>Thu, 18 Oct 2018 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2018-loevenbruck-etal/</guid>
+      <guid>/publication/2018-loevenbruck-etal/</guid>
       <description></description>
     </item>
     

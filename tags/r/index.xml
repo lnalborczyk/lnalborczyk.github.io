@@ -2,39 +2,39 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/tags/r/</link>
-      <atom:link href="http://www.barelysignificant.com/tags/r/index.xml" rel="self" type="application/rss+xml" />
+    <link>/tags/r/</link>
+      <atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
     <description>R</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright><lastBuildDate>Thu, 09 Apr 2020 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>R</title>
-      <link>http://www.barelysignificant.com/tags/r/</link>
+      <link>/tags/r/</link>
     </image>
     
     <item>
       <title>Action effects on visual perception of distances: A multilevel Bayesian meta-analysis</title>
-      <link>http://www.barelysignificant.com/publication/2020-molto-etal/</link>
+      <link>/publication/2020-molto-etal/</link>
       <pubDate>Thu, 09 Apr 2020 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2020-molto-etal/</guid>
+      <guid>/publication/2020-molto-etal/</guid>
       <description></description>
     </item>
     
     <item>
       <title>An introduction to Bayesian multilevel models using brms: A case study of gender effects on vowel variability in standard Indonesian</title>
-      <link>http://www.barelysignificant.com/publication/2019-nalborczyk-etal/</link>
+      <link>/publication/2019-nalborczyk-etal/</link>
       <pubDate>Tue, 21 May 2019 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2019-nalborczyk-etal/</guid>
+      <guid>/publication/2019-nalborczyk-etal/</guid>
       <description></description>
     </item>
     
     <item>
       <title>What does a Bayes factor look like?</title>
-      <link>http://www.barelysignificant.com/post/bf/</link>
+      <link>/post/bf/</link>
       <pubDate>Tue, 22 May 2018 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/post/bf/</guid>
+      <guid>/post/bf/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;model-comparison&#34; class=&#34;section level2&#34;&gt;
@@ -55,7 +55,7 @@
 \end{align}
 \]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Where &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{M_{1}}\)&lt;/span&gt; represents my predictions about &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; while &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{M_{2}}\)&lt;/span&gt; represents the predictions of my friend. As usual, these two priors are better understood visually:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-04-30-bf_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-04-30-bf_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;My prior (in blue) is centered on &lt;span class=&#34;math inline&#34;&gt;\(\frac{\alpha}{\alpha + \beta} = 0.375\)&lt;/span&gt; while the prior of my friend (in red) is centered on &lt;span class=&#34;math inline&#34;&gt;\(\frac{\alpha}{\alpha + \beta} = 0.625\)&lt;/span&gt;. Note that my friend seems a bit more certain of its prediction than me, as the red prior is a bit more narrow than the blue prior.&lt;/p&gt;
 &lt;p&gt;Now we can collect some data to test our respective hypotheses. We launch the coin 100 times and gather the following data:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;##   [1] 0 0 1 1 1 1 1 1 1 1 0 0 0 1 0 1 1 0 1 0 1 0 0 1 1 0 0 1 0 1 0 1 0 0 1 1 0
@@ -70,7 +70,7 @@
 \text{BF}_{12} = \dfrac{p(D|H_{1})}{p(D|H_{2})} = \dfrac{\int p(\theta|H_{1}) p(D|\theta,H_{1}) \text{d}\theta}{\int p(\theta|H_{2}) p(D|\theta,H_{2}) \text{d}\theta} = \dfrac{\int \mathrm{Binomial}(n, \theta)\mathrm{Beta}(6, 10)\text{d}\theta}{\int \mathrm{Binomial}(n, \theta)\mathrm{Beta}(20, 12) \text{d}\theta}
 \]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;In other words, computing a Bayes factor is equivalent to multiplying the prior by the &lt;em&gt;likelihood&lt;/em&gt; (the information contained in the data) for each possible value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;, summing all of the obtained values&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;, doing this for each model, and taking the ratio of these sums. This process is illustrated below.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/img/bf/bf.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/bf/bf.gif&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We can read this animation starting by the lower left panel and going clockwise until the lower right panel. In the first panel (the lower left panel), the black curve represents the &lt;a href=&#34;http://journals.sagepub.com/doi/10.1177/2515245917744314&#34;&gt;likelihood function&lt;/a&gt; of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;, that indicates how likely the data are to appear for a given value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;. The two coloured curves represent the prior of either I (in blue) or my friend (in red).&lt;/p&gt;
 &lt;p&gt;The moving dots represent the density of either the priors or the likelihood at each possible value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;. The &lt;em&gt;unnormalised posterior density&lt;/em&gt; (displayed in the upper left panel) is constructed by multiplying the probability assigned by the &lt;em&gt;prior&lt;/em&gt; (the “height” of the blue/red dot) to the probability assigned by the &lt;em&gt;likelihood&lt;/em&gt; function (the “height” of the black dot) for each possible value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;We can then “unfold” this &lt;em&gt;density&lt;/em&gt; by computing its cumulative function (in the upper right panel). This curve simply represents the value of the &lt;em&gt;unnormalised posterior&lt;/em&gt; for each value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;, to which we added the value of the &lt;em&gt;unnormalised posterior&lt;/em&gt; for all the previous values of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; (by summing them). For instance, the value of the &lt;em&gt;cumulative unnormalised posterior&lt;/em&gt; at &lt;span class=&#34;math inline&#34;&gt;\(\theta = 0.14\)&lt;/span&gt; is equal to the value of the &lt;em&gt;unnormalised posterior&lt;/em&gt; at &lt;span class=&#34;math inline&#34;&gt;\(\theta = 0.14\)&lt;/span&gt;, plus the value of the &lt;em&gt;unnormalised posterior&lt;/em&gt; at all the previous values of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; between &lt;span class=&#34;math inline&#34;&gt;\(0\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(0.14\)&lt;/span&gt;.&lt;/p&gt;
@@ -120,11 +120,11 @@
     
     <item>
       <title>Visualising within-subject effects and stochastic dominance with (augmented) modified Brinley plots</title>
-      <link>http://www.barelysignificant.com/post/brinley/</link>
+      <link>/post/brinley/</link>
       <pubDate>Thu, 22 Feb 2018 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/post/brinley/</guid>
+      <guid>/post/brinley/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;&lt;em&gt;Spoiler: the first part of this post is largely inspired by this &lt;a href=&#34;https://www.ncbi.nlm.nih.gov/pubmed/28077215&#34;&gt;very nice paper&lt;/a&gt; written by Neville Blampied, as well as by this great &lt;a href=&#34;https://vuorre.netlify.com/post/2017/within-subject-scatter/&#34;&gt;blogpost&lt;/a&gt; from Matti Vuorre.&lt;/em&gt;&lt;/p&gt;
@@ -155,20 +155,20 @@ head(brinley_data)&lt;/code&gt;&lt;/pre&gt;
 ## 6           5    post treatment   77.13 -0.6746855&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;A first basic Brinley plot can be obtained by using the &lt;code&gt;brinley&lt;/code&gt; function, specifying the formula as you would do using &lt;code&gt;lm&lt;/code&gt; or &lt;code&gt;plot&lt;/code&gt;&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;. The black cross represents the bivariate mean and the confidence interval around the mean in the two conditions.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;brinley(brinley_data, outcome ~ session)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;There are multiple ways to compute a Cohen’s d effect size for within-subject designs (e.g., see &lt;a href=&#34;http://jakewestfall.org/blog/index.php/2016/03/25/five-different-cohens-d-statistics-for-within-subject-designs/&#34;&gt;this post&lt;/a&gt; for five different ways to do it). By default, the &lt;code&gt;brinley&lt;/code&gt; function computes the average Cohen’s d (as recommendended by Cumming, 2012), but note that this can easily be modified to compute your favourite Cohen’s d.&lt;/p&gt;
 &lt;p&gt;Next (here comes the &lt;em&gt;augmented&lt;/em&gt; modified Brinley plot), we can colour points by a second continuous variable, to be passed (as character) to the &lt;code&gt;colour&lt;/code&gt; argument.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;brinley(brinley_data, outcome ~ session, colour = &amp;quot;pain&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Or facetting by another categorical variable, using the &lt;code&gt;facet&lt;/code&gt; argument, which is quite convenient to compare the effects of a pre-post manipulation in different groups/experiments.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;brinley(brinley_data, outcome ~ session, facet = &amp;quot;condition&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Moreover, the &lt;code&gt;brinley&lt;/code&gt; function uses a smart plotting trick that allows easy comparison of multiple groups by plotting the whole dataset in background (see this &lt;a href=&#34;https://drsimonj.svbtle.com/plotting-background-data-for-groups-with-ggplot2&#34;&gt;blogpost&lt;/a&gt;). In our case (two groups), the grey dots represent data from the other group&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;illustrative-example&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Illustrative example&lt;/h2&gt;
 &lt;p&gt;Let’s say we gathered data from two experiments (&lt;code&gt;exp1&lt;/code&gt; and &lt;code&gt;exp2&lt;/code&gt;) in which we investigated a within-subject effect, in two conditions &lt;code&gt;group1&lt;/code&gt; and &lt;code&gt;group2&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;This plot reveals two overlapping distributions of scores in each experiment. Visually, it seems that the difference in means (indicated by the vertical dashed lines) is a bit lower in &lt;code&gt;exp2&lt;/code&gt; than in &lt;code&gt;exp1&lt;/code&gt;. However, the standard deviation (the width) of the distributions in &lt;code&gt;exp2&lt;/code&gt; seems also a bit lower than in &lt;code&gt;exp1&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Intuitively then, although the absolute mean difference seems lower in &lt;code&gt;exp2&lt;/code&gt; than in &lt;code&gt;exp1&lt;/code&gt;, we could say that the effect size (defined as the standardised mean difference) might be roughly equivalent across the two experiments. Let’s check this.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
@@ -195,7 +195,7 @@ Importantly, the dominance constraint implies that *the mean and the variability
 --&gt;
 &lt;p&gt;How is this relevant here ? Well, although we presented data from two experiments with equal sample size and equal effect size, maybe the idea of dominance could help us to reach a more fine-grained interpretation of this effect. Below, we use a modified Brinley plot to visualise data issued from these two experiments.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;brinley(data = dominance, formula = value ~ group, facet = &amp;quot;exp&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;This plot reveals that, altough the mean effect size is the same accross the two experiments, the effect observed in &lt;code&gt;exp2&lt;/code&gt; seems prototypical of a &lt;em&gt;dominant effect&lt;/em&gt;, that is, all participants (all points) show an increase from &lt;code&gt;group1&lt;/code&gt; to &lt;code&gt;group2&lt;/code&gt;. In contrast, the effect observed in &lt;code&gt;exp1&lt;/code&gt; seems less “universal”, with some participants showing the reverse effect.&lt;/p&gt;
 &lt;p&gt;Of course, this is a schematic representation of an idealised dominant effect, in the sense that it would correspond to a situation in which there is absolutely no sampling noise. Alternatively, we could also consider that &lt;code&gt;exp2&lt;/code&gt; is a representation of a dominant effect in the population (i.e., a representation of what a dominant effect would look like if there was no sampling noise), while data from &lt;code&gt;exp1&lt;/code&gt; would be a representation of a dominant effect in ecological/realistic experimental settings (i.e, with some moderate sampling noise).&lt;/p&gt;
 &lt;p&gt;In any case, this highlights the need to report and to visualise data at different levels (individual vs. group) and in different ways to have a better grasp on what is happening in a particular experiment. In this perspective, modified Brinley plot appears as a handy tool to explore the idea of &lt;em&gt;dominance constraint&lt;/em&gt;, and more generally, to assess to what extent our experimental manipulations affect the participants.&lt;/p&gt;
@@ -229,11 +229,11 @@ Importantly, the dominance constraint implies that *the mean and the variability
     
     <item>
       <title>Checking the asumption of independence in binomial trials using posterior predictive checking</title>
-      <link>http://www.barelysignificant.com/post/ppc/</link>
+      <link>/post/ppc/</link>
       <pubDate>Tue, 23 Jan 2018 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/post/ppc/</guid>
+      <guid>/post/ppc/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;posterior-predictive-checking&#34; class=&#34;section level2&#34;&gt;
@@ -312,7 +312,7 @@ data.frame(theta = grid, prior = prior, posterior = posterior) %&amp;gt;%
     scale_fill_grey() +
     scale_colour_grey() +
     ylab(&amp;quot;&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-01-23-ppc_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-23-ppc_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The mean of the posterior distribution is given by &lt;span class=&#34;math inline&#34;&gt;\(\dfrac{\alpha + y}{\alpha + \beta + n}\)&lt;/span&gt;, and is equal to &lt;code&gt;(a + z) / (a + b + n)&lt;/code&gt; = 0.606, which can be interpreted as the mean probability of presence.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;conjugacy&#34; class=&#34;section level2&#34;&gt;
@@ -362,7 +362,7 @@ Trep %&amp;gt;%
     BEST::plotPost(
         compVal = Ty, breaks = 20,
         col = &amp;quot;#E6E6E6&amp;quot;, xlab = expression(T(y^rep) ) )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-01-23-ppc_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-23-ppc_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;This histogram reveals that the mean number of switches accross the &lt;code&gt;nsims&lt;/code&gt; replications is about 42.04, and the green vertical dotted line represents the position of &lt;span class=&#34;math inline&#34;&gt;\(T(y)\)&lt;/span&gt; in the distribution of &lt;span class=&#34;math inline&#34;&gt;\(T(y^{rep})\)&lt;/span&gt; values.&lt;/p&gt;
 &lt;p&gt;To know whether the observed number of switches is surprising given the assumptions of our model (&lt;em&gt;represented&lt;/em&gt; by its predictions), we can count the number of replications that lead to a greater number of switches than the number of switches &lt;span class=&#34;math inline&#34;&gt;\(T(y)\)&lt;/span&gt; in the observed data.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sum(Trep &amp;gt; Ty)&lt;/code&gt;&lt;/pre&gt;
@@ -395,11 +395,11 @@ Trep %&amp;gt;%
     
     <item>
       <title>Using R to make sense of the generalised linear model</title>
-      <link>http://www.barelysignificant.com/post/glm/</link>
+      <link>/post/glm/</link>
       <pubDate>Mon, 15 Jan 2018 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/post/glm/</guid>
+      <guid>/post/glm/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;statistical-models&#34; class=&#34;section level2&#34;&gt;
@@ -438,7 +438,7 @@ p &amp;lt;- d %&amp;gt;%
   theme_bw(base_size = 12)
 
 ggMarginal(p, type = &amp;quot;histogram&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-01-20-glm_files/figure-html/marginal-plot-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/marginal-plot-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;A quick visual exploration of the dataset reveals a positive relationship between height and weight. The above plotted regression line corresponds to the following model, where we assume a normal likelihood:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 \begin{aligned}
@@ -478,7 +478,7 @@ d %&amp;gt;%
     linetype = 2, lwd = 0.5
     ) +
   theme_bw(base_size = 12)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-01-20-glm_files/figure-html/predict-example-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/predict-example-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Implementing the function &lt;code&gt;predict&lt;/code&gt; by hand is quite easy and will allow us to better understand how it works. This function is actually simply retrieving parameters of the fitted model (in our case, the intercept and the slope) to make predictions about the outcome variable, given some values of the predictor(s). In other words, it corresponds to the second line of our model.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d &amp;lt;- d %&amp;gt;%
   mutate(
@@ -513,7 +513,7 @@ data.frame(weight = 80:100) %&amp;gt;%
       size = 0.5, alpha = 0.5, lineend = &amp;quot;round&amp;quot;
       ) +
   theme_bw(base_size = 12)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-01-20-glm_files/figure-html/pred-simulations-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/pred-simulations-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Where the vertical lines represent deviations from the predicted values. OK, so we’ve seen the the &lt;code&gt;predict&lt;/code&gt; function simply uses the linear model to make predictions about the &lt;span class=&#34;math inline&#34;&gt;\(\mu_{i}\)&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;You might know that there exists a similar function, the &lt;code&gt;fitted&lt;/code&gt; function, which allows to extract fitted values of a model.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d &amp;lt;- d %&amp;gt;% mutate(fitted_mod1 = fitted(mod1) )
@@ -573,7 +573,7 @@ d %&amp;gt;%
 &lt;p&gt;This time the results of &lt;code&gt;predict&lt;/code&gt; and &lt;code&gt;fitted&lt;/code&gt; appear to be quite different… We can plot the predictions of &lt;code&gt;mod2&lt;/code&gt; following the same strategy as previously using &lt;code&gt;fitted&lt;/code&gt;. The &lt;code&gt;logit_dotplot&lt;/code&gt; function displays the prediction of the logit model along with the marginal distribution of height by gender (detailed code can be found &lt;a href=&#34;https://github.com/lnalborczyk/lnalborczyk.github.io/blob/master/code/logit_dotplot.R&#34;&gt;here&lt;/a&gt; ).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;source(&amp;quot;logit_dotplot.R&amp;quot;)
 logit_dotplot(d$height, d$male, xlab = &amp;quot;height&amp;quot;, ylab = &amp;quot;p(male)&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-01-20-glm_files/figure-html/logit_dotplot-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/logit_dotplot-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The output of the &lt;code&gt;predict&lt;/code&gt; and &lt;code&gt;fitted&lt;/code&gt; functions are different when we use a GLM because the &lt;code&gt;predict&lt;/code&gt; function returns predictions of the model on the scale of the linear predictor (here in the log-odds scale), whereas the &lt;code&gt;fitted&lt;/code&gt; function returns predictions on the scale of the response. To obtain the &lt;em&gt;fitted&lt;/em&gt; values, we thus have to apply the inverse of the link function to the predicted values obtained with &lt;code&gt;predict&lt;/code&gt;. In our case, this translates to the logistic transformation:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[p = \exp(\alpha) / (1 + \exp(\alpha) )\]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Which, in R, gives:&lt;/p&gt;
@@ -645,7 +645,7 @@ d %&amp;gt;%
   guides(alpha = FALSE, size = FALSE) +
   geom_segment(aes(xend = weight, yend = pred_mod1, alpha = abs(res1) ) ) +
   theme_bw(base_size = 12)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-01-20-glm_files/figure-html/abs-residuals-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/abs-residuals-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;If we take all the above verticals bars (i.e., the residuals) and plot their distribution, we can compare them to a normal distribution with mean 0, and standard deviation &lt;span class=&#34;math inline&#34;&gt;\(\sigma\)&lt;/span&gt; equal to the standard deviation of the residuals, to check our assumption about the distribution of the residuals (here a normality assumption).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d %&amp;gt;%
   ggplot(aes(x = res1) ) +
@@ -654,7 +654,7 @@ d %&amp;gt;%
   guides(fill = FALSE) +
   theme_bw(base_size = 12) +
   labs(x = &amp;quot;Residuals&amp;quot;, y = &amp;quot;Density&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-01-20-glm_files/figure-html/distribution-residuals-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/distribution-residuals-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;To sum up, the distributional assumption of the linear model (Gaussian or whatever) concerns the distribution of the errors, that we do not know. Instead, we can evaluate the distribution of the residuals, which are the observed differences between the outcome variable and the predictions of the model.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;prediction-uncertainty-the-simulate-function&#34; class=&#34;section level2&#34;&gt;
@@ -712,7 +712,7 @@ d %&amp;gt;%
     aes(x = d$weight, ymin = lower, ymax = upper), alpha = 0.1
     ) +
   theme_bw(base_size = 12)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-01-20-glm_files/figure-html/simulate-ntimes-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/simulate-ntimes-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The first shaded region around the regression line represents the 95% confidence interval around the regression line, whereas the second broader shaded area represents the 95% central quantiles of the Gaussian distribution at each value of weight. These are computed by simulating &lt;code&gt;nsims&lt;/code&gt; height values at each weight value, and by taking the 95% mean values of this distribution.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;conclusions&#34; class=&#34;section level2&#34;&gt;
@@ -766,12 +766,12 @@ d %&amp;gt;%
     
     <item>
       <title>Three methods for computing the intra-class correlation in multilevel logistic regression</title>
-      <link>http://www.barelysignificant.com/post/icc/</link>
+      <link>/post/icc/</link>
       <pubDate>Sun, 08 Oct 2017 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/post/icc/</guid>
+      <guid>/post/icc/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;In a &lt;a href=&#34;http://www.barelysignificant.com/post/absenteeism2/&#34;&gt;previous post&lt;/a&gt;, we introduced the mutilevel logistic regression model and implemented it in R, using the &lt;code&gt;brms&lt;/code&gt; package. We tried to predict the presence of students that registered for psychological experiments. We also discussed the use of the &lt;em&gt;intra-class correlation&lt;/em&gt; (ICC) –also known as the &lt;em&gt;variance partitioning coefficient&lt;/em&gt; (VPC)–, as a mean to quantifies the proportion of observed variation in the outcome that is attributable to the effect of clustering.&lt;/p&gt;
@@ -835,11 +835,11 @@ logit(p_{i}) &amp;amp;= \alpha_{dept[i]} + \beta \times \text{gender}_{i}\\
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;par(mfrow = c(2, 2) )
 prior_scales(prior = &amp;quot;norm(0,5)&amp;quot;)
 prior_scales(prior = &amp;quot;halfcauchy(5)&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-10-10-icc_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-10-10-icc_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;As we can see, in the weird logit world, the &lt;code&gt;normal&lt;/code&gt; and &lt;code&gt;halfcauchy&lt;/code&gt; priors tend to favour extreme values. To prevent this, McElreath (2016, page 363) suggests to use &lt;code&gt;exponential&lt;/code&gt; priors for the variance components, instead of the &lt;code&gt;normal&lt;/code&gt; or &lt;code&gt;halfcauchy&lt;/code&gt; priors.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;par(mfrow = c(1, 2) )
 prior_scales(prior = &amp;quot;exp(2)&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-10-10-icc_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-10-10-icc_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The model with the exponential prior can be fitted easily with &lt;code&gt;brms&lt;/code&gt;, as follows.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(brms)
 
@@ -1044,11 +1044,11 @@ ICC
     
     <item>
       <title>Experimental absenteeism and logistic regression, part II</title>
-      <link>http://www.barelysignificant.com/post/absenteeism2/</link>
+      <link>/post/absenteeism2/</link>
       <pubDate>Fri, 22 Sep 2017 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/post/absenteeism2/</guid>
+      <guid>/post/absenteeism2/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;In a &lt;a href=&#34;http://www.barelysignificant.com/absenteeism/&#34;&gt;previous post&lt;/a&gt;, we tried to determine whether we could predict the presence of students that registered for psychological experiments, based on their mode of enrolment and the sending of a reminder by e-mail. As these two factors were confounded, we will focus in the current post on evaluating the effect of the reminder only, based on a bigger dataset gathered by several researchers.&lt;/p&gt;
@@ -1110,7 +1110,7 @@ tidy(mod1, parameters = &amp;quot;^b_&amp;quot;, prob = 0.95)&lt;/code&gt;&lt;/p
     plot(
         combo = c(&amp;quot;hist&amp;quot;, &amp;quot;trace&amp;quot;), widths = c(1, 1.5),
         theme = theme_bw(base_size = 12) )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;From this first model we can also compute (as previously) the &lt;strong&gt;odds ratio&lt;/strong&gt; (OR), between the no-reminder and the reminder conditions, by simply exponentiating the slope. In our case, the OR is approximately equal to 4.32 (95% HDI [3.79, 4.94]), meaning that it is 4.32 times more likely that participants will be present if a reminder is sent prior to the experiment.&lt;/p&gt;
 &lt;p&gt;There is one major issue though with this analysis, related to the nested structure of the data. Each researcher evaluated the effects of the reminder in his study, and we could expect each study to have its own baseline level of presence probability, perhaps related to the specificities of the study, or to the field of research, the university, etc. In other words, we could expect participants of the same &lt;em&gt;cluster&lt;/em&gt; (i.e., the same study, ran by the same researcher) to be more similar to each others, than participants of different &lt;em&gt;clusters&lt;/em&gt;. In other words, observations are &lt;strong&gt;interdependant&lt;/strong&gt;. In this situation, we can not run a standard logistic regression analysis because this violates one of the most important assumptions in the linear model, namely the assumption of &lt;strong&gt;independence of the residuals&lt;/strong&gt; (Sommet &amp;amp; Morselli, 2017). Multilevel models (MLMs) allow to disentangle the effects intrinsic to a specific cluster and the between-clusters effects, by allowing parameters to vary by &lt;em&gt;cluster&lt;/em&gt;.&lt;/p&gt;
 &lt;/div&gt;
@@ -1142,7 +1142,7 @@ tau2 &amp;lt;- tidy(mod2, parameters = &amp;quot;^sd_&amp;quot;, prob = 0.95)$es
 &lt;pre&gt;&lt;code&gt;## [1] 0.0707499&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;In our case, the ICC is equal to 0.0707, indicating that 7.07% of the chances of being present is explained by between-study differences, and conversely, that 7.07% is explained by within-study differences.&lt;/p&gt;
 &lt;p&gt;Another way to visualise the variability of the varying intercepts is to plot them. In the following plot, we use the &lt;code&gt;ggjoy&lt;/code&gt; package (Wilke, 2017) to represent the posterior distribution of the estimated mean probability of presence for each researcher along with raw data estimation (the black crosses), while the vertical dotted line represents the grand mean probability of presence.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;This plot reveals the phenomenon of &lt;strong&gt;shrinkage&lt;/strong&gt;, that is the phenomenon through which the model expresses its skepticism toward extreme values. The mean predicted probability of presence for each researcher (the varying intercept) will differ from the raw estimation in an amount that is dependant to the distance between this raw proportion and the grand mean probability (and the precision of the estimation for this particular cluster). The more the data seem weird, the more the model’s estimation will be &lt;em&gt;shrunk&lt;/em&gt; to the grand mean.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;step-4-varying-the-slope&#34; class=&#34;section level2&#34;&gt;
@@ -1283,7 +1283,7 @@ for(i in 2:nrow(coefs) ){
     lines(x_plot, y_plot, lwd = 1,
         col = adjustcolor(&amp;quot;steelblue&amp;quot;, alpha.f = 0.25) )
 }&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The uncertainty associated with the estimation of the intercept and the slope at the population-level can be appreciated by superimposing many samples from the posterior (see also &lt;a href=&#34;https://mvuorre.github.io/post/2016/2016-03-06-multilevel-predictions/&#34;&gt;this blogpost&lt;/a&gt; from Matti Vuorre for much nicer plots and how to plot credible intervals at the individual-level).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# plotting the raw data
 plot(data$prob ~ data$reminder, las = 1,
@@ -1304,7 +1304,7 @@ for(i in seq(1, nrow(post), 10) ){
         col = adjustcolor(&amp;quot;steelblue&amp;quot;, alpha.f = 0.05) )
         
 }&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;conclusions&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Conclusions&lt;/h2&gt;
@@ -1344,11 +1344,11 @@ overdispersion. &lt;em&gt;Journal of the Royal Statistical Society—Series A, 1
     
     <item>
       <title>Experimental absenteeism and logistic regression, part I</title>
-      <link>http://www.barelysignificant.com/post/absenteeism/</link>
+      <link>/post/absenteeism/</link>
       <pubDate>Sat, 05 Aug 2017 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/post/absenteeism/</guid>
+      <guid>/post/absenteeism/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;One of the greatest aspect of being a PhD student in experimental psychology is to have the immeasurable pleasure to carry experiments with human subjects. Sure, it comes with a few desagreements, like having to teach undergraduate students how to use online schedule appointers (e.g., &lt;a href=&#34;https://doodle.com&#34;&gt;doodle&lt;/a&gt;), or spending a few hours per day answering clumsy e-mails asking for the location of the experimental room…and last but not least, being in a constant state of ignorance about the presence or the absence of the so-much expected student-guinea-pig.&lt;/p&gt;
@@ -1479,7 +1479,7 @@ logit(p_{i}) &amp;amp;= \alpha + \beta \times \text{reminder} \\
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p.no &amp;lt;- plogis(post1$a) # mean probability of presence when no reminder
 p.yes &amp;lt;- plogis(post1$a + post1$b) # mean probability of presence when reminder
 plotPost(p.yes - p.no, compVal = 0, showMode = TRUE, xlab = &amp;quot;&amp;quot;)      &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;This histogram depicts the posterior distribution of the difference of probability of being present by comparing the no-reminder and the reminder groups. In other words, it represents an estimation of the effect of the reminder, while the mode of the distribution informs us about the most probable value of increase in probability due to the reminder.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;effects-of-the-mode-of-inscription&#34; class=&#34;section level3&#34;&gt;
@@ -1512,7 +1512,7 @@ logit(p_{i}) &amp;amp;= \alpha + \beta \times \text{inscription} \\
 p.panel &amp;lt;- plogis(post2$a) # mean probability of presence for panel
 p.doodle &amp;lt;- plogis(post2$a + post2$b) # mean probability of presence for doodle
 plotPost(p.doodle - p.panel, compVal = 0, showMode = TRUE, xlab = &amp;quot;&amp;quot;)    &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We obtain an estimation of the effect similar to the effect of the reminder. In other words, the mode of inscription seems to be as much important as the reminder, to predict the presence of participants…&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1538,7 +1538,7 @@ logit(p_{i}) &amp;amp;= \alpha + \beta_{r} \times \text{reminder} + \beta_{i} \t
     data = data)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Adding that the output of &lt;code&gt;precis&lt;/code&gt; can be directly plotted.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(precis(mod4, prob = 0.95) )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;This figure shows the mean of the posterior distribution of each parameter of the model along with 95% credible intervals. Wait…why &lt;code&gt;inscription&lt;/code&gt; does not seem to have an influence anymore? Let’s compare the four models we built to better understand what’s happening here.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;compare(mod1, mod2, mod3, mod4)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##       WAIC pWAIC dWAIC weight    SE  dSE
@@ -1562,7 +1562,7 @@ logit(p_{i}) &amp;amp;= \alpha + \beta_{r} \times \text{reminder} + \beta_{i} \t
     ggplot(aes(br, bi) ) +
     geom_point(alpha = 0.6, color = &amp;quot;steelblue&amp;quot;) +
     theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-22-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-22-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;All we can say is that there is obviously an influence of at least one of the predictors on the probability of the participants being present, but as they are confounded, we can not tell whether it is an effect of the reminder or an effect of the mode of inscription. However, if I had to guess, I would go for the reminder effect. Otherwise, instead of being writing a blog post, I would be writing a manuscript on the beneficial motivationnal aspects of registering participants IRL compared to registering them via online platforms.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;conclusions&#34; class=&#34;section level2&#34;&gt;
@@ -1593,13 +1593,13 @@ logit(p_{i}) &amp;amp;= \alpha + \beta_{r} \times \text{reminder} + \beta_{i} \t
     
     <item>
       <title>On power and the &#39;match point situation&#39;</title>
-      <link>http://www.barelysignificant.com/post/matchpoint/</link>
+      <link>/post/matchpoint/</link>
       <pubDate>Sat, 26 Nov 2016 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/post/matchpoint/</guid>
+      <guid>/post/matchpoint/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;http://www.barelysignificant.com/rmarkdown-libs/lightable/lightable.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/lightable/lightable.css&#34; rel=&#34;stylesheet&#34; /&gt;
 
 
 &lt;p&gt;We all have seen the opening scene from Woody Allen’s movie &lt;em&gt;Match Point&lt;/em&gt; (2005)&lt;/p&gt;
@@ -1700,7 +1700,7 @@ Type II error
 &lt;h2&gt;Sequential testing&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Sequential_analysis&#34;&gt;Sequential analysis&lt;/a&gt; simply refers to the process by which one collects data (e.g., recruits participants) until reaching a predefined level of evidence. One implementation of this idea has been proposed by Wald (1945) and is known as the &lt;a href=&#34;https://en.wikipedia.org/wiki/Sequential_probability_ratio_test&#34;&gt;Probability Ratio Test&lt;/a&gt;. Apart from the Wald test, the most NHST common sequential designs are called &lt;strong&gt;group sequential&lt;/strong&gt; designs and the interested reader will be delighted to find more information in Lakens &amp;amp; Evers (2014), or Schönbrodt and colleagues (2015).&lt;/p&gt;
 &lt;p&gt;Time to step on the Bayesian side. This animation is taken from the &lt;a href=&#34;https://github.com/nicebread/BFDA&#34;&gt;BFDA package&lt;/a&gt; (Schönbrodt, 2016).&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/img/matchpoint/BFDA1.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/matchpoint/BFDA1.gif&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;On this illustration, we can see the results of the computation of sequential Bayes factors as we increase the sample size (on the x-axis). Each grey line represents the value of a Bayes factor computed in one simulation of a fictive experiment for a given effect size and for a given sample size. Upper and lower boundaries are fixed to &lt;span class=&#34;math inline&#34;&gt;\(BF_{10}=10\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(BF_{10}=1/10\)&lt;/span&gt;. These boundaries represent the level of evidence at which we would stop the experiment.&lt;/p&gt;
 &lt;p&gt;Sequential testing does not eliminate the question of power, it just asks a lishtly different question. The question is no more to decide &lt;em&gt;a priori&lt;/em&gt; on a fixed sample size in order to have a fixed probability to find an effect &lt;em&gt;if&lt;/em&gt; this effect really exists. Rather, sequential testing allows running the experiment as long as we do not reach a predefined level of evidence (e.g., BF = 20). By means of simulation we can then evaluate the long-term rates of false-positive or false-negative evidence (see Schönbrodt et al., 2015; Schönbrodt &amp;amp; Wagenmakers, 2016). If we decide to be very demanding concerning the level of evidence, eventually, as &lt;span class=&#34;math inline&#34;&gt;\(N\)&lt;/span&gt; increases, the power will tend to 100%. As a fatal argument, I should tell you that, comparing to NHST, Bayesian sequential testing with Bayes factors typically needs 50% to 70% smaller samples to reach a conclusion, while having the same or lower long-term rate of wrong inference (Schönbrodt et al., 2015).&lt;/p&gt;
 &lt;p&gt;Moreover, Bayesian sequential testing does not suffer from the problems associated with sequential testing in the frequentist framework&lt;a href=&#34;#fn3&#34; class=&#34;footnote-ref&#34; id=&#34;fnref3&#34;&gt;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt;. In accordance with the statement of Edwards et al. (1963), “the rules governing when data collection stops are irrelevant to data interpretation. It is entirely appropriate to collect data until a point has been proven or disproven, or until the data collector runs out of time, money, or patience”.&lt;/p&gt;

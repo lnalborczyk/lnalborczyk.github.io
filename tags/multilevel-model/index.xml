@@ -2,23 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>multilevel model | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/tags/multilevel-model/</link>
-      <atom:link href="http://www.barelysignificant.com/tags/multilevel-model/index.xml" rel="self" type="application/rss+xml" />
+    <link>/tags/multilevel-model/</link>
+      <atom:link href="/tags/multilevel-model/index.xml" rel="self" type="application/rss+xml" />
     <description>multilevel model</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright><lastBuildDate>Fri, 22 Sep 2017 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>multilevel model</title>
-      <link>http://www.barelysignificant.com/tags/multilevel-model/</link>
+      <link>/tags/multilevel-model/</link>
     </image>
     
     <item>
       <title>Experimental absenteeism and logistic regression, part II</title>
-      <link>http://www.barelysignificant.com/post/absenteeism2/</link>
+      <link>/post/absenteeism2/</link>
       <pubDate>Fri, 22 Sep 2017 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/post/absenteeism2/</guid>
+      <guid>/post/absenteeism2/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;In a &lt;a href=&#34;http://www.barelysignificant.com/absenteeism/&#34;&gt;previous post&lt;/a&gt;, we tried to determine whether we could predict the presence of students that registered for psychological experiments, based on their mode of enrolment and the sending of a reminder by e-mail. As these two factors were confounded, we will focus in the current post on evaluating the effect of the reminder only, based on a bigger dataset gathered by several researchers.&lt;/p&gt;
@@ -80,7 +80,7 @@ tidy(mod1, parameters = &amp;quot;^b_&amp;quot;, prob = 0.95)&lt;/code&gt;&lt;/p
     plot(
         combo = c(&amp;quot;hist&amp;quot;, &amp;quot;trace&amp;quot;), widths = c(1, 1.5),
         theme = theme_bw(base_size = 12) )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;From this first model we can also compute (as previously) the &lt;strong&gt;odds ratio&lt;/strong&gt; (OR), between the no-reminder and the reminder conditions, by simply exponentiating the slope. In our case, the OR is approximately equal to 4.32 (95% HDI [3.79, 4.94]), meaning that it is 4.32 times more likely that participants will be present if a reminder is sent prior to the experiment.&lt;/p&gt;
 &lt;p&gt;There is one major issue though with this analysis, related to the nested structure of the data. Each researcher evaluated the effects of the reminder in his study, and we could expect each study to have its own baseline level of presence probability, perhaps related to the specificities of the study, or to the field of research, the university, etc. In other words, we could expect participants of the same &lt;em&gt;cluster&lt;/em&gt; (i.e., the same study, ran by the same researcher) to be more similar to each others, than participants of different &lt;em&gt;clusters&lt;/em&gt;. In other words, observations are &lt;strong&gt;interdependant&lt;/strong&gt;. In this situation, we can not run a standard logistic regression analysis because this violates one of the most important assumptions in the linear model, namely the assumption of &lt;strong&gt;independence of the residuals&lt;/strong&gt; (Sommet &amp;amp; Morselli, 2017). Multilevel models (MLMs) allow to disentangle the effects intrinsic to a specific cluster and the between-clusters effects, by allowing parameters to vary by &lt;em&gt;cluster&lt;/em&gt;.&lt;/p&gt;
 &lt;/div&gt;
@@ -112,7 +112,7 @@ tau2 &amp;lt;- tidy(mod2, parameters = &amp;quot;^sd_&amp;quot;, prob = 0.95)$es
 &lt;pre&gt;&lt;code&gt;## [1] 0.0707499&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;In our case, the ICC is equal to 0.0707, indicating that 7.07% of the chances of being present is explained by between-study differences, and conversely, that 7.07% is explained by within-study differences.&lt;/p&gt;
 &lt;p&gt;Another way to visualise the variability of the varying intercepts is to plot them. In the following plot, we use the &lt;code&gt;ggjoy&lt;/code&gt; package (Wilke, 2017) to represent the posterior distribution of the estimated mean probability of presence for each researcher along with raw data estimation (the black crosses), while the vertical dotted line represents the grand mean probability of presence.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;This plot reveals the phenomenon of &lt;strong&gt;shrinkage&lt;/strong&gt;, that is the phenomenon through which the model expresses its skepticism toward extreme values. The mean predicted probability of presence for each researcher (the varying intercept) will differ from the raw estimation in an amount that is dependant to the distance between this raw proportion and the grand mean probability (and the precision of the estimation for this particular cluster). The more the data seem weird, the more the model’s estimation will be &lt;em&gt;shrunk&lt;/em&gt; to the grand mean.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;step-4-varying-the-slope&#34; class=&#34;section level2&#34;&gt;
@@ -253,7 +253,7 @@ for(i in 2:nrow(coefs) ){
     lines(x_plot, y_plot, lwd = 1,
         col = adjustcolor(&amp;quot;steelblue&amp;quot;, alpha.f = 0.25) )
 }&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The uncertainty associated with the estimation of the intercept and the slope at the population-level can be appreciated by superimposing many samples from the posterior (see also &lt;a href=&#34;https://mvuorre.github.io/post/2016/2016-03-06-multilevel-predictions/&#34;&gt;this blogpost&lt;/a&gt; from Matti Vuorre for much nicer plots and how to plot credible intervals at the individual-level).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# plotting the raw data
 plot(data$prob ~ data$reminder, las = 1,
@@ -274,7 +274,7 @@ for(i in seq(1, nrow(post), 10) ){
         col = adjustcolor(&amp;quot;steelblue&amp;quot;, alpha.f = 0.05) )
         
 }&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;conclusions&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Conclusions&lt;/h2&gt;

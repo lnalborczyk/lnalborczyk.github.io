@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Vilain, A. | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/authors/vilain-a./</link>
-      <atom:link href="http://www.barelysignificant.com/authors/vilain-a./index.xml" rel="self" type="application/rss+xml" />
+    <link>/authors/vilain-a./</link>
+      <atom:link href="/authors/vilain-a./index.xml" rel="self" type="application/rss+xml" />
     <description>Vilain, A.</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>Vilain, A.</title>
-      <link>http://www.barelysignificant.com/authors/vilain-a./</link>
+      <link>/authors/vilain-a./</link>
     </image>
     
     <item>
       <title>An introduction to Bayesian multilevel models using brms: A case study of gender effects on vowel variability in standard Indonesian</title>
-      <link>http://www.barelysignificant.com/publication/2019-nalborczyk-etal/</link>
+      <link>/publication/2019-nalborczyk-etal/</link>
       <pubDate>Tue, 21 May 2019 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2019-nalborczyk-etal/</guid>
+      <guid>/publication/2019-nalborczyk-etal/</guid>
       <description></description>
     </item>
     

@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>multilevel regression | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/tags/multilevel-regression/</link>
-      <atom:link href="http://www.barelysignificant.com/tags/multilevel-regression/index.xml" rel="self" type="application/rss+xml" />
+    <link>/tags/multilevel-regression/</link>
+      <atom:link href="/tags/multilevel-regression/index.xml" rel="self" type="application/rss+xml" />
     <description>multilevel regression</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright><lastBuildDate>Sun, 08 Oct 2017 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>multilevel regression</title>
-      <link>http://www.barelysignificant.com/tags/multilevel-regression/</link>
+      <link>/tags/multilevel-regression/</link>
     </image>
     
     <item>
       <title>Three methods for computing the intra-class correlation in multilevel logistic regression</title>
-      <link>http://www.barelysignificant.com/post/icc/</link>
+      <link>/post/icc/</link>
       <pubDate>Sun, 08 Oct 2017 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/post/icc/</guid>
+      <guid>/post/icc/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;In a &lt;a href=&#34;http://www.barelysignificant.com/post/absenteeism2/&#34;&gt;previous post&lt;/a&gt;, we introduced the mutilevel logistic regression model and implemented it in R, using the &lt;code&gt;brms&lt;/code&gt; package. We tried to predict the presence of students that registered for psychological experiments. We also discussed the use of the &lt;em&gt;intra-class correlation&lt;/em&gt; (ICC) –also known as the &lt;em&gt;variance partitioning coefficient&lt;/em&gt; (VPC)–, as a mean to quantifies the proportion of observed variation in the outcome that is attributable to the effect of clustering.&lt;/p&gt;
@@ -83,11 +83,11 @@ logit(p_{i}) &amp;amp;= \alpha_{dept[i]} + \beta \times \text{gender}_{i}\\
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;par(mfrow = c(2, 2) )
 prior_scales(prior = &amp;quot;norm(0,5)&amp;quot;)
 prior_scales(prior = &amp;quot;halfcauchy(5)&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-10-10-icc_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-10-10-icc_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;As we can see, in the weird logit world, the &lt;code&gt;normal&lt;/code&gt; and &lt;code&gt;halfcauchy&lt;/code&gt; priors tend to favour extreme values. To prevent this, McElreath (2016, page 363) suggests to use &lt;code&gt;exponential&lt;/code&gt; priors for the variance components, instead of the &lt;code&gt;normal&lt;/code&gt; or &lt;code&gt;halfcauchy&lt;/code&gt; priors.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;par(mfrow = c(1, 2) )
 prior_scales(prior = &amp;quot;exp(2)&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-10-10-icc_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-10-10-icc_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The model with the exponential prior can be fitted easily with &lt;code&gt;brms&lt;/code&gt;, as follows.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(brms)
 

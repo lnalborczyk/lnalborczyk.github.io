@@ -2,29 +2,29 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Koster, E.H.W. | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/authors/koster-e.h.w./</link>
-      <atom:link href="http://www.barelysignificant.com/authors/koster-e.h.w./index.xml" rel="self" type="application/rss+xml" />
+    <link>/authors/koster-e.h.w./</link>
+      <atom:link href="/authors/koster-e.h.w./index.xml" rel="self" type="application/rss+xml" />
     <description>Koster, E.H.W.</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>Koster, E.H.W.</title>
-      <link>http://www.barelysignificant.com/authors/koster-e.h.w./</link>
+      <link>/authors/koster-e.h.w./</link>
     </image>
     
     <item>
       <title>Can we decode phonetic features in inner speech using surface electromyography?</title>
-      <link>http://www.barelysignificant.com/publication/2020-nalborczyk-etal/</link>
+      <link>/publication/2020-nalborczyk-etal/</link>
       <pubDate>Wed, 27 May 2020 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2020-nalborczyk-etal/</guid>
+      <guid>/publication/2020-nalborczyk-etal/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Orofacial electromyographic correlates of induced verbal rumination</title>
-      <link>http://www.barelysignificant.com/publication/2017-nalborczyk-etal/</link>
+      <link>/publication/2017-nalborczyk-etal/</link>
       <pubDate>Thu, 20 Jul 2017 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2017-nalborczyk-etal/</guid>
+      <guid>/publication/2017-nalborczyk-etal/</guid>
       <description></description>
     </item>
     

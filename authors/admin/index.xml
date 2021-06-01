@@ -2,14 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/authors/admin/</link>
-      <atom:link href="http://www.barelysignificant.com/authors/admin/index.xml" rel="self" type="application/rss+xml" />
+    <link>/authors/admin/</link>
+      <atom:link href="/authors/admin/index.xml" rel="self" type="application/rss+xml" />
     <description>BARELY SIGNIFICANT</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>BARELY SIGNIFICANT</title>
-      <link>http://www.barelysignificant.com/authors/admin/</link>
+      <link>/authors/admin/</link>
     </image>
     
   </channel>

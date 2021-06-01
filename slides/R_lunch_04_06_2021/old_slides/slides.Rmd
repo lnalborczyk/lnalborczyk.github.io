@@ -1,0 +1,226 @@
+---
+title: A priori power calculations using simulation
+subtitle: Ladislas Nalborczyk
+date: "06.02.2019"
+
+author: Univ. Grenoble Alpes, CNRS, LPNC, 38000 Grenoble, France <br> Department of Experimental Clinical and Health Psychology, Ghent University
+
+output:
+  xaringan::moon_reader:
+    #css: ["default", "rutgers", "rutgers-fonts"]
+    #css: ["default", "metropolis", "metropolis-fonts"]
+    css: ["default", "baltheme.css", "baltheme-fonts.css"]
+    self_contained: false
+    lib_dir: libs
+    nature:
+      #titleSlideClass: ["right", "top", "my-title"]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include = FALSE}
+options(htmltools.dir.version = FALSE)
+library(tidyverse)
+```
+
+# What is power ?
+
+In the Null Hypothesis Significance Testing (NHST) framework, statistical power is defined as the probability of rejecting the hypothesis of null effect when this hypothesis is indeed false.
+
+```{r, eval = TRUE, warning = FALSE, message = FALSE, echo = FALSE}
+library(kableExtra)
+library(tidyverse)
+
+power <- matrix(
+    c("Type I error, \\(\\alpha\\)", "Correct inference", "Correct inference", "Type II error, \\(\\beta\\)"),
+    ncol = 2, byrow = TRUE
+    )
+
+colnames(power) <- c("H0: \\(\\delta = 0\\)", "H1: \\(\\delta \\neq 0\\)")
+rownames(power) <- c("Reject H0", "Fail to reject H0")
+
+power <- as.table(power)
+knitr::kable(power, format = "html", escape = TRUE)
+```
+
+Put formaly, the statistical power is then equal to $1 - \beta$.
+
+---
+
+# The power problem/paradox
+
+How many participants/observations should I obtain for my next experiment, in order to show the effect I want to show ?
+
+--
+
+**Usual algorithm** (*a priori* NHST-PA): trying to guess the population effect size, plugging numbers (effect size and requested power) in **the magic hat** (the power function), and planning for a specific n (sample size).
+
+
+---
+
+# Sequential testing
+
+Paradox: If I knew what (effect size) I am looking for, I would not bother making an experiment, right ?
+
+--
+
+Another approach consists in recruiting participants until we reach a predefined level of *evidence*. This is called **sequential testing**.
+
+--
+
+But this requires that we have a way to quantify evidence...
+
+---
+
+# Quiz: what does what ?
+
+**Quantifying the relative evidence for an hypothesis/model**
+
+--
+
+&#8627; Bayes Factors
+
+--
+
+**Making decisions while controlling error rates in the long-run**
+
+--
+
+&#8627; NHST & p-values (à la Neyman-Pearson)
+
+--
+
+**Examining predictive abilities of models**
+
+--
+
+&#8627; Information Criteria (e.g., AIC, QAIC, WAIC)
+
+--
+
+The above methods rest on quite different philosophical/theoretical/statistical grounds, so please do not mix up your goals with the reason for which each method was designed.
+
+---
+
+# AIC and deviance
+
+Akaike (1971) noticed that the negative log-likehood of a model + 2 times the number of parameters was approximately equal to the **out-of-sample deviance** of a model...
+
+--
+
+$$\text{AIC} = -2\log(\mathcal{L}(\hat{\theta}|\text{data}))+2K$$
+
+--
+
+**In-sample deviance**: how bad is a model to explain the current dataset (the dataset that we used to fit the model)
+
+--
+
+**Out-of-sample deviance**: how bad is a model to explain a **future** dataset issued from the same data generation process (the same population)
+
+--
+
+This is crazy no ?
+
+---
+
+# AIC, Akaike weights and evidence ratios
+
+The individual AIC values are not interpretable in absolute terms as they contain arbitrary constants and are much affected by sample size. Then it is imperative to rescale these criteria. Usually, this is done by substracting to the AIC of each model the AIC of the model with the minimum one:
+
+$$\Delta_{AIC} = AIC_{i} - AIC_{min}$$
+
+--
+
+It is convenient to normalise the model likelihoods such that they sum to 1 and treat them as probabilities. Hence, we use:
+
+$$w_{i}=\dfrac{exp(-\Delta_{i}/2)}{\sum_{r=1}^{R}exp(-\Delta_{r}/2)}$$
+
+---
+
+# AIC, Akaike weights and evidence ratios
+
+The $w_i$, called **Akaike weights**, are useful as the *weight of evidence* in favour of model $g_i(\cdot |\theta)$ as being the actual Kullback-Leibler best model in the set. The ratios $w_i/w_j$ are identical to the original likelihood ratios, $\mathcal{L}(g_i|data)/\mathcal{L}(g_j|data)$, and so they are invariant to the model set, but the $w_i$ values depend on the full model set (because they sum to 1).
+
+--
+
+Evidence can be judged by the relative likelihood of model pairs as $\mathcal{L}(g_i|x)/\mathcal{L}(g_j|x)$ or, equivalently, the ratio of Akaike weights $w_i/w_j$. Such ratios are called **evidence ratios** and represend the evidence about fitted models as to which is better in a Kullback-Leibler information sense.
+
+---
+
+# AIC-based sequential testing
+
+When using information criteria for sequential testing, the question is not anymore when do I have enough evidence for this hypothesis over this other hypothesis (the more complex model is always better, if enough data).
+
+--
+
+Instead, the question is when do I have "enough data” to estimate precisely the parameters of the augmented model ? When does the more complex model becomes *enough supported* by the data ?
+
+--
+
+In other words, *when does the augmented (the more complex) model becomes parsimonious* ?
+
+---
+
+# Simulations
+
+Using simulations, we can compute the *likelihood* of observing an evidence ratio $ER$ above a certain threshold $T$, given a sample size $n$ and an effect size $d$ (a kind of p-value).
+
+$$p(ER>T|n,d)$$
+
+---
+
+# Using Bayes
+
+Then, using Bayes theorem, we can compute the *posterior probability* of the population effect size being $d_{i}$ (for $d$ in $d_{i}, \dots , d_{k}$), given that the evidence ratio $ER$ is above a threshold $T$, and for a sample size $n$.
+
+--
+
+$$p(d_{i}|ER>T,n) = \frac{p(ER>T|n,d_{i}) \cdot p(d_{i}|n)}{\sum_{i=1}^{k}{p(ER>T|n,d_{i}) \cdot p(d_{i}|n)}}$$
+
+--
+
+But we need to define the *prior probability* of each effect size...
+
+---
+
+# Defining a prior on effect sizes
+
+Based on previous work trying to estimate the distribution of effect sizes in Psychology, we used a discrete Gaussian distribution with mean $\mu = 0.5$ and standard deviation $\sigma = 0.25$ as a prior distribution.
+
+```{r, eval = TRUE, echo = FALSE, cache = TRUE, dev = "svg", fig.align = "center", fig.width = 7, fig.height = 4}
+######################################################
+# constructing a discrete normal prior
+###############################################
+
+mu <- 0.5
+sigma <- 0.25
+
+p <- c(
+    dnorm(0, mu, sigma), dnorm(0.1, mu, sigma), dnorm(0.2, mu, sigma),
+    dnorm(0.3, mu, sigma), dnorm(0.4, mu, sigma), dnorm(0.5, mu, sigma),
+    dnorm(0.6, mu, sigma), dnorm(0.7, mu, sigma), dnorm(0.8, mu, sigma),
+    dnorm(0.9, mu, sigma)
+    )
+
+# normalising it
+
+p <- p / sum(p)
+
+# plotting it
+
+data.frame(x = seq(0, 0.9, 0.1), y = p) %>%
+    ggplot(aes(x = x, y = y) ) +
+    geom_bar(stat = "identity") +
+    theme_bw(base_size = 12) +
+    scale_x_continuous(breaks = seq(0, 0.9, 0.1) ) +
+    xlab(expression(delta) ) +
+    ylab("")
+```
+
+---
+
+# Thanks
+
+...

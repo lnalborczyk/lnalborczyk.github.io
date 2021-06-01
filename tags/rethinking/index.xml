@@ -2,23 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>rethinking | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/tags/rethinking/</link>
-      <atom:link href="http://www.barelysignificant.com/tags/rethinking/index.xml" rel="self" type="application/rss+xml" />
+    <link>/tags/rethinking/</link>
+      <atom:link href="/tags/rethinking/index.xml" rel="self" type="application/rss+xml" />
     <description>rethinking</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright><lastBuildDate>Sat, 05 Aug 2017 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>rethinking</title>
-      <link>http://www.barelysignificant.com/tags/rethinking/</link>
+      <link>/tags/rethinking/</link>
     </image>
     
     <item>
       <title>Experimental absenteeism and logistic regression, part I</title>
-      <link>http://www.barelysignificant.com/post/absenteeism/</link>
+      <link>/post/absenteeism/</link>
       <pubDate>Sat, 05 Aug 2017 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/post/absenteeism/</guid>
+      <guid>/post/absenteeism/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;One of the greatest aspect of being a PhD student in experimental psychology is to have the immeasurable pleasure to carry experiments with human subjects. Sure, it comes with a few desagreements, like having to teach undergraduate students how to use online schedule appointers (e.g., &lt;a href=&#34;https://doodle.com&#34;&gt;doodle&lt;/a&gt;), or spending a few hours per day answering clumsy e-mails asking for the location of the experimental room…and last but not least, being in a constant state of ignorance about the presence or the absence of the so-much expected student-guinea-pig.&lt;/p&gt;
@@ -149,7 +149,7 @@ logit(p_{i}) &amp;amp;= \alpha + \beta \times \text{reminder} \\
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p.no &amp;lt;- plogis(post1$a) # mean probability of presence when no reminder
 p.yes &amp;lt;- plogis(post1$a + post1$b) # mean probability of presence when reminder
 plotPost(p.yes - p.no, compVal = 0, showMode = TRUE, xlab = &amp;quot;&amp;quot;)      &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;This histogram depicts the posterior distribution of the difference of probability of being present by comparing the no-reminder and the reminder groups. In other words, it represents an estimation of the effect of the reminder, while the mode of the distribution informs us about the most probable value of increase in probability due to the reminder.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;effects-of-the-mode-of-inscription&#34; class=&#34;section level3&#34;&gt;
@@ -182,7 +182,7 @@ logit(p_{i}) &amp;amp;= \alpha + \beta \times \text{inscription} \\
 p.panel &amp;lt;- plogis(post2$a) # mean probability of presence for panel
 p.doodle &amp;lt;- plogis(post2$a + post2$b) # mean probability of presence for doodle
 plotPost(p.doodle - p.panel, compVal = 0, showMode = TRUE, xlab = &amp;quot;&amp;quot;)    &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We obtain an estimation of the effect similar to the effect of the reminder. In other words, the mode of inscription seems to be as much important as the reminder, to predict the presence of participants…&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -208,7 +208,7 @@ logit(p_{i}) &amp;amp;= \alpha + \beta_{r} \times \text{reminder} + \beta_{i} \t
     data = data)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Adding that the output of &lt;code&gt;precis&lt;/code&gt; can be directly plotted.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(precis(mod4, prob = 0.95) )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;This figure shows the mean of the posterior distribution of each parameter of the model along with 95% credible intervals. Wait…why &lt;code&gt;inscription&lt;/code&gt; does not seem to have an influence anymore? Let’s compare the four models we built to better understand what’s happening here.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;compare(mod1, mod2, mod3, mod4)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##       WAIC pWAIC dWAIC weight    SE  dSE
@@ -232,7 +232,7 @@ logit(p_{i}) &amp;amp;= \alpha + \beta_{r} \times \text{reminder} + \beta_{i} \t
     ggplot(aes(br, bi) ) +
     geom_point(alpha = 0.6, color = &amp;quot;steelblue&amp;quot;) +
     theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-22-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-08-05-absenteeism_files/figure-html/unnamed-chunk-22-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;All we can say is that there is obviously an influence of at least one of the predictors on the probability of the participants being present, but as they are confounded, we can not tell whether it is an effect of the reminder or an effect of the mode of inscription. However, if I had to guess, I would go for the reminder effect. Otherwise, instead of being writing a blog post, I would be writing a manuscript on the beneficial motivationnal aspects of registering participants IRL compared to registering them via online platforms.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;conclusions&#34; class=&#34;section level2&#34;&gt;

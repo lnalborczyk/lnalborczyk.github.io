@@ -2,23 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Philosophy of science | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/tags/philosophy-of-science/</link>
-      <atom:link href="http://www.barelysignificant.com/tags/philosophy-of-science/index.xml" rel="self" type="application/rss+xml" />
+    <link>/tags/philosophy-of-science/</link>
+      <atom:link href="/tags/philosophy-of-science/index.xml" rel="self" type="application/rss+xml" />
     <description>Philosophy of science</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright><lastBuildDate>Fri, 20 Jul 2018 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>Philosophy of science</title>
-      <link>http://www.barelysignificant.com/tags/philosophy-of-science/</link>
+      <link>/tags/philosophy-of-science/</link>
     </image>
     
     <item>
       <title>The Meehlian Corroboration-Verisimilitude Theory of Science - Part II</title>
-      <link>http://www.barelysignificant.com/post/corroboration2/</link>
+      <link>/post/corroboration2/</link>
       <pubDate>Fri, 20 Jul 2018 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/post/corroboration2/</guid>
+      <guid>/post/corroboration2/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 &lt;div id=&#34;TOC&#34;&gt;
 &lt;ul&gt;
@@ -90,7 +90,7 @@ The intolerance of the theory is defined as the inverse of the tolerance, which 
 &lt;p&gt;This is similar to Popper’s original emphasis on corroboration being a function of risk, except that here again it is not yes-or-no falsification but Salmon’s principle that we wish to numerify. The revised methodology retains the Popperian emphasis on riskiness, but now instead of asking “Did I pass the test, which was stiff?” we ask, “How close did I come?”&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;Below we illustrate how theory strength (the spread of the values it tolerates) and predictive accuracy (the distance between the sample mean and the edge of the predicted interval) jointly determine the corroboration index. The range of values tolerated by the theory is depicted by the gray shaded area (whose bounds are represented by the gray dotted vertical lines), why the mean of the sample is represented by the vertical dashed pink line.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/img/corroboration/corroboration.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/corroboration/corroboration.png&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;These two rows illustrate what can be considered as a strong versus weak (in relation to each other) theory for three possible relations with data (in column), namely, when theoretical predictions match the data (the first column), when the predictions barely miss the data (the second column), or when they miss the data by a considerably large amount (the third column).&lt;/p&gt;
 &lt;p&gt;The Shiny app below lets you explore this index in more details by playing with different parameters to see how it affects the corroboration index (the corroboration index is recomputed every time you generate a new sample).&lt;/p&gt;
 &lt;iframe width=&#34;1000&#34; height=&#34;700&#34; src=&#34;https://barelysignificant.shinyapps.io/corroboration/&#34; frameborder=&#34;0&#34;&gt;
@@ -142,11 +142,11 @@ In the next post we will discuss ingredients that, aside from narrow numerical p
     
     <item>
       <title>The Meehlian Corroboration-Verisimilitude Theory of Science - Part I</title>
-      <link>http://www.barelysignificant.com/post/corroboration1/</link>
+      <link>/post/corroboration1/</link>
       <pubDate>Thu, 12 Jul 2018 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/post/corroboration1/</guid>
+      <guid>/post/corroboration1/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 &lt;div id=&#34;TOC&#34;&gt;
 &lt;ul&gt;
@@ -189,7 +189,7 @@ In the next post we will discuss ingredients that, aside from narrow numerical p
 &lt;li&gt;Therefore Newton’s theory A is “true”.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;However, this argument is a fallacious argument known as the &lt;a href=&#34;https://en.wikipedia.org/wiki/Affirming_the_consequent&#34;&gt;affirmation of the consequent&lt;/a&gt;. One way to realise it is to visualise it as a diagram (figure from Campbell, 1990):&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/img/corroboration/campbell.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/corroboration/campbell.png&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The invalidity of this argument comes from the existence of the cross-hatched area, which contains other possible explanations (than Newton’s theory) for the observed data. However, the syllogism is not useless: we could have observed data that are inconsistent with B, C, and D, in turn impugning the “truth” of Newton’s theory. Also, if observations are confirmed, the theory remains one of the possible explanations for their existence (see our later discussion of the concept of &lt;em&gt;corroboration&lt;/em&gt;). As put by Campbell (1990), there is “an important asymmetry between logically valid rejection and logically inconclusive confirmation”.&lt;/p&gt;
 &lt;p&gt;This, together with the &lt;a href=&#34;https://en.wikipedia.org/wiki/Duhem–Quine_thesis&#34;&gt;Duhem–Quine problem&lt;/a&gt; (that we will discuss in length later on), makes any experimental corroboration (or falsification, as we will see) of theoretical predictions explicable by challenging the &lt;em&gt;background assumptions&lt;/em&gt;, or the adequacy of the experimental apparatus, or asserting the presence of one of Meehl’s “crud factors”, etc. (Campbell, 1990).&lt;/p&gt;
 &lt;/div&gt;

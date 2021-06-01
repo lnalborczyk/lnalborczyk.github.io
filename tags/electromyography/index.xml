@@ -2,29 +2,29 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>electromyography | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/tags/electromyography/</link>
-      <atom:link href="http://www.barelysignificant.com/tags/electromyography/index.xml" rel="self" type="application/rss+xml" />
+    <link>/tags/electromyography/</link>
+      <atom:link href="/tags/electromyography/index.xml" rel="self" type="application/rss+xml" />
     <description>electromyography</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright><lastBuildDate>Wed, 27 May 2020 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>electromyography</title>
-      <link>http://www.barelysignificant.com/tags/electromyography/</link>
+      <link>/tags/electromyography/</link>
     </image>
     
     <item>
       <title>Can we decode phonetic features in inner speech using surface electromyography?</title>
-      <link>http://www.barelysignificant.com/publication/2020-nalborczyk-etal/</link>
+      <link>/publication/2020-nalborczyk-etal/</link>
       <pubDate>Wed, 27 May 2020 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2020-nalborczyk-etal/</guid>
+      <guid>/publication/2020-nalborczyk-etal/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Orofacial electromyographic correlates of induced verbal rumination</title>
-      <link>http://www.barelysignificant.com/publication/2017-nalborczyk-etal/</link>
+      <link>/publication/2017-nalborczyk-etal/</link>
       <pubDate>Thu, 20 Jul 2017 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2017-nalborczyk-etal/</guid>
+      <guid>/publication/2017-nalborczyk-etal/</guid>
       <description></description>
     </item>
     

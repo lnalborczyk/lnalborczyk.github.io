@@ -2,61 +2,61 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Publications | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/publication/</link>
-      <atom:link href="http://www.barelysignificant.com/publication/index.xml" rel="self" type="application/rss+xml" />
+    <link>/publication/</link>
+      <atom:link href="/publication/index.xml" rel="self" type="application/rss+xml" />
     <description>Publications</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright><lastBuildDate>Thu, 11 Mar 2021 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>Publications</title>
-      <link>http://www.barelysignificant.com/publication/</link>
+      <link>/publication/</link>
     </image>
     
     <item>
       <title>A fully automated, transparent, reproducible, and blind protocol for sequential analyses</title>
-      <link>http://www.barelysignificant.com/publication/2021-beffara-etal/</link>
+      <link>/publication/2021-beffara-etal/</link>
       <pubDate>Thu, 11 Mar 2021 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2021-beffara-etal/</guid>
+      <guid>/publication/2021-beffara-etal/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Can we decode phonetic features in inner speech using surface electromyography?</title>
-      <link>http://www.barelysignificant.com/publication/2020-nalborczyk-etal/</link>
+      <link>/publication/2020-nalborczyk-etal/</link>
       <pubDate>Wed, 27 May 2020 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2020-nalborczyk-etal/</guid>
+      <guid>/publication/2020-nalborczyk-etal/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Action effects on visual perception of distances: A multilevel Bayesian meta-analysis</title>
-      <link>http://www.barelysignificant.com/publication/2020-molto-etal/</link>
+      <link>/publication/2020-molto-etal/</link>
       <pubDate>Thu, 09 Apr 2020 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2020-molto-etal/</guid>
+      <guid>/publication/2020-molto-etal/</guid>
       <description></description>
     </item>
     
     <item>
       <title>An introduction to Bayesian multilevel models using brms: A case study of gender effects on vowel variability in standard Indonesian</title>
-      <link>http://www.barelysignificant.com/publication/2019-nalborczyk-etal/</link>
+      <link>/publication/2019-nalborczyk-etal/</link>
       <pubDate>Tue, 21 May 2019 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2019-nalborczyk-etal/</guid>
+      <guid>/publication/2019-nalborczyk-etal/</guid>
       <description></description>
     </item>
     
     <item>
       <title>A Cognitive Neuroscience View of Inner Language: To Predict and to Hear, See, Feel</title>
-      <link>http://www.barelysignificant.com/publication/2018-loevenbruck-etal/</link>
+      <link>/publication/2018-loevenbruck-etal/</link>
       <pubDate>Thu, 18 Oct 2018 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2018-loevenbruck-etal/</guid>
+      <guid>/publication/2018-loevenbruck-etal/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Orofacial electromyographic correlates of induced verbal rumination</title>
-      <link>http://www.barelysignificant.com/publication/2017-nalborczyk-etal/</link>
+      <link>/publication/2017-nalborczyk-etal/</link>
       <pubDate>Thu, 20 Jul 2017 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2017-nalborczyk-etal/</guid>
+      <guid>/publication/2017-nalborczyk-etal/</guid>
       <description></description>
     </item>
     

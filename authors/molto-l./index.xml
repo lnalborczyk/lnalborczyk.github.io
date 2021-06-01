@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Molto, L. | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/authors/molto-l./</link>
-      <atom:link href="http://www.barelysignificant.com/authors/molto-l./index.xml" rel="self" type="application/rss+xml" />
+    <link>/authors/molto-l./</link>
+      <atom:link href="/authors/molto-l./index.xml" rel="self" type="application/rss+xml" />
     <description>Molto, L.</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>Molto, L.</title>
-      <link>http://www.barelysignificant.com/authors/molto-l./</link>
+      <link>/authors/molto-l./</link>
     </image>
     
     <item>
       <title>Action effects on visual perception of distances: A multilevel Bayesian meta-analysis</title>
-      <link>http://www.barelysignificant.com/publication/2020-molto-etal/</link>
+      <link>/publication/2020-molto-etal/</link>
       <pubDate>Thu, 09 Apr 2020 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2020-molto-etal/</guid>
+      <guid>/publication/2020-molto-etal/</guid>
       <description></description>
     </item>
     

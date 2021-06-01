@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Beffara Bret B. | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/authors/beffara-bret-b./</link>
-      <atom:link href="http://www.barelysignificant.com/authors/beffara-bret-b./index.xml" rel="self" type="application/rss+xml" />
+    <link>/authors/beffara-bret-b./</link>
+      <atom:link href="/authors/beffara-bret-b./index.xml" rel="self" type="application/rss+xml" />
     <description>Beffara Bret B.</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>Beffara Bret B.</title>
-      <link>http://www.barelysignificant.com/authors/beffara-bret-b./</link>
+      <link>/authors/beffara-bret-b./</link>
     </image>
     
     <item>
       <title>A fully automated, transparent, reproducible, and blind protocol for sequential analyses</title>
-      <link>http://www.barelysignificant.com/publication/2021-beffara-etal/</link>
+      <link>/publication/2021-beffara-etal/</link>
       <pubDate>Thu, 11 Mar 2021 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2021-beffara-etal/</guid>
+      <guid>/publication/2021-beffara-etal/</guid>
       <description></description>
     </item>
     

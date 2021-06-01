@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>experimenter bias | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/tags/experimenter-bias/</link>
-      <atom:link href="http://www.barelysignificant.com/tags/experimenter-bias/index.xml" rel="self" type="application/rss+xml" />
+    <link>/tags/experimenter-bias/</link>
+      <atom:link href="/tags/experimenter-bias/index.xml" rel="self" type="application/rss+xml" />
     <description>experimenter bias</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright><lastBuildDate>Thu, 11 Mar 2021 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>experimenter bias</title>
-      <link>http://www.barelysignificant.com/tags/experimenter-bias/</link>
+      <link>/tags/experimenter-bias/</link>
     </image>
     
     <item>
       <title>A fully automated, transparent, reproducible, and blind protocol for sequential analyses</title>
-      <link>http://www.barelysignificant.com/publication/2021-beffara-etal/</link>
+      <link>/publication/2021-beffara-etal/</link>
       <pubDate>Thu, 11 Mar 2021 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2021-beffara-etal/</guid>
+      <guid>/publication/2021-beffara-etal/</guid>
       <description></description>
     </item>
     

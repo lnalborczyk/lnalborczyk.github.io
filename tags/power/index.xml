@@ -2,25 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>power | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/tags/power/</link>
-      <atom:link href="http://www.barelysignificant.com/tags/power/index.xml" rel="self" type="application/rss+xml" />
+    <link>/tags/power/</link>
+      <atom:link href="/tags/power/index.xml" rel="self" type="application/rss+xml" />
     <description>power</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright><lastBuildDate>Sat, 26 Nov 2016 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>power</title>
-      <link>http://www.barelysignificant.com/tags/power/</link>
+      <link>/tags/power/</link>
     </image>
     
     <item>
       <title>On power and the &#39;match point situation&#39;</title>
-      <link>http://www.barelysignificant.com/post/matchpoint/</link>
+      <link>/post/matchpoint/</link>
       <pubDate>Sat, 26 Nov 2016 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/post/matchpoint/</guid>
+      <guid>/post/matchpoint/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;http://www.barelysignificant.com/rmarkdown-libs/lightable/lightable.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/lightable/lightable.css&#34; rel=&#34;stylesheet&#34; /&gt;
 
 
 &lt;p&gt;We all have seen the opening scene from Woody Allen’s movie &lt;em&gt;Match Point&lt;/em&gt; (2005)&lt;/p&gt;
@@ -121,7 +121,7 @@ Type II error
 &lt;h2&gt;Sequential testing&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Sequential_analysis&#34;&gt;Sequential analysis&lt;/a&gt; simply refers to the process by which one collects data (e.g., recruits participants) until reaching a predefined level of evidence. One implementation of this idea has been proposed by Wald (1945) and is known as the &lt;a href=&#34;https://en.wikipedia.org/wiki/Sequential_probability_ratio_test&#34;&gt;Probability Ratio Test&lt;/a&gt;. Apart from the Wald test, the most NHST common sequential designs are called &lt;strong&gt;group sequential&lt;/strong&gt; designs and the interested reader will be delighted to find more information in Lakens &amp;amp; Evers (2014), or Schönbrodt and colleagues (2015).&lt;/p&gt;
 &lt;p&gt;Time to step on the Bayesian side. This animation is taken from the &lt;a href=&#34;https://github.com/nicebread/BFDA&#34;&gt;BFDA package&lt;/a&gt; (Schönbrodt, 2016).&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/img/matchpoint/BFDA1.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/matchpoint/BFDA1.gif&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;On this illustration, we can see the results of the computation of sequential Bayes factors as we increase the sample size (on the x-axis). Each grey line represents the value of a Bayes factor computed in one simulation of a fictive experiment for a given effect size and for a given sample size. Upper and lower boundaries are fixed to &lt;span class=&#34;math inline&#34;&gt;\(BF_{10}=10\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(BF_{10}=1/10\)&lt;/span&gt;. These boundaries represent the level of evidence at which we would stop the experiment.&lt;/p&gt;
 &lt;p&gt;Sequential testing does not eliminate the question of power, it just asks a lishtly different question. The question is no more to decide &lt;em&gt;a priori&lt;/em&gt; on a fixed sample size in order to have a fixed probability to find an effect &lt;em&gt;if&lt;/em&gt; this effect really exists. Rather, sequential testing allows running the experiment as long as we do not reach a predefined level of evidence (e.g., BF = 20). By means of simulation we can then evaluate the long-term rates of false-positive or false-negative evidence (see Schönbrodt et al., 2015; Schönbrodt &amp;amp; Wagenmakers, 2016). If we decide to be very demanding concerning the level of evidence, eventually, as &lt;span class=&#34;math inline&#34;&gt;\(N\)&lt;/span&gt; increases, the power will tend to 100%. As a fatal argument, I should tell you that, comparing to NHST, Bayesian sequential testing with Bayes factors typically needs 50% to 70% smaller samples to reach a conclusion, while having the same or lower long-term rate of wrong inference (Schönbrodt et al., 2015).&lt;/p&gt;
 &lt;p&gt;Moreover, Bayesian sequential testing does not suffer from the problems associated with sequential testing in the frequentist framework&lt;a href=&#34;#fn3&#34; class=&#34;footnote-ref&#34; id=&#34;fnref3&#34;&gt;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt;. In accordance with the statement of Edwards et al. (1963), “the rules governing when data collection stops are irrelevant to data interpretation. It is entirely appropriate to collect data until a point has been proven or disproven, or until the data collector runs out of time, money, or patience”.&lt;/p&gt;

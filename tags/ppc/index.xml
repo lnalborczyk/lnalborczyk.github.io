@@ -2,23 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>PPC | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/tags/ppc/</link>
-      <atom:link href="http://www.barelysignificant.com/tags/ppc/index.xml" rel="self" type="application/rss+xml" />
+    <link>/tags/ppc/</link>
+      <atom:link href="/tags/ppc/index.xml" rel="self" type="application/rss+xml" />
     <description>PPC</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright><lastBuildDate>Tue, 23 Jan 2018 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>PPC</title>
-      <link>http://www.barelysignificant.com/tags/ppc/</link>
+      <link>/tags/ppc/</link>
     </image>
     
     <item>
       <title>Checking the asumption of independence in binomial trials using posterior predictive checking</title>
-      <link>http://www.barelysignificant.com/post/ppc/</link>
+      <link>/post/ppc/</link>
       <pubDate>Tue, 23 Jan 2018 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/post/ppc/</guid>
+      <guid>/post/ppc/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;posterior-predictive-checking&#34; class=&#34;section level2&#34;&gt;
@@ -97,7 +97,7 @@ data.frame(theta = grid, prior = prior, posterior = posterior) %&amp;gt;%
     scale_fill_grey() +
     scale_colour_grey() +
     ylab(&amp;quot;&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-01-23-ppc_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-23-ppc_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The mean of the posterior distribution is given by &lt;span class=&#34;math inline&#34;&gt;\(\dfrac{\alpha + y}{\alpha + \beta + n}\)&lt;/span&gt;, and is equal to &lt;code&gt;(a + z) / (a + b + n)&lt;/code&gt; = 0.606, which can be interpreted as the mean probability of presence.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;conjugacy&#34; class=&#34;section level2&#34;&gt;
@@ -147,7 +147,7 @@ Trep %&amp;gt;%
     BEST::plotPost(
         compVal = Ty, breaks = 20,
         col = &amp;quot;#E6E6E6&amp;quot;, xlab = expression(T(y^rep) ) )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-01-23-ppc_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-23-ppc_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;This histogram reveals that the mean number of switches accross the &lt;code&gt;nsims&lt;/code&gt; replications is about 42.04, and the green vertical dotted line represents the position of &lt;span class=&#34;math inline&#34;&gt;\(T(y)\)&lt;/span&gt; in the distribution of &lt;span class=&#34;math inline&#34;&gt;\(T(y^{rep})\)&lt;/span&gt; values.&lt;/p&gt;
 &lt;p&gt;To know whether the observed number of switches is surprising given the assumptions of our model (&lt;em&gt;represented&lt;/em&gt; by its predictions), we can count the number of replications that lead to a greater number of switches than the number of switches &lt;span class=&#34;math inline&#34;&gt;\(T(y)\)&lt;/span&gt; in the observed data.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sum(Trep &amp;gt; Ty)&lt;/code&gt;&lt;/pre&gt;

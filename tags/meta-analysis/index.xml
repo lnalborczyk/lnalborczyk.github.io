@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>meta-analysis | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/tags/meta-analysis/</link>
-      <atom:link href="http://www.barelysignificant.com/tags/meta-analysis/index.xml" rel="self" type="application/rss+xml" />
+    <link>/tags/meta-analysis/</link>
+      <atom:link href="/tags/meta-analysis/index.xml" rel="self" type="application/rss+xml" />
     <description>meta-analysis</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright><lastBuildDate>Thu, 09 Apr 2020 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>meta-analysis</title>
-      <link>http://www.barelysignificant.com/tags/meta-analysis/</link>
+      <link>/tags/meta-analysis/</link>
     </image>
     
     <item>
       <title>Action effects on visual perception of distances: A multilevel Bayesian meta-analysis</title>
-      <link>http://www.barelysignificant.com/publication/2020-molto-etal/</link>
+      <link>/publication/2020-molto-etal/</link>
       <pubDate>Thu, 09 Apr 2020 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2020-molto-etal/</guid>
+      <guid>/publication/2020-molto-etal/</guid>
       <description></description>
     </item>
     

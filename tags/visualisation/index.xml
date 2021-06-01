@@ -2,23 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>visualisation | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/tags/visualisation/</link>
-      <atom:link href="http://www.barelysignificant.com/tags/visualisation/index.xml" rel="self" type="application/rss+xml" />
+    <link>/tags/visualisation/</link>
+      <atom:link href="/tags/visualisation/index.xml" rel="self" type="application/rss+xml" />
     <description>visualisation</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright><lastBuildDate>Tue, 22 May 2018 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>visualisation</title>
-      <link>http://www.barelysignificant.com/tags/visualisation/</link>
+      <link>/tags/visualisation/</link>
     </image>
     
     <item>
       <title>What does a Bayes factor look like?</title>
-      <link>http://www.barelysignificant.com/post/bf/</link>
+      <link>/post/bf/</link>
       <pubDate>Tue, 22 May 2018 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/post/bf/</guid>
+      <guid>/post/bf/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;model-comparison&#34; class=&#34;section level2&#34;&gt;
@@ -39,7 +39,7 @@
 \end{align}
 \]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Where &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{M_{1}}\)&lt;/span&gt; represents my predictions about &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; while &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{M_{2}}\)&lt;/span&gt; represents the predictions of my friend. As usual, these two priors are better understood visually:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-04-30-bf_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-04-30-bf_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;My prior (in blue) is centered on &lt;span class=&#34;math inline&#34;&gt;\(\frac{\alpha}{\alpha + \beta} = 0.375\)&lt;/span&gt; while the prior of my friend (in red) is centered on &lt;span class=&#34;math inline&#34;&gt;\(\frac{\alpha}{\alpha + \beta} = 0.625\)&lt;/span&gt;. Note that my friend seems a bit more certain of its prediction than me, as the red prior is a bit more narrow than the blue prior.&lt;/p&gt;
 &lt;p&gt;Now we can collect some data to test our respective hypotheses. We launch the coin 100 times and gather the following data:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;##   [1] 0 0 1 1 1 1 1 1 1 1 0 0 0 1 0 1 1 0 1 0 1 0 0 1 1 0 0 1 0 1 0 1 0 0 1 1 0
@@ -54,7 +54,7 @@
 \text{BF}_{12} = \dfrac{p(D|H_{1})}{p(D|H_{2})} = \dfrac{\int p(\theta|H_{1}) p(D|\theta,H_{1}) \text{d}\theta}{\int p(\theta|H_{2}) p(D|\theta,H_{2}) \text{d}\theta} = \dfrac{\int \mathrm{Binomial}(n, \theta)\mathrm{Beta}(6, 10)\text{d}\theta}{\int \mathrm{Binomial}(n, \theta)\mathrm{Beta}(20, 12) \text{d}\theta}
 \]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;In other words, computing a Bayes factor is equivalent to multiplying the prior by the &lt;em&gt;likelihood&lt;/em&gt; (the information contained in the data) for each possible value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;, summing all of the obtained values&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;, doing this for each model, and taking the ratio of these sums. This process is illustrated below.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/img/bf/bf.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/bf/bf.gif&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We can read this animation starting by the lower left panel and going clockwise until the lower right panel. In the first panel (the lower left panel), the black curve represents the &lt;a href=&#34;http://journals.sagepub.com/doi/10.1177/2515245917744314&#34;&gt;likelihood function&lt;/a&gt; of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;, that indicates how likely the data are to appear for a given value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;. The two coloured curves represent the prior of either I (in blue) or my friend (in red).&lt;/p&gt;
 &lt;p&gt;The moving dots represent the density of either the priors or the likelihood at each possible value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;. The &lt;em&gt;unnormalised posterior density&lt;/em&gt; (displayed in the upper left panel) is constructed by multiplying the probability assigned by the &lt;em&gt;prior&lt;/em&gt; (the “height” of the blue/red dot) to the probability assigned by the &lt;em&gt;likelihood&lt;/em&gt; function (the “height” of the black dot) for each possible value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;We can then “unfold” this &lt;em&gt;density&lt;/em&gt; by computing its cumulative function (in the upper right panel). This curve simply represents the value of the &lt;em&gt;unnormalised posterior&lt;/em&gt; for each value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;, to which we added the value of the &lt;em&gt;unnormalised posterior&lt;/em&gt; for all the previous values of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; (by summing them). For instance, the value of the &lt;em&gt;cumulative unnormalised posterior&lt;/em&gt; at &lt;span class=&#34;math inline&#34;&gt;\(\theta = 0.14\)&lt;/span&gt; is equal to the value of the &lt;em&gt;unnormalised posterior&lt;/em&gt; at &lt;span class=&#34;math inline&#34;&gt;\(\theta = 0.14\)&lt;/span&gt;, plus the value of the &lt;em&gt;unnormalised posterior&lt;/em&gt; at all the previous values of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; between &lt;span class=&#34;math inline&#34;&gt;\(0\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(0.14\)&lt;/span&gt;.&lt;/p&gt;
@@ -104,11 +104,11 @@
     
     <item>
       <title>Visualising within-subject effects and stochastic dominance with (augmented) modified Brinley plots</title>
-      <link>http://www.barelysignificant.com/post/brinley/</link>
+      <link>/post/brinley/</link>
       <pubDate>Thu, 22 Feb 2018 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/post/brinley/</guid>
+      <guid>/post/brinley/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;&lt;em&gt;Spoiler: the first part of this post is largely inspired by this &lt;a href=&#34;https://www.ncbi.nlm.nih.gov/pubmed/28077215&#34;&gt;very nice paper&lt;/a&gt; written by Neville Blampied, as well as by this great &lt;a href=&#34;https://vuorre.netlify.com/post/2017/within-subject-scatter/&#34;&gt;blogpost&lt;/a&gt; from Matti Vuorre.&lt;/em&gt;&lt;/p&gt;
@@ -139,20 +139,20 @@ head(brinley_data)&lt;/code&gt;&lt;/pre&gt;
 ## 6           5    post treatment   77.13 -0.6746855&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;A first basic Brinley plot can be obtained by using the &lt;code&gt;brinley&lt;/code&gt; function, specifying the formula as you would do using &lt;code&gt;lm&lt;/code&gt; or &lt;code&gt;plot&lt;/code&gt;&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;. The black cross represents the bivariate mean and the confidence interval around the mean in the two conditions.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;brinley(brinley_data, outcome ~ session)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;There are multiple ways to compute a Cohen’s d effect size for within-subject designs (e.g., see &lt;a href=&#34;http://jakewestfall.org/blog/index.php/2016/03/25/five-different-cohens-d-statistics-for-within-subject-designs/&#34;&gt;this post&lt;/a&gt; for five different ways to do it). By default, the &lt;code&gt;brinley&lt;/code&gt; function computes the average Cohen’s d (as recommendended by Cumming, 2012), but note that this can easily be modified to compute your favourite Cohen’s d.&lt;/p&gt;
 &lt;p&gt;Next (here comes the &lt;em&gt;augmented&lt;/em&gt; modified Brinley plot), we can colour points by a second continuous variable, to be passed (as character) to the &lt;code&gt;colour&lt;/code&gt; argument.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;brinley(brinley_data, outcome ~ session, colour = &amp;quot;pain&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Or facetting by another categorical variable, using the &lt;code&gt;facet&lt;/code&gt; argument, which is quite convenient to compare the effects of a pre-post manipulation in different groups/experiments.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;brinley(brinley_data, outcome ~ session, facet = &amp;quot;condition&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Moreover, the &lt;code&gt;brinley&lt;/code&gt; function uses a smart plotting trick that allows easy comparison of multiple groups by plotting the whole dataset in background (see this &lt;a href=&#34;https://drsimonj.svbtle.com/plotting-background-data-for-groups-with-ggplot2&#34;&gt;blogpost&lt;/a&gt;). In our case (two groups), the grey dots represent data from the other group&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;illustrative-example&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Illustrative example&lt;/h2&gt;
 &lt;p&gt;Let’s say we gathered data from two experiments (&lt;code&gt;exp1&lt;/code&gt; and &lt;code&gt;exp2&lt;/code&gt;) in which we investigated a within-subject effect, in two conditions &lt;code&gt;group1&lt;/code&gt; and &lt;code&gt;group2&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;This plot reveals two overlapping distributions of scores in each experiment. Visually, it seems that the difference in means (indicated by the vertical dashed lines) is a bit lower in &lt;code&gt;exp2&lt;/code&gt; than in &lt;code&gt;exp1&lt;/code&gt;. However, the standard deviation (the width) of the distributions in &lt;code&gt;exp2&lt;/code&gt; seems also a bit lower than in &lt;code&gt;exp1&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Intuitively then, although the absolute mean difference seems lower in &lt;code&gt;exp2&lt;/code&gt; than in &lt;code&gt;exp1&lt;/code&gt;, we could say that the effect size (defined as the standardised mean difference) might be roughly equivalent across the two experiments. Let’s check this.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
@@ -179,7 +179,7 @@ Importantly, the dominance constraint implies that *the mean and the variability
 --&gt;
 &lt;p&gt;How is this relevant here ? Well, although we presented data from two experiments with equal sample size and equal effect size, maybe the idea of dominance could help us to reach a more fine-grained interpretation of this effect. Below, we use a modified Brinley plot to visualise data issued from these two experiments.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;brinley(data = dominance, formula = value ~ group, facet = &amp;quot;exp&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;This plot reveals that, altough the mean effect size is the same accross the two experiments, the effect observed in &lt;code&gt;exp2&lt;/code&gt; seems prototypical of a &lt;em&gt;dominant effect&lt;/em&gt;, that is, all participants (all points) show an increase from &lt;code&gt;group1&lt;/code&gt; to &lt;code&gt;group2&lt;/code&gt;. In contrast, the effect observed in &lt;code&gt;exp1&lt;/code&gt; seems less “universal”, with some participants showing the reverse effect.&lt;/p&gt;
 &lt;p&gt;Of course, this is a schematic representation of an idealised dominant effect, in the sense that it would correspond to a situation in which there is absolutely no sampling noise. Alternatively, we could also consider that &lt;code&gt;exp2&lt;/code&gt; is a representation of a dominant effect in the population (i.e., a representation of what a dominant effect would look like if there was no sampling noise), while data from &lt;code&gt;exp1&lt;/code&gt; would be a representation of a dominant effect in ecological/realistic experimental settings (i.e, with some moderate sampling noise).&lt;/p&gt;
 &lt;p&gt;In any case, this highlights the need to report and to visualise data at different levels (individual vs. group) and in different ways to have a better grasp on what is happening in a particular experiment. In this perspective, modified Brinley plot appears as a handy tool to explore the idea of &lt;em&gt;dominance constraint&lt;/em&gt;, and more generally, to assess to what extent our experimental manipulations affect the participants.&lt;/p&gt;

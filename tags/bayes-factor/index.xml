@@ -2,23 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Bayes factor | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/tags/bayes-factor/</link>
-      <atom:link href="http://www.barelysignificant.com/tags/bayes-factor/index.xml" rel="self" type="application/rss+xml" />
+    <link>/tags/bayes-factor/</link>
+      <atom:link href="/tags/bayes-factor/index.xml" rel="self" type="application/rss+xml" />
     <description>Bayes factor</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright><lastBuildDate>Fri, 01 Jun 2018 16:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>Bayes factor</title>
-      <link>http://www.barelysignificant.com/tags/bayes-factor/</link>
+      <link>/tags/bayes-factor/</link>
     </image>
     
     <item>
       <title>How to avoid common misinterpretations of p-values and Bayes factors</title>
-      <link>http://www.barelysignificant.com/talk/2018-interpretations/</link>
+      <link>/talk/2018-interpretations/</link>
       <pubDate>Fri, 01 Jun 2018 16:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/talk/2018-interpretations/</guid>
+      <guid>/talk/2018-interpretations/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;&lt;em&gt;Abstract&lt;/em&gt;: Many authors have emphasised the limitations of null-hypothesis significance testing (NHST) and its application in Psychology. Beyond the methodological advantages and disadvantages of NHST compared to other paradigms of statistical inference, one of the main barriers to the correct use of the NHST procedure remains its complexity, often hidden by misleading intuitive interpretation. For instance, a &lt;em&gt;p&lt;/em&gt;-value does not indicate the probability of obtaining certain data “by chance”, nor the probability of “being wrong”. Similarly, a 95% confidence interval does not (usually) indicate the 95% most likely parameter values. Moreover, it is not correct to interpret a confidence interval by concluding that there is a 95% probability that the value of the parameter in the population lies within the interval. Some authors have suggested switching to Bayesian hypothesis testing via the Bayes factor as an alternative to the NHST procedure. Although Bayesian hypothesis testing offers some advantages over the NHST procedure (e.g., continuous quantification of relative evidence for / against a hypothesis, incorporation of prior information), its interpretation also presents several difficulties. For example, the Bayes factor does not indicate the relative probability of a hypothesis. In this presentation, I use simulation to illustrate the frequentist counterfactual reasoning and I showcase examples of data analysis situations that require the incorporation of prior information to illustrate the basic principles of Bayesian inference.&lt;/p&gt;
@@ -27,11 +27,11 @@
     
     <item>
       <title>What does a Bayes factor look like?</title>
-      <link>http://www.barelysignificant.com/post/bf/</link>
+      <link>/post/bf/</link>
       <pubDate>Tue, 22 May 2018 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/post/bf/</guid>
+      <guid>/post/bf/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;model-comparison&#34; class=&#34;section level2&#34;&gt;
@@ -52,7 +52,7 @@
 \end{align}
 \]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Where &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{M_{1}}\)&lt;/span&gt; represents my predictions about &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; while &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{M_{2}}\)&lt;/span&gt; represents the predictions of my friend. As usual, these two priors are better understood visually:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-04-30-bf_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-04-30-bf_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;My prior (in blue) is centered on &lt;span class=&#34;math inline&#34;&gt;\(\frac{\alpha}{\alpha + \beta} = 0.375\)&lt;/span&gt; while the prior of my friend (in red) is centered on &lt;span class=&#34;math inline&#34;&gt;\(\frac{\alpha}{\alpha + \beta} = 0.625\)&lt;/span&gt;. Note that my friend seems a bit more certain of its prediction than me, as the red prior is a bit more narrow than the blue prior.&lt;/p&gt;
 &lt;p&gt;Now we can collect some data to test our respective hypotheses. We launch the coin 100 times and gather the following data:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;##   [1] 0 0 1 1 1 1 1 1 1 1 0 0 0 1 0 1 1 0 1 0 1 0 0 1 1 0 0 1 0 1 0 1 0 0 1 1 0
@@ -67,7 +67,7 @@
 \text{BF}_{12} = \dfrac{p(D|H_{1})}{p(D|H_{2})} = \dfrac{\int p(\theta|H_{1}) p(D|\theta,H_{1}) \text{d}\theta}{\int p(\theta|H_{2}) p(D|\theta,H_{2}) \text{d}\theta} = \dfrac{\int \mathrm{Binomial}(n, \theta)\mathrm{Beta}(6, 10)\text{d}\theta}{\int \mathrm{Binomial}(n, \theta)\mathrm{Beta}(20, 12) \text{d}\theta}
 \]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;In other words, computing a Bayes factor is equivalent to multiplying the prior by the &lt;em&gt;likelihood&lt;/em&gt; (the information contained in the data) for each possible value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;, summing all of the obtained values&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;, doing this for each model, and taking the ratio of these sums. This process is illustrated below.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/img/bf/bf.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/bf/bf.gif&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We can read this animation starting by the lower left panel and going clockwise until the lower right panel. In the first panel (the lower left panel), the black curve represents the &lt;a href=&#34;http://journals.sagepub.com/doi/10.1177/2515245917744314&#34;&gt;likelihood function&lt;/a&gt; of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;, that indicates how likely the data are to appear for a given value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;. The two coloured curves represent the prior of either I (in blue) or my friend (in red).&lt;/p&gt;
 &lt;p&gt;The moving dots represent the density of either the priors or the likelihood at each possible value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;. The &lt;em&gt;unnormalised posterior density&lt;/em&gt; (displayed in the upper left panel) is constructed by multiplying the probability assigned by the &lt;em&gt;prior&lt;/em&gt; (the “height” of the blue/red dot) to the probability assigned by the &lt;em&gt;likelihood&lt;/em&gt; function (the “height” of the black dot) for each possible value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;We can then “unfold” this &lt;em&gt;density&lt;/em&gt; by computing its cumulative function (in the upper right panel). This curve simply represents the value of the &lt;em&gt;unnormalised posterior&lt;/em&gt; for each value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;, to which we added the value of the &lt;em&gt;unnormalised posterior&lt;/em&gt; for all the previous values of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; (by summing them). For instance, the value of the &lt;em&gt;cumulative unnormalised posterior&lt;/em&gt; at &lt;span class=&#34;math inline&#34;&gt;\(\theta = 0.14\)&lt;/span&gt; is equal to the value of the &lt;em&gt;unnormalised posterior&lt;/em&gt; at &lt;span class=&#34;math inline&#34;&gt;\(\theta = 0.14\)&lt;/span&gt;, plus the value of the &lt;em&gt;unnormalised posterior&lt;/em&gt; at all the previous values of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; between &lt;span class=&#34;math inline&#34;&gt;\(0\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(0.14\)&lt;/span&gt;.&lt;/p&gt;

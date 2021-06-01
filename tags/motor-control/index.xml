@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>motor control | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/tags/motor-control/</link>
-      <atom:link href="http://www.barelysignificant.com/tags/motor-control/index.xml" rel="self" type="application/rss+xml" />
+    <link>/tags/motor-control/</link>
+      <atom:link href="/tags/motor-control/index.xml" rel="self" type="application/rss+xml" />
     <description>motor control</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright><lastBuildDate>Thu, 18 Oct 2018 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>motor control</title>
-      <link>http://www.barelysignificant.com/tags/motor-control/</link>
+      <link>/tags/motor-control/</link>
     </image>
     
     <item>
       <title>A Cognitive Neuroscience View of Inner Language: To Predict and to Hear, See, Feel</title>
-      <link>http://www.barelysignificant.com/publication/2018-loevenbruck-etal/</link>
+      <link>/publication/2018-loevenbruck-etal/</link>
       <pubDate>Thu, 18 Oct 2018 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2018-loevenbruck-etal/</guid>
+      <guid>/publication/2018-loevenbruck-etal/</guid>
       <description></description>
     </item>
     

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>rumination | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/tags/rumination/</link>
-      <atom:link href="http://www.barelysignificant.com/tags/rumination/index.xml" rel="self" type="application/rss+xml" />
+    <link>/tags/rumination/</link>
+      <atom:link href="/tags/rumination/index.xml" rel="self" type="application/rss+xml" />
     <description>rumination</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright><lastBuildDate>Thu, 20 Jul 2017 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>rumination</title>
-      <link>http://www.barelysignificant.com/tags/rumination/</link>
+      <link>/tags/rumination/</link>
     </image>
     
     <item>
       <title>Orofacial electromyographic correlates of induced verbal rumination</title>
-      <link>http://www.barelysignificant.com/publication/2017-nalborczyk-etal/</link>
+      <link>/publication/2017-nalborczyk-etal/</link>
       <pubDate>Thu, 20 Jul 2017 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2017-nalborczyk-etal/</guid>
+      <guid>/publication/2017-nalborczyk-etal/</guid>
       <description></description>
     </item>
     

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>automated analyses | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/tags/automated-analyses/</link>
-      <atom:link href="http://www.barelysignificant.com/tags/automated-analyses/index.xml" rel="self" type="application/rss+xml" />
+    <link>/tags/automated-analyses/</link>
+      <atom:link href="/tags/automated-analyses/index.xml" rel="self" type="application/rss+xml" />
     <description>automated analyses</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright><lastBuildDate>Thu, 11 Mar 2021 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>automated analyses</title>
-      <link>http://www.barelysignificant.com/tags/automated-analyses/</link>
+      <link>/tags/automated-analyses/</link>
     </image>
     
     <item>
       <title>A fully automated, transparent, reproducible, and blind protocol for sequential analyses</title>
-      <link>http://www.barelysignificant.com/publication/2021-beffara-etal/</link>
+      <link>/publication/2021-beffara-etal/</link>
       <pubDate>Thu, 11 Mar 2021 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/publication/2021-beffara-etal/</guid>
+      <guid>/publication/2021-beffara-etal/</guid>
       <description></description>
     </item>
     

@@ -2,23 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>GLM | BARELY SIGNIFICANT</title>
-    <link>http://www.barelysignificant.com/tags/glm/</link>
-      <atom:link href="http://www.barelysignificant.com/tags/glm/index.xml" rel="self" type="application/rss+xml" />
+    <link>/tags/glm/</link>
+      <atom:link href="/tags/glm/index.xml" rel="self" type="application/rss+xml" />
     <description>GLM</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2021, Ladislas Nalborczyk</copyright><lastBuildDate>Mon, 15 Jan 2018 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>http://www.barelysignificant.com/img/icon.png</url>
+      <url>/img/icon.png</url>
       <title>GLM</title>
-      <link>http://www.barelysignificant.com/tags/glm/</link>
+      <link>/tags/glm/</link>
     </image>
     
     <item>
       <title>Using R to make sense of the generalised linear model</title>
-      <link>http://www.barelysignificant.com/post/glm/</link>
+      <link>/post/glm/</link>
       <pubDate>Mon, 15 Jan 2018 00:00:00 +0000</pubDate>
-      <guid>http://www.barelysignificant.com/post/glm/</guid>
+      <guid>/post/glm/</guid>
       <description>
-&lt;script src=&#34;http://www.barelysignificant.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;statistical-models&#34; class=&#34;section level2&#34;&gt;
@@ -57,7 +57,7 @@ p &amp;lt;- d %&amp;gt;%
   theme_bw(base_size = 12)
 
 ggMarginal(p, type = &amp;quot;histogram&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-01-20-glm_files/figure-html/marginal-plot-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/marginal-plot-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;A quick visual exploration of the dataset reveals a positive relationship between height and weight. The above plotted regression line corresponds to the following model, where we assume a normal likelihood:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 \begin{aligned}
@@ -97,7 +97,7 @@ d %&amp;gt;%
     linetype = 2, lwd = 0.5
     ) +
   theme_bw(base_size = 12)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-01-20-glm_files/figure-html/predict-example-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/predict-example-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Implementing the function &lt;code&gt;predict&lt;/code&gt; by hand is quite easy and will allow us to better understand how it works. This function is actually simply retrieving parameters of the fitted model (in our case, the intercept and the slope) to make predictions about the outcome variable, given some values of the predictor(s). In other words, it corresponds to the second line of our model.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d &amp;lt;- d %&amp;gt;%
   mutate(
@@ -132,7 +132,7 @@ data.frame(weight = 80:100) %&amp;gt;%
       size = 0.5, alpha = 0.5, lineend = &amp;quot;round&amp;quot;
       ) +
   theme_bw(base_size = 12)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-01-20-glm_files/figure-html/pred-simulations-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/pred-simulations-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Where the vertical lines represent deviations from the predicted values. OK, so we’ve seen the the &lt;code&gt;predict&lt;/code&gt; function simply uses the linear model to make predictions about the &lt;span class=&#34;math inline&#34;&gt;\(\mu_{i}\)&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;You might know that there exists a similar function, the &lt;code&gt;fitted&lt;/code&gt; function, which allows to extract fitted values of a model.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d &amp;lt;- d %&amp;gt;% mutate(fitted_mod1 = fitted(mod1) )
@@ -192,7 +192,7 @@ d %&amp;gt;%
 &lt;p&gt;This time the results of &lt;code&gt;predict&lt;/code&gt; and &lt;code&gt;fitted&lt;/code&gt; appear to be quite different… We can plot the predictions of &lt;code&gt;mod2&lt;/code&gt; following the same strategy as previously using &lt;code&gt;fitted&lt;/code&gt;. The &lt;code&gt;logit_dotplot&lt;/code&gt; function displays the prediction of the logit model along with the marginal distribution of height by gender (detailed code can be found &lt;a href=&#34;https://github.com/lnalborczyk/lnalborczyk.github.io/blob/master/code/logit_dotplot.R&#34;&gt;here&lt;/a&gt; ).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;source(&amp;quot;logit_dotplot.R&amp;quot;)
 logit_dotplot(d$height, d$male, xlab = &amp;quot;height&amp;quot;, ylab = &amp;quot;p(male)&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-01-20-glm_files/figure-html/logit_dotplot-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/logit_dotplot-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The output of the &lt;code&gt;predict&lt;/code&gt; and &lt;code&gt;fitted&lt;/code&gt; functions are different when we use a GLM because the &lt;code&gt;predict&lt;/code&gt; function returns predictions of the model on the scale of the linear predictor (here in the log-odds scale), whereas the &lt;code&gt;fitted&lt;/code&gt; function returns predictions on the scale of the response. To obtain the &lt;em&gt;fitted&lt;/em&gt; values, we thus have to apply the inverse of the link function to the predicted values obtained with &lt;code&gt;predict&lt;/code&gt;. In our case, this translates to the logistic transformation:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[p = \exp(\alpha) / (1 + \exp(\alpha) )\]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Which, in R, gives:&lt;/p&gt;
@@ -264,7 +264,7 @@ d %&amp;gt;%
   guides(alpha = FALSE, size = FALSE) +
   geom_segment(aes(xend = weight, yend = pred_mod1, alpha = abs(res1) ) ) +
   theme_bw(base_size = 12)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-01-20-glm_files/figure-html/abs-residuals-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/abs-residuals-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;If we take all the above verticals bars (i.e., the residuals) and plot their distribution, we can compare them to a normal distribution with mean 0, and standard deviation &lt;span class=&#34;math inline&#34;&gt;\(\sigma\)&lt;/span&gt; equal to the standard deviation of the residuals, to check our assumption about the distribution of the residuals (here a normality assumption).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d %&amp;gt;%
   ggplot(aes(x = res1) ) +
@@ -273,7 +273,7 @@ d %&amp;gt;%
   guides(fill = FALSE) +
   theme_bw(base_size = 12) +
   labs(x = &amp;quot;Residuals&amp;quot;, y = &amp;quot;Density&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-01-20-glm_files/figure-html/distribution-residuals-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/distribution-residuals-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;To sum up, the distributional assumption of the linear model (Gaussian or whatever) concerns the distribution of the errors, that we do not know. Instead, we can evaluate the distribution of the residuals, which are the observed differences between the outcome variable and the predictions of the model.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;prediction-uncertainty-the-simulate-function&#34; class=&#34;section level2&#34;&gt;
@@ -331,7 +331,7 @@ d %&amp;gt;%
     aes(x = d$weight, ymin = lower, ymax = upper), alpha = 0.1
     ) +
   theme_bw(base_size = 12)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;http://www.barelysignificant.com/post/2018-01-20-glm_files/figure-html/simulate-ntimes-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/simulate-ntimes-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The first shaded region around the regression line represents the 95% confidence interval around the regression line, whereas the second broader shaded area represents the 95% central quantiles of the Gaussian distribution at each value of weight. These are computed by simulating &lt;code&gt;nsims&lt;/code&gt; height values at each weight value, and by taking the 95% mean values of this distribution.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;conclusions&#34; class=&#34;section level2&#34;&gt;
