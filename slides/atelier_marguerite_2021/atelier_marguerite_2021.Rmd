@@ -3,7 +3,7 @@ title: "Bayesian multilevel models in R using brms"
 subtitle: ""
 author: "Ladislas Nalborczyk"
 institute: "Aix Marseille Univ, CNRS, LPC, LNC, Marseille, France"
-date: '28.06.2021 <br><br> `r icon::fa("twitter")` <a href="https://twitter.com/lnalborczyk" style="color:white;">@lnalborczyk</a> `r icon::fa("link")` Slides available at <a href="https://tinyurl.com/marguerite" style="color:white;"> tinyurl.com/marguerite </a>'
+date: '28.06.2021 <br><br> `r icon::fa("twitter")` <a href="https://twitter.com/lnalborczyk" style="color:white;">@lnalborczyk</a> `r icon::fa("link")` Slides available at <a href="https://tinyurl.com/marguerite2021" style="color:white;"> tinyurl.com/marguerite2021 </a>'
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -49,7 +49,7 @@ knitr::opts_chunk$set(
 # for interactive stuffs
 options(htmltools.dir.version = FALSE)
 
-# setting seed for reproduciblity
+# setting seed for reproducibility
 set.seed(666)
 ```
 
