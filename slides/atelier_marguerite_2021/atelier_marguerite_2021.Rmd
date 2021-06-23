@@ -1,0 +1,1417 @@
+---
+title: "Bayesian multilevel models in R using brms"
+subtitle: ""
+author: "Ladislas Nalborczyk"
+institute: "Aix Marseille Univ, CNRS, LPC, LNC, Marseille, France"
+date: '28.06.2021 <br><br> `r icon::fa("twitter")` <a href="https://twitter.com/lnalborczyk" style="color:white;">@lnalborczyk</a> `r icon::fa("link")` Slides available at <a href="https://tinyurl.com/marguerite" style="color:white;"> tinyurl.com/marguerite </a>'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["css/xaringan-themer.css"]
+    mathjax: "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML"
+    self-contained: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+      slideNumberFormat: "%current%/%total%"
+---
+
+```{r xaringan-themer, include = FALSE}
+library(xaringanthemer)
+
+mono_accent(
+    base_color = "#1c5253",
+    header_font_google = google_font("Josefin Sans"),
+    text_font_google   = google_font("Montserrat", "300", "300i"),
+    code_font_google   = google_font("Droid Mono"),
+    header_h1_font_size = "40px",
+    header_h2_font_size = "35px",
+    header_h3_font_size = "30px",
+    text_font_size = "20px",
+    code_font_size = "15px"
+    )
+```
+
+# Overview
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(knitr)
+
+# setting up knitr options
+knitr::opts_chunk$set(
+  cache = TRUE, echo = TRUE, warning = FALSE, message = FALSE,
+  fig.align = "center", dev = "svg"
+  )
+
+# for interactive stuffs
+options(htmltools.dir.version = FALSE)
+
+# setting seed for reproduciblity
+set.seed(666)
+```
+
+1. Theoretical background
+    + What is Bayesian inference?
+    + What is a multilevel model?
+    + Introducing the brms package
+
+2. Practical part / tutorial
+    + Worked example #1: Modelling proportion data with a Bayesian multilevel GLM (BMLGLM?)
+    + Worked example #2: Fitting a Bayesian three-level meta-analysis model
+
+---
+class: middle, center
+
+# Theoretical background - Bayesian inference
+
+---
+
+# Exercice - The marbles bag (from McElreath, 2015)
+
+Let's say we have a bag containing four marbles. These marbles come in two colours: blue and white. We know there are four marbles in the bag, but we don't know how many of them are blue...
+
+--
+
+We know there are five possibilities (we call these possibilities our **hypotheses** about the content of the bag):
+
+<br>
+
+<p align = "center"> &#9898 &#9898 &#9898 &#9898</p>
+<p align = "center"> &#128309 &#9898 &#9898 &#9898</p>
+<p align = "center">&#128309 &#128309 &#9898 &#9898</p>
+<p align = "center">&#128309 &#128309 &#128309 &#9898</p>
+<p align = "center">&#128309 &#128309 &#128309 &#128309</p>
+
+---
+
+# Exercice - The marbles bag (from McElreath, 2015)
+
+Our goal is to determine which hypothesis is the most plausible, given some **evidence** about the content of the bag. To obtain evidence, we can pull some marbles from the bag (with replacement). We do this three times and obtain the following sequence:
+
+<p align = "center">&#128309 &#9898 &#128309</p>
+
+--
+
+This sequence represents some evidence about the content of the bag (in other words, our data). From there, what **inference** can we reasonably make about the content of the bag? What can we say about the relative plausibility of each hypothesis?
+
+---
+
+# Counting possibilities
+
+<p align = "center"> hypothesis: &#128309 &#9898 &#9898 &#9898 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; data: &#128309 </p>
+
+```{r, echo = FALSE, results = "hide", out.width = "75%"}
+library(rethinking)
+source("code/forking_data_McElreath.R")
+
+dat <- c(1)
+arc <- c(0, pi)
+
+garden(
+    arc = arc,
+    possibilities = c(0, 0, 0, 1),
+    data = dat,
+    hedge = 0.05,
+    ring_dist = ring_dist,
+    alpha.fade = 1
+    )
+```
+
+---
+
+# Counting possibilities
+
+<p align = "center"> hypothesis: &#128309 &#9898 &#9898 &#9898 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; data: &#128309 &#9898</p>
+
+```{r, echo = FALSE, eval = TRUE, out.width = "75%"}
+dat <- c(1, 0)
+arc <- c(0, pi)
+
+garden(
+    arc = arc,
+    possibilities = c(0, 0, 0, 1),
+    data = dat,
+    hedge = 0.05,
+    ring_dist = ring_dist,
+    alpha.fade = 1
+    )
+```
+
+---
+
+# Counting possibilities
+
+<p align = "center"> hypothesis: &#128309 &#9898 &#9898 &#9898 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; data: &#128309 &#9898 &#128309</p>
+
+```{r, echo = FALSE, eval = TRUE, out.width = "75%"}
+dat <- c(1, 0, 1)
+arc <- c(0, pi)
+
+garden(
+    arc = arc,
+    possibilities = c(0, 0, 0, 1),
+    data = dat,
+    hedge = 0.05,
+    ring_dist = ring_dist,
+    alpha.fade = 1
+    )
+```
+
+---
+
+# Counting possibilities
+
+<p align = "center"> hypothesis: &#128309 &#9898 &#9898 &#9898 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; data: &#128309 &#9898 &#128309 </p>
+
+```{r, echo = FALSE, eval = TRUE, out.width = "75%"}
+dat <- c(1, 0, 1)
+arc <- c(0, pi)
+
+garden(
+    arc = arc,
+    possibilities = c(0, 0, 0, 1),
+    data = dat,
+    hedge = 0.05,
+    ring_dist = ring_dist,
+    alpha.fade = 0.3
+    )
+```
+
+---
+
+# Counting possibilities
+
+Under this hypothesis, $3$ paths (out of $4^{3}=64$) are consistent with the data. What about the other hypotheses?
+
+<p align = "center"> &#9898 &#9898 &#9898 &#128309 &emsp;&emsp;&emsp;&emsp; &#9898 &#128309 &#128309 &#128309 &emsp;&emsp;&emsp;&emsp; &#9898 &#9898 &#128309 &#128309 </p>
+
+```{r, echo = FALSE, eval = TRUE, out.width = "40%"}
+dat <- c(1, 0, 1)
+ac <- c(1.2, 0.9, 0.6)
+
+arc <- c( pi / 2, pi / 2 + (2 / 3) * pi)
+
+garden(
+    arc = arc,
+    possibilities = c(1, 0, 0, 0),
+    data = dat,
+    hedge = 0.05,
+    adj.cex = ac) 
+
+arc <- c(arc[2], arc[2] + (2 / 3) * pi)
+
+garden(
+    arc = arc,
+    possibilities = c(1, 1, 0, 0),
+    data = dat,
+    hedge = 0.05,
+    newplot = FALSE,
+    adj.cex = ac)
+
+arc <- c(arc[2], arc[2] + (2 / 3) * pi)
+
+garden(
+    arc = arc,
+    possibilities = c(1, 1, 1, 0),
+    data = dat,
+    hedge = 0.05,
+    newplot = FALSE,
+    adj.cex = ac)
+
+line.polar(c(0, 2), pi / 2, lwd = 1)
+line.polar(c(0, 2), pi / 2 + (2 / 3) * pi, lwd = 1)
+line.polar(c(0, 2), pi / 2 + 2 * (2 / 3) * pi, lwd = 1)
+```
+
+---
+
+# Model comparison (comparing hypotheses)
+
+Given some data, the most *plausible* hypothesis is the one that **maximises** the possible ways of obtaining these data.
+
+<center>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg .tg-gq9a{font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif !important;;text-align:center;font-size:20px;font-weight:normal;padding:5px 5px 5px 5px}
+</style>
+<table class="tg" width="400" height="400">
+  <tr>
+    <th class="tg-gq9a">Hypothesis</th>
+    <th class="tg-gq9a">Ways of producing the data</th>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"> <p> &#9898 &#9898 &#9898 &#9898 </p></td>
+    <td class="tg-gq9a"> 0 x 4 x 0 = 0</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#9898 &#9898 &#9898 </p></td>
+    <td class="tg-gq9a">1 x 3 x 1 = 3</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#128309 &#9898 &#9898 </p></td>
+    <td class="tg-gq9a">2 x 2 x 2 = 8</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#128309 &#128309 &#9898 </p></td>
+    <td class="tg-gq9a">3 x 1 x 3 = 9</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#128309 &#128309 &#128309 </p></td>
+    <td class="tg-gq9a">4 x 0 x 4 = 0</td>
+  </tr>
+</table>
+
+</center>
+
+---
+
+# Accumulating evidence
+
+We previously considered that all hypotheses were a priori equiprobable (cf. the [principle of indifference](https://en.wikipedia.org/wiki/Principle_of_indifference)).
+
+--
+
+However, we could have prior knowledge, either coming from our beliefs, from previous data or from knowledge about usual bags of this kind.
+
+--
+
+Let's say we pull another marble out of the bag. How can we incorporate this new information into our previous analysis?
+
+---
+
+# Accumulating evidence
+
+We can update our previous counts by multiplying it by the new information, following the famous Bayesian dictum: "*Yesterday's posterior is today's prior*" ([Lindley, 2000](http://www.phil.vt.edu/dmayo/personal_website/Lindley_Philosophy_of_Statistics.pdf)).
+
+<center>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg .tg-gq9a{font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif !important;;text-align:center;font-size:20px;font-weight:normal;padding:5px 5px 5px 5px}
+</style>
+<table class="tg">
+  <tr>
+    <th class="tg-gq9a">Hypothesis</th>
+    <th class="tg-gq9a"><p>Ways of producing &#128309</p></th>
+    <th class="tg-gq9a">Previous counts</th>
+    <th class="tg-gq9a">New count</th>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#9898 &#9898 &#9898 &#9898 </p></td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0 x 0 = 0</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#9898 &#9898 &#9898 </p></td>
+    <td class="tg-gq9a">1</td>
+    <td class="tg-gq9a">3</td>
+    <td class="tg-gq9a">3 x 1 = 3</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#128309 &#9898 &#9898 </p></td>
+    <td class="tg-gq9a">2</td>
+    <td class="tg-gq9a">8</td>
+    <td class="tg-gq9a">8 x 2 = 16</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#128309 &#128309 &#9898 </p></td>
+    <td class="tg-gq9a">3</td>
+    <td class="tg-gq9a">9</td>
+    <td class="tg-gq9a">9 x 3 = 27</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#128309 &#128309 &#128309 </p></td>
+    <td class="tg-gq9a">4</td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0 x 4 = 0</td>
+  </tr>
+</table>
+
+</center>
+
+---
+
+# Using prior information
+
+Someone from the marble factory tells us that blue marbles are rare. For every bag containing three blue marbles, they make two bags that only contain two blue marbles, and three bags that only contain one blue marble. He also tells us that every bag contains at least one marble of each colour.
+
+<center>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg .tg-gq9a{font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif !important;;text-align:center;font-size:20px;font-weight:normal;padding:5px 5px 5px 5px}
+</style>
+<table class="tg">
+  <tr>
+    <th class="tg-gq9a">Hypothesis</th>
+    <th class="tg-gq9a"><p>Previous counts</p></th>
+    <th class="tg-gq9a">Factory count</th>
+    <th class="tg-gq9a">New count</th>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#9898 &#9898 &#9898 &#9898 </p></td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0 x 0 = 0</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#9898 &#9898 &#9898 </p></td>
+    <td class="tg-gq9a">3</td>
+    <td class="tg-gq9a">3</td>
+    <td class="tg-gq9a">3 x 3 = 9</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#128309 &#9898 &#9898 </p></td>
+    <td class="tg-gq9a">16</td>
+    <td class="tg-gq9a">2</td>
+    <td class="tg-gq9a">16 x 2 = 32</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#128309 &#128309 &#9898 </p></td>
+    <td class="tg-gq9a">27</td>
+    <td class="tg-gq9a">1</td>
+    <td class="tg-gq9a">27 x 1 = 27</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#128309 &#128309 &#128309 </p></td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0 x 0 = 0</td>
+  </tr>
+</table>
+
+</center>
+
+---
+
+# From counts to probability
+
+The probability of a hypothesis after seeing some data is proportional to the number of ways this hypothesis can "produce" the data, multiplied by its *a priori* probability.
+
+$$\Pr(\text{hypothesis}\ |\ \text{data}) \propto \Pr(\text{data}\ |\ \text{hypothesis}) \times \Pr(\text{hypothesis})$$
+--
+
+From there, we construct proper probabilities by standardising these numbers so that their sum is equal to 1.
+
+$$
+\Pr(\text{hypothesis}\ |\ \text{data}) = \frac{\Pr(\text{data}\ |\ \text{hypothesis})\times \Pr(\text{hypothesis})}{\text{sum of products}}
+$$
+
+---
+
+# From counts to probability
+
+Let's define $p$ as the proportion of blue marbles.
+
+<center>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg .tg-gq9a{font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif !important;;text-align:center;font-size:20px;font-weight:normal;padding:5px 5px 5px 5px}
+</style>
+<table class="tg">
+  <tr>
+    <th class="tg-gq9a">Hypothesis</th>
+    <th class="tg-gq9a">p</th>
+    <th class="tg-gq9a">Ways of producing the data</th>
+    <th class="tg-gq9a">Probability</th>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"> &#9898 &#9898 &#9898 &#9898 </td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"> &#128309 &#9898 &#9898 &#9898 </td>
+    <td class="tg-gq9a">0.25</td>
+    <td class="tg-gq9a">3</td>
+    <td class="tg-gq9a">0.15</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"> &#128309 &#128309 &#9898 &#9898 </td>
+    <td class="tg-gq9a">0.5</td>
+    <td class="tg-gq9a">8</td>
+    <td class="tg-gq9a">0.40</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"> &#128309 &#128309 &#128309 &#9898 </td>
+    <td class="tg-gq9a">0.75</td>
+    <td class="tg-gq9a">9</td>
+    <td class="tg-gq9a">0.45</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"> &#128309 &#128309 &#128309 &#128309 </td>
+    <td class="tg-gq9a">1</td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0</td>
+  </tr>
+</table>
+
+</center>
+
+```{r, echo = TRUE, eval = TRUE}
+ways <- c(0, 3, 8, 9, 0)
+(probability <- ways / sum(ways) )
+```
+
+---
+
+# Notations, terminology
+
+- $\theta$: a parameter or vector of parameters (e.g., the proportion of blue marbles).
+
+- $\color{orangered}{p(x\vert \theta)}$<span style="color:orangered">: the conditional probability of the data $x$ given $\theta$. Once we know $x$, can be seen as the likelihood function of $\theta$.</span>
+
+- $\color{steelblue}{p(\theta)}$<span style="color:steelblue">: the prior probability of $\theta$.</span>
+
+- $\color{purple}{p(\theta \vert x)}$<span style="color:purple">: the posterior probability of $\theta$ (given $x$).</span>
+
+- $\color{green}{p(x)}$<span style="color:green">: the marginal probability of $x$ (over $\theta$).</span>
+
+<br>
+
+$$\color{purple}{p(\theta \vert x)} = \dfrac{\color{orangered}{p(x\vert \theta)} \color{steelblue}{p(\theta)}}{\color{green}{p(x)}} = \dfrac{\color{orangered}{p(x\vert \theta)} \color{steelblue}{p(\theta)}}{\color{green}{\sum\limits_{\theta}p(x|\theta)p(\theta)}} = \dfrac{\color{orangered}{p(x\vert \theta)} \color{steelblue}{p(\theta)}}{\color{green}{\int\limits_{\theta}p(x|\theta)p(\theta)\mathrm{d}x}} \propto \color{orangered}{p(x\vert \theta)} \color{steelblue}{p(\theta)}$$
+
+---
+
+# Probability axioms (Kolmogorov, 1933)
+
+A probability is **a numerical value** assigned to an event $A$, this event being a possibility of an ensemble $\Omega$ (the ensemble of all possible events). Probabilities conform to the following axioms (the third axiom is only valid for mutually exclusive events):
+
++ **Non-negativity:** $\Pr(A) \geq 0$
++ **Normalisation:** $\Pr(\Omega) = 1$
++ **Additivity (for mutually exclusive events):** $\Pr(A_{1} \cup A_{2}) = \Pr(A_{1}) + \Pr(A_{2})$
+
+This last axiom is also known as the **sum rule**, and can be generalised to non mutually exclusive events: $\Pr(A_{1} \cup A_{2}) = \Pr(A_{1}) + \Pr(A_{2}) - \Pr(A_{1} \cap A_{2})$.
+
+---
+
+# Deriving Bayes theorem
+
+From these axioms (and the definitions of joint, marginal, and conditional probability) derives the **product rule**, which states that:
+
+$$p(x,y) = p(x|y)p(y) = p(y|x)p(x)$$
+--
+
+Then, restating the above equality,
+
+$$p(y|x)p(x) = p(x|y)p(y)$$
+
+--
+
+And dividing each side by $p(x)$ gives Bayes theorem, which can be written as:
+
+$$p(y|x) = \dfrac{p(x|y)p(y)}{p(x)}$$
+
+--
+
+Or, in plain English (replacing $x$ by *data* and $y$ by *hypothesis*):
+
+$$
+\Pr(\text{hypothesis}\ |\ \text{data}) = \frac{\Pr(\text{data}\ |\ \text{hypothesis})\times \Pr(\text{hypothesis})}{\text{sum of products}}
+$$
+---
+
+# Bayesian inference
+
+For each statistical problem, we follow three steps (from [Gelman et al., 2013](http://www.stat.columbia.edu/~gelman/book/)):
+
+1. Building the model (the history of the data): likelihood + priors
+
+--
+
+2. Updating the model with the information contained in the data using Bayes theorem (aka computing or approximating the posterior distribution)
+
+--
+
+3. Evaluating the model, its fit, its assumptions, summarising the results, readjusting the model
+
+---
+
+# The problem with posteriors
+
+Relatively simple problems like estimating the mean $\mu$ and standard deviation $\sigma$ of a Normal distribution with conjugate Gaussian priors have a closed form solution:
+
+$$\color{purple}{p(\mu, \sigma | x)} = \frac{\prod_{i} \color{orangered}{\mathrm{Normal}(x_{i}|\mu, \sigma)}\color{steelblue}{\mathrm{Normal}(\mu|0,10)\mathrm{Uniform}(\sigma|0,50)}}
+{\color{green}{\int \int \prod_{i} \mathrm{Normal}(x_{i}|\mu,\sigma)\mathrm{Normal}(\mu|0,10)\mathrm{Uniform}(\sigma|0,50)d\mu d\sigma}}$$
+
+$$\color{purple}{p(\mu, \sigma | x)} \propto \prod_{i} \color{orangered}{\mathrm{Normal}(x_{i}|\mu, \sigma)}\color{steelblue}{\mathrm{Normal}(\mu|0,10)\mathrm{Uniform}(\sigma|0,50)}$$
+
+--
+
+However, for models containing more parameters or featuring non-conjugate priors, the integral (the **marginalising constant** in green) may be very difficult or impossible to compute.
+
+---
+
+# Sampling the unknowns
+
+Instead of computing the marginalising constant, we will **approximate** the shape of the posterior distribution. Different methods exist...
+
+--
+
+* Grid sampling: computing the exact value of the posterior probability in a finite number of points (can be computationaly very expensive)
+
+--
+
+* Sampling from the distribution using Markov Chain Monte-Carlo algorithms (much more efficient than grid approximation)...
+
+---
+class: middle, center
+
+<embed src="https://chi-feng.github.io/mcmc-demo/app.html?algorithm=RandomWalkMH&target=standard" width=1000px height=600px />
+
+---
+class: middle, center
+
+<embed src="https://chi-feng.github.io/mcmc-demo/app.html?algorithm=HamiltonianMC&target=standard" width=1000px height=600px />
+
+---
+class: middle, center
+
+# Theoretical background - Multilevel linear models
+
+---
+
+# Linear models
+
+The following is an excerpt from this [blogpost](https://www.barelysignificant.com/post/glm/): "*Using R to make sense of the generalised linear model*".
+
+> "[Statistical] models are devices that connect theories to data. A model is an instanciation of a theory as a set of probabilistic statements" ([Rouder, Morey, & Wagenmakers, 2016](https://www.collabra.org/articles/10.1525/collabra.28/)).
+
+--
+
+The usual linear model is of the following form.
+
+$$
+\begin{aligned}
+y_{i} &\sim \mathrm{Normal}(\mu_{i}, \sigma) \\
+\mu_{i} &= \alpha + \beta \cdot x_{i} \\
+\end{aligned}
+$$
+
+Where the first line describes the assumption made about the process that generated the data. We make the assumption that the outcomes $y_{i}$ are normally distributed around a mean $\mu_{i}$ with some error $\sigma$. This is equivalent to say that the errors are normally distributed around $0$.
+
+---
+
+# Linear models
+
+Below, we illustrate a simple Gaussian linear model using the `Howell1` dataset from the `rethinking` package ([McElreath, 2016](https://github.com/rmcelreath/rethinking)), which contains data about 544 individuals, including height (centimetres), weight (kilograms), age (years) and gender (0 indicating female and 1 indicating male).
+
+```{r howell, echo = FALSE, message = FALSE, fig.align = "center", dev = "svg", out.width = "66%", fig.width = 10, fig.height = 6}
+library(rethinking)
+library(tidyverse)
+library(ggExtra)
+
+data(Howell1)
+
+d <-
+    Howell1 %>%
+    filter(age >= 18)
+
+p <- 
+    d %>%
+    ggplot(aes(x = weight, y = height) ) +
+    geom_point(size = 2, alpha = 0.3) +
+    geom_smooth(method = "lm", colour = "black") +
+    theme_bw(base_size = 16)
+
+ggMarginal(p, type = "histogram")
+```
+
+---
+
+# Linear models
+
+A quick visual exploration of the dataset reveals a positive relationship between height and weight. The previously plotted regression line corresponds to the following model, where we assume a Gaussian likelihood function:
+
+$$
+\begin{aligned}
+\text{height}_{i} &\sim \mathrm{Normal}(\mu_{i}, \sigma) \\
+\mu_{i} &= \alpha + \beta \cdot \text{weight}_{i} \\
+\end{aligned}
+$$
+
+--
+
+This model can be fitted easily in `R` using the `lm()` function and the following syntax.
+
+```{r, echo = TRUE}
+(mod1 <- lm(height ~ weight, data = d) )
+```
+
+---
+
+# Generalised linear model
+
+Of course, the distributional assumption is not restricted to be Gaussian, and can be adapted to whatever distribution makes sense in consideration of the data at hand. Generalising to other distributions, the generalised linear model can be rewritten as:
+
+$$
+\begin{aligned}
+y_{i} &\sim \mathrm{D}(f(\eta_{i}), \theta) \\
+\eta &= \mathbf{X} \beta \\
+\end{aligned}
+$$
+
+Where the response $y_{i}$ is **predicted** through the linear combination $\eta$ of predictors transformed by the inverse link function $f$, assuming a certain distribution $D$ for $y$ (also called the *family*), and family-specific parameters $\theta$ ([Bürkner, 2017](https://www.jstatsoft.org/article/view/v080i01)).
+
+---
+
+# Multilevel modelling
+
+Multilevel models are multi-level generalisations of linear models.
+
+$$
+\begin{align}
+\text{Level 1}: y_{i} &\sim \mathrm{Normal}(\mu_{i},\sigma) \\
+\mu_{i} &= \alpha_{\text{group}[i]} + \beta \cdot x_{i} \\
+\text{Level 2}: \alpha_{\text{group}} &\sim \mathrm{Normal}(\alpha,\sigma_{\text{group}}) \\
+\end{align}
+$$
+
+The "prior" on the by-group intercepts $\alpha_{\text{group}}$ is a function of two parameters $\alpha$ and $\sigma_{\text{group}}$. These parameters are called **hyper-parameters**, as they are parameters for parameters. There are two levels in the model...
+
+---
+class: middle, center
+
+<embed src="http://mfviz.com/hierarchical-models/" width=1000px height=600px />
+
+---
+
+# Shrinkage magic (Efron & Morris, 1977)
+
+```{r echo = FALSE, fig.align = "center", out.width = "66%"}
+knitr::include_graphics("figures/stein1.png")
+```
+
+The James-Stein estimator is defined as $z = \bar{y} + c(y - \bar{y})$, where $\bar{y}$ is the grand average, $y$ an individual estimation and $c$ a constant, the "shrinking factor" ([Efron & Morris, 1977](http://statweb.stanford.edu/~ckirby/brad/other/Article1977.pdf)).
+
+---
+
+# Shrinkage magic (Efron & Morris, 1977)
+
+The James-Stein estimator is determined both by the variability in the measure (e.g., its standard deviation, influencing the shrinking factor $c$) and by its distance to the average estimation (i.e., $y - \bar{y}$). In other words, extreme observations are trusted less. Shrinkage therefore acts as **a safeguard against overfitting** in multilevel models.
+
+```{r echo = FALSE, fig.align = "center", out.width = "75%"}
+knitr::include_graphics("figures/stein2.png")
+```
+
+---
+class: middle, center
+
+# Theoretical background - Introducing brms
+
+---
+
+# Under the hood: Stan
+
+`Stan` is a probabilistic programming language written in `C++`. It implements several MCMC algorithms such as HMC, NUTS, L-BFGS...
+
+```{r, eval = FALSE, echo = TRUE}
+data {
+  int<lower=0> J; // number of schools 
+  real y[J]; // estimated treatment effects
+  real<lower=0> sigma[J]; // s.e. of effect estimates 
+}
+
+parameters {
+  real mu; 
+  real<lower=0> tau;
+  real eta[J];
+}
+
+transformed parameters {
+  real theta[J];
+  for (j in 1:J)
+    theta[j] = mu + tau * eta[j];
+}
+
+model {
+  target += normal_lpdf(eta | 0, 1);
+  target += normal_lpdf(y | theta, sigma);
+}
+```
+
+---
+
+# Bayesian Regression Models using Stan
+
+The `brms` package ([Bürkner, 2017](https://www.jstatsoft.org/article/view/v080i01)) allows fitting complex Bayesian multilevel linear and non-linear models in `Stan` using an intuitive high-level syntax (similar to the syntax of `lme4`). For instance, the following model:
+
+$$
+\begin{align}
+y_{i} &\sim \mathrm{Normal}(\mu_{i}, \sigma) \\
+\mu_{i} &= \alpha + \alpha_{subject[i]} + \alpha_{item[i]} + \beta \cdot x_{i} \\
+\end{align}
+$$
+
+can be fitted using `brms` (as with `lme4`) as follows:
+
+```{r eval = FALSE, echo = TRUE}
+brm(y ~ x + (1|subject) + (1|item), data = d, family = gaussian() )
+```
+
+---
+
+# Example: Analysing the sleepstudy dataset
+
+The `sleepstudy` dataset data from the study described in [Belenky et al. (2003)](https://www.ncbi.nlm.nih.gov/pubmed/12603781). It describes the average reaction time on various cognitive tasks in a sleep deprivation context. On day 0 the subjects had their normal amount of sleep. Starting that night they were restricted to 3 hours of sleep per night. The observations represent the average reaction time on a series of tests given each day to each subject.
+
+```{r sleep, eval = TRUE, echo = TRUE, message = FALSE, warning = FALSE}
+library(lme4)
+data(sleepstudy)
+head(sleepstudy, 10)
+```
+
+---
+
+# Example: Analysing the sleepstudy dataset
+
+```{r plotsleep, eval = TRUE, echo = TRUE, dev = "svg", fig.align = "center", fig.asp = 0.5, out.width = "75%"}
+sleepstudy %>%
+    ggplot(aes(x = Days, y = Reaction) ) +
+    geom_smooth(method = "lm", colour = "black") +
+    geom_point() +
+    facet_wrap(~Subject, nrow = 2) +
+    theme_bw(base_size = 10) + scale_x_continuous(breaks = c(0, 2, 4, 6, 8) )
+```
+
+---
+
+# Example: Analysing the sleepstudy dataset
+
+The `get_prior()` function returns a list of all priors to be specified given some `formula` and some data, as well as the default priors (if any) used by `brms`.
+
+```{r priors, eval = TRUE, echo = TRUE, message = FALSE, warning = FALSE}
+library(brms)
+get_prior(Reaction ~ Days + (1 + Days | Subject), sleepstudy)
+```
+
+---
+
+# Example: Analysing the sleepstudy dataset
+
+Priors can be specified in several ways, explained in the documentation (accessible by typing `?prior`).
+
+```{r eval = TRUE, echo = TRUE}
+prior1 <- c(
+    prior(normal(200, 10), class = Intercept),
+    prior(normal(0, 10), class = b, coef = Days),
+    prior(cauchy(0, 10), class = sigma),
+    prior(lkj(2), class = cor)
+    )
+```
+
+```{r eval = TRUE, echo = TRUE, results = "hide", message = FALSE, warning = FALSE}
+mod1 <- brm(
+    Reaction ~ Days + (1 + Days | Subject),
+    data = sleepstudy,
+    family = gaussian(),
+    prior = prior1,
+    warmup = 2000, iter = 1e4,
+    chains = 2
+    )
+```
+
+---
+
+# Example: Analysing the sleepstudy dataset
+
+```{r eval = TRUE, echo = TRUE}
+posterior_summary(mod1, pars = c("^b_", "^sd_", "sigma"), probs = c(0.025, 0.975) )
+```
+
+<br>
+
+--
+
+```{r echo = FALSE, fig.align = "center", out.width = "33%"}
+knitr::include_graphics("figures/easy.gif")
+```
+
+---
+
+# Some elements of syntax
+
+The `brms` package features the same syntax as base R functions such as `lm()` or functions from the `lme4` package.
+
+```{r eval = FALSE, echo = TRUE}
+Reaction ~ Days + (1 + Days | Subject)
+```
+
+--
+
+The left-hand side of the formula defines the *outcome* (i.e., what is predicted). The `brms` package also allows fitting multivariate (i.e., with several outcomes) models by combining these outcomes with `mvbind()`:
+
+```{r eval = FALSE, echo = TRUE}
+mvbind(Reaction, Memory) ~ Days + (1 + Days | Subject)
+```
+
+--
+
+The right-hand side of the formula defines the *predictors* (i.e., what is used to predict the outcome.s). Note that an intercept is implicitly assumed by default in `R`, so that the two notations below correspond to the same model.
+
+```{r eval = FALSE, echo = TRUE}
+mvbind(Reaction, Memory) ~ Days + (1 + Days | Subject)
+mvbind(Reaction, Memory) ~ 1 + Days + (1 + Days | Subject)
+```
+
+---
+
+# Some elements of syntax
+
+To fit a model without an intercept (because we can), we need to explicitly specify it as follows.
+
+```{r eval = FALSE, echo = TRUE}
+mvbind(Reaction, Memory) ~ 0 + Days + (1 + Days | Subject)
+```
+
+--
+
+The first part of the right-hand side of the formula corresponds to *constant effects* (aka *fixed effects*), whereas the second part (inside parentheses) corresponds to *varying effects* (aka *random effects*).
+
+```{r eval = FALSE, echo = TRUE}
+mvbind(Reaction, Memory) ~ Days + (1 | Subject)
+mvbind(Reaction, Memory) ~ Days + (Days | Subject)
+```
+
+The first above model contains an intercept varying by `Subject`. The second model contains in addition a slope varying by `Subject`.
+
+---
+
+# Some elements of syntax
+
+When we include several varying effects (e.g., both a varying intercept and a varying slope), `brms` estimates the correlation between each pair of varying effects by default. If we are not interested in estimating this correlation, we need to remove this parameter from the model (that is equivalent to fixing its value to 0) by using `||`.
+
+```{r eval = FALSE, echo = TRUE}
+mvbind(Reaction, Memory) ~ Days + (1 + Days || Subject)
+```
+
+--
+
+The previous models assumed a Gaussian response distribution. We can change this assumption by using the `family` argument.
+
+```{r eval = FALSE, echo = TRUE}
+brm(Reaction ~ 1 + Days + (1 + Days | Subject), family = lognormal() )
+```
+
+---
+
+# Helpful brms functions
+
+```{r eval = FALSE, echo = TRUE}
+# Generate the underlying Stan code:
+make_stancode(formula, ...)
+stancode(fit)
+
+# Generate the data passed to Stan:
+make_standata(formula, ...)
+standata(fit)
+
+# Handle priors:
+get_prior(formula, ...)
+set_prior(prior, ...)
+
+# Generate expected values and predictions:
+fitted(fit, ...)
+predict(fit, ...)
+conditional_effects(fit, ...)
+
+# Model comparison:
+loo(fit1, fit2, ...)
+bayes_factor(fit1, fit2, ...)
+model_weights(fit1, fit2, ...)
+
+# Hypothesis testing:
+hypothesis(fit, hypothesis, ...)
+```
+
+---
+class: middle, center
+
+# Worked example #1 - Experimental absenteeism
+
+---
+
+# Worked example #1 - Experimental absenteeism
+
+Working with human subjects requires a minimum amount of reciprocal cooperation. But that requirement is not always fulfilled. A non-negligible proportion of students that register for a Psychology experiment in our lab do not show up for the experiment... We wanted to estimate the probability that a registered participant would come to the lab, depending on whether s•he received a reminder by email (this example is presented in more depth in two blogposts, available [here](http://www.barelysignificant.com/post/absenteeism/) and [there](http://www.barelysignificant.com/post/absenteeism2/)).
+
+```{r eval = TRUE, echo = TRUE}
+library(tidyverse)
+
+data <- read.csv("data/absenteeism.csv")
+data %>% sample_frac %>% head(10)
+```
+
+---
+
+# Worked example #1 - Experimental absenteeism
+
+In other words, we want to estimate the probability of the participant being present. We assume $y_{i}$ (i.e., the number of participants being present, out of $n_{i}$ participants) to be binomially distributed with probability of being present $p_{i}$.
+
+$$y_{i} \sim \mathrm{Binomial}(n_{i}, p_{i})$$
+
+--
+
+The log-odds $\text{logit}(p_{i})$ are predicted via a linear combination of some parameters:
+
+$$\text{logit}(p_{i}) = \log \left(\frac{p_{i}}{1-p_{i}}\right) = \alpha + \beta \times \text{reminder}_{i}$$
+
+Where $\text{logit}(\cdot)$ is a **link function**, relating the bounded scale of the parameter (i.e., $0 \leq p \leq 1$) to the unbounded scale of the predictors.
+
+---
+
+# Worked example #1 - Experimental absenteeism
+
+We can extend this model on several levels, allowing the average log-odds (i.e., the intercept) and the effect of the reminder (i.e., the slope) to vary by researcher.
+
+```{r echo = FALSE, out.width = "50%"}
+knitr::include_graphics("figures/logit.png")
+```
+
+<!--
+
+$$\begin{aligned}
+y_{i} &\sim \mathrm{Binomial}(n_{i}, p_{i}) \\
+\text{logit}(p_{i}) &= \alpha_{researcher_{[i]}} + \beta_{researcher_{[i]}} \times \text{reminder}_{i} \\
+\begin{bmatrix}
+\alpha_{\text{researcher}} \\
+\beta_{\text{researcher}} \\
+\end{bmatrix}
+&\sim \mathrm{MVNormal}\bigg(\begin{bmatrix} \alpha \\ \beta \end{bmatrix}, \textbf{S}\bigg) \\
+\textbf{S} &=
+\begin{pmatrix}
+\sigma_{\alpha} & 0 \\
+0 & \sigma_{\beta} \\
+\end{pmatrix}
+\textbf{R} \begin{pmatrix}
+\sigma_{\alpha} & 0 \\
+0 & \sigma_{\beta} \\
+\end{pmatrix} \\
+\alpha &\sim \mathrm{Normal}(0, 10) \\
+\beta &\sim \mathrm{Normal}(0, 10) \\
+(\sigma_{\alpha}, \sigma_{\beta}) &\sim \mathrm{HalfCauchy}(0, 10) \\
+\textbf{R} &\sim \mathrm{LKJcorr}(2) \\
+\end{aligned}$$
+
+-->
+
+---
+
+# Worked example #1 - Experimental absenteeism
+
+```{r eval = TRUE, echo = TRUE}
+prior2 <- c(
+    prior(normal(0, 10), class = Intercept, coef = ""),
+    prior(normal(0, 5), class = b),
+    prior(cauchy(0, 10), class = sd),
+    prior(lkj(2), class = cor)
+    )
+```
+
+```{r eval = TRUE, echo = TRUE, results = "hide", message = FALSE, warning = FALSE}
+mod2 <- brm(
+    presence | trials(total) ~ 1 + reminder + (1 + reminder | researcher), 
+    family = binomial(link = "logit"),
+    prior = prior2,
+    data = data,
+    sample_prior = TRUE,
+    warmup = 2000, iter = 1e4,
+    cores = parallel::detectCores(),
+    control = list(adapt_delta = 0.95)
+    )
+```
+
+---
+
+# Worked example #1 - Experimental absenteeism
+
+```{r eval = TRUE, echo = TRUE, fig.width = 12, fig.height = 7, out.width = "66%", message = FALSE}
+mod2 %>%
+    plot(
+        combo = c("dens_overlay", "trace"), widths = c(1, 1.5),
+        theme = theme_bw(base_size = 16)
+        )
+```
+
+---
+
+# Worked example #1 - Experimental absenteeism
+
+```{r eval = TRUE, echo = TRUE}
+posterior_summary(mod2, pars = c("^b_", "^sd_"), probs = c(0.025, 0.975) )
+```
+
+--
+
+These estimations are in the log-odds scale... To interpret them more easily, we need to apply the inverse link function (i.e., the logit-inverse). For instance, the average probability of presence (i.e., whatever the researcher or the reminder status) is given by $p = \exp(\alpha) / (1 + \exp(\alpha) )$.
+
+--
+
+```{r eval = TRUE, echo = TRUE}
+# retrieving the intercept
+a <- fixef(mod2)[1]
+
+# transforming it back to the probability scale (equivalent to plogis(a))
+exp(a) / (1 + exp(a) )
+```
+
+---
+
+# Worked example #1 - Experimental absenteeism
+
+Then, we assessed the effect of the reminder email. Here again, it is difficult to interpret the raw estimates... but we know that $\text{exp}(\beta)$ gives an [odds ratio](https://en.wikipedia.org/wiki/Odds_ratio).
+
+```{r eval = TRUE, echo = TRUE}
+fixef(mod2)[2, c(1, 3, 4)] %>% exp
+```
+
+We can interpret this ratio (OR = 4.99, 95% HDI [3.51, 7.19]) by saying that sending a reminder email multiplies by 5 the **odds** that the participant will be present.
+
+---
+
+# Plotting the predictions of the model
+
+An elegant way of representing the predictions of the model and its uncertainty is to directly plot some samples (i.e., some regression lines) from the posterior distribution. We call this kind of plot a *spaghetti plot*.
+
+```{r, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, dev = "svg", fig.align = "center", fig.width = 12, fig.height = 7, out.width = "66%"}
+library(tidybayes)
+library(modelr)
+
+data %>%
+    group_by(researcher, total) %>%
+    data_grid(reminder = seq_range(reminder, n = 1e2) ) %>%
+    add_fitted_samples(mod2, newdata = ., n = 100, scale = "linear") %>%
+    mutate(estimate = plogis(estimate) ) %>%
+    group_by(reminder, .iteration) %>%
+    summarise(estimate = mean(estimate) ) %>%
+    ggplot(aes(x = reminder, y = estimate, group = .iteration) ) +
+    geom_hline(yintercept = 0.5, lty = 2) +
+    geom_line(aes(y = estimate, group = .iteration), size = 0.5, alpha = 0.1) +
+    theme_bw(base_size = 20) + labs(x = "Reminder", y = "Estimate")
+```
+
+---
+
+# Plotting the predictions of the model
+
+```{r, echo = TRUE, eval = TRUE, message = FALSE, warning = FALSE, dev = "svg", fig.align = "center", fig.width = 16, fig.height = 6, out.width = "75%"}
+data %>%
+    group_by(researcher, total) %>%
+    data_grid(reminder = seq_range(reminder, n = 1e2) ) %>%
+    add_fitted_samples(mod2, newdata = ., n = 100, scale = "linear") %>%
+    mutate(estimate = plogis(estimate) ) %>%
+    ggplot(aes(x = reminder, y = estimate, group = .iteration) ) +
+    geom_hline(yintercept = 0.5, lty = 2) +
+    geom_line(aes(y = estimate, group = .iteration), size = 0.5, alpha = 0.1) +
+    facet_wrap(~researcher, nrow = 2) +
+    theme_bw(base_size = 20) + labs(x = "Reminder", y = "Estimate")
+```
+
+---
+
+# Hypothesis test - 1
+
+The `brms` package offers several ways of testing hypotheses. The `hypothesis()` function computes an *evidence ratio* (equivalent to a Bayes factor for point hypotheses, such as $\theta = 0$). When testing point hypotheses, this evidence ratio is computed using the **Savage-Dickey** method.
+
+```{r, echo = TRUE}
+(hyp1 <- hypothesis(mod2, "reminder = 0") ) # computing the BF01
+1 / hyp1$hypothesis$Evid.Ratio # taking the reciprocal of the BF01 (BF10 = 1 / BF01)
+```
+
+---
+
+# Hypothesis test - 1
+
+```{r, echo = TRUE, fig.width = 10, fig.height = 8, out.width = "50%"}
+plot(hyp1, plot = FALSE, theme = theme_bw(base_size = 20) )[[1]] +
+  geom_vline(xintercept = 0, linetype = 2) +
+  coord_cartesian(xlim = c(-10, 10) )
+```
+
+---
+
+# Comparing the prior to the posterior
+
+```{r, echo = TRUE, fig.width = 14, fig.height = 6, out.width = "75%"}
+data.frame(prior = hyp1$prior_samples$H1, posterior = hyp1$samples$H1) %>%
+    gather(type, value) %>%
+    mutate(type = factor(type, levels = c("prior", "posterior") ) ) %>%
+    ggplot(aes(x = value) ) +
+    geom_histogram(bins = 50, alpha = 0.8, col = "white", fill = "steelblue") +
+    geom_vline(xintercept = 0, lty = 2, size = 1) +
+    facet_wrap(~type, scales = "free") +
+    labs(x = expression(beta[reminder]), y = "Number of samples") +
+    theme_bw(base_size = 20)
+```
+
+---
+
+# Hypothesis test - 2
+
+We can also follow the **model comparison** approach. Testing the hypothesis of $\theta = 0$ is equivalent to comparing two nested models: a model including the effect of interest and a model without this effect.
+
+```{r eval = TRUE, echo = TRUE, results = "hide", message = FALSE, warning = FALSE}
+prior3 <- c(
+    prior(normal(0, 10), class = Intercept, coef = ""),
+    prior(cauchy(0, 10), class = sd),
+    prior(lkj(2), class = cor) )
+
+mod2 <- brm(presence | trials(total) ~ 1 + reminder + (1 + reminder|researcher), 
+    family = binomial(link = "logit"),
+    prior = prior2,
+    data = data,
+    # this line is important for bridgesampling
+    save_all_pars = TRUE,
+    warmup = 2000, iter = 1e4,
+    cores = parallel::detectCores(),
+    control = list(adapt_delta = 0.95) )
+
+mod3 <- brm(presence | trials(total) ~ 1 + (1 + reminder|researcher), 
+    family = binomial(link = "logit"),
+    prior = prior3,
+    data = data,
+    save_all_pars = TRUE,
+    warmup = 2000, iter = 1e4,
+    cores = parallel::detectCores(),
+    control = list(adapt_delta = 0.95) )
+```
+
+---
+
+# Hypothesis test - 2
+
+We can then compare the marginal likelihood of these two models (i.e., compute a Bayes factor). The `brms` package offers the `bayes_factor()` method, which relies on an approximation of the marginal likelihood through `bridgesampling` ([Gronau & Singmann, 2017](https://arxiv.org/abs/1710.08162)).
+
+```{r eval = TRUE, echo = TRUE}
+bayes_factor(mod2, mod3)
+```    
+
+---
+
+# Posterior predictive checking
+
+Another important tool to assess the predictive abilities of the model is known as *posterior predictive checking* (PPC). The idea is simple: we compare the observed data to data generated from the posterior distribution. Once we have a posterior distribution on $\theta$, we can generate data from the *posterior predictive distribution*:
+
+$$p(\widetilde{y} | y) = \int p(\widetilde{y} | \theta) p(\theta | y) d \theta$$
+
+If a model is a good model, it should be able to generate data that looks like the observed data (e.g., [Gabry, Simpson, Vehtari, Betancourt, & Gelman, 2017](https://arxiv.org/abs/1709.01449)). In some sense, posterior predictive checking can be seen as a generalisation of the NHST logic.
+
+---
+
+# Posterior predictive checking
+
+```{r, echo = TRUE, dev = "svg", fig.align = "center", fig.width = 12, fig.height = 6, out.width = "75%"}
+data %>%
+    ggplot(aes(x = presence / total) ) +
+    geom_density(fill = "grey20") +
+    theme_bw(base_size = 20)
+```
+
+---
+
+# Posterior predictive checking
+
+This procedure is implemented in `brms` via the `pp_check()` method, which allows various kind of checks. For instance, we compare below predictions from the posterior distribution of the model (n = 100) to the observed data.
+
+```{r, echo = TRUE, dev = "svg", fig.align = "center", fig.width = 12, fig.height = 6, out.width = "75%"}
+pp_check(mod2, nsamples = 1e2) + theme_bw(base_size = 20)
+```
+
+---
+
+# Posterior predictive checking
+
+```{r, echo = TRUE, dev = "svg", fig.align = "center", fig.width = 12, fig.height = 8, out.width = "66%"}
+pp_check(mod2, nsamples = 1e3, type = "stat_2d") + theme_bw(base_size = 20)
+```
+
+---
+
+# Adjusting Stan's behaviour
+
+When fitting more complex models, you will probably face warning messages such as "`There were x divergent transitions after warmup`". You can adjust `Stan`'s behaviour inside the `brm()` call via the `control` argument.
+
+```{r eval = FALSE, echo = TRUE}
+mod2 <- brm(
+    presence | trials(total) ~ 1 + reminder + (1 + reminder|researcher), 
+    family = binomial(link = "logit"),
+    prior = prior2,
+    data = data,
+    warmup = 2000, iter = 1e4,
+    cores = parallel::detectCores(), # using all availables cores
+    control = list(adapt_delta = 0.95) # adjusting the delta step size
+    )
+```
+
+For instance, we can increase the step of the algorithm via `adapt_delta` (fixed to 0.8 by default). This will probably slow down the sampling but will also improve the "quality" of the obtained samples. More generally, pay attention to warnings and messages from `brms` as they are usually quite informative and useful.
+
+---
+class: middle, center
+
+# Worked example #2 - Meta-analysis
+
+---
+
+# Worked example #2 - Meta-analysis
+
+A meta-analysis is an analysis of analyses. It is (or can be) a linear model similar to those discussed previously, except that observations are (usually) already summarised by an effect size. We can treat these effect sizes as observations with a known variation (i.e., estimated and reported in the original articles included in the meta-analysis).
+
+There are two main types of meta-analysis models:
+
+- **Constant-effect (aka fixed-effect) meta-analysis**: We consider that the effect size estimated in each study refers to the same population effect size.
+
+--
+
+- **Varying-effect (aka random effect) meta-analysis**: We model the variability between studies and we exploit the similarities in extent groups (e.g., experiments from the same study or team) to improve the estimation of the overall effect (cf. the shrinkage magic). Note that a "fixed-effect" model" can be considered as a "random-effect" model with a fixed $\tau = 0$.
+
+---
+
+# Worked example #2 - Meta-analysis
+
+This dataset contains the results of 32 experiments aiming to assess the role of biomechanical constraints in the visual estimation of distances ([Molto, Nalborczyk, Palluel-Germain & Morgado, 2020](https://journals.sagepub.com/doi/abs/10.1177/0956797619900336)).
+
+```{r eval = TRUE, echo = TRUE}
+d <- read.csv("data/meta.csv")
+head(d, 15)
+```
+
+---
+
+# Worked example #2 - Meta-analysis
+
+We can write a first model as follows:
+
+$$
+\begin{aligned}
+y_{j} &\sim \mathrm{Normal}(\mu_{j}, \sigma_{j}) \\
+\mu_{j} &= \alpha + \alpha_{study[j]} \\
+\alpha_{study[j]} &\sim \mathrm{Normal}(0, \tau_{s}) \\
+\alpha &\sim \mathrm{Normal}(0, 1) \\
+\tau_{s} &\sim \mathrm{HalfCauchy}(0, 1) \\
+\end{aligned}
+$$
+
+Where $\sigma_{j}^2$ is the variance of the effect in the $j\text{th}$ study and $\alpha$ is the population effect size. The index $\alpha_{study[j]}$ represents the average effect size in the $j\text{th}$ study. In addition to the sample variance $\sigma_{j}^2$ (which is known), we also estimate the variability of the effect between studies $\text{Var}(\alpha_{study}) = \tau_{s}^{2}$ (level 2).
+
+---
+
+# Worked example #2 - Meta-analysis
+
+The previous model can be extended to more than two levels to take into account the dependency structures existing in the data. Indeed, each individual study (i.e., each published paper) may contain several experiments. We could expect experiments from the same study to be more similar than experiments from different studies...
+
+```{r echo = FALSE, fig.align = "center", out.width = "75%"}
+knitr::include_graphics("figures/meta_structure.png")
+```
+
+---
+
+# Worked example #2 - Meta-analysis
+
+We can write this model on three levels, as follows:
+
+$$
+\begin{aligned}
+y_{ij} &\sim \mathrm{Normal}(\mu_{ij}, \sigma_{ij}) \\
+\mu_{ij} &= \alpha + \alpha_{study[j]} + \alpha_{experiment[ij]} \\
+\alpha_{study[j]} &\sim \mathrm{Normal}(0, \tau_{s}) \\
+\alpha_{experiment[ij]} &\sim \mathrm{Normal}(0, \tau_{e}) \\
+\alpha &\sim \mathrm{Normal}(0, 1) \\
+\tau_{e}, \tau_{s} &\sim \mathrm{HalfCauchy}(0, 1) \\
+\end{aligned}
+$$
+
+In addition to the residual variability $\sigma_{ij}$, we also estimate two other sources of variation: the variation of effects between different experiments from the same study $\text{Var}(\alpha_{experiment}) = \tau_{e}^{2}$ (level 2) and the variation of the effect between different studies $\text{Var}(\alpha_{study}) = \tau_{s}^{2}$ (level 3).
+
+---
+
+# Worked example #2 - Meta-analysis
+
+This model is easily fitted with `brms`.
+
+```{r eval = TRUE, echo = TRUE, results = "hide", message = FALSE, warning = FALSE}
+prior4 <- c(
+    prior(normal(0, 1), coef = intercept),
+    prior(cauchy(0, 1), class = sd)
+    )
+
+mod4 <- brm(
+    yi | se(sqrt(vi) ) ~ 0 + intercept + (1|study) + (1|experiment),
+    data = d,
+    prior = prior4,
+    save_all_pars = TRUE,
+    warmup = 2000, iter = 1e4,
+    cores = parallel::detectCores(),
+    control = list(adapt_delta = .99)
+    )
+```
+
+---
+
+# Worked example #2 - Meta-analysis
+
+```{r eval = TRUE, echo = TRUE}
+posterior_summary(mod4, pars = c("^b_", "^sd_"), probs = c(0.025, 0.975) )
+```
+
+---
+
+# Worked example #2 - Meta-analysis
+
+```{r eval = TRUE, echo = TRUE, dev = "svg", fig.align = "center", fig.width = 12, fig.height = 8, out.width = "66%", message = FALSE}
+mod4 %>% plot(pars = c("^b_", "^sd_"), combo = c("dens_overlay", "trace"), theme = theme_bw(base_size = 16) )
+```
+
+---
+
+# Worked example #2 - Meta-analysis
+
+```{r eval = TRUE, echo = FALSE, dev = "svg", fig.align = "center", out.width = "50%"}
+knitr::include_graphics("figures/forest.png")
+```
+
+---
+
+# Further resources
+
+A list of blogposts about `brms`: https://paul-buerkner.github.io/blog/brms-blogposts/
+
+The article introducing `brms` ([Bürkner, 2017](https://www.jstatsoft.org/article/view/v080i01)) as well as the "advanced" version ([Bürkner, 2018](https://journal.r-project.org/archive/2018/RJ-2018-017/index.html)).
+
+A tutorial on ordinal logistic regression models using `brms` ([Bürkner & Vuorre, 2018](https://journals.sagepub.com/doi/10.1177/2515245918823199)).
+
+Our tutorial paper on Bayesian multilevel models using `brms` ([Nalborczyk et al., 2019](https://pubs.asha.org/doi/10.1044/2018_JSLHR-S-18-0006), [preprint](https://psyarxiv.com/guhsa/)) and another one ([Vasishth et al., 2018](https://www.sciencedirect.com/science/article/pii/S0095447017302310)).
+
+The materials of my 2020 doctoral course "Introduction à la modélisation statistique bayésienne" (in French, [slides + code](https://github.com/lnalborczyk/IMSB2020)).
+
+---
+
+# Take-home messages
+
+<!--
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+
+<link rel = "stylesheet" href = "css/font-awesome.css"/>
+<link rel = "stylesheet" href = "css/academicons.css"/>
+-->
+
+* **Bayesian inference**: A general statistical inference framework relying on the use of Bayes theorem (i.e., basic probability rules). Can be seen as an extension of logic, where conclusions are derived from premises (prior information) and evidence (information contained in the data).
+
+* **Multilevel models**: Hierarchical (or not) extensions of the linear model taking into account complex data structures to provide more precise estimations via partial pooling (cf. the concept of *shrinkage*).
+
+* **The brms package**: Bayesian equivalent of `lme4` (but way more flexible), providing an interface to the probabilistic language `Stan`. Allows fitting complex non-linear multilevel models.
+
+<br>
+
+`r icon::fa("twitter")` &nbsp; [<font>lnalborczyk</font>](https://twitter.com/lnalborczyk) &nbsp; `r icon::fa("github")` &nbsp; [<font>lnalborczyk</font>](https://github.com/lnalborczyk) &nbsp; `r icon::ai("osf")` &nbsp; [<font>https://osf.io/ba8xt</font>](https://osf.io/profile/) &nbsp; `r icon::fa("globe-americas")` &nbsp; [<font>www.barelysignificant.com</font>](http://www.barelysignificant.com)
+
+<!--
+<i class="fa fa-twitter"></i> &nbsp; [<font>lnalborczyk</font>](https://twitter.com/lnalborczyk) &nbsp; <i class="fa fa-github"></i> &nbsp; [<font>lnalborczyk</font>](https://github.com/lnalborczyk) &nbsp; <i class = "ai ai-osf"></i> &nbsp; [<font>https://osf.io/ba8xt</font>](https://osf.io/profile/) &nbsp; <i class = "fa fa-globe"></i> &nbsp; [<font>www.barelysignificant.com</font>](http://www.barelysignificant.com)
+-->
