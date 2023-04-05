@@ -5,12 +5,22 @@
     <link>/tags/inner-speech/</link>
       <atom:link href="/tags/inner-speech/index.xml" rel="self" type="application/rss+xml" />
     <description>inner speech</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2023, Ladislas Nalborczyk</copyright><lastBuildDate>Wed, 09 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2023, Ladislas Nalborczyk</copyright><lastBuildDate>Mon, 30 Jan 2023 10:30:00 +0000</lastBuildDate>
     <image>
       <url>/img/icon.png</url>
       <title>inner speech</title>
       <link>/tags/inner-speech/</link>
     </image>
+    
+    <item>
+      <title>Uncovering the origins of inner speech sensory content</title>
+      <link>/talk/2023-jcep/</link>
+      <pubDate>Mon, 30 Jan 2023 10:30:00 +0000</pubDate>
+      <guid>/talk/2023-jcep/</guid>
+      <description>
+&lt;p&gt;&lt;em&gt;Abstract&lt;/em&gt;: Inner speech is accompanied by a subjective multisensory experience. However, the origins (causes) of this subjective experience are debated. In this study, we used transcranial magnetic stimulation to disentangle the predictions of competing theoretical frameworks.
+</description>
+    </item>
     
     <item>
       <title>The role of motor inhibition during covert speech production</title>
