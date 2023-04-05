@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Palluel-Germain, R. | Ladislas Nalborczyk</title>
+    <link>/authors/palluel-germain-r./</link>
+      <atom:link href="/authors/palluel-germain-r./index.xml" rel="self" type="application/rss+xml" />
+    <description>Palluel-Germain, R.</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2023, Ladislas Nalborczyk</copyright>
+    <image>
+      <url>/img/icon.png</url>
+      <title>Palluel-Germain, R.</title>
+      <link>/authors/palluel-germain-r./</link>
+    </image>
+    
+    <item>
+      <title>Action effects on visual perception of distances: A multilevel Bayesian meta-analysis</title>
+      <link>/publication/2020-molto-etal/</link>
+      <pubDate>Thu, 09 Apr 2020 00:00:00 +0000</pubDate>
+      <guid>/publication/2020-molto-etal/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

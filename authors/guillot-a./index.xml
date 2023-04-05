@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Guillot, A. | Ladislas Nalborczyk</title>
+    <link>/authors/guillot-a./</link>
+      <atom:link href="/authors/guillot-a./index.xml" rel="self" type="application/rss+xml" />
+    <description>Guillot, A.</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2023, Ladislas Nalborczyk</copyright>
+    <image>
+      <url>/img/icon.png</url>
+      <title>Guillot, A.</title>
+      <link>/authors/guillot-a./</link>
+    </image>
+    
+    <item>
+      <title>The role of motor inhibition during covert speech production</title>
+      <link>/publication/2022-nalborczyk-etal/</link>
+      <pubDate>Wed, 09 Mar 2022 00:00:00 +0000</pubDate>
+      <guid>/publication/2022-nalborczyk-etal/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>GLM | Ladislas Nalborczyk</title>
+    <link>/tags/glm/</link>
+      <atom:link href="/tags/glm/index.xml" rel="self" type="application/rss+xml" />
+    <description>GLM</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2023, Ladislas Nalborczyk</copyright><lastBuildDate>Mon, 15 Jan 2018 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/img/icon.png</url>
+      <title>GLM</title>
+      <link>/tags/glm/</link>
+    </image>
+    
+    <item>
+      <title>Using R to make sense of the generalised linear model</title>
+      <link>/post/glm/</link>
+      <pubDate>Mon, 15 Jan 2018 00:00:00 +0000</pubDate>
+      <guid>/post/glm/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;statistical-models&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Statistical models&lt;/h2&gt;
+&lt;p&gt;Modern science rests on several foundational pillars. Among these is the ability to construct sufficiently solid theoretical abstractions that are able to explain concrete observable aspects of the world. Once the applicability range of a theoretical model has been defined, it is usually compared to another model that is similar in its goal (i.e., another model that aims to explain similar aspects of the world). However, we rarely directly compare theoretical models. Instead, we are brought to compare statistical models that aim to represent theories.&lt;/p&gt;
+&lt;p&gt;According to Rouder, Morey, &amp;amp; Wagenmakers (2016), “Models are devices that connect theories to data. A model is an instantiation of a theory as a set of probabilistic statements”. One common and convenient example of such instantiation is the linear model, which –in its general form– allows to predict parameter(s) of a distribution, which is supposed to reflect the distribution from which the observed data is issued (the data generation process).&lt;/p&gt;
+&lt;p&gt;But what does it mean for a model to &lt;em&gt;predict&lt;/em&gt; something? In the current post, I focus on four R functions (the &lt;code&gt;predict&lt;/code&gt;, &lt;code&gt;fitted&lt;/code&gt;, &lt;code&gt;residuals&lt;/code&gt; and &lt;code&gt;simulate&lt;/code&gt; functions), exploring the similarities and differences between these functions, to illustrate the mechanisms and assumptions of the generalised linear model.&lt;/p&gt;
+&lt;p&gt;The usual linear model is of the following form.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{aligned}
+y_{i} &amp;amp;\sim \mathrm{Normal}(\mu_{i}, \sigma) \\
+\mu_{i} &amp;amp;= \alpha + \beta \cdot \text{x}_{i} \\
+\end{aligned}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Where, in Bayesian terms, the first line of the model corresponds to the &lt;em&gt;likelihood&lt;/em&gt; of the model, which is the assumption made about the data generation process. We make the assumption that the outcomes &lt;span class=&#34;math inline&#34;&gt;\(y_{i}\)&lt;/span&gt; are normally distributed around a mean &lt;span class=&#34;math inline&#34;&gt;\(\mu_{i}\)&lt;/span&gt; with some error &lt;span class=&#34;math inline&#34;&gt;\(\sigma\)&lt;/span&gt;. This is equivalent to say that the errors are normally distributed around &lt;span class=&#34;math inline&#34;&gt;\(0\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Of course, the distributional assumption is not restricted to be Gaussian, and can be adapted to whatever distribution that makes sense in consideration of the data at hand. The linear aspect of the linear model actually refers to the second line of the above description, in which one tries to predict parameters of the distribution (e.g., &lt;span class=&#34;math inline&#34;&gt;\(\mu_{i}\)&lt;/span&gt; or &lt;span class=&#34;math inline&#34;&gt;\(\sigma\)&lt;/span&gt;) by a &lt;em&gt;linear combination&lt;/em&gt; of some predictor variable(s). Generalising to other distributions, the generalised linear model can be rewritten as:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{aligned}
+y_{i} &amp;amp;\sim \mathrm{D}(f(\eta_{i}), \theta) \\
+\eta &amp;amp;= \mathbf{X} \beta \\
+\end{aligned}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Where the response &lt;span class=&#34;math inline&#34;&gt;\(y_{i}\)&lt;/span&gt; is &lt;strong&gt;predicted&lt;/strong&gt; through the linear combination &lt;span class=&#34;math inline&#34;&gt;\(\eta\)&lt;/span&gt; of predictors transformed by the inverse link function &lt;span class=&#34;math inline&#34;&gt;\(f\)&lt;/span&gt;, assuming a certain distribution &lt;span class=&#34;math inline&#34;&gt;\(D\)&lt;/span&gt; for &lt;span class=&#34;math inline&#34;&gt;\(y\)&lt;/span&gt; (also called the &lt;em&gt;family&lt;/em&gt;), and family-specific parameters &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; (Bürkner, 2017).&lt;/p&gt;
+&lt;p&gt;Below, we illustrate a simple Gaussian linear model using the &lt;code&gt;Howell1&lt;/code&gt; dataset from the &lt;code&gt;rethinking&lt;/code&gt; package (McElreath, 2016), which contains data about 544 individuals, including height (centimetres), weight (kilograms), age (years) and gender (0 indicating female and 1 indicating male).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(rethinking)
+library(tidyverse)
+library(ggExtra)
+
+data(Howell1)
+d &amp;lt;- Howell1 %&amp;gt;% filter(age &amp;gt;= 18)
+
+p &amp;lt;- d %&amp;gt;%
+  ggplot(aes(x = weight, y = height) ) +
+  geom_point(pch = 21, color = &amp;quot;white&amp;quot;, fill = &amp;quot;black&amp;quot;, size = 2, alpha = 0.8) +
+  geom_smooth(method = &amp;quot;lm&amp;quot;, colour = &amp;quot;black&amp;quot;) +
+  theme_bw(base_size = 12)
+
+ggMarginal(p, type = &amp;quot;histogram&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/marginal-plot-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;A quick visual exploration of the dataset reveals a positive relationship between height and weight. The above plotted regression line corresponds to the following model, where we assume a normal likelihood:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{aligned}
+\text{height}_{i} &amp;amp;\sim \mathrm{Normal}(\mu_{i}, \sigma) \\
+\mu_{i} &amp;amp;= \alpha + \beta \cdot \text{weight}_{i} \\
+\end{aligned}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;This model can be fitted easily in &lt;code&gt;R&lt;/code&gt; with the following syntax.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;(mod1 &amp;lt;- lm(height ~ weight, data = d) )&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+## Call:
+## lm(formula = height ~ weight, data = d)
+## 
+## Coefficients:
+## (Intercept)       weight  
+##     113.879        0.905&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The intercept (113.879) represents the predicted height when weight is at 0 (which makes no much sense in our case), whereas the slope (0.905) represents the change in height when weight increases by one unit (i.e., one kilogram).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;prediction-is-key-predict-and-fitted&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Prediction is key: &lt;code&gt;predict&lt;/code&gt; and &lt;code&gt;fitted&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;The main advantage of the previous model is that it allows to make predictions for any value of &lt;span class=&#34;math inline&#34;&gt;\(\text{weight}\)&lt;/span&gt;. In &lt;code&gt;R&lt;/code&gt;, this is done using the aptly named &lt;code&gt;predict&lt;/code&gt; function. For instance, we can ask our model what is the expected height for an individual of weight 43, which is equal to &lt;span class=&#34;math inline&#34;&gt;\(\alpha + \beta \cdot 43\)&lt;/span&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;wght &amp;lt;- 43
+
+d %&amp;gt;%
+  ggplot(aes(x = weight, y = height) ) +
+  geom_line(aes(y = predict(mod1) ), size = 1) +
+  geom_point(size = 2, alpha = 0.2) +
+  geom_segment(
+    x = wght, xend = wght,
+    y = 0, yend = predict(mod1, newdata = data.frame(weight = wght) ),
+    linetype = 2, lwd = 0.5
+    ) +
+  geom_segment(
+    x = 0, xend = wght,
+    y = predict(mod1, newdata = data.frame(weight = wght) ),
+    yend = predict(mod1, newdata = data.frame(weight = wght) ),
+    linetype = 2, lwd = 0.5
+    ) +
+  theme_bw(base_size = 12)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/predict-example-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Implementing the function &lt;code&gt;predict&lt;/code&gt; by hand is quite easy and will allow us to better understand how it works. This function is actually simply retrieving parameters of the fitted model (in our case, the intercept and the slope) to make predictions about the outcome variable, given some values of the predictor(s). In other words, it corresponds to the second line of our model.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d &amp;lt;- d %&amp;gt;%
+  mutate(
+    pred_mod1 = predict(mod1),
+    pred_mod1_2 = coef(mod1)[1] + coef(mod1)[2] * weight
+    )
+
+head(d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    height   weight age male pred_mod1 pred_mod1_2
+## 1 151.765 47.82561  63    1  157.1630    157.1630
+## 2 139.700 36.48581  63    0  146.9001    146.9001
+## 3 136.525 31.86484  65    0  142.7180    142.7180
+## 4 156.845 53.04191  41    1  161.8839    161.8839
+## 5 145.415 41.27687  51    0  151.2362    151.2362
+## 6 163.830 62.99259  35    1  170.8895    170.8895&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We could also be interested in predicting the height of individuals with other weights that the weights we observed (e.g., weights between 80 and 100 kgs). Below we simulate new data from our model (i.e., we simulate heights) and predictions for this new set of data (i.e., the &lt;span class=&#34;math inline&#34;&gt;\(\mu_{i}\)&lt;/span&gt;).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# generating weights from 80 to 100 kgs
+data.frame(weight = 80:100) %&amp;gt;%
+  # retrieving mod1 predictions
+  mutate(pred = predict(mod1, newdata = .) ) %&amp;gt;%
+  # simulating data from our model, taking into account sigma
+  mutate(sim =  pred + rnorm(length(weight), 0, sd(residuals(mod1) ) ) ) %&amp;gt;%
+  # or using sigma(mod1) instead of sd(residuals(mod1) ), as suggested
+  # by Tristan Mahr (https://www.tjmahr.com)
+  mutate(sim =  pred + rnorm(length(weight), 0, sigma(mod1) ) ) %&amp;gt;%
+  # plotting these predictions
+  ggplot(aes(x = weight, y = pred) ) +
+  geom_line(size = 1) +
+  geom_point(aes(x = weight, y = sim), size = 2) +
+  geom_segment(
+      aes(xend = weight, yend = sim),
+      size = 0.5, alpha = 0.5, lineend = &amp;quot;round&amp;quot;
+      ) +
+  theme_bw(base_size = 12)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/pred-simulations-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Where the vertical lines represent deviations from the predicted values. OK, so we’ve seen the the &lt;code&gt;predict&lt;/code&gt; function simply uses the linear model to make predictions about the &lt;span class=&#34;math inline&#34;&gt;\(\mu_{i}\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;You might know that there exists a similar function, the &lt;code&gt;fitted&lt;/code&gt; function, which allows to extract fitted values of a model.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d &amp;lt;- d %&amp;gt;% mutate(fitted_mod1 = fitted(mod1) )
+head(d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    height   weight age male pred_mod1 pred_mod1_2 fitted_mod1
+## 1 151.765 47.82561  63    1  157.1630    157.1630    157.1630
+## 2 139.700 36.48581  63    0  146.9001    146.9001    146.9001
+## 3 136.525 31.86484  65    0  142.7180    142.7180    142.7180
+## 4 156.845 53.04191  41    1  161.8839    161.8839    161.8839
+## 5 145.415 41.27687  51    0  151.2362    151.2362    151.2362
+## 6 163.830 62.99259  35    1  170.8895    170.8895    170.8895&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Surprisingly, the &lt;code&gt;predict&lt;/code&gt; and &lt;code&gt;fitted&lt;/code&gt; functions seem to do the exact same thing (at least their results are the same)… but do they? To answer this question, let’s ask another one.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;link-function-toward-glms&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Link function, toward GLMs&lt;/h2&gt;
+&lt;p&gt;Can we predict gender by individual height? The usual way to answer this kind of question is through a &lt;em&gt;logistic regression&lt;/em&gt; model (or logit model). Logistic regression is used to model binary outcome variables, using the linear regression framework. In the logit model, the &lt;em&gt;log-odds&lt;/em&gt; of the outcome &lt;span class=&#34;math inline&#34;&gt;\(p_{i}\)&lt;/span&gt; are modelled as a linear combination of the predictor variables:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+logit(p_{i}) = log\Big(\frac{p_{i}}{1 - p_{i}}\Big) = \alpha + \beta _{1} x_{1} + \cdots + \beta _{n} x_{n}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Thus, although the observed outcome variable is a dichotomic variable, the logistic regression estimates the &lt;strong&gt;log-odds&lt;/strong&gt;, as a continuous variable, that the outcome variable is in a certain state (in our case, that the individual is a man)&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;. This model can be written as follows, where &lt;span class=&#34;math inline&#34;&gt;\(p_{i}\)&lt;/span&gt; is the probability that an individual is a man.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{aligned}
+\text{gender}_{i} &amp;amp;\sim \mathrm{Binomial}(1, p_{i}) \\
+logit(p_{i}) &amp;amp;= \alpha + \beta \cdot \text{height}_{i} \\
+\end{aligned}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;This model is implemented easily in R using the &lt;code&gt;glm&lt;/code&gt; function, where the &lt;code&gt;family&lt;/code&gt; argument is used to specify the likelihood of the model, and the link function.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;(mod2 &amp;lt;- glm(male ~ height, data = d, family = binomial(link = &amp;quot;logit&amp;quot;) ) )&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+## Call:  glm(formula = male ~ height, family = binomial(link = &amp;quot;logit&amp;quot;), 
+##     data = d)
+## 
+## Coefficients:
+## (Intercept)       height  
+##    -53.3653       0.3438  
+## 
+## Degrees of Freedom: 351 Total (i.e. Null);  350 Residual
+## Null Deviance:       486.6 
+## Residual Deviance: 258.7     AIC: 262.7&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Below we print predictions of the model, using both the &lt;code&gt;predict&lt;/code&gt; and &lt;code&gt;fitted&lt;/code&gt; functions.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d &amp;lt;- d %&amp;gt;%
+  mutate(
+    pred_mod2 = predict(mod2),
+    fitted_mod2 = fitted(mod2)
+    )
+
+d %&amp;gt;%
+  select(height, weight, male, pred_mod2, fitted_mod2) %&amp;gt;%
+  head&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    height   weight male  pred_mod2 fitted_mod2
+## 1 151.765 47.82561    1 -1.1910139 0.233077651
+## 2 139.700 36.48581    0 -5.3387584 0.004778882
+## 3 136.525 31.86484    0 -6.4302701 0.001609421
+## 4 156.845 53.04191    1  0.5554049 0.635388646
+## 5 145.415 41.27687    0 -3.3740373 0.033116790
+## 6 163.830 62.99259    1  2.9567306 0.950580634&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This time the results of &lt;code&gt;predict&lt;/code&gt; and &lt;code&gt;fitted&lt;/code&gt; appear to be quite different… We can plot the predictions of &lt;code&gt;mod2&lt;/code&gt; following the same strategy as previously using &lt;code&gt;fitted&lt;/code&gt;. The &lt;code&gt;logit_dotplot&lt;/code&gt; function displays the prediction of the logit model along with the marginal distribution of height by gender (detailed code can be found &lt;a href=&#34;https://github.com/lnalborczyk/lnalborczyk.github.io/blob/master/code/logit_dotplot.R&#34;&gt;here&lt;/a&gt; ).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;source(&amp;quot;logit_dotplot.R&amp;quot;)
+logit_dotplot(d$height, d$male, xlab = &amp;quot;height&amp;quot;, ylab = &amp;quot;p(male)&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/logit_dotplot-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The output of the &lt;code&gt;predict&lt;/code&gt; and &lt;code&gt;fitted&lt;/code&gt; functions are different when we use a GLM because the &lt;code&gt;predict&lt;/code&gt; function returns predictions of the model on the scale of the linear predictor (here in the log-odds scale), whereas the &lt;code&gt;fitted&lt;/code&gt; function returns predictions on the scale of the response. To obtain the &lt;em&gt;fitted&lt;/em&gt; values, we thus have to apply the inverse of the link function to the predicted values obtained with &lt;code&gt;predict&lt;/code&gt;. In our case, this translates to the logistic transformation:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[p = \exp(\alpha) / (1 + \exp(\alpha) )\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Which, in R, gives:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;exp(coef(mod2) ) / (1 + exp(coef(mod2) ) )&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  (Intercept)       height 
+## 6.664323e-24 5.851092e-01&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Which is equivalent to using the &lt;code&gt;plogis&lt;/code&gt; function:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plogis(coef(mod2) )&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  (Intercept)       height 
+## 6.664323e-24 5.851092e-01&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s compare our previous calls to the &lt;code&gt;predict&lt;/code&gt; and &lt;code&gt;fitted&lt;/code&gt; functions…&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d &amp;lt;- d %&amp;gt;%
+  mutate(pred_mod2_2 = plogis(predict(mod2) %&amp;gt;% as.numeric) )
+
+d %&amp;gt;%
+  select(height, weight, male, pred_mod2, fitted_mod2, pred_mod2_2) %&amp;gt;%
+  head&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    height   weight male  pred_mod2 fitted_mod2 pred_mod2_2
+## 1 151.765 47.82561    1 -1.1910139 0.233077651 0.233077651
+## 2 139.700 36.48581    0 -5.3387584 0.004778882 0.004778882
+## 3 136.525 31.86484    0 -6.4302701 0.001609421 0.001609421
+## 4 156.845 53.04191    1  0.5554049 0.635388646 0.635388646
+## 5 145.415 41.27687    0 -3.3740373 0.033116790 0.033116790
+## 6 163.830 62.99259    1  2.9567306 0.950580634 0.950580634&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To sum up, the &lt;code&gt;fitted&lt;/code&gt; function automatically applies the inverse transformation to provide prediction on the scales of the outcome. A similar behaviour can be obtained by using the &lt;code&gt;predict&lt;/code&gt; function, and by specifying the scale in which we want to obtain predictions (e.g., in the scale of the response variable).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d &amp;lt;- d %&amp;gt;%
+  mutate(pred_mod2_3 = predict(mod2, type = &amp;quot;response&amp;quot;) )
+
+d %&amp;gt;%
+  select(height, weight, male, pred_mod2, fitted_mod2, pred_mod2_2, pred_mod2_3) %&amp;gt;%
+  head&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    height   weight male  pred_mod2 fitted_mod2 pred_mod2_2 pred_mod2_3
+## 1 151.765 47.82561    1 -1.1910139 0.233077651 0.233077651 0.233077651
+## 2 139.700 36.48581    0 -5.3387584 0.004778882 0.004778882 0.004778882
+## 3 136.525 31.86484    0 -6.4302701 0.001609421 0.001609421 0.001609421
+## 4 156.845 53.04191    1  0.5554049 0.635388646 0.635388646 0.635388646
+## 5 145.415 41.27687    0 -3.3740373 0.033116790 0.033116790 0.033116790
+## 6 163.830 62.99259    1  2.9567306 0.950580634 0.950580634 0.950580634&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To relate this to our understanding of the linear model equation, prediction pertains to the &lt;span class=&#34;math inline&#34;&gt;\(\mu_{i}\)&lt;/span&gt;, meaning that we try to predict the mean observed outcome for a specific value of the predictor &lt;span class=&#34;math inline&#34;&gt;\(x_{i}\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;We should go further and implement uncertainty in these predictions, but we should first take a break to examine the concepts of errors and residuals, and their relationship.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;errors-and-residuals-the-residuals-function&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Errors and residuals: the &lt;code&gt;residuals&lt;/code&gt; function&lt;/h2&gt;
+&lt;p&gt;A very common fallacy about the assumptions of the linear (Gaussian) model is that the &lt;em&gt;outcome variable&lt;/em&gt; should be normally distributed. Instead, this assumption concerns the distribution of the outcome variable &lt;strong&gt;around its predicted value&lt;/strong&gt; (i.e., the distribution of the errors).&lt;/p&gt;
+&lt;p&gt;What we actually said above is that the errors &lt;span class=&#34;math inline&#34;&gt;\(\epsilon_{i}\)&lt;/span&gt; should be normally distributed around the predicted value. But the errors are the the non-observed (and non-observable) differences between the theoretical predicted value &lt;span class=&#34;math inline&#34;&gt;\(\mu\)&lt;/span&gt; and the observed outcomes. Consequently, we do not have access to it. Instead, what we can work with are the residuals &lt;span class=&#34;math inline&#34;&gt;\(e_{i}\)&lt;/span&gt;, which can be seen as an estimate (from the sample) of the errors &lt;span class=&#34;math inline&#34;&gt;\(\epsilon_{i}\)&lt;/span&gt;, in a similar way as &lt;span class=&#34;math inline&#34;&gt;\(b\)&lt;/span&gt; is an estimate of &lt;span class=&#34;math inline&#34;&gt;\(\beta\)&lt;/span&gt;. To sum up, the residuals are the &lt;span class=&#34;math inline&#34;&gt;\(e_{i} = y_{i} - \bar{X}\)&lt;/span&gt; whereas the errors are the &lt;span class=&#34;math inline&#34;&gt;\(\epsilon_{i} = y_{i} - \mu_{i}\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;In other words, errors pertain to the data generation process, whereas residuals are the difference between the model’s estimation and the observed outcomes. Basically, the residuals are the difference between the observed value and the predicted value. We can obtain them easily using the &lt;code&gt;residuals&lt;/code&gt; function (which is useful for more complex models), or by subtracting to each observed outcome &lt;span class=&#34;math inline&#34;&gt;\(y_{i}\)&lt;/span&gt; the predicted &lt;span class=&#34;math inline&#34;&gt;\(\mu_{i}\)&lt;/span&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d &amp;lt;- d %&amp;gt;%
+  mutate(
+    res1 = residuals(mod1),
+    res2 = height - pred_mod1
+    )
+
+d %&amp;gt;%
+  select(height, weight, male, pred_mod1, res1, res2) %&amp;gt;%
+  head&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    height   weight male pred_mod1      res1      res2
+## 1 151.765 47.82561    1  157.1630 -5.397960 -5.397960
+## 2 139.700 36.48581    0  146.9001 -7.200111 -7.200111
+## 3 136.525 31.86484    0  142.7180 -6.193000 -6.193000
+## 4 156.845 53.04191    1  161.8839 -5.038870 -5.038870
+## 5 145.415 41.27687    0  151.2362 -5.821164 -5.821164
+## 6 163.830 62.99259    1  170.8895 -7.059520 -7.059520&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Below we plot these residuals, and make the alpha (i.e., the transparency) and the size of the points dependent on the distance to the predicted value (so that larger residuals appear as bigger and less transparent). This distance is also represented by the length of the vertical lines.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d %&amp;gt;%
+  sample_frac(0.5) %&amp;gt;% # selecting a (50%) subsample of the data
+  ggplot(aes(x = weight, y = height) ) +
+  geom_line(aes(y = pred_mod1), size = 1) +
+  geom_point(aes(alpha = abs(res1), size = abs(res1) ) ) +
+  guides(alpha = FALSE, size = FALSE) +
+  geom_segment(aes(xend = weight, yend = pred_mod1, alpha = abs(res1) ) ) +
+  theme_bw(base_size = 12)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/abs-residuals-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;If we take all the above verticals bars (i.e., the residuals) and plot their distribution, we can compare them to a normal distribution with mean 0, and standard deviation &lt;span class=&#34;math inline&#34;&gt;\(\sigma\)&lt;/span&gt; equal to the standard deviation of the residuals, to check our assumption about the distribution of the residuals (here a normality assumption).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d %&amp;gt;%
+  ggplot(aes(x = res1) ) +
+  geom_histogram(aes(y = ..density..), bins = 20, alpha = 0.6) +
+  geom_line(aes(y = dnorm(res1, mean = 0, sd = sd(res1) ) ), size = 1) +
+  guides(fill = FALSE) +
+  theme_bw(base_size = 12) +
+  labs(x = &amp;quot;Residuals&amp;quot;, y = &amp;quot;Density&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/distribution-residuals-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;To sum up, the distributional assumption of the linear model (Gaussian or whatever) concerns the distribution of the errors, that we do not know. Instead, we can evaluate the distribution of the residuals, which are the observed differences between the outcome variable and the predictions of the model.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;prediction-uncertainty-the-simulate-function&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Prediction uncertainty: the &lt;code&gt;simulate&lt;/code&gt; function&lt;/h2&gt;
+&lt;p&gt;Recall that our model is:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{aligned}
+\text{height}_{i} &amp;amp;\sim \mathrm{Normal}(\mu_{i}, \sigma) \\
+\mu_{i} &amp;amp;= \alpha + \beta \cdot \text{weight}_{i} \\
+\end{aligned}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;So far, we used the linear part of the linear model (i.e., the second line) to make predictions about the &lt;span class=&#34;math inline&#34;&gt;\(\mu_{i}\)&lt;/span&gt;, from &lt;span class=&#34;math inline&#34;&gt;\(\alpha\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\beta\)&lt;/span&gt;. In other words, we made predictions about mean values of the Gaussian distribution for a specific value of &lt;code&gt;weight&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Now, if we want to generate actual data (i.e., the &lt;span class=&#34;math inline&#34;&gt;\(y_{i}\)&lt;/span&gt;), from our model, we still have to include &lt;span class=&#34;math inline&#34;&gt;\(\sigma\)&lt;/span&gt;. This can be done “by-hand”, by adding error (i.e., some random variation) to our predictions.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d &amp;lt;- d %&amp;gt;%
+  mutate(
+    sim1 = coef(mod1)[1] + coef(mod1)[2] * d$weight + rnorm(1, 0, sigma(mod1) )
+    )
+
+d %&amp;gt;%
+  select(height, weight, male, pred_mod1, sim1) %&amp;gt;%
+  head&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    height   weight male pred_mod1     sim1
+## 1 151.765 47.82561    1  157.1630 162.2150
+## 2 139.700 36.48581    0  146.9001 151.9521
+## 3 136.525 31.86484    0  142.7180 147.7700
+## 4 156.845 53.04191    1  161.8839 166.9359
+## 5 145.415 41.27687    0  151.2362 156.2882
+## 6 163.830 62.99259    1  170.8895 175.9415&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;simulate&lt;/code&gt; function allows to automate the previous step and to run it &lt;code&gt;nsims&lt;/code&gt; times.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;nsims &amp;lt;- 1e4
+sims &amp;lt;- simulate(mod1, nsim = nsims) %&amp;gt;% data.frame
+
+sims[1:6, 1:6]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##      sim_1    sim_2    sim_3    sim_4    sim_5    sim_6
+## 1 155.9598 155.3906 156.7651 152.7330 153.6077 156.5931
+## 2 146.8243 141.4573 135.7357 153.7677 142.5962 150.1732
+## 3 137.6233 141.3779 143.2266 149.4296 149.9607 144.1135
+## 4 173.9980 162.2460 170.4402 157.2107 158.7464 159.1776
+## 5 150.3885 156.8790 152.9237 140.2885 156.0903 144.1566
+## 6 178.6628 166.6504 162.7225 167.7171 173.9149 179.0282&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;lower_ci_sim &amp;lt;- apply(sims, 1, function(x) quantile(x, probs = 0.025) )
+upper_ci_sim &amp;lt;- apply(sims, 1, function(x) quantile(x, probs = 0.975) )
+
+sims_summary &amp;lt;- data.frame(
+  lower = lower_ci_sim,
+  upper = upper_ci_sim
+  )
+
+d %&amp;gt;%
+  ggplot(aes(x = weight, y = height) ) +
+  geom_smooth(method = &amp;quot;lm&amp;quot;, color = &amp;quot;black&amp;quot;) +
+  geom_point(size = 2, alpha = 0.3) +
+  geom_ribbon(
+    data = sims_summary, inherit.aes = FALSE,
+    aes(x = d$weight, ymin = lower, ymax = upper), alpha = 0.1
+    ) +
+  theme_bw(base_size = 12)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-20-glm_files/figure-html/simulate-ntimes-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The first shaded region around the regression line represents the 95% confidence interval around the regression line, whereas the second broader shaded area represents the 95% central quantiles of the Gaussian distribution at each value of weight. These are computed by simulating &lt;code&gt;nsims&lt;/code&gt; height values at each weight value, and by taking the 95% mean values of this distribution.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Conclusions&lt;/h2&gt;
+&lt;p&gt;In this post, we tried to shed light on some concepts of the generalised linear model by examining the similarities and differences between four common R functions. It should be acknowledged that these functions (&lt;code&gt;predict&lt;/code&gt;, &lt;code&gt;fitted&lt;/code&gt;, &lt;code&gt;residuals&lt;/code&gt;, and &lt;code&gt;simulate&lt;/code&gt;) work with many different types of models, including models fitted with &lt;code&gt;lme4&lt;/code&gt; or &lt;code&gt;brms&lt;/code&gt;. For instance, here is an overview of the available methods in my current session.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;methods(predict)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1] predict.ar*                predict.Arima*            
+##  [3] predict.arima0*            predict.brmsfit*          
+##  [5] predict.bs*                predict.bSpline*          
+##  [7] predict.glm                predict.glmmPQL*          
+##  [9] predict.gls*               predict.gnls*             
+## [11] predict.HoltWinters*       predict.lda*              
+## [13] predict.lm                 predict.lme*              
+## [15] predict.lmList*            predict.lmList4*          
+## [17] predict.loess*             predict.lqs*              
+## [19] predict.mca*               predict.merMod*           
+## [21] predict.mlm*               predict.nbSpline*         
+## [23] predict.nlme*              predict.nls*              
+## [25] predict.npolySpline*       predict.ns*               
+## [27] predict.pbSpline*          predict.polr*             
+## [29] predict.poly*              predict.polySpline*       
+## [31] predict.ppolySpline*       predict.ppr*              
+## [33] predict.prcomp*            predict.princomp*         
+## [35] predict.qda*               predict.rlm*              
+## [37] predict.smooth.spline*     predict.smooth.spline.fit*
+## [39] predict.StructTS*         
+## see &amp;#39;?methods&amp;#39; for accessing help and source code&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;details&gt;
+&lt;p&gt;&lt;summary&gt;Click to expand&lt;/summary&gt;&lt;/p&gt;
+&lt;div markdown=&#34;1&#34;&gt;
+&lt;p&gt;Bürkner, P.-C. (2017). brms: An R package for bayesian multilevel models using Stan. Journal of Statistical Software, 80 (1), 1–28. &lt;a href=&#34;doi:10.18637/jss.v080.i01&#34; class=&#34;uri&#34;&gt;doi:10.18637/jss.v080.i01&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;McElreath, R. (2016). Statistical Rethinking (p. 469). Chapman; Hall/CRC.&lt;/p&gt;
+&lt;p&gt;Rouder, J. N., Morey, R. D., &amp;amp; Wagenmakers, E.-J. (2016). The Interplay between Subjectivity, Statistical Practice, and Psychological Science. Collabra, 2(1), 1–12. &lt;a href=&#34;doi:10.1525/collabra.28&#34; class=&#34;uri&#34;&gt;doi:10.1525/collabra.28&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;/div&gt;
+&lt;div id=&#34;notes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Notes&lt;/h2&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;For more details on the logit model, please check this &lt;a href=&#34;http://www.barelysignificant.com/post/absenteeism/&#34;&gt;previous post&lt;/a&gt;.&lt;a href=&#34;#fnref1&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

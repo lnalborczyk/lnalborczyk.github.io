@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Marieke Longcamp | Ladislas Nalborczyk</title>
+    <link>/authors/marieke-longcamp/</link>
+      <atom:link href="/authors/marieke-longcamp/index.xml" rel="self" type="application/rss+xml" />
+    <description>Marieke Longcamp</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2023, Ladislas Nalborczyk</copyright><lastBuildDate>Mon, 29 Aug 2022 14:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/img/icon.png</url>
+      <title>Marieke Longcamp</title>
+      <link>/authors/marieke-longcamp/</link>
+    </image>
+    
+    <item>
+      <title>Motor inhibition prevents execution during imagined typing: Evidence from an action‐mode switching paradigm</title>
+      <link>/talk/2022-eslp/</link>
+      <pubDate>Mon, 29 Aug 2022 14:00:00 +0000</pubDate>
+      <guid>/talk/2022-eslp/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;em&gt;Abstract&lt;/em&gt;: Motor imagery is accompanied by a subjective multisensory experience. This sensory experience is thought to result from internal models that control the execution of overt actions. If so, how is it that motor imagery does not to lead to overt execution? Global and effector-specific inhibitory mechanisms might be at play during imagined actions (e.g., typing). To test this hypothesis, participants were asked to alternate between the overt (executed) and covert (imagined) typing of unimanual words. Global inhibition should induce longer reaction and movement times when the current trial is preceded by an imagined vs. an executed trial. Effector-specific inhibition should amplify this effect when the same hand is used in successive trials. These predictions were borne out by movement times, but not by reaction times. Overall, these results suggest that imagined typing involves the inhibition of hand movements. The pre-registered protocol and data will be available at &lt;a href=&#34;https://osf.io/y9a3k/&#34; class=&#34;uri&#34;&gt;https://osf.io/y9a3k/&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Motor inhibition prevents execution during imagined typing: Evidence from an action‐mode switching paradigm</title>
+      <link>/talk/2023-jcp/</link>
+      <pubDate>Mon, 29 Aug 2022 14:00:00 +0000</pubDate>
+      <guid>/talk/2023-jcp/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;em&gt;Abstract&lt;/em&gt;: Motor imagery is accompanied by a subjective multisensory experience. This sensory experience is thought to result from internal models that control the execution of overt actions. If so, how is it that motor imagery does not to lead to overt execution? Global and effector-specific inhibitory mechanisms might be at play during imagined actions (e.g., typing). To test this hypothesis, participants were asked to alternate between the overt (executed) and covert (imagined) typing of unimanual words. Global inhibition should induce longer reaction and movement times when the current trial is preceded by an imagined vs. an executed trial. Effector-specific inhibition should amplify this effect when the same hand is used in successive trials. These predictions were borne out by movement times, but not by reaction times. Overall, these results suggest that imagined typing involves the inhibition of hand movements. The pre-registered protocol and data will be available at &lt;a href=&#34;https://osf.io/y9a3k/&#34; class=&#34;uri&#34;&gt;https://osf.io/y9a3k/&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

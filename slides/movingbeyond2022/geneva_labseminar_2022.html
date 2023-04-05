@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Moving to a World beyond p &lt; .05 (and BF &gt; 3): Why and how?</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Ladislas Nalborczyk" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view/tile-view.js"></script>
+    <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Moving to a World beyond p &lt; .05 (and BF &gt; 3):<br>Why and how?
+### Ladislas Nalborczyk
+### Aix Marseille Univ, CNRS, LPC, LNC, Marseille, France
+### 21.02.2022 <br><br> Slides available at tinyurl.com/movingbeyond2022
+
+---
+
+
+
+
+# Overview
+
+
+
+
+
+
+
+
+
+1. Introduction to the philosophy of statistics: Theories, models, evidence, inference
+  + Theoretical and statistical models
+  + Statistical evidence and inference
+  
+2. Correct and incorrect interpretations of common hypothesis tests
+  + P-values and confidence intervals
+  + Bayes factors
+  + Problems induced by the mindless use of statistics
+
+3. How to move forward: A model comparison (and model criticism) approach
+  + Statistical modelling and model comparison
+  + A principled Bayesian workflow
+  + Some applied examples
+
+---
+class: middle, center
+
+# Introduction to the philosophy of statistics (why do we need statistics in the first place?)
+## Theories, models, evidence, inference
+
+---
+
+# Scientific theories
+
+A scientific theory can be defined as **a set of logical propositions that posits causal relationships between observable phenomena**. 
+
+--
+
+* Initially broad and abstract: "Every object responds to the force of gravity in the same way"
+
+--
+
+* Then, concrete (testable) predictions: "The falling speed of two objects A and B should be the same, all other things being equal"
+
+???
+
+These logical propositions are originally abstract and broad (e.g., "every object responds to the force of gravity in the same way") but lead to concrete and specific predictions that are empirically testable (e.g., "the falling speed of two objects A and B should be the same, all other things being equal").
+
+---
+
+# Scientific theories
+
+The concept of a scientific theory is not a unitary concept though. As an example, [Meehl (1986)](https://meehl.umn.edu/sites/meehl.umn.edu/files/files/128socscientistsdontunderstand.pdf) lists three kinds of theories:
+
+- **Functional-dynamic theories** which relate "states to states or events to events". For instance, we say that when one variable changes, certain other variables change in such and such ways.
+
+--
+
+- **Structural-compositional theories** in which the main idea is to explain what something is composed of, or what kind of parts it has, and how they are put together.
+
+--
+
+- **Evolutionary theories** which are about the history and/or development of things (e.g., Darwin's theory, Wegener's theory of continental drift, the fall of Rome, etc.).
+
+---
+
+# First problem: We can not confirm theories
+
+.pull-left[
+According to [Campbell (1990)](https://www.tandfonline.com/doi/abs/10.1207/s15327965pli0102_2), the (intuitive) logical argument of science has the following form:
+
+- If Newton's theory A is true, then it should be observed that the tides have period B, the path of Mars shape C, the trajectory of a cannonball form D, etc.
+
+- Observation confirms B, C, and D.
+
+- Therefore Newton's theory A is "true".
+
+However, this argument is a fallacious argument known as the **affirmation of the consequent**. The invalidity comes from the existence of the cross-hatched area, that is, other possible explanations for B, C, and D being observed (figure from [Campbell, 1990](https://www.tandfonline.com/doi/abs/10.1207/s15327965pli0102_2)).
+]
+
+.pull-right[
+&lt;img src="figures/campbell.jpeg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Second problem: We can not (strictly) falsify theories
+
+We can not confirm theories, but maybe we can at least think of a way of disproving them? According to Popper's view, a theory can be considered as falsifiable if it can be shown to be false. But what does it mean for a theory to be false?
+
+???
+
+Here we should note that the falsifiability of early Popper concerns the problem of demarcation (i.e., what is science and what is pseudoscience), and defines pseudosciences as composed of non falsifiable theories (i.e., theories that do not allow the possibility of being disproved).
+
+But when it comes to describe how science works (descriptive purposes) or to know how scientific enquiries should be lead (prescriptive purposes), science is usually not described by the falsification standard, as Popper himself recognised and argued. In fact, deductive falsification is impossible in nearly every scientific context ([McElreath, 2016](https://xcelab.net/rm/statistical-rethinking/)).
+
+--
+
+In the next sections, we discuss some of the reasons that prevent (almost) any scientific theory to be strictly falsified (in a logical sense), namely: i) the distinction between theoretical and statistical models ii) the problem of measurement iii) the problem of continuous hypotheses, and iv) the Duhem-Quine problem.
+
+---
+
+# 1) Theoretical and statistical models
+
+A statistical model is a device that connect theories to data. It can be defined as an instantiation of a theory as a set of probabilistic statements ([Rouder, Morey, &amp; Wagenmakers, 2016](https://online.ucpress.edu/collabra/article/2/1/6/112677/The-Interplay-between-Subjectivity-Statistical)).
+
+--
+
+&lt;img src="figures/mcelreath.png" width="33%" style="display: block; margin: auto;" /&gt;
+
+Theoretical models and statistical models are usually not equivalent as many different theoretical models can correspond to the same probabilistic description. Conversely, different probabilistic descriptions can be derived from the same theoretical model. In other words, there is no one-to-one mapping between the two worlds, which render the induction from the statistical model to the theoretical model quite tricky (figure from [McElreath, 2020](https://xcelab.net/rm/statistical-rethinking/)).
+
+---
+
+# 1) Theoretical and statistical inference
+
+Causal and inferential relations between substantive theory, statistical hypothesis, and observational data (figure from [Meehl, 1990](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.135.6444&amp;rep=rep1&amp;type=pdf)).
+
+&lt;img src="figures/meehl.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+???
+
+Another problem yet, as stressed by Paul Meehl, is that while statistical methodology usually deals with the issue of assessing the validity of statistical hypotheses from observations, it does not address, and maybe can not address, the issue of assessing the validity of substantive theories from the corroboration or disconfirmation of statistical hypotheses.
+
+---
+
+# 2) Measurement error
+
+The logic of falsification is pretty simple and rests on the power of the modus tollens. This argument (whose exposition, for some reason, usually involves swans) can be presented as follows:
+
+- If my theory `\(T\)` is right, then I should observe these data `\(D\)`
+- I observe data that are not those I predicted `\(\neg D\)`
+- Therefore, my theory is wrong `\(\neg T\)`
+
+--
+
+This argument is perfectly valid and works well for logical statements (statements that are either true or false). However, the first problem that arises when we try to apply this reasoning to the "real world" is the problem of observation error: observations are prone to error, especially at the boundaries of knowledge ([McElreath, 2016](https://xcelab.net/rm/statistical-rethinking/)).
+
+---
+
+# 2) Measurement error
+
+.pull-left[
+According to Einstein, neutrinos can not travel faster than the speed of light. Thus, any observation of faster-than-light neutrinos would act as a strong falsifier of Einstein's special relativity. In 2011 however, a large team of respected physicists announced the detection of faster-than-light neutrinos (see the Wikipedia article: https://en.wikipedia.org/wiki/Faster-than-light_neutrino_anomaly).
+
+What was the reaction of the scientific community? The dominant reaction was not to claim Einstein's theory to be falsified but was instead: "How did this team mess up the measurement?" ([McElreath, 2016](https://xcelab.net/rm/statistical-rethinking/)).
+]
+
+.pull-right[
+&lt;img src="figures/cable.png" width="80%" style="display: block; margin: auto;" /&gt;
+]
+
+???
+
+And they were right to suspect something was wrong with the measurement: A fiber optic cable was attached improperly, and a clock oscillator was ticking too fast...
+
+---
+
+# 3) Probabilistic hypotheses
+
+Another problem arises from a misapplication of deductive syllogistic reasoning (a misapplication of the modus tollens). The problem (the "permanent illusion", as put by [Gigerenzer, 1993](https://media.pluto.psy.uconn.edu/Gigerenzer%20superego%20ego%20id.pdf)) is that most scientific hypotheses are not really of the kind "all swans are white" but rather of the form:
+
+- Ninety percent of swans are white.
+- If my hypothesis is correct, we should probably not observe a black swan.
+
+--
+
+Given this hypothesis, what can we conclude if we observe a black swan? Not much. To understand why, let's translate it first to a more common statement in psychological research (from [Cohen, 1994](http://www.iro.umontreal.ca/~dift3913/cours/papers/cohen1994_The_earth_is_round.pdf)):
+
+- If the null hypothesis is true, then these data are highly unlikely.
+- These data have occurred.
+- Therefore, the null hypothesis is highly unlikely.
+
+But because of the probabilistic premise (i.e., the "highly unlikely") this conclusion is invalid. Why?
+
+---
+
+# 3) Probabilistic hypotheses
+
+Consider the following argument (still from [Cohen, 1994](http://www.iro.umontreal.ca/~dift3913/cours/papers/cohen1994_The_earth_is_round.pdf), borrowed from [Pollard &amp; Richardson, 1987](https://psycnet.apa.org/record/1987-30223-001)):
+
+- If a person is an American, he is probably not a member of Congress.
+- This person is a member of Congress.
+- Therefore, he is probably not an American.
+
+This conclusion is not sensible (the argument is invalid), because it fails to consider the alternative to the premise, which is that if this person were not an American, the probability of being a member of Congress would be 0.
+
+--
+
+This is formally exactly the same as:
+
+- If the null hypothesis is true, then these data are highly unlikely.
+- These data have occurred.
+- Therefore, the null hypothesis is highly unlikely.
+
+Which is as much invalid as the previous argument, because i) the premise (the hypothesis) is probabilistic/continuous rather than discrete/logical and ii) because it fails to consider the probability of the alternative. Thus, even without measurement/observation error, this problem would prevent us from applying the modus tollens to our hypothesis, thus preventing any possibility of strict falsification.
+
+---
+
+# 4) The underdetermination problem
+
+Again another problem is known as the [Duhem–Quine thesis/problem](https://en.wikipedia.org/wiki/Duhem–Quine_thesis) (aka the *underdetermination problem*). In practice, when a substantive theory `\(T\)` happens to be tested, some hidden assumptions, such as auxiliary theories about the instruments we use, are also put under examination ([Meehl, 1978](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.200.7648&amp;rep=rep1&amp;type=pdf); [1990](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.135.6444&amp;rep=rep1&amp;type=pdf); [1997](https://meehl.umn.edu/sites/meehl.umn.edu/files/files/169problemisepistemology.pdf)).
+
+--
+
+When we test a theory predicting that "if `\(O_{1}\)`" (some manipulation), "then `\(O_{2}\)`" (some observation), what we actually mean is that we should observe this relation, **if and only if** all of the above (i.e., the auxiliary theories, the instrument theories, the particulars, etc.) are true.
+
+&lt;!--
+
+What is following the "???" mark are notes (not to be displayed).
+
+--&gt;
+
+???
+
+These involve auxiliary theories that help to connect the substantive theory with the "real world", in order to make testable predictions (e.g., "both white and black swans go walk around a similar proportion of time, so that we are equally likely to observe them in the nature"). It also usually involves some auxiliary theories about the instruments we use (e.g., "the BDI is a valid instrument for measuring depressive symptoms"), and the empirical realisation of specific conditions describing the experimental *particulars* ([Meehl, 1978](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.200.7648&amp;rep=rep1&amp;type=pdf); [1990](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.135.6444&amp;rep=rep1&amp;type=pdf); [1997](https://meehl.umn.edu/sites/meehl.umn.edu/files/files/169problemisepistemology.pdf)).
+
+---
+
+# 4) The underdetermination problem
+
+Thus, the logical structure of an empirical test of a theory `\(T\)` can be described as the following conceptual formula ([Meehl, 1978](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.200.7648&amp;rep=rep1&amp;type=pdf); [1990](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.135.6444&amp;rep=rep1&amp;type=pdf); [1997](https://meehl.umn.edu/sites/meehl.umn.edu/files/files/169problemisepistemology.pdf)):
+
+`$$(T \land A_{t} \land C_{p} \land A_{i} \land C_{n}) \to (O_{1} \supset O_{2})$$`
+
+where the `\(\land\)` are conjunctions ("and"), the arrow `\(\to\)` denotes deduction ("follows that ..."), and the horseshoe `\(\supset\)` is the material conditional ("If `\(O_{1}\)`, Then `\(O_{2}\)`"). `\(A_{t}\)` is a conjunction of auxiliary theories, `\(Cp\)` is a *ceteribus paribus* clause (i.e., we assume there is no other factor exerting an appreciable influence that could obfuscate the main effect of interest), `\(A_{i}\)` is an auxiliary theory regarding instruments, and `\(C_{n}\)` is a statement about experimentally realised conditions (i.e., we assume that there is no systematic error/noise in the experimental settings).
+
+???
+
+In other words, we imply that a conjunction of all the elements on the left-side (including our substantive theory `\(T\)`) does imply the right side of the arrow, that is, "if `\(O_{1}\)`, then `\(O_{2}\)`". The falsificationist attitude of the modern psychologist would lead her to think that not observing this relation would falsify the substantive theory of interest, based on the valid fourth figure of the implicative syllogism (the modus tollens).
+
+---
+
+# 4) The underdetermination problem
+
+`$$(T \land A_{t} \land C_{p} \land A_{i} \land C_{n}) \to (O_{1} \supset O_{2})$$`
+
+However, although the modus tollens is a valid figure of the implicative syllogism for logical statements (e.g., "all swans are black"), the neatness of Popper's classic falsifiability concept is fuzzed up by the acknowledgement of the actual form of an empirical test. Obtaining falsificative evidence during an empirical test does not only falsify the substantive theory `\(T\)`, but it does falsify all the left-side of the above statement. In other words, what we have achieved by our laboratory or correlational "falsification" is a falsification of the combined claims `\(T \land A_{t} \land C_{p} \land A_{i} \land C_{n}\)`, which is probably not what we had in mind when we did the experiment ([Meehl, 1990](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.135.6444&amp;rep=rep1&amp;type=pdf)).
+
+--
+
+To sum up, failing to observe a predicted outcome does not necessarily mean that the theory itself is wrong, but rather that the conjunction of the theory and the underlying assumptions at hand are invalid ([Lakatos, 1978](https://www.cambridge.org/core/books/methodology-of-scientific-research-programmes/8DBCEFE34A59BAD3D393FB958A4DC5FC); [Meehl, 1978](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.200.7648&amp;rep=rep1&amp;type=pdf); [1990](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.135.6444&amp;rep=rep1&amp;type=pdf)).
+
+---
+
+# Consequences
+
+Falsification in science is almost always consensual, not logical ([McElreath, 2020](https://xcelab.net/rm/statistical-rethinking/)). A theoretical claim is considered to be falsified only when multiple lines of converging evidence have been obtained, by independent teams of researchers, and usually after several years or decades of critical discussion. The "falsification of a theory" then appears as a social result, issued from the community of scientists, and (almost) never as a deductive falsification.
+
+--
+
+How can we accumulate **evidence** in favour of or against a theory?
+
+???
+
+That's were statistics comes into play. There are several philosophical frameworks for statistical inference, which differ by their assumptions and by their definition of what counts as *evidence* in favour or against a theory.
+
+---
+class: middle, center
+
+# Correct and incorrect interpretations of common hypothesis tests:
+## p-values and confidence intervals
+
+---
+
+# Null Hypothesis Significance Testing (NHST)
+
+Let's say we are interested in height differences between women and men...
+
+
+```r
+men &lt;- rnorm(n = 100, mean = 174, sd = 10) # 100 men heights
+women &lt;- rnorm(n = 100, mean = 170, sd = 10) # 100 women heights
+```
+
+--
+
+
+```r
+t.test(x = men, y = women)
+```
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  men and women
+## t = 2.7805, df = 196.13, p-value = 0.005956
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  1.238872 7.283495
+## sample estimates:
+## mean of x mean of y 
+##  173.3333  169.0721
+```
+
+&lt;!-- --- --&gt;
+
+&lt;!-- # Interpreting the p-value --&gt;
+
+&lt;!-- From [Greenland et al. (2016)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4877414/pdf/10654_2016_Article_149.pdf) and [Goodman (2008)](https://www.ohri.ca/newsroom/seminars/SeminarUploads/1829%5CSuggested%20Reading%20-%20Nov%203,%202014.pdf). --&gt;
+
+&lt;!-- - The p-value is the probability that the null hypothesis is true. For example, if a test of the null hypothesis gave `\(p = 0.01\)`, the null hypothesis has only a 1% chance of being true. --&gt;
+
+&lt;!-- -- --&gt;
+
+&lt;!-- - The p-value for the null hypothesis is the probability that chance alone produced the observed association. For example, if the p-value for the null hypothesis is 0.08, there is an 8% probability that chance alone produced the association. --&gt;
+
+&lt;!-- -- --&gt;
+
+&lt;!-- - The p-value is the chance of our data occurring if the null hypothesis is true. For example, `\(p = 0.05\)` means that the observed association would occur only 5% of the time under the null hypothesis. --&gt;
+
+---
+
+&lt;iframe src="https://embed.polleverywhere.com/multiple_choice_polls/ok3TmpBIp0fmbxGJDS7rr?controls=none&amp;short_poll=true" width="1200px" height="600px"&gt;&lt;/iframe&gt;
+
+---
+class: middle, center
+
+## None of these definitions is true...
+
+## 🥺🥺🥺🥺
+
+---
+
+# Null Hypothesis Significance Testing (NHST)
+
+We are going to simulate t-values computed on samples generated under the assumption of no difference between women and men (the null hypothesis H0).
+
+
+```r
+nsims &lt;- 1e4 # number of simulations
+t &lt;- rep(x = NA, times = nsims) # initialising an empty vector
+
+for (i in 1:nsims) {
+    
+    men2 &lt;- rnorm(n = 100, mean = 170, sd = 10)
+    women2 &lt;- rnorm(n = 100, mean = 170, sd = 10)
+    t[i] &lt;- t.test(x = men2, y = women2)$statistic
+    
+}
+```
+
+--
+
+Or without for loops.
+
+
+```r
+t &lt;- replicate(n = nsims, expr = t.test(x = rnorm(100, 170, 10), y = rnorm(100, 170, 10) )$statistic)
+```
+
+---
+
+# Null Hypothesis Significance Testing (NHST)
+
+
+```r
+data.frame(t = t) %&gt;%
+    ggplot(aes(x = t) ) +
+    geom_histogram() +
+    theme_xaringan()
+```
+
+&lt;img src="geneva_labseminar_2022_files/figure-html/unnamed-chunk-9-1.svg" width="40%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Null Hypothesis Significance Testing (NHST)
+
+
+```r
+data.frame(t = c(-5, 5) ) %&gt;%
+    ggplot(aes(x = t) ) +
+    stat_function(fun = dt, args = list(df = t.test(men, women)$parameter), size = 1.5) +
+    theme_xaringan() + ylab("Probability density")
+```
+
+&lt;img src="geneva_labseminar_2022_files/figure-html/unnamed-chunk-10-1.svg" width="40%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Null Hypothesis Significance Testing (NHST)
+
+
+```r
+alpha &lt;- .05
+abs(qt(alpha / 2, df = t.test(x = men, y = women)$parameter) ) # two-sided critical t-value
+```
+
+```
+## [1] 1.972133
+```
+
+&lt;img src="geneva_labseminar_2022_files/figure-html/unnamed-chunk-12-1.svg" width="40%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Null Hypothesis Significance Testing (NHST)
+
+
+```r
+tobs &lt;- t.test(x = men, y = women)$statistic # observed t-value
+tobs %&gt;% as.numeric
+```
+
+```
+## [1] 2.780528
+```
+
+&lt;img src="geneva_labseminar_2022_files/figure-html/unnamed-chunk-14-1.svg" width="40%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# P-values
+
+A p-value is simply a tail area (an integral) computed from the distribution of test statistics under (given) the null hypothesis. It gives the probability of observing the data we observed *or more extreme data*, **given that the null hypothesis is true** ([Wagenmakers et al., 2007](https://link.springer.com/article/10.3758/BF03194105)).
+
+`$$p[\mathbf{t}(\mathbf{x}^{\text{rep}}|H_{0}) \geq t(x)]$$`
+
+--
+
+
+```r
+t.test(x = men, y = women)$p.value
+```
+
+```
+## [1] 0.005955894
+```
+
+--
+
+
+```r
+tvalue &lt;- abs(t.test(x = men, y = women)$statistic)
+df &lt;- t.test(x = men, y = women)$parameter
+2 * integrate(f = dt, lower = tvalue, upper = Inf, df = df)$value
+```
+
+```
+## [1] 0.005955896
+```
+
+---
+
+# Fisher versus Neyman &amp; Pearson
+
+&lt;img src="figures/fisher.jpeg" width="33%" style="display: block; margin: auto;" /&gt;
+
+.pull-left[
+According to Fisher, the p-value is thought to measure the strength of evidence against the null hypothesis: the lower the p-value, the stronger the evidence against the null hypothesis. But we know that p-values at best *correlate* (in a loose meaning) with evidence (e.g., see [Wagenmakers, 2007](http://www.ejwagenmakers.com/2007/pValueProblems.pdf)).
+
+The Fisherian continuous interpretation of p-values has many problems (cf. next slide) and has been widely criticised.
+]
+
+--
+
+.pull-right[
+Neyman &amp; Pearson used p-values and significance thresholds as a way of **controlling error rates in the long run**. In this perspective, we don't interpret the p-value, we only "classify" results as *significant* or *non-significant*. This strict procedure allows keeping error rates at a fixed level (given that the null hypothesis is true, see this [blogpost](https://lucklab.ucdavis.edu/blog/2018/4/19/why-i-lost-faith-in-p-values)).
+
+However, this view also has serious problems. One of the biggest problem being the *domain problem* (see [Trafimow &amp; Earp, 2017](https://www.sciencedirect.com/science/article/pii/S0732118X16301076?via%3Dihub)).
+]
+
+---
+
+# Logic, frequentism, and probabilistic reasoning
+
+The modus tollens is one of the strongest rule of inference in logic. It works perfectly well in science when we deal with hypotheses of the following form: *If `\(H_{0}\)` is true, then we should not observe `\(x\)`. We observed `\(x\)`. Then, `\(H_{0}\)` is false*.
+
+--
+
+BUT, most of the time, we deal with *continuous*, *probabilistic* hypotheses...
+
+The Fisherian inference (induction) is of the form: *If `\(H_{0}\)` is true, then we should PROBABLY not observe `\(x\)`. We observed `\(x\)`. Then, `\(H_{0}\)` is PROBABLY false*.
+
+--
+
+However, as we have seen previously, this argument is invalid. The modus tollens does not apply to probabilistic statements (e.g., [Pollard &amp; Richardson, 1987](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.505.9968&amp;rep=rep1&amp;type=pdf); [Rouder, Morey, Verhagen, Province, &amp; Wagenmakers, 2016](http://www.ejwagenmakers.com/2016/RouderEtAl2016FreeLunch.pdf)).
+
+---
+
+# Interpreting confidence intervals
+
+Confidence intervals are basically regions of significance. Thus, they have to be interpreted as cautiously as p-values, and are submitted to the same flaws.
+
+A 95% confidence interval **does not mean** that there is a 95% probability that the interval contains the population value of the parameter (remember the *modus tollens* fallacy).
+
+--
+
+The only correct interpretation is to think about it in terms of *coverage proportion* (see next slide and [this blogpost](http://rpsychologist.com/d3/CI/)).
+
+**A 95% confidence interval represents a statement about the procedure**, not about the parameter. It means that, in the long run, 95% of the confidence intervals we could compute (in an exact replication of the experiment) would contain the population value of the parameter. But we can not say anything about the particular confidence interval we computed in this particular experiment...
+
+---
+
+&lt;div align="center"&gt;&lt;iframe width="1200" height="600" src="http://rpsychologist.com/d3/CI/" scrolling="yes"&gt;&lt;/iframe&gt;&lt;/div&gt;
+
+---
+
+# Preliminary summary
+
+Frequentist statistics (e.g., p-values and confidence intervals) make sense under the frequentist interpretation of probability: they refer to **long-run frequencies**.
+
+--
+
+P-values are simply tail areas in probability distributions. It means that they are conditional on some distribution. But it also means that computing a p-value is a generic statistical procedure, it's not inextricable from the null hypothesis (e.g., see [Bayesian p-values](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.310.145&amp;rep=rep1&amp;type=pdf)).
+
+--
+
+Confidence intervals are basically regions of significance. Thus, they are prone to the very same limits as p-values.
+
+---
+class: middle, center
+
+# Correct and incorrect interpretations of common hypothesis tests:
+## Bayes factors
+
+---
+
+# Bayes factors
+
+Instead of testing only one hypothesis (the null hypothesis), Bayes factors allow comparing two hypotheses. For instance, let's say we are comparing two models:
+
+- `\(\mathcal{H}_{0}: \mu_{1} = \mu_{2} \rightarrow \delta = 0\)`
+- `\(\mathcal{H}_{1}: \mu_{1} \neq \mu_{2} \rightarrow \delta \neq 0\)`
+
+--
+
+`$$\underbrace{\dfrac{p(\mathcal{H}_{0}|D)}{p(\mathcal{H}_{1}|D)}}_\text{posterior odds} = \underbrace{\dfrac{p(D|\mathcal{H}_{0})}{p(D|\mathcal{H}_{1})}}_\text{Bayes factor} \times \underbrace{\dfrac{p(\mathcal{H}_{0})}{p(\mathcal{H}_{1})}}_\text{prior odds}$$`
+
+--
+
+`$$\text{evidence}\ = p(D | \mathcal{H}) = \int p(\theta | \mathcal{H}) p(D | \theta, \mathcal{H}) \text{d}\theta$$`
+
+The *evidence* in favour of a model corresponds to the *marginal likelihood* of a model. In other words, it is an averaged *likelihood* weighted by the prior predictions of the model, which makes the Bayes factor a kind of Bayesian likelihood ratio.
+
+---
+
+# What does a Bayes factor look like?
+
+Let's say we want to estimate the bias `\(\theta\)` of a coin. For convenience, we can write our predictions as two [Beta-Binomial models](http://www.barelysignificant.com/post/ppc/):
+
+$$
+`\begin{align}
+\mathcal{M_{1}} : y_{i} &amp;\sim \mathrm{Binomial}(n, \theta) \\
+\theta &amp;\sim \mathrm{Beta}(6, 10) \\
+\end{align}`
+$$
+
+$$
+`\begin{align}
+\mathcal{M_{2}} : y_{i} &amp;\sim \mathrm{Binomial}(n, \theta) \\
+\theta &amp;\sim \mathrm{Beta}(20, 12) \\
+\end{align}`
+$$
+
+&lt;img src="geneva_labseminar_2022_files/figure-html/unnamed-chunk-18-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# What does a Bayes factor look like?
+
+&lt;img src="figures/bf.gif" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Bayes factors are the new p-values...
+
+Be careful not to interpret Bayes factors as *posterior odds*...
+
+Bayes factors indicate how much we should update our *prior odds*, in the light of new incoming data. They **do not tell us what is the most probable hypothesis**, given the data (unless the prior odds are 1:1).
+
+--
+
+Let's take another example:
+
+- `\(\mathcal{H}_{0}\)`: there is no such thing as precognition
+- `\(\mathcal{H}_{1}\)`: precognition does really exist
+
+We run an experiment and observe a `\(\text{BF}_{10} = 27\)`. What are the posterior odds in favour of `\(\mathcal{H}_{1}\)`?
+
+--
+
+`$$\underbrace{\dfrac{p(\mathcal{H}_{1}|D)}{p(\mathcal{H}_{0}|D)}}_\text{posterior odds} = \underbrace{\dfrac{27}{1}}_\text{Bayes factor} \times \underbrace{\dfrac{1}{1000}}_\text{prior odds} = \dfrac{27}{1000} = 0.027$$`
+
+---
+class: middle, center
+
+# Problems induced by the mindless use of statistics
+
+---
+
+# Problems induced by the mindless use of statistics
+
+Pressure to produce (e.g., publish), together with widespread misunderstanding of basic concepts in (philosophy of) statistics, have practical/dramatic consequences on the published literature (Figure from [Data colada](http://datacolada.org/41)).
+
+&lt;img src="figures/phacking.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Problems induced by the mindless use of statistics
+
+Undisclosed flexibility in data collection, analysis, and interpretation dramatically increases the false positive rates (cf. the "garden of forking paths" from [Gelman &amp; Loken, 2013](http://www.stat.columbia.edu/~gelman/research/unpublished/p_hacking.pdf)).
+
+&lt;img src="figures/publication_bias_rr.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+class: middle, center
+
+# The ATOM guidelines
+
+---
+
+# Do not say "statistically significant"
+
+In 2019, **The American Statistician** published a special issue on *Moving to a World Beyond "p&lt;.05"*, with the intention to provide new recommendations for users of statistics (e.g., researchers, policy makers, journalists). This issue comprises 43 original papers aiming to provide new guidelines and practical alternatives to the "mindless" use of statistics. In the accompanying editorial, [Wasserstein et al. (2019)](https://www.tandfonline.com/doi/full/10.1080/00031305.2019.1583913) provide a first practical recommendation.
+
+--
+
+.bg-washed-green.b--dark-green.ba.bw2.br3.shadow-5.ph4.mt5[
+We conclude, based on our review of the articles in this special issue and the broader literature, that it is time to stop using the term "statistically significant" entirely. Nor should variants such as "significantly different", "p &lt; 0.05," and "nonsignificant" survive, whether expressed in words, by asterisks in a table, or in some other way.
+
+.tr[
+— Wassertein, R. L., Schirm, A. L., &amp; Lazar, N. A. (2019). Moving to a World Beyond "p&lt;0.05". The American Statistician, 73, 1-19.
+]]
+
+---
+
+# ATOM guidelines
+
+Then, they summarise their practical recommendations in the form of the **ATOM** guidelines:
+
+
+- **Accept uncertainty**: we must "countenance uncertainty in all statistical conclusions, seeking ways to quantify, visualize, and interpret the potential for error" ([Calin-Jageman &amp; Cumming, 2019](https://www.tandfonline.com/doi/full/10.1080/00031305.2018.1518266)).
+
+--
+
+- **Be thoughtful**: we clearly distinguish between confirmatory (preregistered) and exploratory (non-preregistered) statistical analyses. We routinely evaluate the *validity* of the statistical model and we are suspicious of statistical *defaults*.
+
+--
+
+- **Be open**: we try to be exhaustive in the way we report our analyses and we beware of shortcuts than could hinder important information to the reader.
+
+--
+
+- **Be modest**: we recognise that there is no unique "true statistical model" and we discuss the limitations of our analyses and conclusions. We also recognise that scientific inference is much broader than statistical inference and we try not to conclude anything from a single study without the warranted uncertainty.
+
+---
+class: middle, center
+
+# How to move forward: A model comparison (and model criticism) approach
+
+---
+
+# Common statistical tests are model comparisons
+
+.pull-left[
+
+First insight: Common statistical "tests" (e.g., t-test, ANOVA) can be restated as comparisons of regression models.
+
+Instead of (or in supplement to) binary conclusions, we also consider how sounds are the models we are comparing, given the phenomenon at hand.
+
+]
+
+.pull-right[
+&lt;a href="https://www.taylorfrancis.com/books/mono/10.4324/9781315744131/data-analysis-charles-judd-gary-mcclelland-carey-ryan" target="_blank"&gt;&lt;img src="figures/judd.jpg" width="66%" style="display: block; margin: auto;" /&gt;&lt;/a&gt;
+]
+
+???
+
+This shift away from statistical testing to statistical modelling and model comparison puts more emphasis on the underlying statistical models, and less emphasis on the output of statistical tests.
+
+---
+
+# Model comparison and out-of-sample predictive accuracy
+
+.pull-left[
+
+Second insight: Instead of comparing unrealistic models (e.g., the "null hypothesis" and the unspecified/default "alternative hypothesis" models), let's compare interesting models, embodying theoretical hypotheses of interest.
+
+General steps of the model selection approach usually consist in establishing a set of `\(R\)` relevant models, ranking these models (and attributing them weights) using an information criterion, and choosing the best model from the model set to make an inference from this best model. Alternatively, one can make inference from a weighted average of the models' predictions (aka model averaging or multimodel inference).
+
+]
+    
+.pull-right[
+&lt;a href="https://link.springer.com/book/10.1007/b97636" target="_blank"&gt;&lt;img src="figures/burnham.jpg" width="60%" style="display: block; margin: auto;" /&gt;&lt;/a&gt;
+]
+
+---
+
+# Model comparison and out-of-sample predictive accuracy
+
+Hirotugu Akaike noticed that the negative log-likelihood of a model + 2 times its number of parameters was approximately equal to the **out-of-sample deviance** of a model...
+
+`$$\text{AIC} = \underbrace{-2\log(\mathcal{L}(\hat{\theta}|\text{data}))}_\text{in-sample deviance} + 2K$$`
+
+**In-sample deviance**: how bad is a model to explain the current dataset (the dataset that we used to fit the model)
+
+**Out-of-sample deviance**: how bad is a model to explain a **future** dataset issued from the same data generating process (the same population)
+
+---
+
+# Philosophical oecumenism: Statistical toolbox
+
+Different statistical tools rest on different philosophical frameworks and aim to answer different questions.
+
+--
+
+**Quantifying the relative evidence for a hypothesis/model**
+
+&amp;#8627; Use Bayes factors or likelihood ratios (do not use p-values for this)
+
+--
+
+**Making decisions while controlling error rates in the long-run**
+
+&amp;#8627; Use NHST &amp; p-values (à la Neyman-Pearson) (do not use Bayes factors for this)
+
+--
+
+**Comparing the (out-of-sample) predictive abilities of models**
+
+&amp;#8627; Use information criteria (e.g., AIC, WAIC)
+
+---
+
+# Towards a principled workflow: Statistical rethinking
+
+.pull-left[
+
+Making use of the toolbox and pushing further the statistical modelling and model comparison approach. The focus is on building models, validating them (both against prior knowledge and new observations), comparing them, and using them for prediction and/or inference.
+
+A full course on Bayesian statistical (thinking and) modelling is available freely on Youtube, see the Github repository for more details: https://github.com/rmcelreath/stat_rethinking_2022.
+
+]
+    
+.pull-right[
+&lt;a href="https://xcelab.net/rm/statistical-rethinking/" target="_blank"&gt;&lt;img src="figures/rethinking.jpg" width="66%" style="display: block; margin: auto;" /&gt;&lt;/a&gt;
+]
+
+
+---
+
+# Applying this to empirical data in cognitive sciences
+
+.pull-left[
+&lt;a href="https://arxiv.org/abs/2011.01808" target="_blank"&gt;&lt;img src="figures/bayesian_workflow.png" width="100%" style="display: block; margin: auto;" /&gt;&lt;/a&gt;
+]
+    
+.pull-right[
+&lt;a href="https://arxiv.org/abs/1904.12765" target="_blank"&gt;&lt;img src="figures/cogsci_bayesian_workflow.png" width="100%" style="display: block; margin: auto;" /&gt;&lt;/a&gt;
+]
+
+---
+
+# Applying this to empirical data in cognitive sciences
+
+&lt;img src="figures/workflow.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Some applied examples
+
+An illustration of a similar workflow from my own work (Nalborczyk et al., [2020, PLOS ONE](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0233282)). Reproducible manuscript, analyses, and figures available at https://osf.io/czer4/.
+
+&lt;a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0233282" target="_blank"&gt;&lt;img src="figures/plos.png" width="50%" style="display: block; margin: auto;" /&gt;&lt;/a&gt;
+
+---
+
+# Visualising the EMG data
+
+For each trial (1 sec), we have the EMG amplitude recorded over two facial muscles: the orbicularis oris inferior (OOI) and the zygomaticus major (ZYG) muscles.
+
+&lt;img src="geneva_labseminar_2022_files/figure-html/emg1-1.svg" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Visualising the EMG data
+
+EMG data are highly skewed...
+
+&lt;img src="figures/generalplot.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Assessing the model's predictions
+
+Posterior predictive checking for the Bayesian multivariate multilevel Gaussian model...
+
+&lt;img src="figures/ppcbmod1.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Assessing the model's predictions
+
+Posterior predictive checking for the Bayesian multivariate multilevel Skew-Normal model...
+
+&lt;img src="figures/ppcbmod3.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Reporting the model's estimates
+
+.pull-left[
+The estimates from this second model are summarised in Table 4 and Fig 5. According to this model, the EMG amplitude of the OOI was higher than baseline (the estimated standardised score was above zero) in every condition whereas, for the ZYG, it was only the case in the overt speech condition. We did not observe the hypothesised difference according to the class of nonwords during inner speech production, neither on the OOI (b = 0.025, 95% CrI [-0.012, 0.064], BF01 = 64.447) nor on the ZYG (b = 0.004, 95% CrI [-0.007, 0.014], BF01 = 532.811).
+]
+
+.pull-right[
+&lt;img src="figures/predbmod1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Some applied examples
+
+Another illustration from an under-review manuscript on the interaction between orthographic and graphomotor constraints in learning to write. Effect of these constraints is measured on different variables with different properties, that should be taken into account in the models.
+
+&lt;img src="figures/ppc_bad.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Some applied examples
+
+Instead of the usual Gaussian multilevel (aka mixed-effects) regression model, we used a shifted-lognormal multilevel regression model for the three positive-only continuous variables, and a multilevel Poisson regression model for the count variable (i.e., number of stops).
+
+&lt;img src="figures/ppc_good.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# A brief summary
+
+1. Think hard about a (or several) plausible data-generating process(es)
+
+--
+
+2. Think hard about the available prior knowledge and encode it into your model(s)
+
+--
+
+3. Validate these assumptions using simulation (e.g., prior predictive checking)
+
+--
+
+4. If deemed appropriate, fit the model(s) and update prior knowledge using the Bayesian machinery
+
+--
+
+5. Assess the validity of the model(s) using simulation (e.g., posterior predictive checking)
+
+--
+
+6. Compare various interesting and competing models
+
+--
+
+7. Make inference about interesting quantities (using as many statistical indexes as needed)
+
+--
+
+8. This is *not* a linear process, feedback loops are often needed between these steps
+
+---
+
+# Further resources
+
+The special issue on "Statistical Inference in the 21st Century: A World Beyond p &lt; 0.05": https://www.tandfonline.com/toc/utas20/73/sup1
+
+Everything is fucked: The syllabus, https://hardsci.wordpress.com/2016/08/11/everything-is-fucked-the-syllabus/
+
+Some examples of ATOMised reporting of statistical modelling (from my own work):
+https://pubs.asha.org/doi/abs/10.1044/2018_JSLHR-S-18-0006, https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0233282, https://journals.sagepub.com/doi/abs/10.1177/0956797619900336
+
+Introduction to the Meehlian Corroboration-Verisimilitude theory of science: https://www.barelysignificant.com/post/corroboration1/ and https://www.barelysignificant.com/post/corroboration2/
+
+The materials of my doctoral course on Bayesian statistical modelling (in French): https://github.com/lnalborczyk/IMSB2021
+
+---
+
+# Take-home messages
+
+### Don'ts
+
+- Do not say "statistically significant".
+- Do not dichotomise or trichotomise statistical results.
+
+--
+
+### Dos
+
+- Read, digest, and teach some philosophy of statistics and statistical modelling (vs. testing).
+- Accept uncertainty. Be thoughtful, open, and modest.
+
+&lt;br&gt;
+
+&amp;nbsp; &lt;svg viewBox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"&gt;&lt;/path&gt;&lt;/svg&gt; [lnalborczyk](https://twitter.com/lnalborczyk) &amp;nbsp; &lt;svg viewBox="0 0 496 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt; [lnalborczyk](https://github.com/lnalborczyk) &amp;nbsp; &lt;svg viewBox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;g label="icon" id="layer6" groupmode="layer"&gt;    &lt;path id="path2" d="m 255.9997,7.9999987 c -34.36057,0 -62.21509,27.8545563 -62.21509,62.2151643 0,20.303056 9.87066,38.160947 24.91769,49.517247 0.18814,-20.457899 16.79601,-36.993393 37.29685,-36.993393 20.50082,0 37.11091,16.535494 37.29909,36.993393 15.04533,-11.3563 24.9177,-29.212506 24.9177,-49.517247 C 318.21272,35.854555 290.35915,7.9999987 255.99915,7.9999987 Z M 293.29654,392.2676 c -0.18814,20.4601 -16.79601,36.99338 -37.29684,36.99338 -20.50082,0 -37.10922,-16.53551 -37.29684,-36.99338 -15.04759,11.35627 -24.91769,29.21246 -24.91769,49.51722 0,34.36059 27.85453,62.21518 62.2151,62.21518 34.36056,0 62.21508,-27.85459 62.21508,-62.21518 0,-20.30306 -9.87066,-38.16095 -24.91767,-49.51722 z M 441.78489,193.78484 c -20.30301,0 -38.16309,9.87068 -49.51717,24.91769 20.45786,0.18819 36.99333,16.79605 36.99333,37.29689 0,20.50085 -16.53547,37.11096 -36.9911,37.29916 11.35634,15.04533 29.21249,24.91769 49.51721,24.91769 C 476.14549,318.21327 504,290.35948 504,255.99942 504,221.6394 476.14549,193.78425 441.78489,193.78425 Z M 82.738898,255.99997 c 0,-20.50139 16.535509,-37.11096 36.993392,-37.29689 -11.35632,-15.04756 -29.214164,-24.91769 -49.517197,-24.91769 -34.36057,0 -62.2150945,27.85455 -62.2150945,62.21517 0,34.3606 27.8545245,62.21516 62.2150945,62.21516 20.303033,0 38.160877,-9.87068 49.517197,-24.91773 -20.457883,-0.18818 -36.993391,-16.796 -36.993391,-37.29688 z M 431.3627,80.636814 c -24.29549,-24.295544 -63.68834,-24.295544 -87.9844,0 -14.35704,14.357057 -20.00298,33.963346 -17.39331,52.633806 -0.0824,0.0809 -0.18198,0.13437 -0.26434,0.21491 -14.578,14.57799 -14.578,38.21689 0,52.79488 14.57797,14.57799 38.21681,14.57799 52.79484,0 0.0824,-0.0824 0.13455,-0.18198 0.21732,-0.26434 18.66819,2.60796 38.27445,-3.03799 52.63151,-17.39336 24.29378,-24.29778 24.29378,-63.68837 -0.003,-87.986153 z M 186.2806,378.51178 c 14.57798,-14.57799 14.57798,-38.21461 0,-52.79319 -14.57798,-14.57853 -38.21683,-14.57798 -52.79481,0 -0.0825,0.0824 -0.13448,0.18199 -0.21476,0.26215 -18.67046,-2.60795 -38.276723,3.03572 -52.63376,17.39505 -24.297753,24.29552 -24.297753,63.6884 0,87.98449 24.29551,24.29552 63.68833,24.29552 87.98439,0 14.35702,-14.35703 20.00297,-33.96333 17.39333,-52.63386 0.0848,-0.0786 0.18364,-0.13228 0.26672,-0.21505 z m 0,-245.02583 c -0.0826,-0.0824 -0.18198,-0.13436 -0.26445,-0.21494 2.60795,-18.66823 -3.038,-38.27452 -17.39332,-52.633811 -24.29777,-24.295544 -63.68832,-24.295544 -87.984405,0 -24.297747,24.297781 -24.297747,63.688381 0,87.986151 14.357042,14.35706 33.963315,20.00301 52.631515,17.39336 0.0808,0.0824 0.13447,0.18199 0.21475,0.26434 14.57799,14.57799 38.21684,14.57799 52.79482,0 14.57797,-14.57802 14.57797,-38.21689 0,-52.79488 z m 245.0821,209.89048 c -14.35703,-14.35703 -33.96329,-20.00301 -52.63378,-17.39505 -0.0809,-0.0824 -0.13228,-0.18199 -0.21506,-0.26215 -14.57797,-14.57799 -38.21685,-14.57799 -52.79482,0 -14.57797,14.57799 -14.57797,38.21461 0,52.79316 0.0827,0.0828 0.18198,0.13455 0.26434,0.21505 -2.60796,18.67053 3.03802,38.27683 17.39334,52.63386 24.29552,24.29552 63.68834,24.29552 87.98439,0 24.29775,-24.29552 24.29775,-63.68841 0.003,-87.98451 z" style="stroke-width:0.07717"&gt;&lt;/path&gt;  &lt;/g&gt;&lt;/svg&gt; [https://osf.io/ba8xt](https://osf.io/ba8xt) &amp;nbsp; &lt;svg viewBox="0 0 496 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M336.5 160C322 70.7 287.8 8 248 8s-74 62.7-88.5 152h177zM152 256c0 22.2 1.2 43.5 3.3 64h185.3c2.1-20.5 3.3-41.8 3.3-64s-1.2-43.5-3.3-64H155.3c-2.1 20.5-3.3 41.8-3.3 64zm324.7-96c-28.6-67.9-86.5-120.4-158-141.6 24.4 33.8 41.2 84.7 50 141.6h108zM177.2 18.4C105.8 39.6 47.8 92.1 19.3 160h108c8.7-56.9 25.5-107.8 49.9-141.6zM487.4 192H372.7c2.1 21 3.3 42.5 3.3 64s-1.2 43-3.3 64h114.6c5.5-20.5 8.6-41.8 8.6-64s-3.1-43.5-8.5-64zM120 256c0-21.5 1.2-43 3.3-64H8.6C3.2 212.5 0 233.8 0 256s3.2 43.5 8.6 64h114.6c-2-21-3.2-42.5-3.2-64zm39.5 96c14.5 89.3 48.7 152 88.5 152s74-62.7 88.5-152h-177zm159.3 141.6c71.4-21.2 129.4-73.7 158-141.6h-108c-8.8 56.9-25.6 107.8-50 141.6zM19.3 352c28.6 67.9 86.5 120.4 158 141.6-24.4-33.8-41.2-84.7-50-141.6h-108z"&gt;&lt;/path&gt;&lt;/svg&gt; [www.barelysignificant.com](https://www.barelysignificant.com)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"slideNumberFormat": "%current%/%total%"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

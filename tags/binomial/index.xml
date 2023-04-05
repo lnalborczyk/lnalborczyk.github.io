@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>binomial | Ladislas Nalborczyk</title>
+    <link>/tags/binomial/</link>
+      <atom:link href="/tags/binomial/index.xml" rel="self" type="application/rss+xml" />
+    <description>binomial</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2023, Ladislas Nalborczyk</copyright><lastBuildDate>Tue, 23 Jan 2018 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/img/icon.png</url>
+      <title>binomial</title>
+      <link>/tags/binomial/</link>
+    </image>
+    
+    <item>
+      <title>Checking the asumption of independence in binomial trials using posterior predictive checking</title>
+      <link>/post/ppc/</link>
+      <pubDate>Tue, 23 Jan 2018 00:00:00 +0000</pubDate>
+      <guid>/post/ppc/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;posterior-predictive-checking&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Posterior predictive checking&lt;/h2&gt;
+&lt;p&gt;What is a posterior predictive check ? According to Gelman et al. (2013, page 151), “Bayesian predictive checking generalizes classical hypothesis testing by averaging over the posterior distibution of the unknown parameters vector &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; rather than fixing it at some estimate &lt;span class=&#34;math inline&#34;&gt;\(\hat{\theta}\)&lt;/span&gt;”.&lt;/p&gt;
+&lt;p&gt;To explore this idea in more details, we are going to extend an example presented in Gelman et al. (2013, page 147) to a case study I have already discussed in two previous blogposts (&lt;a href=&#34;http://www.barelysignificant.com/post/absenteeism/&#34;&gt;here&lt;/a&gt; and &lt;a href=&#34;http://www.barelysignificant.com/post/absenteeism2/&#34;&gt;here&lt;/a&gt;). Let’s say I am recruiting participants for a psychology study that is lasting for approximately half an hour. If everything goes smoothly, I can manage to recruit 2 participants per hour, and doing it between 9am and 6pm (having the first participant at 9am, the second one at 9.30am and the last one at 5.30pm) for a whole week (from Monday to Friday) would give me 90 potential participants.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;beta-binomial-model&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Beta-Binomial model&lt;/h2&gt;
+&lt;p&gt;We know that some participants won’t show up to the time slot they registered for. I am interested in knowing the mean probability of presence, that we will call &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;This sequence of binary outcomes (presence vs. absence) &lt;span class=&#34;math inline&#34;&gt;\(y_{1}, \dots, y_{n}\)&lt;/span&gt; is modelled as &lt;strong&gt;a serie of independent trials&lt;/strong&gt; with common probability of success (presence) &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;, which is attributed a &lt;a href=&#34;https://en.wikipedia.org/wiki/Conjugate_prior&#34;&gt;conjugate&lt;/a&gt; Beta prior, with shape parameters &lt;span class=&#34;math inline&#34;&gt;\(\alpha\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\beta\)&lt;/span&gt; (encoded in the second line of our model).&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{aligned}
+y &amp;amp;\sim \mathrm{Binomial}(n, \theta) \\
+\theta &amp;amp;\sim \mathrm{Beta}(\alpha, \beta) \\
+\end{aligned}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;We could choose to give &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; a uniform prior between 0 and 1 (to express our total ignorance about its value), but based on previous experiments I carried out, I know that participants tend to be present with a probability around &lt;span class=&#34;math inline&#34;&gt;\(\frac{1}{2}\)&lt;/span&gt;. Thus, we will choose a probability distribution that represents this prior knowledge (here a &lt;span class=&#34;math inline&#34;&gt;\(\mathrm{Beta}(2,2)\)&lt;/span&gt;, see the first figure for an illustration).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;################################################################################
+# Checking the assumption of independence in binomial trials
+# Example inspired from Gelman et al. (2013, page 147)
+####################################################################
+
+library(tidyverse)
+
+y &amp;lt;- # getting the data
+    c(
+        0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+        0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,
+        1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
+        0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0
+        )&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;the-problem&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;The problem&lt;/h2&gt;
+&lt;p&gt;Our model is assuming independent trials, i.e., it’s assuming that the presence of a participant is independent of the presence of another participant, which is akin to say that the model is assuming no autocorrelation in the serie. Autocorrelation would be evidence that the model is flawed.&lt;/p&gt;
+&lt;p&gt;One way to estimate the degree of autocorrelation in the serie is to simply count the number of switches between presence and absence (i.e., between zeros and ones). An abnormally low number of switches (for a particular &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;) would be evidence that some autocorrelation is present. Thus, the number of switches becomes a &lt;strong&gt;test quantity&lt;/strong&gt; &lt;span class=&#34;math inline&#34;&gt;\(T(y)\)&lt;/span&gt;, which describes the degree of autocorrelation in the serie, and a way of testing the assumptions of our model.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# function to determine the number of switches in a numerical vector
+
+nb_switches &amp;lt;- function(x) as.numeric(sum(diff(x) != 0) )
+
+# determining the number of switches Ty in observed data y
+
+(Ty &amp;lt;- nb_switches(y) )&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 28&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We observed 28 switches in our data. To know whether this number is surprising, given our number of observation and the mean probability of presence, we will use use posterior predictive checking. But first, we need to compute the posterior distribution &lt;span class=&#34;math inline&#34;&gt;\(p(\theta | y)\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;computing-the-posterior-distribution&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Computing the posterior distribution&lt;/h2&gt;
+&lt;p&gt;We know that the posterior density under this model is given by:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[ p(\theta | y) \sim \mathrm{Beta}(\alpha + y, \beta + n - y) \]&lt;/span&gt;
+where &lt;span class=&#34;math inline&#34;&gt;\(y\)&lt;/span&gt; is the number of successes and &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; is the total number of observations. In our case, the posterior distribution of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; given &lt;span class=&#34;math inline&#34;&gt;\(y\)&lt;/span&gt; is then &lt;span class=&#34;math inline&#34;&gt;\(\mathrm{Beta}(2 + 55, 2 + 90 - 55) = \mathrm{Beta}(57, 37)\)&lt;/span&gt;, which is plotted below.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;###############################################################
+# computing the posterior
+#######################################################
+
+n &amp;lt;- length(y) # number of trials
+z &amp;lt;- sum(y) # number of 1s
+a &amp;lt;- b &amp;lt;- 2 # parameters of the beta prior
+
+grid &amp;lt;- seq(from = 0, to = 1, by = 0.01) # defines grid
+
+################################################
+# analytic derivation of the posterior
+#########################################
+
+prior &amp;lt;- dbeta(grid, a, b)
+posterior &amp;lt;- dbeta(grid, z + a, n - z + b)
+
+data.frame(theta = grid, prior = prior, posterior = posterior) %&amp;gt;%
+    gather(type, value, prior:posterior) %&amp;gt;%
+    ggplot(aes(x = theta, y = value, colour = type, fill = type) ) +
+    geom_area(alpha = 0.8, position = &amp;quot;identity&amp;quot;, size = 1) +
+    theme_bw(base_size = 12) +
+    scale_fill_grey() +
+    scale_colour_grey() +
+    ylab(&amp;quot;&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-23-ppc_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The mean of the posterior distribution is given by &lt;span class=&#34;math inline&#34;&gt;\(\dfrac{\alpha + y}{\alpha + \beta + n}\)&lt;/span&gt;, and is equal to &lt;code&gt;(a + z) / (a + b + n)&lt;/code&gt; = 0.606, which can be interpreted as the mean probability of presence.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conjugacy&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Conjugacy&lt;/h2&gt;
+&lt;p&gt;This example allows us to define what &lt;strong&gt;conjugacy&lt;/strong&gt; is. Formally, if &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{F}\)&lt;/span&gt; is a class of sampling distributions &lt;span class=&#34;math inline&#34;&gt;\(p(y|\theta)\)&lt;/span&gt;, and &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{P}\)&lt;/span&gt; is a class of prior distributions for &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;, then the class &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{P}\)&lt;/span&gt; is &lt;strong&gt;conjugate&lt;/strong&gt; fo &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{F}\)&lt;/span&gt; if&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[p(\theta|y) \in \mathcal{P} \text{ for all } p(\cdot | \theta) \in \mathcal{F} \text{ and } p(\cdot) \in \mathcal{P}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;(Gelman et al., 2013, page 35). In other words, a prior is called a &lt;em&gt;conjugate prior&lt;/em&gt; if, when converted to a posterior by being multiplied by the likelihood, it keeps the same form. In our case, the Beta prior is a conjugate prior for the Binomial likelihood, because the posterior is a Beta distribution as well.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;posterior-predictive-checking-1&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Posterior predictive checking&lt;/h2&gt;
+&lt;p&gt;How posterior predictive checking can help us to assess whether the assumption of indendence is respected in our observed data &lt;span class=&#34;math inline&#34;&gt;\(y\)&lt;/span&gt; ? Well, our model is actually assuming independence, so we could ask our model to generate new observations, or &lt;strong&gt;replications&lt;/strong&gt;, called &lt;span class=&#34;math inline&#34;&gt;\(y^{rep}\)&lt;/span&gt;, to see whether these replications differ from the observed data. If they do, it would mean that the observed data are not well described by a model that is assuming independence.&lt;/p&gt;
+&lt;p&gt;This is done in two steps. First, we generate possible values of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; from its posterior distribution (i.e., from a &lt;span class=&#34;math inline&#34;&gt;\(\mathrm{Beta}(57, 37)\)&lt;/span&gt; distribution). Then, for each of these &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; values, we generate a new set of observations &lt;span class=&#34;math inline&#34;&gt;\(y^{rep}\)&lt;/span&gt; from a Binomial distribution.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;########################################################
+# posterior predictive checks
+#######################################
+
+nsims &amp;lt;- 1e4 # number of replicated samples
+
+# generating nsims theta values from posterior
+
+thetas &amp;lt;- rbeta(nsims, a + z, b + n - z)
+
+# generating nsims new datasets (Yrep)
+
+Yrep &amp;lt;-
+    sapply(
+        # for each theta
+        1:length(thetas),
+        # generating samples
+        function(i) sample(
+            c(0, 1),
+            # of the same length as y
+            length(y),
+            replace = TRUE,
+            # with prob of presence equals to theta
+            # and prob of absence equals to 1 - theta
+            prob = c(thetas[i], 1 - thetas[i])
+            )
+        )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then, we can compute the number of switches (our test quantity) in each replicated sample, to check whether the number of switches computed on datasets &lt;strong&gt;generated under the assumption of independence&lt;/strong&gt; differ from the number of switches computed on the observed dataset &lt;span class=&#34;math inline&#34;&gt;\(y\)&lt;/span&gt;. We call the test quantities computed on replicated samples &lt;span class=&#34;math inline&#34;&gt;\(T(y^{rep})\)&lt;/span&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# for each new Yrep sample, computing the number of switches Trep, and
+# comparing it to observed number of switches Ty
+
+Trep &amp;lt;- apply(Yrep, 2, nb_switches)
+
+Trep %&amp;gt;%
+    BEST::plotPost(
+        compVal = Ty, breaks = 20,
+        col = &amp;quot;#E6E6E6&amp;quot;, xlab = expression(T(y^rep) ) )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-01-23-ppc_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;This histogram reveals that the mean number of switches accross the &lt;code&gt;nsims&lt;/code&gt; replications is about 42.04, and the green vertical dotted line represents the position of &lt;span class=&#34;math inline&#34;&gt;\(T(y)\)&lt;/span&gt; in the distribution of &lt;span class=&#34;math inline&#34;&gt;\(T(y^{rep})\)&lt;/span&gt; values.&lt;/p&gt;
+&lt;p&gt;To know whether the observed number of switches is surprising given the assumptions of our model (&lt;em&gt;represented&lt;/em&gt; by its predictions), we can count the number of replications that lead to a greater number of switches than the number of switches &lt;span class=&#34;math inline&#34;&gt;\(T(y)\)&lt;/span&gt; in the observed data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sum(Trep &amp;gt; Ty)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 9929&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Or we can compute a Bayesian &lt;em&gt;p&lt;/em&gt;-value as (Gelman et al., 2013, page 146):&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[p_{B} = \text{Pr}(T(y^{rep}, \theta) \geq T(y, \theta) | y)\]&lt;/span&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;1 - sum(Trep &amp;gt; Ty) / nsims # equivalent to sum(Trep &amp;lt;= Ty) / nsims&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 0.0071&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Which gives the probability of observing this number of switches under our model. What does it mean ? Does it mean that our model is &lt;em&gt;wrong&lt;/em&gt; ? Well, not exactly. Models are neither right or wrong (see Crane &amp;amp; Martin, 2018). But our model does not seem to capture the full story, it does not seem to give a good representation of the process that generated our data (which is arguably one of the characteristics that contribute to the &lt;em&gt;soundness&lt;/em&gt; of a model).&lt;/p&gt;
+&lt;p&gt;More precisely, it misses the point that the probabilities of successive participants being present are not independent. This, in our case, seems to be due to temporal fluctuations of this probability throughout the day. For instance, the probability of a participant being present seems to be the lowest early in the morning or late in the afternoon, as well as between 12am and 2pm. This temporal dependency could be better taken into account by using gaussian process regression models, that generalise the varying effect strategy of multilevel models to continuous variables. In other words, it would allow to take into account that participants coming to the lab at similar hours (e.g., 9am and 9.30am) are more similar (in their probability of being present) than participants coming at very different hours (e.g., 9am and 3pm).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Conclusions&lt;/h2&gt;
+&lt;p&gt;In this post we aimed to introduce the idea of posterior predictive checking by recycling an elegant and simple example from Gelman et al. (2013). It should be noted however that this kind of check can be done for any test quantity of interest (e.g., the mean or the max of a distribution, or its dispersion).&lt;/p&gt;
+&lt;p&gt;As put by Gelman et al. (2013, page 148), “because a probability model can fail to reflect the process that generated the data in any number of ways, posterior predictive &lt;em&gt;p&lt;/em&gt;-values can be computed for a variety of test quantities in order to evaluate more than one possible model failure”.&lt;/p&gt;
+&lt;p&gt;So come on, let’s make &lt;em&gt;p&lt;/em&gt;-values great again, they are not doomed to be used only as a point-null hypothesis test.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;details&gt;
+&lt;p&gt;&lt;summary&gt;Click to expand&lt;/summary&gt;&lt;/p&gt;
+&lt;div markdown=&#34;1&#34;&gt;
+&lt;p&gt;Crane, H., &amp;amp; Martin, R. (2018, January 10). Is statistics meeting the needs of science?. Retrieved from psyarxiv.com/q2s5m&lt;/p&gt;
+&lt;p&gt;Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., &amp;amp; Rubin, D. B. (2013). Bayesian Data Analysis, Third Edition. CRC Press.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

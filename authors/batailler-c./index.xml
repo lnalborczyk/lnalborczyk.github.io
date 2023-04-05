@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Batailler, C. | Ladislas Nalborczyk</title>
+    <link>/authors/batailler-c./</link>
+      <atom:link href="/authors/batailler-c./index.xml" rel="self" type="application/rss+xml" />
+    <description>Batailler, C.</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2023, Ladislas Nalborczyk</copyright>
+    <image>
+      <url>/img/icon.png</url>
+      <title>Batailler, C.</title>
+      <link>/authors/batailler-c./</link>
+    </image>
+    
+    <item>
+      <title>An introduction to Bayesian multilevel models using brms: A case study of gender effects on vowel variability in standard Indonesian</title>
+      <link>/publication/2019-nalborczyk-etal/</link>
+      <pubDate>Tue, 21 May 2019 00:00:00 +0000</pubDate>
+      <guid>/publication/2019-nalborczyk-etal/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

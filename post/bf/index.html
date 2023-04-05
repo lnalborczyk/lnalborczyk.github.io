@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.8.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Ladislas Nalborczyk">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="An attempt to illustrate what a Bayes factor looks like, using GIFs.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/bf/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="rgb(0,51,102)">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-1/css/all.min.css" integrity="sha256-4w9DunooKSr3MFXHXWyFER38WmPdm361bQS/2KUWZbU=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" integrity="sha256-SHMGCYmST46SoyGgo4YR/9AlK1vf3ff84Aq9yK4hdqM=" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CMontserrat:400,400italic,700%7CRoboto+Mono&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-86650162-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-86650162-1', { 'anonymize_ip': true });
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu08c8a2f4f986d1f2b79914ac673f283a_69943_32x32_fill_lanczos_center_3.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu08c8a2f4f986d1f2b79914ac673f283a_69943_192x192_fill_lanczos_center_3.png">
+
+  <link rel="canonical" href="/post/bf/">
+
+  
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@lnalborczyk">
+  <meta property="twitter:creator" content="@lnalborczyk">
+  
+  <meta property="og:site_name" content="Ladislas Nalborczyk">
+  <meta property="og:url" content="/post/bf/">
+  <meta property="og:title" content="What does a Bayes factor look like? | Ladislas Nalborczyk">
+  <meta property="og:description" content="An attempt to illustrate what a Bayes factor looks like, using GIFs."><meta property="og:image" content="/img/icon.png">
+  <meta property="twitter:image" content="/img/icon.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2018-05-22T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2018-05-22T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/post/bf/"
+  },
+  "headline": "What does a Bayes factor look like?",
+  
+  "datePublished": "2018-05-22T00:00:00Z",
+  "dateModified": "2018-05-22T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Ladislas Nalborczyk"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Ladislas Nalborczyk",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/images/icon_hu08c8a2f4f986d1f2b79914ac673f283a_69943_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "An attempt to illustrate what a Bayes factor looks like, using GIFs."
+}
+</script>
+
+  
+
+  
+
+
+  
+  
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js" integrity="sha256-5VhCqFam2Cn+yjw61zbBNrbHVJ6SRydPeKopYlngbiQ=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.css" integrity="sha256-zQ0LblD/Af8vOppw18+2anxsuaz3pWYyVWi+bTvTH8Q=" crossorigin="anonymous">
+  
+  <script>
+  window.addEventListener("load", function(){
+    window.cookieconsent.initialise({
+      "palette": {
+        "popup": {
+          "background": "rgb(0,51,102)",
+          "text": "#fff"
+        },
+        "button": {
+          "background": "#fff",
+          "text": "rgb(0,51,102)"
+        }
+      },
+      "theme": "classic",
+      "content": {
+        "message": "This website uses cookies to ensure you get the best experience on our website.",
+        "dismiss": "Got it!",
+        "link": "Learn more",
+        "href": "https://www.cookiesandyou.com"
+      }
+    })});
+  </script>
+
+
+
+  
+
+
+
+
+
+  <title>What does a Bayes factor look like? | Ladislas Nalborczyk</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Ladislas Nalborczyk</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Ladislas Nalborczyk</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>HOME</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#publications"><span>PUBLICATIONS</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#talks"><span>TALKS</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>BLOG</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/pdf/cv.pdf"><span>CV</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#teaching"><span>TEACHING</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>CONTACT</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>What does a Bayes factor look like?</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    May 22, 2018
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    7 min read
+  </span>
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <a href="/post/bf/#disqus_thread"></a>
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<div id="model-comparison" class="section level2">
+<h2>Model comparison</h2>
+<p>Statisticians love coins. Why? These toy examples are extremely useful to illustrate difficult concepts while still being expressible in a convenient mathematical framework. As an example, let’s say we want to estimate the bias <span class="math inline">\(\theta\)</span> of a coin (i.e., its probability of landing heads up).</p>
+<p>We compare two models of the bias <span class="math inline">\(\theta\)</span>, these two models differing only by their prior on <span class="math inline">\(\theta\)</span>. For instance, I could bet with a friend that the coin is probably biased toward tails (i.e., that the coin would, on average, lands more often tails up than heads up), while my friend rather think that the coin is biased toward heads. While we think that the coin is probably slightly biased, neither of us is completely certain of the exact value of this bias. Fortunately, probability theory gives us a way to express our prediction (as well as our uncertainty) in the form of a probability distribution.</p>
+<p>For convenience, we can write our predictions as two beta-binomial models (check this <a href="http://www.barelysignificant.com/post/ppc/">previous blogpost</a> to know why a beta prior is a convenient choice for the coin example):</p>
+<p><span class="math display">\[
+\begin{align}
+\mathcal{M_{1}} : y_{i} &amp;\sim \mathrm{Binomial}(n, \theta) \\
+\theta &amp;\sim \mathrm{Beta}(6, 10) \\
+\end{align}
+\]</span></p>
+<p><span class="math display">\[
+\begin{align}
+\mathcal{M_{2}} : y_{i} &amp;\sim \mathrm{Binomial}(n, \theta) \\
+\theta &amp;\sim \mathrm{Beta}(20, 12) \\
+\end{align}
+\]</span></p>
+<p>Where <span class="math inline">\(\mathcal{M_{1}}\)</span> represents my predictions about <span class="math inline">\(\theta\)</span> while <span class="math inline">\(\mathcal{M_{2}}\)</span> represents the predictions of my friend. As usual, these two priors are better understood visually:</p>
+<p><img src="/post/2018-04-30-bf_files/figure-html/unnamed-chunk-1-1.png" width="768" /></p>
+<p>My prior (in blue) is centered on <span class="math inline">\(\frac{\alpha}{\alpha + \beta} = 0.375\)</span> while the prior of my friend (in red) is centered on <span class="math inline">\(\frac{\alpha}{\alpha + \beta} = 0.625\)</span>. Note that my friend seems a bit more certain of its prediction than me, as the red prior is a bit more narrow than the blue prior.</p>
+<p>Now we can collect some data to test our respective hypotheses. We launch the coin 100 times and gather the following data:</p>
+<pre><code>##   [1] 0 0 1 1 1 1 1 1 1 1 0 0 0 1 0 1 1 0 1 0 1 0 0 1 1 0 0 1 0 1 0 1 0 0 1 1 0
+##  [38] 0 0 0 0 1 0 0 0 0 0 0 0 1 0 1 1 0 1 1 1 1 0 1 1 0 1 0 1 1 0 1 0 1 1 1 0 0
+##  [75] 0 1 1 1 0 0 0 1 1 1 0 0 0 0 0 0 0 1 0 0 1 0 1 0 1 1</code></pre>
+<p>Then, we would like to know under which hypothesis (i.e., under which prior assumption) these data are the more probable to appear. To answer this question, we can compare the <em>marginal likehoods</em> of the two above models.</p>
+</div>
+<div id="bayes-factors" class="section level2">
+<h2>Bayes factors</h2>
+<p>Formally, the Bayes factor is defined as <em>a ratio of marginal likelihoods</em> and is given by:</p>
+<p><span class="math display">\[
+\text{BF}_{12} = \dfrac{p(D|H_{1})}{p(D|H_{2})} = \dfrac{\int p(\theta|H_{1}) p(D|\theta,H_{1}) \text{d}\theta}{\int p(\theta|H_{2}) p(D|\theta,H_{2}) \text{d}\theta} = \dfrac{\int \mathrm{Binomial}(n, \theta)\mathrm{Beta}(6, 10)\text{d}\theta}{\int \mathrm{Binomial}(n, \theta)\mathrm{Beta}(20, 12) \text{d}\theta}
+\]</span></p>
+<p>In other words, computing a Bayes factor is equivalent to multiplying the prior by the <em>likelihood</em> (the information contained in the data) for each possible value of <span class="math inline">\(\theta\)</span>, summing all of the obtained values<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, doing this for each model, and taking the ratio of these sums. This process is illustrated below.</p>
+<p><img src="/img/bf/bf.gif" /></p>
+<p>We can read this animation starting by the lower left panel and going clockwise until the lower right panel. In the first panel (the lower left panel), the black curve represents the <a href="http://journals.sagepub.com/doi/10.1177/2515245917744314">likelihood function</a> of <span class="math inline">\(\theta\)</span>, that indicates how likely the data are to appear for a given value of <span class="math inline">\(\theta\)</span>. The two coloured curves represent the prior of either I (in blue) or my friend (in red).</p>
+<p>The moving dots represent the density of either the priors or the likelihood at each possible value of <span class="math inline">\(\theta\)</span><a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. The <em>unnormalised posterior density</em> (displayed in the upper left panel) is constructed by multiplying the probability assigned by the <em>prior</em> (the “height” of the blue/red dot) to the probability assigned by the <em>likelihood</em> function (the “height” of the black dot) for each possible value of <span class="math inline">\(\theta\)</span>.</p>
+<p>We can then “unfold” this <em>density</em> by computing its cumulative function (in the upper right panel). This curve simply represents the value of the <em>unnormalised posterior</em> for each value of <span class="math inline">\(\theta\)</span>, to which we added the value of the <em>unnormalised posterior</em> for all the previous values of <span class="math inline">\(\theta\)</span> (by summing them). For instance, the value of the <em>cumulative unnormalised posterior</em> at <span class="math inline">\(\theta = 0.14\)</span> is equal to the value of the <em>unnormalised posterior</em> at <span class="math inline">\(\theta = 0.14\)</span>, plus the value of the <em>unnormalised posterior</em> at all the previous values of <span class="math inline">\(\theta\)</span> between <span class="math inline">\(0\)</span> and <span class="math inline">\(0.14\)</span>.</p>
+<p>The Bayes factor (see the lower right panel) is then computed as <em>the ratio of the cumulative unnormalised posterior at the upper limit of the interval of integration</em>.</p>
+<p>Let’s say it again. The Bayes factor is the ratio of the cumulative unnormalised posterior at the upper limit of the interval of integration. In our case, it corresponds to the ratio of the heights of the cumulative distributions when <span class="math inline">\(\theta = 1\)</span> (i.e., approximately 8 divided by 3). The resulting Bayes factor of 2.68 means that the data are 2.68 times more likely under my prior than under the prior of my friend.</p>
+</div>
+<div id="they-are-not-posterior-odds" class="section level2">
+<h2>They are not posterior odds</h2>
+<p>Be careful to not interpret Bayes factors as <em>posterior odds</em>. Writing Bayes’ rule in the “odds form” (see below) lets us realise that Bayes factors indicate how much we whould update our <em>prior odds</em>, in the light of new incoming data. They <em>do not indicate what is the most probable hypothesis</em>, given the data (unless the prior odds are 1:1).</p>
+<p>Let’s take another example and compare two hypotheses:</p>
+<ul>
+<li><span class="math inline">\(H_{0}\)</span>: there is no such thing as <a href="https://en.wikipedia.org/wiki/Precognition">precognition</a>.</li>
+<li><span class="math inline">\(H_{1}\)</span>: precognition does exist.</li>
+</ul>
+<p>We run an experiment and observe a <span class="math inline">\(BF_{10} = 27\)</span>. What is the posterior probability of H1? We can compute this probability by multiplying the Bayes factor to the prior odds of the two hypotheses. How to define the prior odds is a tricky question and this choice should be open to scrutiny and criticism. Here I use an arbitrary relatively skeptical prior of 1:1000 against H1.</p>
+<p><span class="math display">\[
+\underbrace{\dfrac{p(H_{1}|D)}{p(H_{0}|D)}}_{posterior\ odds} = \underbrace{\dfrac{27}{1}}_{Bayes\ factor} \times \underbrace{\dfrac{1}{1000}}_{prior\ odds} = \dfrac{27}{1000} = 0.027
+\]</span></p>
+<p>This result demonstrates that a relatively high Bayes factor (representing some relatively strong evidence) should always be considered in the light of what was knew before the data comes in. A priori highly improbable claims can still remain highly improbable, even after having been corroborated by the data.</p>
+</div>
+<div id="conclusions" class="section level2">
+<h2>Conclusions</h2>
+<p>Bayes factors are increasingly used in psychology. Unfortunately, this does not warrant increased understanding of what they are. This blogpost aims to illustrate and summarise what they are and how they can be interpreted as updating factors.</p>
+<p>Curious readers might be interested in playing with this <a href="https://barelysignificant.shinyapps.io/bf_beta_binomial/">shiny application</a>, which basically reproduces the animation presented in this post while allowing to interact with the parameters of the priors and the likelihood. The R code to reproduce the animation is available <a href="https://github.com/lnalborczyk/lnalborczyk.github.io/blob/master/code/BF_gif_quadran.R">here</a>.</p>
+<p>This post is greatly inspired by a series of blogposts from Alexander Etz and Jeff Rouder (see references below). I also thank Fabian Dablander for providing valuable feedback on an earlier version of this post.</p>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<details>
+<p><summary>Click to expand</summary></p>
+<div markdown="1">
+<p>Etz, A. (2015, August 9). Understanding Bayes: Visualization of the Bayes Factor [Blog post]. Retrieved from <a href="https://alexanderetz.com/2015/08/09/understanding-bayes-visualization-of-bf/" class="uri">https://alexanderetz.com/2015/08/09/understanding-bayes-visualization-of-bf/</a></p>
+<p>Etz, A. (2015, April 15). Understanding Bayes: A Look at the Likelihood [Blog post]. Retrieved from <a href="https://alexanderetz.com/2015/04/15/understanding-bayes-a-look-at-the-likelihood/" class="uri">https://alexanderetz.com/2015/04/15/understanding-bayes-a-look-at-the-likelihood/</a></p>
+<p>Rouder, J. (2016, January 24). Roll Your Own: How to Compute Bayes Factors For Your Priors [Blog post]. Retrieved from <a href="http://jeffrouder.blogspot.be/2016/01/what-priors-should-i-use-part-i.html" class="uri">http://jeffrouder.blogspot.be/2016/01/what-priors-should-i-use-part-i.html</a></p>
+</div>
+</details>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Basically, an integral can be conceptualised as a sum on a continuous range (i.e., a sum on a infinite number of points).<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>These densities are scaled to the likelihood for aesthetics purposes.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+    </div>
+
+    
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/r/">R</a>
+  
+  <a class="badge badge-light" href="/tags/visualisation/">Visualisation</a>
+  
+  <a class="badge badge-light" href="/tags/bayes-factor/">Bayes factor</a>
+  
+  <a class="badge badge-light" href="/tags/bayesian/">Bayesian</a>
+  
+</div>
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/bf/&amp;text=What%20does%20a%20Bayes%20factor%20look%20like?" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/post/bf/&amp;t=What%20does%20a%20Bayes%20factor%20look%20like?" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=What%20does%20a%20Bayes%20factor%20look%20like?&amp;body=/post/bf/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/bf/&amp;title=What%20does%20a%20Bayes%20factor%20look%20like?" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=What%20does%20a%20Bayes%20factor%20look%20like?%20/post/bf/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/bf/&amp;title=What%20does%20a%20Bayes%20factor%20look%20like?" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_huce03c832dbc4daebb8179d9bb47f458f_1060633_270x270_fill_q90_lanczos_center.jpg" alt="Ladislas Nalborczyk">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/">Ladislas Nalborczyk</a></h5>
+      <h6 class="card-subtitle">Postdoctoral researcher</h6>
+      <p class="card-text">My main research interests span cognitive neuroscience and psycholinguistics at large and more specifically include overt and covert speech production, motor imagery, time perception, computational and statistical modelling, machine learning, and deep learning.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:ladislas.nalborczyk@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/lnalborczyk" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://mas.to/@lnalborczyk" target="_blank" rel="noopener">
+        <i class="fab fa-mastodon"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/citations?user=na-dkLYAAAAJ&amp;hl=en" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/lnalborczyk" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://orcid.org/0000-0002-7419-9855" target="_blank" rel="noopener">
+        <i class="ai ai-orcid"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://osf.io/ba8xt" target="_blank" rel="noopener">
+        <i class="ai ai-osf"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+<section id="comments">
+  
+    
+<div id="disqus_thread"></div>
+<script>
+  let disqus_config = function () {
+    
+    
+    
+  };
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+      return;
+    }
+    var d = document, s = d.createElement('script'); s.async = true;
+    s.src = 'https://' + "barely-significant" + '.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+</section>
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/post/ppc/">Checking the asumption of independence in binomial trials using posterior predictive checking</a></li>
+      
+      <li><a href="/post/icc/">Three methods for computing the intra-class correlation in multilevel logistic regression</a></li>
+      
+      <li><a href="/post/absenteeism2/">Experimental absenteeism and logistic regression, part II</a></li>
+      
+      <li><a href="/post/absenteeism/">Experimental absenteeism and logistic regression, part I</a></li>
+      
+      <li><a href="/post/brinley/">Visualising within-subject effects and stochastic dominance with (augmented) modified Brinley plots</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js" integrity="sha256-eOgo0OtLL4cdq7RdwRUiGKLX9XsIJ7nGhWEKbohmVAQ=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/languages/r.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js" integrity="sha256-EErZamuLefUnbMBQbsEqu1USa+btR2oIlCpBJbyD4/g=" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    <script>const isSiteThemeDark = false;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    <script id="dsq-count-scr" src="https://barely-significant.disqus.com/count.js" async></script>
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.4aaf2d64e50f8e54cf66dcc54147a22e.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    © 2017-2023, Ladislas Nalborczyk &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

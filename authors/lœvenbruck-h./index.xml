@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lœvenbruck, H. | Ladislas Nalborczyk</title>
+    <link>/authors/l%C5%93venbruck-h./</link>
+      <atom:link href="/authors/l%C5%93venbruck-h./index.xml" rel="self" type="application/rss+xml" />
+    <description>Lœvenbruck, H.</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2023, Ladislas Nalborczyk</copyright>
+    <image>
+      <url>/img/icon.png</url>
+      <title>Lœvenbruck, H.</title>
+      <link>/authors/l%C5%93venbruck-h./</link>
+    </image>
+    
+    <item>
+      <title>Can we decode phonetic features in inner speech using surface electromyography?</title>
+      <link>/publication/2020-nalborczyk-etal/</link>
+      <pubDate>Wed, 27 May 2020 00:00:00 +0000</pubDate>
+      <guid>/publication/2020-nalborczyk-etal/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>An introduction to Bayesian multilevel models using brms: A case study of gender effects on vowel variability in standard Indonesian</title>
+      <link>/publication/2019-nalborczyk-etal/</link>
+      <pubDate>Tue, 21 May 2019 00:00:00 +0000</pubDate>
+      <guid>/publication/2019-nalborczyk-etal/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>A Cognitive Neuroscience View of Inner Language: To Predict and to Hear, See, Feel</title>
+      <link>/publication/2018-loevenbruck-etal/</link>
+      <pubDate>Thu, 18 Oct 2018 00:00:00 +0000</pubDate>
+      <guid>/publication/2018-loevenbruck-etal/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Orofacial electromyographic correlates of induced verbal rumination</title>
+      <link>/publication/2017-nalborczyk-etal/</link>
+      <pubDate>Thu, 20 Jul 2017 00:00:00 +0000</pubDate>
+      <guid>/publication/2017-nalborczyk-etal/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

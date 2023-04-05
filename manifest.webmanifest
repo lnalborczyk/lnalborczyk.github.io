@@ -1,0 +1,18 @@
+{
+  "name": "Ladislas Nalborczyk",
+  "short_name": "Ladislas Nalborczyk",
+  "lang": "en-us",
+  "theme_color": "rgb(0,51,102)",
+  "background_color": "rgb(0,51,102)",
+  "icons": [{
+    "src": "/images/icon_hu08c8a2f4f986d1f2b79914ac673f283a_69943_192x192_fill_lanczos_center_3.png",
+    "sizes": "192x192",
+    "type": "image/png"
+    }, {
+    "src": "/images/icon_hu08c8a2f4f986d1f2b79914ac673f283a_69943_512x512_fill_lanczos_center_3.png",
+    "sizes": "512x512",
+    "type": "image/png"
+     }],
+  "display": "standalone",
+  "start_url": "/?utm_source=web_app_manifest"
+}
