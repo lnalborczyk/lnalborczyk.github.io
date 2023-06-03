@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Spieser, L. | Ladislas Nalborczyk</title>
+    <link>/authors/spieser-l./</link>
+      <atom:link href="/authors/spieser-l./index.xml" rel="self" type="application/rss+xml" />
+    <description>Spieser, L.</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2023, Ladislas Nalborczyk</copyright>
+    <image>
+      <url>/img/icon.png</url>
+      <title>Spieser, L.</title>
+      <link>/authors/spieser-l./</link>
+    </image>
+    
+    <item>
+      <title>Distinct neural mechanisms support inner speaking and inner hearing</title>
+      <link>/publication/2023-nalborczyk-etal/</link>
+      <pubDate>Tue, 23 May 2023 00:00:00 +0000</pubDate>
+      <guid>/publication/2023-nalborczyk-etal/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

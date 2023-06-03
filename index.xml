@@ -5,12 +5,20 @@
     <link>/</link>
       <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <description>Ladislas Nalborczyk</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2023, Ladislas Nalborczyk</copyright><lastBuildDate>Mon, 30 Jan 2023 10:30:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2023, Ladislas Nalborczyk</copyright><lastBuildDate>Tue, 23 May 2023 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/img/icon.png</url>
       <title>Ladislas Nalborczyk</title>
       <link>/</link>
     </image>
+    
+    <item>
+      <title>Distinct neural mechanisms support inner speaking and inner hearing</title>
+      <link>/publication/2023-nalborczyk-etal/</link>
+      <pubDate>Tue, 23 May 2023 00:00:00 +0000</pubDate>
+      <guid>/publication/2023-nalborczyk-etal/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Uncovering the origins of inner speech sensory content</title>
@@ -22,6 +30,14 @@
 
 &lt;p&gt;&lt;em&gt;Abstract&lt;/em&gt;: Inner speech is accompanied by a subjective multisensory experience. However, the origins (causes) of this subjective experience are debated. In this study, we used transcranial magnetic stimulation to disentangle the predictions of competing theoretical frameworks.&lt;/p&gt;
 </description>
+    </item>
+    
+    <item>
+      <title>Time perception: When randomization hurts</title>
+      <link>/publication/2023-nalborczyk/</link>
+      <pubDate>Tue, 24 Jan 2023 00:00:00 +0000</pubDate>
+      <guid>/publication/2023-nalborczyk/</guid>
+      <description></description>
     </item>
     
     <item>

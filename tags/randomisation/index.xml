@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>randomisation | Ladislas Nalborczyk</title>
+    <link>/tags/randomisation/</link>
+      <atom:link href="/tags/randomisation/index.xml" rel="self" type="application/rss+xml" />
+    <description>randomisation</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2023, Ladislas Nalborczyk</copyright><lastBuildDate>Tue, 24 Jan 2023 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/img/icon.png</url>
+      <title>randomisation</title>
+      <link>/tags/randomisation/</link>
+    </image>
+    
+    <item>
+      <title>Time perception: When randomization hurts</title>
+      <link>/publication/2023-nalborczyk/</link>
+      <pubDate>Tue, 24 Jan 2023 00:00:00 +0000</pubDate>
+      <guid>/publication/2023-nalborczyk/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

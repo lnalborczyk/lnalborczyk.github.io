@@ -2,35 +2,77 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>/publication_types/2/</loc>
+    <lastmod>2023-05-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/covert-speech/</loc>
+    <lastmod>2023-05-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/publication/2023-nalborczyk-etal/</loc>
+    <lastmod>2023-05-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/inner-speech/</loc>
+    <lastmod>2023-05-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/</loc>
+    <lastmod>2023-05-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/motor-control/</loc>
+    <lastmod>2023-05-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/motor-evoked-potential/</loc>
+    <lastmod>2023-05-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/motor-imagery/</loc>
+    <lastmod>2023-05-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/motor-simulation/</loc>
+    <lastmod>2023-05-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/publication_types/</loc>
+    <lastmod>2023-05-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/publication/</loc>
+    <lastmod>2023-05-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/surface-electromyography/</loc>
+    <lastmod>2023-05-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/</loc>
+    <lastmod>2023-05-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/transcranial-magnetic-stimulation/</loc>
+    <lastmod>2023-05-23T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>/authors/</loc>
     <lastmod>2023-01-30T10:30:00+00:00</lastmod>
   </url><url>
     <loc>/categories/</loc>
     <lastmod>2023-01-30T10:30:00+00:00</lastmod>
   </url><url>
-    <loc>/tags/inner-speech/</loc>
-    <lastmod>2023-01-30T10:30:00+00:00</lastmod>
-  </url><url>
     <loc>/authors/ladislas-nalborczyk/</loc>
-    <lastmod>2023-01-30T10:30:00+00:00</lastmod>
-  </url><url>
-    <loc>/</loc>
     <lastmod>2023-01-30T10:30:00+00:00</lastmod>
   </url><url>
     <loc>/talk/</loc>
     <lastmod>2023-01-30T10:30:00+00:00</lastmod>
   </url><url>
-    <loc>/tags/</loc>
-    <lastmod>2023-01-30T10:30:00+00:00</lastmod>
-  </url><url>
     <loc>/categories/talk/</loc>
-    <lastmod>2023-01-30T10:30:00+00:00</lastmod>
-  </url><url>
-    <loc>/tags/transcranial-magnetic-stimulation/</loc>
     <lastmod>2023-01-30T10:30:00+00:00</lastmod>
   </url><url>
     <loc>/talk/2023-jcep/</loc>
     <lastmod>2023-01-30T10:30:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/randomisation/</loc>
+    <lastmod>2023-01-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/sequential-effects/</loc>
+    <lastmod>2023-01-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/time-perception/</loc>
+    <lastmod>2023-01-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/publication/2023-nalborczyk/</loc>
+    <lastmod>2023-01-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/authors/f.-xavier-alario/</loc>
     <lastmod>2022-08-29T14:00:00+00:00</lastmod>
@@ -39,12 +81,6 @@
     <lastmod>2022-08-29T14:00:00+00:00</lastmod>
   </url><url>
     <loc>/authors/marieke-longcamp/</loc>
-    <lastmod>2022-08-29T14:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/tags/motor-control/</loc>
-    <lastmod>2022-08-29T14:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/tags/motor-imagery/</loc>
     <lastmod>2022-08-29T14:00:00+00:00</lastmod>
   </url><url>
     <loc>/tags/motor-inhibition/</loc>
@@ -58,21 +94,6 @@
   </url><url>
     <loc>/tags/typing/</loc>
     <lastmod>2022-08-29T14:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/publication_types/2/</loc>
-    <lastmod>2022-03-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/tags/covert-speech/</loc>
-    <lastmod>2022-03-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/tags/motor-simulation/</loc>
-    <lastmod>2022-03-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/publication_types/</loc>
-    <lastmod>2022-03-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/publication/</loc>
-    <lastmod>2022-03-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/publication/2022-nalborczyk-etal/</loc>
     <lastmod>2022-03-09T00:00:00+00:00</lastmod>
@@ -283,6 +304,8 @@
   </url><url>
     <loc>/authors/beffara-bret-b./</loc>
   </url><url>
+    <loc>/authors/bonnard-m./</loc>
+  </url><url>
     <loc>/authors/burkner-p.-c./</loc>
   </url><url>
     <loc>/authors/debarnot-u./</loc>
@@ -314,6 +337,10 @@
     <loc>/authors/polosan-m./</loc>
   </url><url>
     <loc>/authors/rapin-l./</loc>
+  </url><url>
+    <loc>/authors/serveau-v./</loc>
+  </url><url>
+    <loc>/authors/spieser-l./</loc>
   </url><url>
     <loc>/authors/spinelli-e./</loc>
   </url><url>
