@@ -5,7 +5,7 @@
     <link>/</link>
       <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <description>Ladislas Nalborczyk</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2023, Ladislas Nalborczyk</copyright><lastBuildDate>Tue, 23 May 2023 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2024, Ladislas Nalborczyk</copyright><lastBuildDate>Tue, 23 May 2023 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/img/icon.png</url>
       <title>Ladislas Nalborczyk</title>
@@ -1499,6 +1499,7 @@ ICC
 &lt;p&gt;Immediately after the publication of this preprint, the rebellion started to organise online, with Daniel Lakens as its head. Suddenly, a wealth of blogposts explaining why this proposal was a terrible idea appeared (see for instance &lt;a href=&#34;https://funderstorms.wordpress.com/2017/07/26/thresholds/&#34;&gt;here&lt;/a&gt;, &lt;a href=&#34;https://rolfzwaan.blogspot.be/2017/07/defending-05-its-not-enough-to-be_26.html&#34;&gt;here&lt;/a&gt;, &lt;a href=&#34;https://medium.com/@timothycbates/changing-the-default-p-value-threshold-for-statistical-significance-ought-not-be-done-in-isolation-3a7ab357b5c1&#34;&gt;here&lt;/a&gt;, or &lt;a href=&#34;https://medium.com/@timothycbates/changing-the-default-p-value-threshold-for-statistical-significance-ought-not-be-done-in-isolation-3a7ab357b5c1&#34;&gt;here&lt;/a&gt;). Three days later, Daniel Lakens launched on Twitter a massive appeal to a generalised rebellion, asking help to whoever wanted to join the fight.&lt;/p&gt;
 &lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;I&amp;#39;m contacted by so many people about writing why alpha = 0.005 is not a good idea, I&amp;#39;m starting an email list. DM me if you want to join.&lt;/p&gt;&amp;mdash; Daniël Lakens (@lakens) &lt;a href=&#34;https://twitter.com/lakens/status/890089098219835393?ref_src=twsrc%5Etfw&#34;&gt;July 26, 2017&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
 
 &lt;p&gt;This &lt;em&gt;collaborative&lt;/em&gt; work gave birth on September 18 to the second bomb of the summer entitled &lt;em&gt;Justify Your Alpha&lt;/em&gt;, and co-authored by Daniel Lakens and 87 alphabetically ordered authors.&lt;/p&gt;
 &lt;p&gt;The main argument of this proposal is that p-values should be used in a Neyman-Person spirit, meaning as a way of balancing type-I and type-II errors. Accordingly, they suggest that the significance threshold should be calibrated according to study-specific objectives, and stressing that &lt;em&gt;researchers should transparently report and justify all choices they make when designing a study, including the alpha level.&lt;/em&gt; On how to choose this threshold, they add that this decision should be based on &lt;em&gt;statistical decision theory, where costs and benefits are compared against a utility function (Neyman &amp;amp; Pearson, 1933; Skipper, Guenther, &amp;amp; Nass, 1967)&lt;/em&gt;.&lt;/p&gt;
