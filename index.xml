@@ -5,12 +5,20 @@
     <link>/</link>
       <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <description>Ladislas Nalborczyk</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2024, Ladislas Nalborczyk</copyright><lastBuildDate>Tue, 23 May 2023 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2024, Ladislas Nalborczyk</copyright><lastBuildDate>Fri, 12 Jan 2024 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/img/icon.png</url>
       <title>Ladislas Nalborczyk</title>
       <link>/</link>
     </image>
+    
+    <item>
+      <title>Towards formal models of inhibitory mechanisms involved in motor imagery: a commentary on Bach et al. (2022)</title>
+      <link>/publication/2024-nalborczyk-etal/</link>
+      <pubDate>Fri, 12 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>/publication/2024-nalborczyk-etal/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Distinct neural mechanisms support inner speaking and inner hearing</title>
