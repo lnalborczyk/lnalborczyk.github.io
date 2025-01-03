@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>philosophy of statistics | Ladislas Nalborczyk</title>
+    <link>/tags/philosophy-of-statistics/</link>
+      <atom:link href="/tags/philosophy-of-statistics/index.xml" rel="self" type="application/rss+xml" />
+    <description>philosophy of statistics</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2025, Ladislas Nalborczyk</copyright><lastBuildDate>Mon, 30 Aug 2021 14:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/img/icon.png</url>
+      <title>philosophy of statistics</title>
+      <link>/tags/philosophy-of-statistics/</link>
+    </image>
+    
+    <item>
+      <title>Moving to a World beyond p &lt; .05</title>
+      <link>/talk/2021-ilcb/</link>
+      <pubDate>Mon, 30 Aug 2021 14:00:00 +0000</pubDate>
+      <guid>/talk/2021-ilcb/</guid>
+      <description>
+&lt;script src=&#34;/talk/2021-ilcb/index_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;&lt;em&gt;Abstract&lt;/em&gt;: Numerous authors have highlighted the limitations of the Null-Hypothesis Significance Testing (NHST) approach and the (near exclusive) reliance on p-values and significance testing. Beyond the methodological advantages and disadvantages of NHST compared to other paradigms of statistical inference, one of the main barriers to the correct use of the NHST procedure remains its complexity, often hidden by misleading intuitive interpretation. For instance, a p-value does not indicate the probability of obtaining certain data “by chance”, nor the probability of “being wrong”. Recently, The American Statistician published a special issue named “Statistical Inference in the 21st Century: A World Beyond p &amp;lt; 0.05”, with the intention to provide new recommendations for users of statistics (e.g., researchers, policy makers, journalists). This issue comprises 43 original papers aiming to provide new guidelines and practical alternatives to the “mindless” use of statistics and arbitrary thresholds. In the accompanying editorial, Wasserstein, Schirm, &amp;amp; Lazar (2019) summarise these recommendations in the form of the ATOM guidelines: “Accept uncertainty. Be thoughtful, open, and modest.” We will explore some consequences of these guidelines when applied to the analysis of empirical data, in the light of core concepts from the philosophy of statistics.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

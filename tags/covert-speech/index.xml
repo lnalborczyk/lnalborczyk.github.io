@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>covert speech | Ladislas Nalborczyk</title>
+    <link>/tags/covert-speech/</link>
+      <atom:link href="/tags/covert-speech/index.xml" rel="self" type="application/rss+xml" />
+    <description>covert speech</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2025, Ladislas Nalborczyk</copyright><lastBuildDate>Tue, 10 Oct 2023 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/img/icon.png</url>
+      <title>covert speech</title>
+      <link>/tags/covert-speech/</link>
+    </image>
+    
+    <item>
+      <title>Distinct neural mechanisms support inner speaking and inner hearing</title>
+      <link>/publication/2023-nalborczyk-etal/</link>
+      <pubDate>Tue, 10 Oct 2023 00:00:00 +0000</pubDate>
+      <guid>/publication/2023-nalborczyk-etal/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>The role of motor inhibition during covert speech production</title>
+      <link>/publication/2022-nalborczyk-etal/</link>
+      <pubDate>Wed, 09 Mar 2022 00:00:00 +0000</pubDate>
+      <guid>/publication/2022-nalborczyk-etal/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Can we decode phonetic features in inner speech using surface electromyography?</title>
+      <link>/publication/2020-nalborczyk-etal/</link>
+      <pubDate>Wed, 27 May 2020 00:00:00 +0000</pubDate>
+      <guid>/publication/2020-nalborczyk-etal/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

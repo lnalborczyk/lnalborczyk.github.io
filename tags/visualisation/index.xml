@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>visualisation | Ladislas Nalborczyk</title>
+    <link>/tags/visualisation/</link>
+      <atom:link href="/tags/visualisation/index.xml" rel="self" type="application/rss+xml" />
+    <description>visualisation</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2025, Ladislas Nalborczyk</copyright><lastBuildDate>Tue, 22 May 2018 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/img/icon.png</url>
+      <title>visualisation</title>
+      <link>/tags/visualisation/</link>
+    </image>
+    
+    <item>
+      <title>What does a Bayes factor look like?</title>
+      <link>/post/bf/</link>
+      <pubDate>Tue, 22 May 2018 00:00:00 +0000</pubDate>
+      <guid>/post/bf/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;model-comparison&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Model comparison&lt;/h2&gt;
+&lt;p&gt;Statisticians love coins. Why? These toy examples are extremely useful to illustrate difficult concepts while still being expressible in a convenient mathematical framework. As an example, let’s say we want to estimate the bias &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; of a coin (i.e., its probability of landing heads up).&lt;/p&gt;
+&lt;p&gt;We compare two models of the bias &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;, these two models differing only by their prior on &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;. For instance, I could bet with a friend that the coin is probably biased toward tails (i.e., that the coin would, on average, lands more often tails up than heads up), while my friend rather think that the coin is biased toward heads. While we think that the coin is probably slightly biased, neither of us is completely certain of the exact value of this bias. Fortunately, probability theory gives us a way to express our prediction (as well as our uncertainty) in the form of a probability distribution.&lt;/p&gt;
+&lt;p&gt;For convenience, we can write our predictions as two beta-binomial models (check this &lt;a href=&#34;http://www.barelysignificant.com/post/ppc/&#34;&gt;previous blogpost&lt;/a&gt; to know why a beta prior is a convenient choice for the coin example):&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\mathcal{M_{1}} : y_{i} &amp;amp;\sim \mathrm{Binomial}(n, \theta) \\
+\theta &amp;amp;\sim \mathrm{Beta}(6, 10) \\
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\mathcal{M_{2}} : y_{i} &amp;amp;\sim \mathrm{Binomial}(n, \theta) \\
+\theta &amp;amp;\sim \mathrm{Beta}(20, 12) \\
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Where &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{M_{1}}\)&lt;/span&gt; represents my predictions about &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; while &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{M_{2}}\)&lt;/span&gt; represents the predictions of my friend. As usual, these two priors are better understood visually:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-04-30-bf_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;My prior (in blue) is centered on &lt;span class=&#34;math inline&#34;&gt;\(\frac{\alpha}{\alpha + \beta} = 0.375\)&lt;/span&gt; while the prior of my friend (in red) is centered on &lt;span class=&#34;math inline&#34;&gt;\(\frac{\alpha}{\alpha + \beta} = 0.625\)&lt;/span&gt;. Note that my friend seems a bit more certain of its prediction than me, as the red prior is a bit more narrow than the blue prior.&lt;/p&gt;
+&lt;p&gt;Now we can collect some data to test our respective hypotheses. We launch the coin 100 times and gather the following data:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;##   [1] 0 0 1 1 1 1 1 1 1 1 0 0 0 1 0 1 1 0 1 0 1 0 0 1 1 0 0 1 0 1 0 1 0 0 1 1 0
+##  [38] 0 0 0 0 1 0 0 0 0 0 0 0 1 0 1 1 0 1 1 1 1 0 1 1 0 1 0 1 1 0 1 0 1 1 1 0 0
+##  [75] 0 1 1 1 0 0 0 1 1 1 0 0 0 0 0 0 0 1 0 0 1 0 1 0 1 1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then, we would like to know under which hypothesis (i.e., under which prior assumption) these data are the more probable to appear. To answer this question, we can compare the &lt;em&gt;marginal likehoods&lt;/em&gt; of the two above models.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;bayes-factors&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Bayes factors&lt;/h2&gt;
+&lt;p&gt;Formally, the Bayes factor is defined as &lt;em&gt;a ratio of marginal likelihoods&lt;/em&gt; and is given by:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\text{BF}_{12} = \dfrac{p(D|H_{1})}{p(D|H_{2})} = \dfrac{\int p(\theta|H_{1}) p(D|\theta,H_{1}) \text{d}\theta}{\int p(\theta|H_{2}) p(D|\theta,H_{2}) \text{d}\theta} = \dfrac{\int \mathrm{Binomial}(n, \theta)\mathrm{Beta}(6, 10)\text{d}\theta}{\int \mathrm{Binomial}(n, \theta)\mathrm{Beta}(20, 12) \text{d}\theta}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;In other words, computing a Bayes factor is equivalent to multiplying the prior by the &lt;em&gt;likelihood&lt;/em&gt; (the information contained in the data) for each possible value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;, summing all of the obtained values&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;, doing this for each model, and taking the ratio of these sums. This process is illustrated below.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/bf/bf.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We can read this animation starting by the lower left panel and going clockwise until the lower right panel. In the first panel (the lower left panel), the black curve represents the &lt;a href=&#34;http://journals.sagepub.com/doi/10.1177/2515245917744314&#34;&gt;likelihood function&lt;/a&gt; of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;, that indicates how likely the data are to appear for a given value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;. The two coloured curves represent the prior of either I (in blue) or my friend (in red).&lt;/p&gt;
+&lt;p&gt;The moving dots represent the density of either the priors or the likelihood at each possible value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;. The &lt;em&gt;unnormalised posterior density&lt;/em&gt; (displayed in the upper left panel) is constructed by multiplying the probability assigned by the &lt;em&gt;prior&lt;/em&gt; (the “height” of the blue/red dot) to the probability assigned by the &lt;em&gt;likelihood&lt;/em&gt; function (the “height” of the black dot) for each possible value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;We can then “unfold” this &lt;em&gt;density&lt;/em&gt; by computing its cumulative function (in the upper right panel). This curve simply represents the value of the &lt;em&gt;unnormalised posterior&lt;/em&gt; for each value of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;, to which we added the value of the &lt;em&gt;unnormalised posterior&lt;/em&gt; for all the previous values of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; (by summing them). For instance, the value of the &lt;em&gt;cumulative unnormalised posterior&lt;/em&gt; at &lt;span class=&#34;math inline&#34;&gt;\(\theta = 0.14\)&lt;/span&gt; is equal to the value of the &lt;em&gt;unnormalised posterior&lt;/em&gt; at &lt;span class=&#34;math inline&#34;&gt;\(\theta = 0.14\)&lt;/span&gt;, plus the value of the &lt;em&gt;unnormalised posterior&lt;/em&gt; at all the previous values of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; between &lt;span class=&#34;math inline&#34;&gt;\(0\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(0.14\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;The Bayes factor (see the lower right panel) is then computed as &lt;em&gt;the ratio of the cumulative unnormalised posterior at the upper limit of the interval of integration&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Let’s say it again. The Bayes factor is the ratio of the cumulative unnormalised posterior at the upper limit of the interval of integration. In our case, it corresponds to the ratio of the heights of the cumulative distributions when &lt;span class=&#34;math inline&#34;&gt;\(\theta = 1\)&lt;/span&gt; (i.e., approximately 8 divided by 3). The resulting Bayes factor of 2.68 means that the data are 2.68 times more likely under my prior than under the prior of my friend.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;they-are-not-posterior-odds&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;They are not posterior odds&lt;/h2&gt;
+&lt;p&gt;Be careful to not interpret Bayes factors as &lt;em&gt;posterior odds&lt;/em&gt;. Writing Bayes’ rule in the “odds form” (see below) lets us realise that Bayes factors indicate how much we whould update our &lt;em&gt;prior odds&lt;/em&gt;, in the light of new incoming data. They &lt;em&gt;do not indicate what is the most probable hypothesis&lt;/em&gt;, given the data (unless the prior odds are 1:1).&lt;/p&gt;
+&lt;p&gt;Let’s take another example and compare two hypotheses:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(H_{0}\)&lt;/span&gt;: there is no such thing as &lt;a href=&#34;https://en.wikipedia.org/wiki/Precognition&#34;&gt;precognition&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(H_{1}\)&lt;/span&gt;: precognition does exist.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We run an experiment and observe a &lt;span class=&#34;math inline&#34;&gt;\(BF_{10} = 27\)&lt;/span&gt;. What is the posterior probability of H1? We can compute this probability by multiplying the Bayes factor to the prior odds of the two hypotheses. How to define the prior odds is a tricky question and this choice should be open to scrutiny and criticism. Here I use an arbitrary relatively skeptical prior of 1:1000 against H1.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\underbrace{\dfrac{p(H_{1}|D)}{p(H_{0}|D)}}_{posterior\ odds} = \underbrace{\dfrac{27}{1}}_{Bayes\ factor} \times \underbrace{\dfrac{1}{1000}}_{prior\ odds} = \dfrac{27}{1000} = 0.027
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;This result demonstrates that a relatively high Bayes factor (representing some relatively strong evidence) should always be considered in the light of what was knew before the data comes in. A priori highly improbable claims can still remain highly improbable, even after having been corroborated by the data.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Conclusions&lt;/h2&gt;
+&lt;p&gt;Bayes factors are increasingly used in psychology. Unfortunately, this does not warrant increased understanding of what they are. This blogpost aims to illustrate and summarise what they are and how they can be interpreted as updating factors.&lt;/p&gt;
+&lt;p&gt;Curious readers might be interested in playing with this &lt;a href=&#34;https://barelysignificant.shinyapps.io/bf_beta_binomial/&#34;&gt;shiny application&lt;/a&gt;, which basically reproduces the animation presented in this post while allowing to interact with the parameters of the priors and the likelihood. The R code to reproduce the animation is available &lt;a href=&#34;https://github.com/lnalborczyk/lnalborczyk.github.io/blob/master/code/BF_gif_quadran.R&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This post is greatly inspired by a series of blogposts from Alexander Etz and Jeff Rouder (see references below). I also thank Fabian Dablander for providing valuable feedback on an earlier version of this post.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;details&gt;
+&lt;p&gt;&lt;summary&gt;Click to expand&lt;/summary&gt;&lt;/p&gt;
+&lt;div markdown=&#34;1&#34;&gt;
+&lt;p&gt;Etz, A. (2015, August 9). Understanding Bayes: Visualization of the Bayes Factor [Blog post]. Retrieved from &lt;a href=&#34;https://alexanderetz.com/2015/08/09/understanding-bayes-visualization-of-bf/&#34; class=&#34;uri&#34;&gt;https://alexanderetz.com/2015/08/09/understanding-bayes-visualization-of-bf/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Etz, A. (2015, April 15). Understanding Bayes: A Look at the Likelihood [Blog post]. Retrieved from &lt;a href=&#34;https://alexanderetz.com/2015/04/15/understanding-bayes-a-look-at-the-likelihood/&#34; class=&#34;uri&#34;&gt;https://alexanderetz.com/2015/04/15/understanding-bayes-a-look-at-the-likelihood/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Rouder, J. (2016, January 24). Roll Your Own: How to Compute Bayes Factors For Your Priors [Blog post]. Retrieved from &lt;a href=&#34;http://jeffrouder.blogspot.be/2016/01/what-priors-should-i-use-part-i.html&#34; class=&#34;uri&#34;&gt;http://jeffrouder.blogspot.be/2016/01/what-priors-should-i-use-part-i.html&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;Basically, an integral can be conceptualised as a sum on a continuous range (i.e., a sum on a infinite number of points).&lt;a href=&#34;#fnref1&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn2&#34;&gt;&lt;p&gt;These densities are scaled to the likelihood for aesthetics purposes.&lt;a href=&#34;#fnref2&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Visualising within-subject effects and stochastic dominance with (augmented) modified Brinley plots</title>
+      <link>/post/brinley/</link>
+      <pubDate>Thu, 22 Feb 2018 00:00:00 +0000</pubDate>
+      <guid>/post/brinley/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;&lt;em&gt;Spoiler: the first part of this post is largely inspired by this &lt;a href=&#34;https://www.ncbi.nlm.nih.gov/pubmed/28077215&#34;&gt;very nice paper&lt;/a&gt; written by Neville Blampied, as well as by this great &lt;a href=&#34;https://vuorre.netlify.com/post/2017/within-subject-scatter/&#34;&gt;blogpost&lt;/a&gt; from Matti Vuorre.&lt;/em&gt;&lt;/p&gt;
+&lt;div id=&#34;nomothetic-and-idiographic-research&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Nomothetic and idiographic research&lt;/h2&gt;
+&lt;p&gt;We can distinguish between (at least) two research traditions in psychology. The first one is called &lt;em&gt;nomothetic&lt;/em&gt; research, and is defined as research intended to discover general laws at the population level. This is arguably the most common form of investigation in cognitive, social or clinical psychology.&lt;/p&gt;
+&lt;p&gt;Yet, over the years, some authors have consistenly argued that determining experimental effects or therapy efficiency by only relying on group means (i.e., by aggregating outcomes) do not neccesarily apply to any specific individual, because &lt;em&gt;the group mean may conceal individual nonresponse&lt;/em&gt; (Blampied, 2017). Some authors also pointed out that the hypothesised mean individual do not usually refers to any actual individual being (e.g., Vautier, 2011, 2014). As an alternative, the &lt;em&gt;idiographic approach&lt;/em&gt; rather considers individuals as the unit of analysis (e.g., Lamiell, 1998; Barlow &amp;amp; Nocke, 2009).&lt;/p&gt;
+&lt;p&gt;These critics lead to alternative ways of analysing, reporting, and displaying data (say goodbye to bar graphs). In line with the idiographic approach, we will discuss a type of graphical representation in which individuals are the primary unit of analysis. This kind of visualisation is especially well suited for studying changes over time, and allows simultaneously displaying both idiographic (i.e., individual changes) and nomothetic (i.e., mean group effects) information.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;the-modified-brinley-plot&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;The modified Brinley plot&lt;/h2&gt;
+&lt;p&gt;The first version of this plot has been suggested by Brinley (1965), who plotted group means of two groups on different tasks, one against the other on the same plot (the first one on the x-axis and the second on the y-axis, see the first figure of this post). When there is no differences between groups, individual data points are aligned on the 45° line. Points above this line represent observations that are higher on the y-axis score than on the x-axis score (and reversely for points below the 45° line).&lt;/p&gt;
+&lt;p&gt;This plot has been used quite widely in the subsequent decades (usually without referring to the original idea of Brinley), and has been modified to display individual data points (rather than group means), allowing for instance to display within-subject effects from a &lt;em&gt;pre-manipulation&lt;/em&gt; to a &lt;em&gt;post-manipulation&lt;/em&gt; score.&lt;/p&gt;
+&lt;p&gt;After reading Blampied’s paper, I managed to write down a short function for making this kind of plot easily. You can find this function in the &lt;code&gt;lmisc&lt;/code&gt; package (available on Github).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;if (!require(&amp;quot;devtools&amp;quot;) ) install.packages(&amp;quot;devtools&amp;quot;)
+devtools::install_github(&amp;quot;lnalborczyk/lmisc&amp;quot;, dependencies = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;lmisc&lt;/code&gt; package comes with some data that we can load to illustrate the use of the &lt;code&gt;brinley&lt;/code&gt; function.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(lmisc)
+data(brinley_data)
+
+head(brinley_data)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   participant session condition outcome       pain
+## 1           1     pre   control   75.75 -1.2746855
+## 2           1    post   control   84.50 -1.2746855
+## 3           3     pre treatment   38.50  0.8253145
+## 4           3    post treatment    0.00  0.8253145
+## 5           5     pre treatment   76.88 -0.6746855
+## 6           5    post treatment   77.13 -0.6746855&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;A first basic Brinley plot can be obtained by using the &lt;code&gt;brinley&lt;/code&gt; function, specifying the formula as you would do using &lt;code&gt;lm&lt;/code&gt; or &lt;code&gt;plot&lt;/code&gt;&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;. The black cross represents the bivariate mean and the confidence interval around the mean in the two conditions.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;brinley(brinley_data, outcome ~ session)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;There are multiple ways to compute a Cohen’s d effect size for within-subject designs (e.g., see &lt;a href=&#34;http://jakewestfall.org/blog/index.php/2016/03/25/five-different-cohens-d-statistics-for-within-subject-designs/&#34;&gt;this post&lt;/a&gt; for five different ways to do it). By default, the &lt;code&gt;brinley&lt;/code&gt; function computes the average Cohen’s d (as recommendended by Cumming, 2012), but note that this can easily be modified to compute your favourite Cohen’s d.&lt;/p&gt;
+&lt;p&gt;Next (here comes the &lt;em&gt;augmented&lt;/em&gt; modified Brinley plot), we can colour points by a second continuous variable, to be passed (as character) to the &lt;code&gt;colour&lt;/code&gt; argument.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;brinley(brinley_data, outcome ~ session, colour = &amp;quot;pain&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Or facetting by another categorical variable, using the &lt;code&gt;facet&lt;/code&gt; argument, which is quite convenient to compare the effects of a pre-post manipulation in different groups/experiments.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;brinley(brinley_data, outcome ~ session, facet = &amp;quot;condition&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Moreover, the &lt;code&gt;brinley&lt;/code&gt; function uses a smart plotting trick that allows easy comparison of multiple groups by plotting the whole dataset in background (see this &lt;a href=&#34;https://drsimonj.svbtle.com/plotting-background-data-for-groups-with-ggplot2&#34;&gt;blogpost&lt;/a&gt;). In our case (two groups), the grey dots represent data from the other group&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;illustrative-example&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Illustrative example&lt;/h2&gt;
+&lt;p&gt;Let’s say we gathered data from two experiments (&lt;code&gt;exp1&lt;/code&gt; and &lt;code&gt;exp2&lt;/code&gt;) in which we investigated a within-subject effect, in two conditions &lt;code&gt;group1&lt;/code&gt; and &lt;code&gt;group2&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;This plot reveals two overlapping distributions of scores in each experiment. Visually, it seems that the difference in means (indicated by the vertical dashed lines) is a bit lower in &lt;code&gt;exp2&lt;/code&gt; than in &lt;code&gt;exp1&lt;/code&gt;. However, the standard deviation (the width) of the distributions in &lt;code&gt;exp2&lt;/code&gt; seems also a bit lower than in &lt;code&gt;exp1&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Intuitively then, although the absolute mean difference seems lower in &lt;code&gt;exp2&lt;/code&gt; than in &lt;code&gt;exp1&lt;/code&gt;, we could say that the effect size (defined as the standardised mean difference) might be roughly equivalent across the two experiments. Let’s check this.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
+data(dominance)
+
+dominance %&amp;gt;%
+    group_by(exp) %&amp;gt;%
+    summarise(
+        d = effsize::cohen.d(
+            d = value, f = group, paired = FALSE, pooled = TRUE)$estimate
+    )&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 2 x 2
+##   exp       d
+##   &amp;lt;fct&amp;gt; &amp;lt;dbl&amp;gt;
+## 1 exp1  -1.37
+## 2 exp2  -1.37&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And indeed it is. We have the exact same effect size in the two experiments&lt;a href=&#34;#fn3&#34; class=&#34;footnote-ref&#34; id=&#34;fnref3&#34;&gt;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt;. But does it mean that the effect is &lt;em&gt;the same&lt;/em&gt; in the two experiments ? Well, this is an very ill-defined question, but another way to &lt;em&gt;compare&lt;/em&gt; effects (beyond merely comparing the d value) would be to ask how much variable is the considered effect across participants…&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;stochastic-dominance&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Stochastic dominance&lt;/h2&gt;
+&lt;p&gt;This relates to the idea of &lt;em&gt;dominance constraint&lt;/em&gt; or &lt;em&gt;dominant effect&lt;/em&gt; (Rouder &amp;amp; Haaf, 2018), which is the idea according to which there exists some effects that are (in the population) in the same direction for any individual, although this might be masked in empirical observations because of sampling or environmental noise.&lt;/p&gt;
+&lt;!--
+Importantly, the dominance constraint implies that *the mean and the variability are positively related. As the effect becomes smaller, not only does the mean decrease, but so too does the variability*. In other words, *The dominance constraint implies that it is impossible to have small effects with big variances* (Rouder &amp; Haaf, 2018).
+--&gt;
+&lt;p&gt;How is this relevant here ? Well, although we presented data from two experiments with equal sample size and equal effect size, maybe the idea of dominance could help us to reach a more fine-grained interpretation of this effect. Below, we use a modified Brinley plot to visualise data issued from these two experiments.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;brinley(data = dominance, formula = value ~ group, facet = &amp;quot;exp&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-02-10-brinley_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;This plot reveals that, altough the mean effect size is the same accross the two experiments, the effect observed in &lt;code&gt;exp2&lt;/code&gt; seems prototypical of a &lt;em&gt;dominant effect&lt;/em&gt;, that is, all participants (all points) show an increase from &lt;code&gt;group1&lt;/code&gt; to &lt;code&gt;group2&lt;/code&gt;. In contrast, the effect observed in &lt;code&gt;exp1&lt;/code&gt; seems less “universal”, with some participants showing the reverse effect.&lt;/p&gt;
+&lt;p&gt;Of course, this is a schematic representation of an idealised dominant effect, in the sense that it would correspond to a situation in which there is absolutely no sampling noise. Alternatively, we could also consider that &lt;code&gt;exp2&lt;/code&gt; is a representation of a dominant effect in the population (i.e., a representation of what a dominant effect would look like if there was no sampling noise), while data from &lt;code&gt;exp1&lt;/code&gt; would be a representation of a dominant effect in ecological/realistic experimental settings (i.e, with some moderate sampling noise).&lt;/p&gt;
+&lt;p&gt;In any case, this highlights the need to report and to visualise data at different levels (individual vs. group) and in different ways to have a better grasp on what is happening in a particular experiment. In this perspective, modified Brinley plot appears as a handy tool to explore the idea of &lt;em&gt;dominance constraint&lt;/em&gt;, and more generally, to assess to what extent our experimental manipulations affect the participants.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;details&gt;
+&lt;p&gt;&lt;summary&gt;Click to expand&lt;/summary&gt;&lt;/p&gt;
+&lt;div markdown=&#34;1&#34;&gt;
+&lt;p&gt;Barlow, D. H., &amp;amp; Nock, M. K. (2009). Why can’t we be more idiographic in our research? &lt;em&gt;Perspectives on Psychological Science, 4&lt;/em&gt;, 19–21.&lt;/p&gt;
+&lt;p&gt;Blampied, N. M. (2017). Analyzing Therapeutic Change Using Modified Brinley Plots: History, Construction, and Interpretation. &lt;em&gt;Behavior Therapy, 48&lt;/em&gt;, 115-117.&lt;/p&gt;
+&lt;p&gt;Brinley, J. F. (1965). Cognitive sets, speed and accuracy of performance in the elderly. In A. T. Welford &amp;amp; J. E. Birren (Eds.), Behavior, ageing, and the nervous system (pp. 114–149). Springfield, IL: Thomas.&lt;/p&gt;
+&lt;p&gt;Cumming, G. (2012). Understanding the new statistics: Effect sizes, confidence intervals, and meta-analysis. New York: Routledge.&lt;/p&gt;
+&lt;p&gt;Lamiell, J. T. (1998). “Nomothetic” and “idiographic”: Contrasting Windelband’s understanding with contemporary usage. &lt;em&gt;Theory and Psychology, 8&lt;/em&gt;, 23–38.&lt;/p&gt;
+&lt;p&gt;Rouder, J. N., &amp;amp; Haaf, J. M. (2018). Power, Dominance, and Constraint: A Note on the Appeal of Different Design Traditions. &lt;em&gt;Advances in Methods and Practices in Psychological Science&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Vautier, S. (2011). The operationalization of general hypotheses versus the discovery of empirical laws in Psychology. &lt;em&gt;Philosophia Scientiae, 15&lt;/em&gt;, 105-122.&lt;/p&gt;
+&lt;p&gt;Vautier, S. (2014, unpublished). Une critique du conformisme méthodologique en psychologie générale : on peut aussi chercher des relations générales restrictives. Toulouse, France: Université de Toulouse. &lt;a href=&#34;https://f-origin.hypotheses.org/wp-content/blogs.dir/2208/files/2014/03/SVautier_2014.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;NB: so far, only simple formulae (using only one outcome variable and one predictor variable) are supported by the &lt;code&gt;brinley&lt;/code&gt; function.&lt;a href=&#34;#fnref1&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn2&#34;&gt;&lt;p&gt;Note that this can be undone by setting the &lt;code&gt;background&lt;/code&gt; argument to &lt;code&gt;FALSE&lt;/code&gt;.&lt;a href=&#34;#fnref2&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn3&#34;&gt;&lt;p&gt;Which is not really surprising, given that we did the simulation this way.&lt;a href=&#34;#fnref3&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

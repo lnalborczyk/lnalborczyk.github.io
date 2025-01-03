@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>NHST | Ladislas Nalborczyk</title>
+    <link>/tags/nhst/</link>
+      <atom:link href="/tags/nhst/index.xml" rel="self" type="application/rss+xml" />
+    <description>NHST</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2025, Ladislas Nalborczyk</copyright><lastBuildDate>Sat, 30 Sep 2017 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/img/icon.png</url>
+      <title>NHST</title>
+      <link>/tags/nhst/</link>
+    </image>
+    
+    <item>
+      <title>The saga of the summer 2017, a.k.a. &#39;the alpha wars&#39;</title>
+      <link>/post/summersaga/</link>
+      <pubDate>Sat, 30 Sep 2017 00:00:00 +0000</pubDate>
+      <guid>/post/summersaga/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;I have strong doubts that someone reading a blog called &lt;em&gt;barely significant&lt;/em&gt; in this troubled period might have escaped the saga of the summer. However, as this story relates closely to the name of this blog and to the motivations behind its creation, I could not help myself to write a summary of this saga (or of its beginning, at least), to inform any unfortunate people that might have missed it.&lt;/p&gt;
+&lt;p&gt;The adequacy of &lt;em&gt;Null-Hypothesis-Significance-Testing&lt;/em&gt; (NHST) -and particularly of the dichotomised use of p-values- to scientific progress has long been questioned (e.g., Bakan, 1966; Gigerenzer, Krauss, &amp;amp; Vitouch, 2004; Kline, 2004; Lambdin, 2012). Despite this wealth of critics, the p-value stays one of the favourite statistical tool of the experimentalist. As an optimistic person though, I like to see recent institutional changes such as the ASA statement on the use of the p-values as an encouraging sign (Wassertein &amp;amp; Lazar, 2016). However, statements such as the ASA statement do not obtain a majority of agreements, neither within statisticians nor within applied scientists. Moreover, efforts to distancing p-values from scientific daily practice might be hindered by &lt;em&gt;alternative&lt;/em&gt; usages of NHST that have been suggested during the last years (e.g., the &lt;em&gt;New Statistics&lt;/em&gt; of Cumming, 2012&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;This summer was very prolific in regards to this debate, because many &lt;em&gt;new&lt;/em&gt; ideas on NHST were presented and discussed (in pre-prints but also in blogposts). Noteworthy here is the rythm of the debate, that has been insanely increased by the use of social medias and by preprint sharing. In this post I will then try to summarise the highlighits of this exciting saga.&lt;/p&gt;
+&lt;div id=&#34;round-i&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Round I&lt;/h2&gt;
+&lt;p&gt;The first bomb of this summer was posted online as a preprint on July 22, on &lt;a href=&#34;https://psyarxiv.com/mky9j&#34;&gt;PsyArxiv&lt;/a&gt;. This short proposal, co-authored by 72 researchers of several disciplines (including respected statisticians), mainly suggested to change the default threshold for statistical significance from 0.05 to 0.005. According to them, &lt;em&gt;“This simple step would immediately improve the reproducibility of scientific research in many fields”&lt;/em&gt;. They also suggested to rename p-values falling between 0.005 and 0.05 as “suggestive” in place of the current “significant”.&lt;/p&gt;
+&lt;p&gt;The proposition of this particular threshold is motivated by a comparison of the p-value and the &lt;a href=&#34;https://en.wikipedia.org/wiki/Bayes_factor&#34;&gt;Bayes Factor&lt;/a&gt; (BF), showing that p-values around 0.05 are usually equivalent to BF10 in the range of 2.5-3.4, which is usually regarded as very weak evidence. In contrast, lowering the threshold to 0.005 would lead to equivalent BF10s in the range of 14-26, which corresponds to well… quite more convincing evidence.&lt;/p&gt;
+&lt;p&gt;Their second point is that lowering the threshold to 0.05 would lead to a more reasonable rate (lower) of &lt;a href=&#34;https://en.wikipedia.org/wiki/False_positive_rate&#34;&gt;false positive&lt;/a&gt;. The following figure shows the false positive rate as a function of power, for different levels of significance and different prior odds that there is a true effect.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/summersaga/fig1.jpg&#34; /&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;“For many, the calculations illustrated by Fig. 2 may be unsettling. For example, the false positive rate is greater than 33% with prior odds of 1:10 and a P value threshold of 0.05, regardless of the level of statistical power. Reducing the threshold to 0.005 would reduce this minimum false positive rate to 5%. Similar reductions in false positive rates would occur over a wide range of statistical powers.”&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This proposal also implies (and this is maybe the most crucial point) that sample sizes should increase (of approximately 70% on average), in order to keep power constant and to not inflates the rate of false negative.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;round-ii&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Round II&lt;/h2&gt;
+&lt;p&gt;Immediately after the publication of this preprint, the rebellion started to organise online, with Daniel Lakens as its head. Suddenly, a wealth of blogposts explaining why this proposal was a terrible idea appeared (see for instance &lt;a href=&#34;https://funderstorms.wordpress.com/2017/07/26/thresholds/&#34;&gt;here&lt;/a&gt;, &lt;a href=&#34;https://rolfzwaan.blogspot.be/2017/07/defending-05-its-not-enough-to-be_26.html&#34;&gt;here&lt;/a&gt;, &lt;a href=&#34;https://medium.com/@timothycbates/changing-the-default-p-value-threshold-for-statistical-significance-ought-not-be-done-in-isolation-3a7ab357b5c1&#34;&gt;here&lt;/a&gt;, or &lt;a href=&#34;https://medium.com/@timothycbates/changing-the-default-p-value-threshold-for-statistical-significance-ought-not-be-done-in-isolation-3a7ab357b5c1&#34;&gt;here&lt;/a&gt;). Three days later, Daniel Lakens launched on Twitter a massive appeal to a generalised rebellion, asking help to whoever wanted to join the fight.&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;I&amp;#39;m contacted by so many people about writing why alpha = 0.005 is not a good idea, I&amp;#39;m starting an email list. DM me if you want to join.&lt;/p&gt;&amp;mdash; Daniël Lakens (@lakens) &lt;a href=&#34;https://twitter.com/lakens/status/890089098219835393?ref_src=twsrc%5Etfw&#34;&gt;July 26, 2017&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;This &lt;em&gt;collaborative&lt;/em&gt; work gave birth on September 18 to the second bomb of the summer entitled &lt;em&gt;Justify Your Alpha&lt;/em&gt;, and co-authored by Daniel Lakens and 87 alphabetically ordered authors.&lt;/p&gt;
+&lt;p&gt;The main argument of this proposal is that p-values should be used in a Neyman-Person spirit, meaning as a way of balancing type-I and type-II errors. Accordingly, they suggest that the significance threshold should be calibrated according to study-specific objectives, and stressing that &lt;em&gt;researchers should transparently report and justify all choices they make when designing a study, including the alpha level.&lt;/em&gt; On how to choose this threshold, they add that this decision should be based on &lt;em&gt;statistical decision theory, where costs and benefits are compared against a utility function (Neyman &amp;amp; Pearson, 1933; Skipper, Guenther, &amp;amp; Nass, 1967)&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Finally, their three main concerns are summarised in the last paragraph of the comment:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;“Although we agree with Benjamin et al. (2017) that the relatively high rate of non-replication in the scientific literature is a cause for concern, we do not believe that redefining statistical significance is a desirable solution: (1) there is not enough evidence that a blanket threshold of p&amp;lt;.005 will improve replication sufficiently to be worth the additional cost in data collection, (2) the justifications given for the new threshold are not strong enough to warrant the widespread implementation of such a policy, and (3) there are realistic concerns that a p&amp;lt;.005 threshold will have negative consequences for science, which should be carefully examined before a change in practice is instituted. Instead of a narrower focus on p-value thresholds, we call for a broader mandate whereby all justifications of key choices in research design and statistical practice are pre-registered whenever possible, fully accessible, and transparently evaluated.”&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div id=&#34;round-iii&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Round III&lt;/h2&gt;
+&lt;p&gt;The last contribution to date comes from McShane, Gal, Gelman, Robert, &amp;amp; Tackett, and was published on September 21 on Gelman’s &lt;a href=&#34;http://www.stat.columbia.edu/%7Egelman/research/unpublished/abandon.pdf&#34;&gt;website&lt;/a&gt;. This contribution is kind of killing the above debate, because they mainly argue for entirely &lt;strong&gt;abandoning statistical significance&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Instead of the current exclusive reliance on p-values to draw inferences from empirical data, they suggest that &lt;em&gt;the p-value be demoted from its threshold screening role and instead, treated continuously, be considered along with the neglected factors as just one among many pieces of evidence&lt;/em&gt;. Although this idea was admittedly already present in the proposal of round II (Lakens et al., 2017), their conclusion diverges quite considerably from the conclusion of Lakens et al., as they recommend to entirely abandon NHST. This suggestion is partly based on the well-known criticisms of NHST as based on a non-existing, non-realistic &lt;em&gt;nil hypothesis&lt;/em&gt;, that is summarised in these lines:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;“Given that effects are small and variable and measurements are noisy, the sharp point null hypothesis of zero effect and zero systematic error used in the overwhelming majority of applications is itself implausible (Berkson, 1938, Edwards et al., 1963, Bakan, 1966, Tukey, 1991, Cohen, 1994, Gelman et al., 2014, McShane and Böckenholt, 2014, Gelman, 2015). Consequently, Cohen (1994) has derided this null hypothesis as the “nil hypothesis” and lampoons it as “always false,” and Tukey (1991) notes that two treatments are “always different.” Indeed, even were an effect truly zero, experimental realities dictate that the effect would not be exactly zero in any study designed to test it&#34;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Another of their concern is the problem of the dichotimisation of evidence into statistically &lt;em&gt;significant&lt;/em&gt; and &lt;em&gt;non-significant&lt;/em&gt; results, that according to the authors, would lead to biases when reasoning from such statistics, leading to confuse the statistical and the practical significance of a result. They also insist on the urge to consider, along with the p-value, what they call the &lt;em&gt;neglected factors&lt;/em&gt;, that is, &lt;em&gt;prior and related evidence, plausibility of mechanism, study design and data quality, real world costs and benefits, novelty of finding, and other factors that vary by research domain&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;In conclusion and maybe paradoxically (considering the title of the paper), they say &lt;em&gt;We have no desire to “ban” p-values. Instead, we offer two concrete recommendations— one for editors and reviewers and one for authors— for how, in practice, the p-value can be demoted from its threshold screening role and instead be considered as just one among many pieces of evidence&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Finally, the idea of abandoning statistical significance is not really new and we have to note that this idea was already suggested at the end of the paper of Benjamin et al., (2017), as they said that &lt;em&gt;Many of us agree that there are better approaches to statistical analyses than null hypothesis significance testing […] even after the significance threshold is changed, many of us will continue to advocate for alternatives to null hypothesis significance testing&lt;/em&gt;. However, this comment has the merits of explicitly claiming that significance testing should be abandoned, and of having made a great use of the popularity of the current debate to spread this idea.&lt;/p&gt;
+&lt;p&gt;Moreover, in the meantime, a &lt;a href=&#34;http://rdcu.be/wbtc&#34;&gt;comment&lt;/a&gt; has been published in &lt;em&gt;Nature Human Behaviour&lt;/em&gt; (Amrhein &amp;amp; Greenland, 2017), also pushing to remove statistical thresholds, and arguing that a lowered threshold for significance would only accentuate the pitfalls that the first proposal wanted to highlight, by unreasonnably increasing our confidence in findings with p&amp;lt;.005.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;update-november-16th-2017&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Update (November 16th, 2017)&lt;/h2&gt;
+&lt;p&gt;Since the first upload of this post, a new fifty-authors comment has been submitted to Nature Human Behaviour, for which a preprint can be found on &lt;a href=&#34;https://peerj.com/preprints/3411/&#34;&gt;PeerJ&lt;/a&gt;. While this comment (lead by David Trafimow and Valentin Amrhein) is echoing some of the propositions put forward by McShane et al., it also brings some new arguments into the light. For instance, it highlights the point made by Trafimow &amp;amp; Earp (2017) about type-I and type-II errors, namely, that their relative importance might differ across study, researchers, or disciplines (a point similar to the proposal lead by Lakens), and that the domain to which they apply is often blurry and usually remains to be defined. They also stress that the relative importance of type-I and type-II errors depends on a large variety of factors, rendering undesirable any fixed recommendation concerning the alpha level.&lt;/p&gt;
+&lt;p&gt;Concerning replicability, they argue that shifting from the usual threshold to the .005 one would increase the importance of the population effect size in obtaining statistical significance. Indeed, if sample sizes remain similar, such a proposal would favour huge population effect sizes and make smaller effect sizes more difficult to obtain. Based on a tasty example from the history of physics, they demonstrate that replicability should not depend on the population effect size. They add:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;“Any proposal that features p-value rejection criteria forces the replication probability to be impacted by the population effect size, and should be rejected”.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Finally, they relay the idea presented in Trafimow (2017) &amp;amp; Trafimow &amp;amp; MacDonald (2017), of using &lt;em&gt;a priori inferential statistics&lt;/em&gt;, in replacement for NHST. They also stress the importance of considering multiple sources of information for inference (i.e., not relying on a single index, such as a p-value or a Bayes Factor), and suggest that statistical inference should not be based on single studies.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Conclusions&lt;/h2&gt;
+&lt;p&gt;In this blogpost, I tried to summarise the main official contributions that have been published these last months around the &lt;em&gt;alpha-wars&lt;/em&gt;. It is highly probable that a lot of new contributions will add to this list, and so this post may be edited / updated regularly.&lt;/p&gt;
+&lt;p&gt;In regards to the name of this blog, and although I used the word &lt;em&gt;significant&lt;/em&gt; quite often in this post (N = 23, actually…), all I wish is that the name of this blog will stop to make any sense to anyone in a close future. If so, it would mean that the abusive use of dichotomised evidence and the pitfalls that ensue would be well behind us.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;details&gt;
+&lt;p&gt;&lt;summary&gt;Click to expand&lt;/summary&gt;&lt;/p&gt;
+&lt;div markdown=&#34;1&#34;&gt;
+&lt;p&gt;Amrhein, V., &amp;amp; Greenland, S. (2017, September 25). Remove, rather than redefine, statistical significance. Nature Human Behaviour, &lt;a href=&#34;doi:10.1038/s41562-017-0224-0&#34; class=&#34;uri&#34;&gt;doi:10.1038/s41562-017-0224-0&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Bakan, D. (1966). The test of significance in psychological research. Psychological Bulletin, 66(6), 423–437. &lt;a href=&#34;doi:10.1037/h0020412&#34; class=&#34;uri&#34;&gt;doi:10.1037/h0020412&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Benjamin, D. J., Berger, J., Johannesson, M., Nosek, B. A., Wagenmakers, E.-J., Berk, R., … Johnson, V. (2017, July 22). Redefine statistical significance. Retrieved from psyarxiv.com/mky9j&lt;/p&gt;
+&lt;p&gt;Cumming, G. (2012). Understanding the new statistics: Effect sizes, confidence intervals, and meta-analysis. New York: Routledge.&lt;/p&gt;
+&lt;p&gt;Gigerenzer, G., Krauss, S., &amp;amp; Vitouch, O. (2004). The Null Ritual What You Always Wanted to Know About Significance Testing but Were Afraid to Ask. &lt;em&gt;The Sage Handbook of Methodology for the Social Sciences&lt;/em&gt;, 391–408. &lt;a href=&#34;doi:10.4135/9781412986311.n21&#34; class=&#34;uri&#34;&gt;doi:10.4135/9781412986311.n21&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Kline, R. (2004). What’s Wrong With Statistical Tests–And Where We Go From Here. &lt;a href=&#34;doi:10.1037/10693-003&#34; class=&#34;uri&#34;&gt;doi:10.1037/10693-003&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Lakens, D., Adolfi, F. G., Albers, C. J., Anvari, F., Apps, M. A. J., Argamon, S. E., … Zwaan, R. A. (2017, September 18). Justify Your Alpha: A Response to “Redefine Statistical Significance”. Retrieved from psyarxiv.com/9s3y6&lt;/p&gt;
+&lt;p&gt;Lambdin, C. (2012). Significance tests as sorcery: Science is empirical–significance tests are not. &lt;em&gt;Theory &amp;amp; Psychology, 22&lt;/em&gt;(1), 67–90. &lt;a href=&#34;doi:10.1177/0959354311429854&#34; class=&#34;uri&#34;&gt;doi:10.1177/0959354311429854&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;McShane, B. B., Gal, D., Gelman, A., Robert, C., &amp;amp; Tackett1, J. L. (2017, September 21). Abandon Statistical Significance. Retrieved from &lt;a href=&#34;http://www.stat.columbia.edu/~gelman/research/unpublished/abandon.pdf&#34; class=&#34;uri&#34;&gt;http://www.stat.columbia.edu/~gelman/research/unpublished/abandon.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Trafimow, D. (2017). Using the coefficient of confidence to make the philosophical switch from a posteriori to a priori inferential statistics. Educational and Psychological Measurement 77, 831–854.&lt;/p&gt;
+&lt;p&gt;Trafimow, D., &amp;amp; Earp, B. D. (2017). Null hypothesis significance testing and the use of P values
+to control the Type I error rate: The domain problem. New Ideas in Psychology 45, 19–
+27. &lt;a href=&#34;http://dx.doi.org/10.1016/j.newideapsych.2017.01.002&#34; class=&#34;uri&#34;&gt;http://dx.doi.org/10.1016/j.newideapsych.2017.01.002&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Trafimow, D., &amp;amp; MacDonald, J. A. (2017). Performing inferential statistics prior to data
+collection. Educational and Psychological Measurement 77, 204–219.&lt;/p&gt;
+&lt;p&gt;Trafimow, D., Amrhein, V., Areshenkoff, C. N., Barrera-Causil, C., Beh, E. J., Bilgic, Y., . . . Marmolejo- Ramos, F. (submitted). Manipulating the Alpha Level Cannot Cure Significance Testing. Comments on “Redefine Statistical Significance”. Retrieved from &lt;a href=&#34;https://peerj.com/preprints/3411/&#34; class=&#34;uri&#34;&gt;https://peerj.com/preprints/3411/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Wasserstein, R. L., &amp;amp; Lazar, N. A. (2016). The ASA’s statement on p-values: Context, process, and purpose. &lt;em&gt;The American Statistician, 70&lt;/em&gt;, 129-133.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;/div&gt;
+&lt;div id=&#34;notes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Notes&lt;/h2&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;One could asks whether the &lt;em&gt;New Statistics&lt;/em&gt; really brings something &lt;em&gt;new&lt;/em&gt; (e.g., see this &lt;a href=&#34;https://replicationindex.wordpress.com/2015/05/16/a-critical-review-of-cummings-2014-new-statistics-reselling-old-statistics-as-new-statistics/&#34;&gt;blogpost&lt;/a&gt;), or something useful (e.g., see this Twitter’ &lt;a href=&#34;https://twitter.com/lakens/status/911850061075755013&#34;&gt;thread&lt;/a&gt;).&lt;a href=&#34;#fnref1&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>On power and the &#39;match point situation&#39;</title>
+      <link>/post/matchpoint/</link>
+      <pubDate>Sat, 26 Nov 2016 00:00:00 +0000</pubDate>
+      <guid>/post/matchpoint/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/lightable/lightable.css&#34; rel=&#34;stylesheet&#34; /&gt;
+
+
+&lt;p&gt;We all have seen the opening scene from Woody Allen’s movie &lt;em&gt;Match Point&lt;/em&gt; (2005)&lt;/p&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/btJA8zG9DoY&#34; frameborder=&#34;0&#34; allowfullscreen&gt;
+&lt;/iframe&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The man who said “I’d rather be lucky than good” saw deeply into life. People are afraid to face how great a part of life is dependent on luck. It’s scary to think so much is out of one’s control. There are moments in a match, when the ball hits the top of the net, and for a split second, it can either go forward or fall back. With a little luck, it goes forward, and you win. Or maybe it doesn’t, and you lose.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;In this post I will argue that the &lt;em&gt;match point situation&lt;/em&gt; (i.e., a situation in which your entire life is dictated by chance only), is a common situation for the researcher who uses &lt;em&gt;Null Hypothesis Significance Testing&lt;/em&gt; (NHST) &lt;strong&gt;without controlling power&lt;/strong&gt;.&lt;/p&gt;
+&lt;div id=&#34;what-is-power&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;What is power?&lt;/h2&gt;
+&lt;p&gt;As experimentalists, we are lead to discuss the plausibility of theories in the light of new incoming data. At least, this is what we would like to do. Rather, using NHST, we are usually doomed to discuss the plausibility of the observed data (or more extreme data), given that the null hypothesis H0 is true (is it?).&lt;/p&gt;
+&lt;p&gt;In doing this, there are two imaginable outcomes: either we reject H0, or we do not. Two kind of errors&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; can be made when one makes this decision:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Type I errors&lt;/strong&gt;. This is the rate of false positives in the long-run. In other words, how many times you will reject the hypothesis according to which there is no effect while actually… there is no effect.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Type II errorss&lt;/strong&gt;. This is the rate of false negatives, which correponds to failing to reject the null hypothesis, while you should have rejected it.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The subsequent table summarises four possible outcomes of a test, according to the population value of the effect size and the decision you have made.&lt;/p&gt;
+&lt;table class=&#34;table table-hover table-responsive&#34; style=&#34;width: auto !important; margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+H0 (&lt;span class=&#34;math inline&#34;&gt;\(\delta = 0\)&lt;/span&gt;)
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+H1 (&lt;span class=&#34;math inline&#34;&gt;\(\delta \neq 0\)&lt;/span&gt;)
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Reject H0
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Type I error
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Correct inference
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Fail to reject H0
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Correct inference
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Type II error
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Generally speaking, power is the probability of achieving a specified goal. In the context of NHST, statistical power is usually defined as the probability of detecting an effect (i.e., rejecting the null) if there &lt;em&gt;really&lt;/em&gt; is an effect.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;experimenting-power-by-yourself&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Experimenting power by yourself &lt;a name=&#34;shiny&#34;&gt;&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Below you can find an interactive visualisation of the p-value distribution (in the simple case of an independent-samples t-test), according to the effect size (&lt;a href=&#34;http://rpsychologist.com/d3/cohend/&#34;&gt;Cohen’s &lt;em&gt;d&lt;/em&gt;&lt;/a&gt;), the sample size, and the alpha level. You can play with these values to see how the distribution of p-values is affected.&lt;/p&gt;
+&lt;iframe src=&#34;https://barelysignificant.shinyapps.io/pdist/&#34; style=&#34;border:none;width:800px;height:500px;&#34;&gt;
+&lt;/iframe&gt;
+&lt;p&gt;Interestingly, we realise that playing with these different parameters modifies the &lt;strong&gt;statistical power&lt;/strong&gt;, which is the ability to detect an effect if there is a true effect (i.e., a difference in the population).&lt;/p&gt;
+&lt;p&gt;Intuitively, after playing with several values of &lt;span class=&#34;math inline&#34;&gt;\(d\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt;, you should be able to formulate your own definition of what power is…&lt;/p&gt;
+&lt;p&gt;Here are some clues: try to fix &lt;span class=&#34;math inline&#34;&gt;\(d=0.3\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(n=20\)&lt;/span&gt;… power should be around 15%. Then, with the same effect size (&lt;span class=&#34;math inline&#34;&gt;\(d=0.3\)&lt;/span&gt;), try to increase the sample size at &lt;span class=&#34;math inline&#34;&gt;\(n=40\)&lt;/span&gt;. Power should now be around 25%. You should be able to see that the power is nothing more than the proportion of p-values that fall &lt;strong&gt;below&lt;/strong&gt; the &lt;span class=&#34;math inline&#34;&gt;\(\alpha\)&lt;/span&gt; level you fixed. Thus, power also depends on the risk of false positives you are ready to take.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;empirical_power &amp;lt;- (sum(p &amp;lt; alpha) / number_of_experiments)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;From this interactive widget, we learned that for a Cohen’s &lt;span class=&#34;math inline&#34;&gt;\(d\)&lt;/span&gt; of 0.3, with 40 participants, power is around 0.25. What does it mean? The interpretation of this number is quite straightforward: we have only 1 chance out of 4 to find a &lt;em&gt;significant&lt;/em&gt; effect in our experiment, while there really is an effect…!&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;the-problem-with-low-power-the-match-point-situation&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;The problem with low power: the &lt;em&gt;match point situation&lt;/em&gt;&lt;/h2&gt;
+&lt;p&gt;The average published effect size in psychology is around &lt;span class=&#34;math inline&#34;&gt;\(d=0.5\)&lt;/span&gt;, with a typical power of 0.35 (Bakker et al., 2012, 2016). Slowly, we see that things are evolving and improvements have been made but still, power is rarely something we care about and is rarely above 0.5.&lt;/p&gt;
+&lt;p&gt;When you have a power of 0.5, it means that the chances of detecting the effect you are looking for are no more important than the chances to get a head when flipping a coin…! These chances are neither no more than the tennis ball passing over the net or staying on your side…&lt;/p&gt;
+&lt;p&gt;Are you really ready to give up on several months (or years) of work on a coin toss?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;why-we-do-not-care&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Why we do not care&lt;/h2&gt;
+&lt;p&gt;I think the main problem is that we do not realise how bad is low power. We generally have very poor intuitions when it comes to estimating the real power of a specific experiment (e.g., see Bakker et al., 2016). More generally, it is well acknowledged that we are really bad at understanding how chance and random processes can affect hypothesis testing, as illustrated by the famous &lt;a href=&#34;http://pirate.shu.edu/~hovancjo/exp_read/tversky.htm&#34;&gt;law of small numbers&lt;/a&gt; of Tversky &amp;amp; Kahneman (1971).&lt;/p&gt;
+&lt;p&gt;Here is an excerpt:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;In review, we have seen that the believer in the law of small numbers practices science as follows:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;He gambles his research hypothesis on small samples without realizing that the odds against him are unreasonably high. He overestimates power.&lt;/li&gt;
+&lt;li&gt;He has undue confidence in early trends (e.g., the data of the first few subjects) and in the stability of observed patterns (e.g., the number and identity of significant results). He overestimates significance.&lt;/li&gt;
+&lt;li&gt;In evaluating replications, his or others’, he has unreasonably high expectations about the replicability of significant results. He underestimates the breadth of confidence intervals.&lt;/li&gt;
+&lt;li&gt;He rarely attributes a deviation of results from expectations to sampling variability because he finds a causal “explanation” for any discrepancy. Thus, he has little opportunity to recognize sampling variation in action. His belief in the law of small numbers, therefore, will forever remain intact.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div id=&#34;what-can-we-do&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;What can we do?&lt;/h2&gt;
+&lt;p&gt;There is some hope though! Let’s remember the interactive shiny widget you have played with two minutes ago (&lt;a href=&#34;#shiny&#34;&gt;above&lt;/a&gt;). The easiest way to increase power is simply to increase sample size.&lt;/p&gt;
+&lt;p&gt;In a practical ground, when doing &lt;em&gt;a priori&lt;/em&gt; power analyses, in order to define the sample size of your next experiment, one resourceful idea would be to use safeguard power analysis rather than the classical power analysis (Perugini et al., 2014). Basically, this method consists in computing a confidence interval around the targetted effect size and to make classic power analyses based on the lower bound of the interval. Results of the simulation presented by the authors of this paper are quite convincing in increasing the real power of studies. Obviously, the conclusions here are the same as before: we should increase our sample size.&lt;/p&gt;
+&lt;p&gt;Another advocated approach is to plan for &lt;strong&gt;estimation precision&lt;/strong&gt;, rather than planning for rejecting the null. This is the &lt;em&gt;the goal is accuracy&lt;/em&gt; of Krushke (2015, chapter 13). In this case, we will never falsely reject the null or the alternative, and this procedure will give virtually unbiased parameter estimates. However, this sweet thing comes with a price. We will sometimes remain uncertains (i.e., unable to make a decision), and always need bigger sample sizes.&lt;/p&gt;
+&lt;p&gt;A last tip would be to ask the question in a slightly different way Why do we have to bother with &lt;em&gt;a priori&lt;/em&gt; power? Why could not we recruit participants until we have enough data/evidence to make our point?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;sequential-testing&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Sequential testing&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Sequential_analysis&#34;&gt;Sequential analysis&lt;/a&gt; simply refers to the process by which one collects data (e.g., recruits participants) until reaching a predefined level of evidence. One implementation of this idea has been proposed by Wald (1945) and is known as the &lt;a href=&#34;https://en.wikipedia.org/wiki/Sequential_probability_ratio_test&#34;&gt;Probability Ratio Test&lt;/a&gt;. Apart from the Wald test, the most NHST common sequential designs are called &lt;strong&gt;group sequential&lt;/strong&gt; designs and the interested reader will be delighted to find more information in Lakens &amp;amp; Evers (2014), or Schönbrodt and colleagues (2015).&lt;/p&gt;
+&lt;p&gt;Time to step on the Bayesian side. This animation is taken from the &lt;a href=&#34;https://github.com/nicebread/BFDA&#34;&gt;BFDA package&lt;/a&gt; (Schönbrodt, 2016).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/matchpoint/BFDA1.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;On this illustration, we can see the results of the computation of sequential Bayes factors as we increase the sample size (on the x-axis). Each grey line represents the value of a Bayes factor computed in one simulation of a fictive experiment for a given effect size and for a given sample size. Upper and lower boundaries are fixed to &lt;span class=&#34;math inline&#34;&gt;\(BF_{10}=10\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(BF_{10}=1/10\)&lt;/span&gt;. These boundaries represent the level of evidence at which we would stop the experiment.&lt;/p&gt;
+&lt;p&gt;Sequential testing does not eliminate the question of power, it just asks a lishtly different question. The question is no more to decide &lt;em&gt;a priori&lt;/em&gt; on a fixed sample size in order to have a fixed probability to find an effect &lt;em&gt;if&lt;/em&gt; this effect really exists. Rather, sequential testing allows running the experiment as long as we do not reach a predefined level of evidence (e.g., BF = 20). By means of simulation we can then evaluate the long-term rates of false-positive or false-negative evidence (see Schönbrodt et al., 2015; Schönbrodt &amp;amp; Wagenmakers, 2016). If we decide to be very demanding concerning the level of evidence, eventually, as &lt;span class=&#34;math inline&#34;&gt;\(N\)&lt;/span&gt; increases, the power will tend to 100%. As a fatal argument, I should tell you that, comparing to NHST, Bayesian sequential testing with Bayes factors typically needs 50% to 70% smaller samples to reach a conclusion, while having the same or lower long-term rate of wrong inference (Schönbrodt et al., 2015).&lt;/p&gt;
+&lt;p&gt;Moreover, Bayesian sequential testing does not suffer from the problems associated with sequential testing in the frequentist framework&lt;a href=&#34;#fn3&#34; class=&#34;footnote-ref&#34; id=&#34;fnref3&#34;&gt;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt;. In accordance with the statement of Edwards et al. (1963), “the rules governing when data collection stops are irrelevant to data interpretation. It is entirely appropriate to collect data until a point has been proven or disproven, or until the data collector runs out of time, money, or patience”.&lt;/p&gt;
+&lt;p&gt;Wait, wouldn’t be what we are looking for? It seems legitimate to ask whether it is a better strategy to collect data until sufficient evidence has been accumulated or to collect data until an a priori fixed &lt;span class=&#34;math inline&#34;&gt;\(N\)&lt;/span&gt;, ensuring that we have a fixed probability to reject an highly improbable null hypothesis…&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;details&gt;
+&lt;p&gt;&lt;summary&gt;Click to expand&lt;/summary&gt;&lt;/p&gt;
+&lt;div markdown=&#34;1&#34;&gt;
+&lt;p&gt;Aronson, L., Wiley, G., Darwin, L., &amp;amp; Allen, W. (2005). &lt;em&gt;Match Point&lt;/em&gt;. United States: DreamWorks Pictures, United Kingdom: Icon productions.&lt;/p&gt;
+&lt;p&gt;Bakker, M., van Dijk, A., &amp;amp; Wicherts, J. M. (2012). The rules of the game called psychological science. &lt;em&gt;Perspectives on Psychological Science, 7&lt;/em&gt;, 543–554. &lt;a href=&#34;https://doi.org/10.1177/1745691612459060&#34; class=&#34;uri&#34;&gt;https://doi.org/10.1177/1745691612459060&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Bakker, M., Hartgerink, C. H. J., Wicherts, J. M., &amp;amp; Maas, H. L. J. Van Der. (2016). Researchers’ Intuitions About Power in Psychological Research. &lt;em&gt;Psychological Science, 27&lt;/em&gt;(8), 1069–1077. &lt;a href=&#34;http://doi.org/10.1177/0956797616647519&#34; class=&#34;uri&#34;&gt;http://doi.org/10.1177/0956797616647519&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Edwards, W., Lindman, H., &amp;amp; Savage, L. J. (1963). Bayesian statistical inference for psychological research. Psychological Review, 70, 193-242.&lt;/p&gt;
+&lt;p&gt;Kruschke, J. K. (2011). Bayesian assessment of null values via parameter estimation and model comparison. &lt;em&gt;Perspectives on Psychological Science, 6&lt;/em&gt;, 299–312. &lt;a href=&#34;http://doi.org/10.1177/1745691611406925&#34; class=&#34;uri&#34;&gt;http://doi.org/10.1177/1745691611406925&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Perugini, M., Gallucci, M., &amp;amp; Costantini, G. (2014). Safeguard Power as a Protection Against Imprecise Power Estimates. &lt;em&gt;Perspectives on Psychological Science, 9&lt;/em&gt;(3), 319–332. &lt;a href=&#34;http://doi.org/10.1177/1745691614528519&#34; class=&#34;uri&#34;&gt;http://doi.org/10.1177/1745691614528519&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Schönbrodt, F. D., Wagenmakers, E.-J., Zehetleitner, M., &amp;amp; Perugini, M. (2015). Sequential hypothesis testing with Bayes factors: Efficiently testing mean differences. &lt;em&gt;Psychological Methods&lt;/em&gt;. &lt;a href=&#34;http://dx.doi.org/10.1037/met0000061&#34; class=&#34;uri&#34;&gt;http://dx.doi.org/10.1037/met0000061&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Schönbrodt, F., &amp;amp; Wagenmakers, E.-J. (2016). Bayes factor design analysis: Planning for compelling evidence. Manuscript submitted for publication. &lt;a href=&#34;https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2722435&#34; class=&#34;uri&#34;&gt;https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2722435&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Tversky, A., &amp;amp; Kahneman, D. (1971). Belief in the law of small numbers. &lt;em&gt;Psychological Bulletin, 76&lt;/em&gt;(2), 105-110. &lt;a href=&#34;http://dx.doi.org/10.1037/h0031322&#34; class=&#34;uri&#34;&gt;http://dx.doi.org/10.1037/h0031322&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Wagenmakers, E.-J. (2007). A practical solution to the pervasive problems of p values. Psychonomic Bulletin &amp;amp; Review, 14(5), 779–804.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;/div&gt;
+&lt;div id=&#34;notes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Notes&lt;/h2&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;Note that there are several others (and arguably more important) errors that one can make when it comes to inference, like type-M or type-S errors, but see &lt;a href=&#34;http://www.stat.columbia.edu/~gelman/research/published/francis8.pdf&#34;&gt;this paper&lt;/a&gt; for more details.&lt;a href=&#34;#fnref1&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn2&#34;&gt;&lt;p&gt;See also this similar but much more pretty and elaborated visualisation of the p-values distribution on &lt;a href=&#34;http://rpsychologist.com/d3/pdist/&#34;&gt;R psychologist&lt;/a&gt;.&lt;a href=&#34;#fnref2&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn3&#34;&gt;&lt;p&gt;These problems would also need an entire topic. For an introduction, see Wagenmakers (2007).&lt;a href=&#34;#fnref3&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

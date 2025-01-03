@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>talk | Ladislas Nalborczyk</title>
+    <link>/categories/talk/</link>
+      <atom:link href="/categories/talk/index.xml" rel="self" type="application/rss+xml" />
+    <description>talk</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2025, Ladislas Nalborczyk</copyright><lastBuildDate>Mon, 30 Jan 2023 10:30:00 +0000</lastBuildDate>
+    <image>
+      <url>/img/icon.png</url>
+      <title>talk</title>
+      <link>/categories/talk/</link>
+    </image>
+    
+    <item>
+      <title>Uncovering the origins of inner speech sensory content</title>
+      <link>/talk/2023-jcep/</link>
+      <pubDate>Mon, 30 Jan 2023 10:30:00 +0000</pubDate>
+      <guid>/talk/2023-jcep/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;em&gt;Abstract&lt;/em&gt;: Inner speech is accompanied by a subjective multisensory experience. However, the origins (causes) of this subjective experience are debated. In this study, we used transcranial magnetic stimulation to disentangle the predictions of competing theoretical frameworks.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Motor inhibition prevents execution during imagined typing: Evidence from an action‐mode switching paradigm</title>
+      <link>/talk/2022-eslp/</link>
+      <pubDate>Mon, 29 Aug 2022 14:00:00 +0000</pubDate>
+      <guid>/talk/2022-eslp/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;em&gt;Abstract&lt;/em&gt;: Motor imagery is accompanied by a subjective multisensory experience. This sensory experience is thought to result from internal models that control the execution of overt actions. If so, how is it that motor imagery does not to lead to overt execution? Global and effector-specific inhibitory mechanisms might be at play during imagined actions (e.g., typing). To test this hypothesis, participants were asked to alternate between the overt (executed) and covert (imagined) typing of unimanual words. Global inhibition should induce longer reaction and movement times when the current trial is preceded by an imagined vs. an executed trial. Effector-specific inhibition should amplify this effect when the same hand is used in successive trials. These predictions were borne out by movement times, but not by reaction times. Overall, these results suggest that imagined typing involves the inhibition of hand movements. The pre-registered protocol and data will be available at &lt;a href=&#34;https://osf.io/y9a3k/&#34; class=&#34;uri&#34;&gt;https://osf.io/y9a3k/&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Moving to a World beyond p &lt; .05</title>
+      <link>/talk/2021-ilcb/</link>
+      <pubDate>Mon, 30 Aug 2021 14:00:00 +0000</pubDate>
+      <guid>/talk/2021-ilcb/</guid>
+      <description>
+&lt;script src=&#34;/talk/2021-ilcb/index_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;&lt;em&gt;Abstract&lt;/em&gt;: Numerous authors have highlighted the limitations of the Null-Hypothesis Significance Testing (NHST) approach and the (near exclusive) reliance on p-values and significance testing. Beyond the methodological advantages and disadvantages of NHST compared to other paradigms of statistical inference, one of the main barriers to the correct use of the NHST procedure remains its complexity, often hidden by misleading intuitive interpretation. For instance, a p-value does not indicate the probability of obtaining certain data “by chance”, nor the probability of “being wrong”. Recently, The American Statistician published a special issue named “Statistical Inference in the 21st Century: A World Beyond p &amp;lt; 0.05”, with the intention to provide new recommendations for users of statistics (e.g., researchers, policy makers, journalists). This issue comprises 43 original papers aiming to provide new guidelines and practical alternatives to the “mindless” use of statistics and arbitrary thresholds. In the accompanying editorial, Wasserstein, Schirm, &amp;amp; Lazar (2019) summarise these recommendations in the form of the ATOM guidelines: “Accept uncertainty. Be thoughtful, open, and modest.” We will explore some consequences of these guidelines when applied to the analysis of empirical data, in the light of core concepts from the philosophy of statistics.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>An introduction to Bayesian multilevel models using R, brms, and Stan</title>
+      <link>/talk/2019-rgug/</link>
+      <pubDate>Thu, 28 Nov 2019 16:00:00 +0000</pubDate>
+      <guid>/talk/2019-rgug/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;&lt;em&gt;Abstract&lt;/em&gt;: Bayesian multilevel models are increasingly used to overcome the limitations of frequentist approaches in the analysis of complex structured data. During this session, I will briefly introduce the logic of Bayesian inference and motivate the use of multilevel modelling. I will then show how Bayesian multilevel models can be fitted using the probabilistic programming language Stan and the &lt;code&gt;R&lt;/code&gt; package &lt;code&gt;brms&lt;/code&gt; (Bürkner, 2016). The brms package allows fitting complex nonlinear multilevel (aka ‘mixed-effects’) models using an understandable high-level formula syntax. I will demonstrate the use of brms with some general examples and discuss model comparison tools available within the package. Prior experience with data manipulation and linear models in &lt;code&gt;R&lt;/code&gt; will be helpful.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

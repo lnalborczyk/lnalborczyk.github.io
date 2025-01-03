@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>random forest | Ladislas Nalborczyk</title>
+    <link>/tags/random-forest/</link>
+      <atom:link href="/tags/random-forest/index.xml" rel="self" type="application/rss+xml" />
+    <description>random forest</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2025, Ladislas Nalborczyk</copyright><lastBuildDate>Wed, 27 May 2020 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/img/icon.png</url>
+      <title>random forest</title>
+      <link>/tags/random-forest/</link>
+    </image>
+    
+    <item>
+      <title>Can we decode phonetic features in inner speech using surface electromyography?</title>
+      <link>/publication/2020-nalborczyk-etal/</link>
+      <pubDate>Wed, 27 May 2020 00:00:00 +0000</pubDate>
+      <guid>/publication/2020-nalborczyk-etal/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

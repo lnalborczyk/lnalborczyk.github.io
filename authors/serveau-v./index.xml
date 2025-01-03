@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Serveau, V. | Ladislas Nalborczyk</title>
+    <link>/authors/serveau-v./</link>
+      <atom:link href="/authors/serveau-v./index.xml" rel="self" type="application/rss+xml" />
+    <description>Serveau, V.</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2025, Ladislas Nalborczyk</copyright>
+    <image>
+      <url>/img/icon.png</url>
+      <title>Serveau, V.</title>
+      <link>/authors/serveau-v./</link>
+    </image>
+    
+    <item>
+      <title>Distinct neural mechanisms support inner speaking and inner hearing</title>
+      <link>/publication/2023-nalborczyk-etal/</link>
+      <pubDate>Tue, 10 Oct 2023 00:00:00 +0000</pubDate>
+      <guid>/publication/2023-nalborczyk-etal/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

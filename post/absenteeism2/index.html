@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.8.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Ladislas Nalborczyk">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="This post continues our exploration of the logistic regression model by extending it to a multilevel logistic regression model, using the brms package.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/absenteeism2/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="rgb(0,51,102)">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-1/css/all.min.css" integrity="sha256-4w9DunooKSr3MFXHXWyFER38WmPdm361bQS/2KUWZbU=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" integrity="sha256-SHMGCYmST46SoyGgo4YR/9AlK1vf3ff84Aq9yK4hdqM=" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CMontserrat:400,400italic,700%7CRoboto+Mono&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-86650162-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-86650162-1', { 'anonymize_ip': true });
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu08c8a2f4f986d1f2b79914ac673f283a_69943_32x32_fill_lanczos_center_3.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu08c8a2f4f986d1f2b79914ac673f283a_69943_192x192_fill_lanczos_center_3.png">
+
+  <link rel="canonical" href="/post/absenteeism2/">
+
+  
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@lnalborczyk">
+  <meta property="twitter:creator" content="@lnalborczyk">
+  
+  <meta property="og:site_name" content="Ladislas Nalborczyk">
+  <meta property="og:url" content="/post/absenteeism2/">
+  <meta property="og:title" content="Experimental absenteeism and logistic regression, part II | Ladislas Nalborczyk">
+  <meta property="og:description" content="This post continues our exploration of the logistic regression model by extending it to a multilevel logistic regression model, using the brms package."><meta property="og:image" content="/img/icon.png">
+  <meta property="twitter:image" content="/img/icon.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2017-09-22T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2017-09-22T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/post/absenteeism2/"
+  },
+  "headline": "Experimental absenteeism and logistic regression, part II",
+  
+  "datePublished": "2017-09-22T00:00:00Z",
+  "dateModified": "2017-09-22T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Ladislas Nalborczyk"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Ladislas Nalborczyk",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/images/icon_hu08c8a2f4f986d1f2b79914ac673f283a_69943_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "This post continues our exploration of the logistic regression model by extending it to a multilevel logistic regression model, using the brms package."
+}
+</script>
+
+  
+
+  
+
+
+  
+  
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js" integrity="sha256-5VhCqFam2Cn+yjw61zbBNrbHVJ6SRydPeKopYlngbiQ=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.css" integrity="sha256-zQ0LblD/Af8vOppw18+2anxsuaz3pWYyVWi+bTvTH8Q=" crossorigin="anonymous">
+  
+  <script>
+  window.addEventListener("load", function(){
+    window.cookieconsent.initialise({
+      "palette": {
+        "popup": {
+          "background": "rgb(0,51,102)",
+          "text": "#fff"
+        },
+        "button": {
+          "background": "#fff",
+          "text": "rgb(0,51,102)"
+        }
+      },
+      "theme": "classic",
+      "content": {
+        "message": "This website uses cookies to ensure you get the best experience on our website.",
+        "dismiss": "Got it!",
+        "link": "Learn more",
+        "href": "https://www.cookiesandyou.com"
+      }
+    })});
+  </script>
+
+
+
+  
+
+
+
+
+
+  <title>Experimental absenteeism and logistic regression, part II | Ladislas Nalborczyk</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Ladislas Nalborczyk</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Ladislas Nalborczyk</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>HOME</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#publications"><span>PUBLICATIONS</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#talks"><span>TALKS</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>BLOG</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/pdf/cv.pdf"><span>CV</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#teaching"><span>TEACHING</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>CONTACT</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Experimental absenteeism and logistic regression, part II</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Sep 22, 2017
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    14 min read
+  </span>
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <a href="/post/absenteeism2/#disqus_thread"></a>
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>In a <a href="http://www.barelysignificant.com/absenteeism/">previous post</a>, we tried to determine whether we could predict the presence of students that registered for psychological experiments, based on their mode of enrolment and the sending of a reminder by e-mail. As these two factors were confounded, we will focus in the current post on evaluating the effect of the reminder only, based on a bigger dataset gathered by several researchers.</p>
+<p>Let’s say that I have convinced ten of my colleagues to systematically send a reminder to one half of the participants of their next study, and no reminder to the other half<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. As my colleagues love high-powered studies, each of them aimed at recruiting approximately 200 participants per experiment, while this sample size could vary a little bit from one researcher to another (+/- 20%).</p>
+<div id="step-1-getting-the-data" class="section level2">
+<h2>Step 1: getting the data</h2>
+<pre class="r"><code>library(tidyverse)
+(data &lt;-
+    read.csv(
+        &quot;http://raw.githubusercontent.com/lnalborczyk/old_blog/master/_posts/absenteeism/absence2.csv&quot;,
+        stringsAsFactors = FALSE) )</code></pre>
+<pre><code>##    reminder researcher presence absence total
+## 1        -1          1       16      86   102
+## 2        -1          2       53      59   112
+## 3        -1          3       31      65    96
+## 4        -1          4       61      34    95
+## 5        -1          5       34      49    83
+## 6        -1          6       34      54    88
+## 7        -1          7        3      77    80
+## 8        -1          8       38      54    92
+## 9        -1          9       31      65    96
+## 10       -1         10       23      58    81
+## 11        1          1       96       6   102
+## 12        1          2      109       3   112
+## 13        1          3       87       9    96
+## 14        1          4       92       3    95
+## 15        1          5       65      18    83
+## 16        1          6       82       6    88
+## 17        1          7       64      16    80
+## 18        1          8       81      11    92
+## 19        1          9       89       7    96
+## 20        1         10       76       5    81</code></pre>
+<p>The <code>reminder</code> column indicates whether a reminder e-mail was sent to the participant prior to the experiment (coded as 1), while the <code>researcher</code> column indicates which researcher ran the study, from 1 to 10. The last three columns represent the counts of present, absent, and total number of participants, for a grand total of 1850 participants.</p>
+</div>
+<div id="step-2-introducing-brms" class="section level2">
+<h2>Step 2: introducing brms</h2>
+<p>In this first section, we will introduce the <code>brms</code> package (Bürkner, 2017), and fit a first simple model to try to predict the mean <strong>log-odds</strong> of a participant being present, through a linear combination of an intercept <span class="math inline">\(\alpha\)</span> and a slope <span class="math inline">\(\beta\)</span>, the latter allowing to quantify the effect of the reminder.</p>
+<p><span class="math display">\[
+\begin{aligned}
+y_{i} &amp;\sim \mathrm{Binomial}(n_{i}, p_{i}) \\
+logit(p_{i}) &amp;= \alpha + \beta \times \text{reminder} \\
+\alpha &amp;\sim \mathrm{Normal}(0, 10) \\
+\beta &amp;\sim \mathrm{Normal}(0, 10) \\
+\end{aligned}
+\]</span></p>
+<p>One great advantage of <code>brms</code> is that it allows to specify models using an <a href="https://cran.r-project.org/web/packages/lme4/lme4.pdf">lme4</a>-like syntax, where the left side of the formula describes the outcome to be predicted and the right side describes the predictors (both constant and varying effects). When trying to predict aggregated binomial data, the outcome that is modeled is the number of <em>successes</em> (in our case, <em>presence</em>) out of the total number of <em>trials</em>, which is expressed in <code>brms</code> as <code>sucesses|trials(total)</code><a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>.</p>
+<p>As previously, we can retrieve the grand mean probability of presence by transforming back the intercept, as we know that <span class="math inline">\(p=\exp(\alpha)/(1+\exp(\alpha))\)</span>.</p>
+<pre class="r"><code>a &lt;- fixef(mod1)[1] # extracting the intercept
+exp(a) / (1 + exp(a) ) # equivalent to plogis(a)</code></pre>
+<pre><code>## [1] 0.6997424</code></pre>
+<p>A nice summary of this first model can be obtained using the <code>broom</code> package (Robinson, 2017), and the <code>tidy</code> function, which provides the mean of the posterior distribution along with its standard error and credible intervals.</p>
+<pre class="r"><code>library(broom)
+tidy(mod1, parameters = &quot;^b_&quot;, prob = 0.95)</code></pre>
+<pre><code>##          term  estimate  std.error     lower     upper
+## 1 b_Intercept 0.8460714 0.06698067 0.7156695 0.9782869
+## 2  b_reminder 1.4650080 0.06704626 1.3328961 1.5979301</code></pre>
+<p>Alternatively, <code>brms</code> (in combination with <code>bayesplot</code>) offers a nice method to plot <code>brmsfit</code> objects. Below, we plot an histogram of samples from the posterior distribution for both the intercept <span class="math inline">\(\alpha\)</span> and the slope <span class="math inline">\(\beta\)</span>, along with <a href="http://sbfnk.github.io/mfiidd/mcmc_diagnostics.html">traceplots</a>.</p>
+<pre class="r"><code>mod1 %&gt;%
+    plot(
+        combo = c(&quot;hist&quot;, &quot;trace&quot;), widths = c(1, 1.5),
+        theme = theme_bw(base_size = 12) )</code></pre>
+<p><img src="/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>From this first model we can also compute (as previously) the <strong>odds ratio</strong> (OR), between the no-reminder and the reminder conditions, by simply exponentiating the slope. In our case, the OR is approximately equal to 4.32 (95% HDI [3.79, 4.94]), meaning that it is 4.32 times more likely that participants will be present if a reminder is sent prior to the experiment.</p>
+<p>There is one major issue though with this analysis, related to the nested structure of the data. Each researcher evaluated the effects of the reminder in his study, and we could expect each study to have its own baseline level of presence probability, perhaps related to the specificities of the study, or to the field of research, the university, etc. In other words, we could expect participants of the same <em>cluster</em> (i.e., the same study, ran by the same researcher) to be more similar to each others, than participants of different <em>clusters</em>. In other words, observations are <strong>interdependant</strong>. In this situation, we can not run a standard logistic regression analysis because this violates one of the most important assumptions in the linear model, namely the assumption of <strong>independence of the residuals</strong> (Sommet &amp; Morselli, 2017). Multilevel models (MLMs) allow to disentangle the effects intrinsic to a specific cluster and the between-clusters effects, by allowing parameters to vary by <em>cluster</em>.</p>
+</div>
+<div id="step-3-varying-the-intercept" class="section level2">
+<h2>Step 3: varying the intercept</h2>
+<p>With the following model, we will estimate the mean probability of presence, only specifying an intercept (this model is sometimes called the <em>unconditionnal mean model</em>), that we will allow to vary by <code>researcher</code>.</p>
+<p><span class="math display">\[
+\begin{aligned}
+y_{i} &amp;\sim \mathrm{Binomial}(n_{i}, p_{i}) \\
+logit(p_{i}) &amp;= \alpha_{researcher_{[i]}} \\
+\alpha_{researcher} &amp;\sim \mathrm{Normal}(\alpha, \sigma) \\
+\alpha &amp;\sim \mathrm{Normal}(0, 10) \\
+\sigma &amp;\sim \mathrm{HalfCauchy}(0, 10) \\
+\end{aligned}
+\]</span></p>
+<p>From this formulation we can see that the <strong>log-odds</strong> are now allowed to vary by <em>cluster</em> (i.e., by researcher), and that we are also estimating the parameters of the distribution from which these intercepts are issued (i.e., the <em>population</em> of intercepts, described in the third line of the model). This way, the model can learn information both at the level of the <code>researcher</code>, and at the level of the population of <code>researchers</code>, thus fighting the anterograde amnesia of the constant-effects models (see McElreath, 2016, page 355).</p>
+<pre class="r"><code>mod2 %&gt;% tidy(parameters = c(&quot;^b_&quot;, &quot;^sd_&quot;), prob = 0.95)</code></pre>
+<pre><code>##                       term estimate std.error     lower     upper
+## 1              b_Intercept 0.536011 0.1745319 0.1875409 0.8905124
+## 2 sd_researcher__Intercept 0.500479 0.1600780 0.2802626 0.8996160</code></pre>
+<p>We can interpret the variation of the intercept <span class="math inline">\(\alpha\)</span> between researchers by considering the <em>intra-class correlation</em> (ICC)<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>, which goes from 0 if the grouping conveys no information to 1 if all levels of a cluster are identical (Gelman, 2006, p. 258). In other words, ICC = 0 indicates perfect independence of residuals: the observations do not depend on cluster membership. When the ICC is not different from zero or negligible, one could consider running traditional one-level regression analysis. However, ICC = 1 indicates perfect interdependence of residuals: the observations only vary between clusters (Sommet &amp; Morselli, 2017).</p>
+<p>The ICC is usually expressed as <span class="math inline">\(\frac{\tau^{2}}{\tau^{2} + \sigma^{2}}\)</span>, where <span class="math inline">\(\tau^{2}\)</span> denotes the variance of the distribution of the varying effects. However, in the context of logistic regression, we do not have residuals (i.e., the <span class="math inline">\(\sigma^{2}\)</span>) on the first level… A first approach to compute the ICC in multilevel logistic regression is known as the <em>latent variable approach</em>, as we assume that the true underlying variable is continuous but that we can only observe a binary response that indicates whether the underlying variable is greater or less than a given threshold. In the logistic regression model, the underlying continuous variable will come from a logistic distribution, with a variance of <span class="math inline">\(\frac{\pi^2}{3}\)</span>, and hence we substitute this for the level 1 variance, resulting in the formula: <span class="math inline">\(\frac{\tau^{2}}{\tau^{2} + \frac{\pi^2}{3}}\)</span> when using a logit link (Austin &amp; Merlo, 2017; Browne, Subramanian, Jones, &amp; Goldstein, 2005; Sommet &amp; Morselli, 2017).</p>
+<p>Note though that this method of estimating the ICC can differ considerably from other methods (e.g., the simulation method, wait for the next post…) as we assume that the level 1 variance is fixed and independent of the predictor variables.</p>
+<pre class="r"><code># extracting tau^2
+tau2 &lt;- tidy(mod2, parameters = &quot;^sd_&quot;, prob = 0.95)$estimate^2
+
+# computing the ICC
+(ICC &lt;- tau2 / (tau2 + (pi^2 / 3) ) )</code></pre>
+<pre><code>## [1] 0.0707499</code></pre>
+<p>In our case, the ICC is equal to 0.0707, indicating that 7.07% of the chances of being present is explained by between-study differences, and conversely, that 7.07% is explained by within-study differences.</p>
+<p>Another way to visualise the variability of the varying intercepts is to plot them. In the following plot, we use the <code>ggjoy</code> package (Wilke, 2017) to represent the posterior distribution of the estimated mean probability of presence for each researcher along with raw data estimation (the black crosses), while the vertical dotted line represents the grand mean probability of presence.</p>
+<p><img src="/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>This plot reveals the phenomenon of <strong>shrinkage</strong>, that is the phenomenon through which the model expresses its skepticism toward extreme values. The mean predicted probability of presence for each researcher (the varying intercept) will differ from the raw estimation in an amount that is dependant to the distance between this raw proportion and the grand mean probability (and the precision of the estimation for this particular cluster). The more the data seem weird, the more the model’s estimation will be <em>shrunk</em> to the grand mean.</p>
+</div>
+<div id="step-4-varying-the-slope" class="section level2">
+<h2>Step 4: varying the slope</h2>
+<p>In the same manner that the mean probability of presence might be different from researcher to researcher, one might ask whether the effects of the reminder are identical between researchers. In the next model, we will then allow the slope to vary by researcher too.</p>
+<p><span class="math display">\[
+\begin{aligned}
+y_{i} &amp;\sim \mathrm{Binomial}(n_{i}, p_{i}) \\
+logit(p_{i}) &amp;= \alpha_{researcher_{[i]}} + \beta_{researcher_{[i]}} \times \text{reminder}_{i} \\
+\begin{bmatrix}
+\alpha_{\text{researcher}} \\
+\beta_{\text{researcher}} \\
+\end{bmatrix}
+&amp;\sim \mathrm{MVNormal}\bigg(\begin{bmatrix} \alpha \\ \beta \end{bmatrix}, \textbf{S}\bigg) \\
+\textbf{S} &amp;=
+\begin{pmatrix}
+\sigma_{\alpha} &amp; 0 \\
+0 &amp; \sigma_{\beta} \\
+\end{pmatrix}
+\textbf{R} \begin{pmatrix}
+\sigma_{\alpha} &amp; 0 \\
+0 &amp; \sigma_{\beta} \\
+\end{pmatrix} \\
+\alpha &amp;\sim \mathrm{Normal}(0, 10) \\
+\beta &amp;\sim \mathrm{Normal}(0, 10) \\
+(\sigma_{\alpha}, \sigma_{\beta}) &amp;\sim \mathrm{HalfCauchy}(0, 10) \\
+\textbf{R} &amp;\sim \mathrm{LKJcorr}(2) \\
+\end{aligned}
+\]</span></p>
+<p>We chose to model the varying intercept and the varying slope as issued from the same <strong>multivariate normal distribution</strong> (on the third line), allowing to estimate the correlation between them (for more details see McElreath, 2016). One reason to do this might be that a low mean probability of presence for a particular study, could be associated with a stronger / weaker effect of the reminder for this particular study. For instance, we could imagine that some researchers paid their participants, and some others did not, and that the latter kind of study would have a lower mean probability of presence, but would exhibit a stronger effect of the <code>reminder</code> (i.e., we would expect a negative correlation between the intercept and the slope).</p>
+<p>Note that one way to model both varying intercept and varying slope without modeling the correlation between these two terms is to specify a double pipe in the formula like <code>(1+reminder||researcher)</code>.</p>
+<pre class="r"><code>tidy(mod3, parameters = c(&quot;^b_&quot;, &quot;cor&quot;, &quot;^sd_&quot;), prob = 0.95)</code></pre>
+<pre><code>##                                  term   estimate std.error      lower
+## 1                         b_Intercept  0.8438880 0.2971876  0.2538889
+## 2                          b_reminder  1.6080935 0.1798086  1.2602101
+## 3 cor_researcher__Intercept__reminder -0.1820713 0.3232780 -0.7473367
+## 4            sd_researcher__Intercept  0.8729976 0.2895400  0.4858828
+## 5             sd_researcher__reminder  0.4775654 0.1752890  0.2266664
+##       upper
+## 1 1.4436868
+## 2 1.9819546
+## 3 0.4724033
+## 4 1.5867499
+## 5 0.9133133</code></pre>
+<p>This output indeed indicates a negative correlation between the varying intercept and the varying slope but relatively weak and associated with a lot of uncertainty (<span class="math inline">\(\rho=-0.19\)</span>, 95% HDI [-0.75, 0.47]).</p>
+<p>One way to compare the models we fitted would be to compare their predictive abilities. It can be done with the <code>LOO</code> function, which uses leave-one-out cross-validation (Gelfand, Dey, &amp; Chang 1992; Vehtari, Gelman, &amp; Gabry, 2015).</p>
+<pre class="r"><code>brms::LOO(mod1, mod2, mod3, compare = FALSE)</code></pre>
+<pre><code>## Output of model &#39;mod1&#39;:
+## 
+## Computed from 20000 by 20 log-likelihood matrix
+## 
+##          Estimate   SE
+## elpd_loo   -125.7 30.0
+## p_loo        14.0  4.7
+## looic       251.4 60.1
+## ------
+## Monte Carlo SE of elpd_loo is 0.1.
+## 
+## Pareto k diagnostic values:
+##                          Count Pct.    Min. n_eff
+## (-Inf, 0.5]   (good)     18    90.0%   1213      
+##  (0.5, 0.7]   (ok)        2    10.0%   341       
+##    (0.7, 1]   (bad)       0     0.0%   &lt;NA&gt;      
+##    (1, Inf)   (very bad)  0     0.0%   &lt;NA&gt;      
+## 
+## All Pareto k estimates are ok (k &lt; 0.7).
+## See help(&#39;pareto-k-diagnostic&#39;) for details.
+## 
+## Output of model &#39;mod2&#39;:
+## 
+## Computed from 20000 by 20 log-likelihood matrix
+## 
+##          Estimate    SE
+## elpd_loo   -622.8  57.6
+## p_loo       307.3  28.9
+## looic      1245.6 115.2
+## ------
+## Monte Carlo SE of elpd_loo is NA.
+## 
+## Pareto k diagnostic values:
+##                          Count Pct.    Min. n_eff
+## (-Inf, 0.5]   (good)      0      0.0%  &lt;NA&gt;      
+##  (0.5, 0.7]   (ok)        0      0.0%  &lt;NA&gt;      
+##    (0.7, 1]   (bad)       0      0.0%  &lt;NA&gt;      
+##    (1, Inf)   (very bad) 20    100.0%  1         
+## See help(&#39;pareto-k-diagnostic&#39;) for details.
+## 
+## Output of model &#39;mod3&#39;:
+## 
+## Computed from 20000 by 20 log-likelihood matrix
+## 
+##          Estimate  SE
+## elpd_loo    -66.9 3.5
+## p_loo        17.9 2.5
+## looic       133.8 7.0
+## ------
+## Monte Carlo SE of elpd_loo is NA.
+## 
+## Pareto k diagnostic values:
+##                          Count Pct.    Min. n_eff
+## (-Inf, 0.5]   (good)      0     0.0%   &lt;NA&gt;      
+##  (0.5, 0.7]   (ok)        2    10.0%   1083      
+##    (0.7, 1]   (bad)      15    75.0%   41        
+##    (1, Inf)   (very bad)  3    15.0%   7         
+## See help(&#39;pareto-k-diagnostic&#39;) for details.</code></pre>
+<p>This comparison reveals that the third model has the best predictive abilities, indicating that it was savvy to include a varying slope. Below we plot the posterior predictions of this last model, at the group-level as well at the population-level (in base plot, because we love base plot).</p>
+<pre class="r"><code># extracting posterior samples from the last model
+post &lt;- posterior_samples(mod3, &quot;b&quot;)
+
+# plotting the raw data
+plot(data$prob ~ data$reminder, las = 1,
+    pch = 1, cex = 0.75,
+    xlab = &quot;reminder&quot;, ylab = &quot;p(presence)&quot;)
+
+# adding a grid
+abline(h = seq(0, 1, 0.2), v = seq(-1, 1, 0.2),
+    col = adjustcolor(&quot;gray&quot;, alpha.f = 0.2), lty = 1)
+
+# extracting coefficients
+coefs &lt;- rbind(
+  data.frame(t(matrix(fixef(mod3)[, 1]) ) ) %&gt;%
+    rename(intercept = X1, slope = X2),
+  data.frame(coef(mod3) %&gt;% data.frame %&gt;% select(contains(&quot;Estimate&quot;) ) ) %&gt;%
+    rename(intercept = 1, slope = 2)
+  )
+
+# plotting population-level predictions
+x_plot &lt;- seq(-1, 1, length.out = 2000)
+y_plot &lt;- plogis(coefs[1, 1] + coefs[1, 2] * x_plot)
+
+lines(x_plot, y_plot, lwd = 2, col = &quot;steelblue&quot;)
+
+# plotting group-level predictions
+for(i in 2:nrow(coefs) ){
+    
+    x_plot &lt;- seq(-1, 1, length.out = 2000)
+    y_plot &lt;- plogis(coefs[i, 1] + coefs[i, 2] * x_plot)
+    lines(x_plot, y_plot, lwd = 1,
+        col = adjustcolor(&quot;steelblue&quot;, alpha.f = 0.25) )
+}</code></pre>
+<p><img src="/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>The uncertainty associated with the estimation of the intercept and the slope at the population-level can be appreciated by superimposing many samples from the posterior (see also <a href="https://mvuorre.github.io/post/2016/2016-03-06-multilevel-predictions/">this blogpost</a> from Matti Vuorre for much nicer plots and how to plot credible intervals at the individual-level).</p>
+<pre class="r"><code># plotting the raw data
+plot(data$prob ~ data$reminder, las = 1,
+    pch = 1, cex = 0.75,
+    xlab = &quot;reminder&quot;, ylab = &quot;p(presence)&quot;)
+
+# adding a grid
+abline(h = seq(0, 1, 0.2), v = seq(-1, 1, 0.2),
+    col = adjustcolor(&quot;gray&quot;, alpha.f = 0.2), lty = 1)
+
+# plotting group-level predictions (surimposing 1 out of 10 posterior samples)
+for(i in seq(1, nrow(post), 10) ){
+    
+    x_plot &lt;- seq(-1, 1, length.out = 2000)
+    y_plot &lt;- plogis(post[i,1] + post[i,2] * x_plot)
+    
+    lines(x_plot, y_plot, lwd = 0.75,
+        col = adjustcolor(&quot;steelblue&quot;, alpha.f = 0.05) )
+        
+}</code></pre>
+<p><img src="/post/2017-09-22-absenteeism2_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
+<div id="conclusions" class="section level2">
+<h2>Conclusions</h2>
+<p>To sum up, the effect of the reminder, while non negligeable, appears as quite variable accross different studies ran by different researchers. The baseline probability of presence by researcher appears as even more variable. Thus, predictions of our models could be improved by incorporating more information in the model, for instance by taking into account the similarity between different teams (e.g., teams of the same lab, or studies realised in the same field of research), by refining the structure of the model and adding additionnal levels.</p>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<details>
+<p><summary>Click to expand</summary></p>
+<div markdown="1">
+<p>Browne, W. J., Subramanian, S. V., Jones, K., Goldstein, H. (2005). Variance partitioning in multilevel logistic models that exhibit
+overdispersion. <em>Journal of the Royal Statistical Society—Series A, 168</em>(3):599–613.</p>
+<p>Bürkner, P.-C. (2017). brms: An R Package for Bayesian Multilevel Models Using Stan. Journal of Statistical Software, 80(1), 1-28. <a href="doi:10.18637/jss.v080.i01" class="uri">doi:10.18637/jss.v080.i01</a></p>
+<p>Claus O. Wilke (2017). ggjoy: Joyplots in ‘ggplot2’. R package version 0.2.0. <a href="https://CRAN.R-project.org/package=ggjoy" class="uri">https://CRAN.R-project.org/package=ggjoy</a></p>
+<p>Evans, M., Hastings, N., Peacock, B. (1993). Statistical Distributions. John Wiley and Sons: New York, NY.</p>
+<p>Gelfand, A.E., Dey, D.K., Chang, H. (1992). Model Determination Using Predictive Distributions with Implementation via Sampling-Based Methods. Technical report, DTIC Document.</p>
+<p>McElreath, R. (2016). Statistical Rethinking. Chapman; Hall/CRC.</p>
+<p>Robinson, D. (2017). broom: Convert Statistical Analysis Objects into Tidy Data Frames. R package version 0.4.2. <a href="https://CRAN.R-project.org/package=broom" class="uri">https://CRAN.R-project.org/package=broom</a></p>
+<p>Sommet, N., &amp; Morselli, D. (2017). Keep Calm and Learn Multilevel Logistic Modeling: A Simplified Three-Step Procedure Using Stata, R, Mplus, and SPSS. International Review of Social Psychology, 30(1), 203–218, DOI: <a href="https://doi.org/10.5334/irsp.90" class="uri">https://doi.org/10.5334/irsp.90</a></p>
+<p>Vehtari, A., Gelman, A., Gabry, J. (2015). Efficient Implementation of Leave-One-Out Cross- Validation and WAIC for Evaluating Fitted Bayesian Models. Unpublished manuscript, pp. 1–22. URL <a href="http://www.stat.columbia.edu/~gelman/research/unpublished/loo_" class="uri">http://www.stat.columbia.edu/~gelman/research/unpublished/loo_</a> stan.pdf.</p>
+</div>
+</details>
+</div>
+<div id="notes" class="section level2">
+<h2>Notes</h2>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Obviously I do not possess such impressive persuasion skills, thus we will work with simulated data.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>There are several ways to specify priors in <code>brms</code>, that can be retrieved by typing <code>?prior</code> in the console.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>The ICC is also known as the <em>Variance Partitioning Coefficient</em>.<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+    </div>
+
+    
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/r/">R</a>
+  
+  <a class="badge badge-light" href="/tags/bayesian/">Bayesian</a>
+  
+  <a class="badge badge-light" href="/tags/brms/">brms</a>
+  
+  <a class="badge badge-light" href="/tags/logistic-regression/">logistic regression</a>
+  
+  <a class="badge badge-light" href="/tags/multilevel-model/">multilevel model</a>
+  
+</div>
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/absenteeism2/&amp;text=Experimental%20absenteeism%20and%20logistic%20regression,%20part%20II" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/post/absenteeism2/&amp;t=Experimental%20absenteeism%20and%20logistic%20regression,%20part%20II" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Experimental%20absenteeism%20and%20logistic%20regression,%20part%20II&amp;body=/post/absenteeism2/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/absenteeism2/&amp;title=Experimental%20absenteeism%20and%20logistic%20regression,%20part%20II" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Experimental%20absenteeism%20and%20logistic%20regression,%20part%20II%20/post/absenteeism2/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/absenteeism2/&amp;title=Experimental%20absenteeism%20and%20logistic%20regression,%20part%20II" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_huce03c832dbc4daebb8179d9bb47f458f_1060633_270x270_fill_q90_lanczos_center.jpg" alt="Ladislas Nalborczyk">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/">Ladislas Nalborczyk</a></h5>
+      <h6 class="card-subtitle">CNRS researcher</h6>
+      <p class="card-text">My main research interests span cognitive neuroscience and psycholinguistics at large and more specifically include overt and covert speech production, mental/motor imagery, time perception, computational and statistical modelling, machine learning, and deep learning.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:ladislas.nalborczyk@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://bsky.app/profile/lnalborczyk.bsky.social" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/citations?user=na-dkLYAAAAJ&amp;hl=en" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/lnalborczyk" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://orcid.org/0000-0002-7419-9855" target="_blank" rel="noopener">
+        <i class="ai ai-orcid"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://osf.io/ba8xt" target="_blank" rel="noopener">
+        <i class="ai ai-osf"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+<section id="comments">
+  
+    
+<div id="disqus_thread"></div>
+<script>
+  let disqus_config = function () {
+    
+    
+    
+  };
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+      return;
+    }
+    var d = document, s = d.createElement('script'); s.async = true;
+    s.src = 'https://' + "barely-significant" + '.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+</section>
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/post/absenteeism/">Experimental absenteeism and logistic regression, part I</a></li>
+      
+      <li><a href="/post/matchpoint/">On power and the &#39;match point situation&#39;</a></li>
+      
+      <li><a href="/post/aicbic/">Why the Akaike Information Criterion is as much &#39;Bayesian&#39; as the Bayesian Information Criterion</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js" integrity="sha256-eOgo0OtLL4cdq7RdwRUiGKLX9XsIJ7nGhWEKbohmVAQ=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/languages/r.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js" integrity="sha256-EErZamuLefUnbMBQbsEqu1USa+btR2oIlCpBJbyD4/g=" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    <script>const isSiteThemeDark = false;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    <script id="dsq-count-scr" src="https://barely-significant.disqus.com/count.js" async></script>
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.4aaf2d64e50f8e54cf66dcc54147a22e.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    © 2017-2025, Ladislas Nalborczyk &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

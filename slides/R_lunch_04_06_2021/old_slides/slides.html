@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>A priori power calculations using simulation</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Univ. Grenoble Alpes, CNRS, LPNC, 38000 Grenoble, France   Department of Experimental Clinical and Health Psychology, Ghent University" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="baltheme.css" type="text/css" />
+    <link rel="stylesheet" href="baltheme-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# A priori power calculations using simulation
+## Ladislas Nalborczyk
+### Univ. Grenoble Alpes, CNRS, LPNC, 38000 Grenoble, France <br> Department of Experimental Clinical and Health Psychology, Ghent University
+### 06.02.2019
+
+---
+
+
+
+
+# What is power ?
+
+In the Null Hypothesis Significance Testing (NHST) framework, statistical power is defined as the probability of rejecting the hypothesis of null effect when this hypothesis is indeed false.
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; H0: \(\delta = 0\) &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; H1: \(\delta \neq 0\) &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Reject H0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Type I error, \(\alpha\) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Correct inference &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Fail to reject H0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Correct inference &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Type II error, \(\beta\) &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+Put formaly, the statistical power is then equal to `\(1 - \beta\)`.
+
+---
+
+# The power problem/paradox
+
+How many participants/observations should I obtain for my next experiment, in order to show the effect I want to show ?
+
+--
+
+**Usual algorithm** (*a priori* NHST-PA): trying to guess the population effect size, plugging numbers (effect size and requested power) in **the magic hat** (the power function), and planning for a specific n (sample size).
+
+
+---
+
+# Sequential testing
+
+Paradox: If I knew what (effect size) I am looking for, I would not bother making an experiment, right ?
+
+--
+
+Another approach consists in recruiting participants until we reach a predefined level of *evidence*. This is called **sequential testing**.
+
+--
+
+But this requires that we have a way to quantify evidence...
+
+---
+
+# Quiz: what does what ?
+
+**Quantifying the relative evidence for an hypothesis/model**
+
+--
+
+&amp;#8627; Bayes Factors
+
+--
+
+**Making decisions while controlling error rates in the long-run**
+
+--
+
+&amp;#8627; NHST &amp; p-values (à la Neyman-Pearson)
+
+--
+
+**Examining predictive abilities of models**
+
+--
+
+&amp;#8627; Information Criteria (e.g., AIC, QAIC, WAIC)
+
+--
+
+The above methods rest on quite different philosophical/theoretical/statistical grounds, so please do not mix up your goals with the reason for which each method was designed.
+
+---
+
+# AIC and deviance
+
+Akaike (1971) noticed that the negative log-likehood of a model + 2 times the number of parameters was approximately equal to the **out-of-sample deviance** of a model...
+
+--
+
+`$$\text{AIC} = -2\log(\mathcal{L}(\hat{\theta}|\text{data}))+2K$$`
+
+--
+
+**In-sample deviance**: how bad is a model to explain the current dataset (the dataset that we used to fit the model)
+
+--
+
+**Out-of-sample deviance**: how bad is a model to explain a **future** dataset issued from the same data generation process (the same population)
+
+--
+
+This is crazy no ?
+
+---
+
+# AIC, Akaike weights and evidence ratios
+
+The individual AIC values are not interpretable in absolute terms as they contain arbitrary constants and are much affected by sample size. Then it is imperative to rescale these criteria. Usually, this is done by substracting to the AIC of each model the AIC of the model with the minimum one:
+
+`$$\Delta_{AIC} = AIC_{i} - AIC_{min}$$`
+
+--
+
+It is convenient to normalise the model likelihoods such that they sum to 1 and treat them as probabilities. Hence, we use:
+
+`$$w_{i}=\dfrac{exp(-\Delta_{i}/2)}{\sum_{r=1}^{R}exp(-\Delta_{r}/2)}$$`
+
+---
+
+# AIC, Akaike weights and evidence ratios
+
+The `\(w_i\)`, called **Akaike weights**, are useful as the *weight of evidence* in favour of model `\(g_i(\cdot |\theta)\)` as being the actual Kullback-Leibler best model in the set. The ratios `\(w_i/w_j\)` are identical to the original likelihood ratios, `\(\mathcal{L}(g_i|data)/\mathcal{L}(g_j|data)\)`, and so they are invariant to the model set, but the `\(w_i\)` values depend on the full model set (because they sum to 1).
+
+--
+
+Evidence can be judged by the relative likelihood of model pairs as `\(\mathcal{L}(g_i|x)/\mathcal{L}(g_j|x)\)` or, equivalently, the ratio of Akaike weights `\(w_i/w_j\)`. Such ratios are called **evidence ratios** and represend the evidence about fitted models as to which is better in a Kullback-Leibler information sense.
+
+---
+
+# AIC-based sequential testing
+
+When using information criteria for sequential testing, the question is not anymore when do I have enough evidence for this hypothesis over this other hypothesis (the more complex model is always better, if enough data).
+
+--
+
+Instead, the question is when do I have "enough data” to estimate precisely the parameters of the augmented model ? When does the more complex model becomes *enough supported* by the data ?
+
+--
+
+In other words, *when does the augmented (the more complex) model becomes parsimonious* ?
+
+---
+
+# Simulations
+
+Using simulations, we can compute the *likelihood* of observing an evidence ratio `\(ER\)` above a certain threshold `\(T\)`, given a sample size `\(n\)` and an effect size `\(d\)` (a kind of p-value).
+
+`$$p(ER&gt;T|n,d)$$`
+
+---
+
+# Using Bayes
+
+Then, using Bayes theorem, we can compute the *posterior probability* of the population effect size being `\(d_{i}\)` (for `\(d\)` in `\(d_{i}, \dots , d_{k}\)`), given that the evidence ratio `\(ER\)` is above a threshold `\(T\)`, and for a sample size `\(n\)`.
+
+--
+
+`$$p(d_{i}|ER&gt;T,n) = \frac{p(ER&gt;T|n,d_{i}) \cdot p(d_{i}|n)}{\sum_{i=1}^{k}{p(ER&gt;T|n,d_{i}) \cdot p(d_{i}|n)}}$$`
+
+--
+
+But we need to define the *prior probability* of each effect size...
+
+---
+
+# Defining a prior on effect sizes
+
+Based on previous work trying to estimate the distribution of effect sizes in Psychology, we used a discrete Gaussian distribution with mean `\(\mu = 0.5\)` and standard deviation `\(\sigma = 0.25\)` as a prior distribution.
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-2-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Thanks
+
+...
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

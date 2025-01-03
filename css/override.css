@@ -1,0 +1,114 @@
+/*reducing font size*/
+html {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 200;
+  font-size: 100%;
+  color: rgba(0,0,0,0.9);
+  line-height: 1.5;
+}
+
+/*removing borders around images*/
+img {
+    box-shadow: none !important;
+}
+
+/*headings*/
+    
+a,
+a:visited,
+h3.article-title a:hover {
+    color: rgb(127,140,180);
+}
+
+a:hover {
+    color: rgb(127,140,180);
+}
+
+.navbar-default .navbar-nav li a:hover,
+.btn-primary,
+.btn-primary.btn-outline {
+    color: rgb(127,140,180);
+}
+
+/*articles*/
+    
+.article-title a {
+    color: #151515;
+}
+
+.article-metadata a {
+    color: #888;
+}
+
+.article-metadata a:hover {
+    color: rgb(127,140,180);
+}
+
+/*navbar buttons*/
+    
+.navbar-default .navbar-nav>.active>a,
+.navbar-default .navbar-nav>.active>a:focus,
+.navbar-default .navbar-nav>.active>a:hover {
+    color: rgb(127,140,180);
+    font-weight: 700;
+    background-color: transparent !important; /* Override Bootstrap. */
+}
+
+/*toolbar buttons*/
+    
+.btn-toolbar .btn.btn-primary {
+    background: rgb(127,140,180);
+}
+
+.btn-toolbar .btn.btn-primary:hover,
+.btn-toolbar .btn.btn-primary:focus {
+    /*background-color: rgba(0,230,118,0.6);*/
+    background-color: rgba(127,140,180,0.6);
+}
+
+.btn-toolbar .btn.btn-primary:active,
+.btn-toolbar .btn.btn-primary.active {
+    /*background-color: rgba(0,230,118,1);*/
+    background-color: rgba(52,60,86,1);
+}
+
+/*publications*/
+
+.pub-icon {
+  color: rgb(52,60,86);
+  font-size: 0.8em;
+  padding-top: 6px;
+}
+
+.pub-list-item .pub-publication {
+  color: rgb(132, 214, 211);
+  font-size: 1rem;
+}
+
+/*button primary: color override*/
+
+.btn-primary {
+  border-color: rgb(127,140,180) !important;
+  background: rgb(127,140,180) !important;
+}
+
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary.active,
+.btn-primary:visited,
+.open > .dropdown-toggle.btn-primary {
+  background: rgb(127,140,180) !important;
+}
+
+/*button outlines*/
+
+.btn-outline {
+  background-color: transparent !important;
+  color: inherit;
+  transition: all .5s;
+}
+
+.btn-primary.btn-outline {
+  color: rgb(127,140,180) !important;
+  border-color: rgb(127,140,180) !important;
+}

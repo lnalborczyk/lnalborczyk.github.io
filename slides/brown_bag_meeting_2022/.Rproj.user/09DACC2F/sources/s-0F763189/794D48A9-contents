@@ -1,0 +1,2605 @@
+---
+title: "Introduction à la modélisation statistique bayésienne en R"
+# subtitle: "(avec le package brms 🥳)"
+author: "Ladislas Nalborczyk"
+institute: "GIPSA-lab, CNRS, Univ. Grenoble Alpes, Grenoble INP"
+date: '09.12.2020 <br><br> `r icon::fa("twitter")` <a href="https://twitter.com/lnalborczyk" style="color:white;">@lnalborczyk</a> `r icon::fa("link")` Slides available at <a href="https://www.barelysignificant.com/slides/data_shs_2020/data_shs_2020" style="color:white"> https://tinyurl.com/datashs </a>'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["css/xaringan-themer.css", "custom.css"]
+    mathjax: "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML"
+    self-contained: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+      slideNumberFormat: "%current%/%total%"
+      #slideNumberFormat: |
+      #  <div class="progress-bar-container">
+      #    <div class="progress-bar" style="width: calc(%current% / %total% * 100%);">
+      #    </div>
+      #  </div>`
+---
+
+```{r xaringan-themer, include = FALSE}
+library(xaringanthemer)
+
+style_mono_accent(
+    base_color = "#1c5253",
+    header_font_google = google_font("Josefin Sans"),
+    text_font_google = google_font("Montserrat", "300", "300i"),
+    code_font_google = google_font("Droid Mono"),
+    header_h1_font_size = "40px",
+    header_h2_font_size = "35px",
+    header_h3_font_size = "30px",
+    text_font_size = "20px",
+    code_font_size = "15px"
+    )
+```
+
+# Au programme
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(knitr)
+
+# setting up knitr options
+knitr::opts_chunk$set(
+  cache = TRUE, echo = TRUE, warning = FALSE, message = FALSE,
+  fig.align = "center", dev = "svg"
+  )
+
+# for interactive stuffs
+options(htmltools.dir.version = FALSE)
+
+# setting seed for reproducibility
+set.seed(666)
+```
+
+1. Contexte théorique
+    + Interprétations du concept de probabilité
+    + Inférence bayésienne
+    + Modélisation statistique (bayésienne)
+
+2. Travaux pratiques
+    + Présentation du package brms
+    + Exemple #1 : Modèle de régression linéaire
+    + Exemple #2 : Modèle de régression logistique
+
+---
+class: middle, center
+
+# Contexte théorique - Interprétations du concept de probabilité
+
+---
+
+# Axiomes des probabilités (Kolmogorov, 1933)
+
+Une probabilité est une valeur numérique assignée à un événement $A$, compris comme une possibilité appartenant à l'univers $\Omega$ (l'ensemble de toutes les issues possibles). Les probabilités se conforment aux axiomes suivants :
+
+--
++ **Non-negativity :** $\Pr(A) \geq 0$
++ **Normalisation :** $\Pr(\Omega) = 1$
++ **Additivity (pour des événements incompatibles) :** $\Pr(A_{1} \cup A_{2}) = \Pr(A_{1}) + \Pr(A_{2})$
+
+--
+
+Le dernier axiome est également connu comme la **règle de la somme**, et peut se généraliser à des événements non mutuellement exclusifs : $\Pr(A_{1} \cup A_{2}) = \Pr(A_{1}) + \Pr(A_{2}) - \Pr(A_{1} \cap A_{2})$.
+
+---
+
+# Interprétations probabilistes
+
+Quelle est la probabilité...
+
++ D'obtenir un chiffre pair sur un lancer de dé ?
++ Que j'apprenne quelque chose pendant cette formation ?
+
+--
+
+Est-ce qu'il s'agit, pour chaque exemple, de la même **sorte** de probabilité ?
+
+```{r thinking, echo = FALSE, out.width = "50%"}
+knitr::include_graphics("figures/thinking.gif")
+```
+
+---
+
+# Interprétation classique (ou théorique)
+
+$$
+\Pr(\text{pair}) = \frac{\text{nombre de cas favorables}}{\text{nombre de cas possibles}} = \frac{3}{6} = \frac{1}{2}
+$$
+
+Problème : cette définition est uniquement applicable aux situations dans lesquelles il n'y a qu'un nombre **fini** de résultats possibles **équiprobables**...
+
+--
+
+Quelle est la probabilité qu'il pleuve demain ?
+
+$$\Pr(\text{pluie}) = \frac{\text{pluie}}{ \{ \text{pluie, non-pluie} \} } = \frac{1}{2}$$
+
+---
+
+# Interprétation fréquentiste (ou empirique)
+
+$$\Pr(x) = \lim_{n_{t} \to \infty}\frac{n_{x}}{n_{t}}$$
+
+Où $n_{x}$ est le nombre d'occurrences de l’événement $x$ et $n_{t}$ le nombre total d'essais. L'interprétation **fréquentiste** postule que, à long-terme (i.e., quand le nombre d'essais s'approche de l'infini), la fréquence relative va converger *exactement* vers ce qu'on appelle "probabilité".
+
+--
+
+Conséquence : le concept de probabilité s'applique uniquement aux **collectifs**, et non aux événements singuliers.
+
+---
+
+# Interprétation fréquentiste (ou empirique)
+
+```{r frequency, fig.width = 7.5, fig.height = 5, out.width = "40%"}
+library(tidyverse)
+
+sample(c(0, 1), 500, replace = TRUE) %>% #<<
+        data.frame %>%
+        mutate(x = seq_along(.), y = cumsum(.) / seq_along(.) ) %>%
+        ggplot(aes(x = x, y = y), log = "y") +
+        geom_line(lwd = 1) +
+        geom_hline(yintercept = 0.5, lty = 3) +
+        labs(x = "Nombre de lancers", y = "Proportion de faces") +
+        ylim(0, 1) + theme_bw(base_size = 20)
+```
+
+---
+
+# Limites de l'interprétation fréquentiste...
+
+Quelle classe de référence ? *Quelle est la probabilité que je vive jusqu'à 80 ans ? En tant qu'homme ? En tant que Français ?*
+
+--
+
+Quid des événements qui ne peuvent pas se répéter ? *Quelle est la probabilité que j'apprenne quelque chose pendant cette formation ?*
+
+--
+
+À partir de combien de lancers (d'une pièce par exemple) a-t-on une bonne approximation de la probabilité ? Une classe finie d’événements de taille $n$ ne peut produire que des fréquences relatives de précision $1/n$...
+
+---
+
+# Interprétation logique
+
+<center>Il y a 10 étudiants dans cette salle</center>
+<center>9 portent un t-shirt <font color = "green">vert</font></center>
+<center>1 porte un t-shirt <font color = "red">rouge</font></center>
+<center>Une personne est tirée au sort...</center>
+
+--
+
+<hr width = "75%%" size = "2" align = "center" noshade>
+
+<center>Conclusion n°1 : l'étudiant tiré au sort porte un t-shirt &#10004; </center>
+
+--
+
+<hr width = "75%%" size = "1" align = "center" noshade>
+
+<center>Conclusion n°2 : l'étudiant tiré au sort porte un t-shirt <font color = "green">vert</font> &#10007; </center>
+
+--
+
+<hr width = "75%%" size = "1" align = "center" noshade>
+
+<center>Conclusion n°3 : l'étudiant tiré au sort porte un t-shirt <font color = "red">rouge</font> &#10007; </center>
+
+---
+
+# Interprétation logique
+
+L'interprétation logique du concept de probabilité essaye de généraliser la logique (vrai / faux) au monde probabiliste. La probabilité représente donc le *degré de support logique* qu'une conclusion peut avoir, relativement à un ensemble de prémisses ([Keynes, 1921](https://archive.org/details/treatiseonprobab007528mbp); [Carnap, 1950](http://fitelson.org/confirmation/carnap_logical_foundations_of_probability.pdf)).
+
+--
+
+Conséquence : toute probabilité est **conditionnelle**.
+
+---
+
+# Interprétation bayésienne
+
+**La probabilité est une mesure du degré d'incertitude**. Un événement *certain* aura donc une probabilité de 1 et un événement *impossible* aura une probabilité de 0.
+
+--
+
+Pour parler de probabilités, dans ce cadre, nous n'avons donc plus besoin de nous référer à la limite d'occurrence d'un événement (fréquence).
+
+--
+
+> *So to assign equal probabilities to two events is not in any way an assertion that they must occur equally often in any random experiment [...], it is only a formal way of saying I don’t know* ([Jaynes, 1986](http://bayes.wustl.edu/etj/articles/general.background.pdf)).
+
+---
+
+# Interprétations probabilistes
+
++ Interprétation classique (Laplace, Bernouilli, Leibniz)
++ **Interprétation fréquentiste** (Venn, Reichenbach, von Mises)
++ Interprétation propensionniste (Popper, Miller)
++ Interprétation logique (Keynes, Carnap)
++ **Interprétation bayésienne** (Jeffreys, de Finetti, Savage)
+
+*[Plus de détails sur la Stanford Encyclopedia of Philosophy...](http://plato.stanford.edu/entries/probability-interpret/)*
+
+---
+
+# Interprétations probabilistes - résumé
+
+**Probabilité épistémique**
+- Toute probabilité est conditionnelle à de l'information disponible (e.g., prémisses ou données)
+- La probabilité comme moyen de quantifier l'incertitude
+- Probabilité logique, probabilité bayésienne
+
+--
+
+**Probabilité physique**
+- Les probabilités dépendent d'un état du monde, de caractéristiques physiques, elles sont indépendantes de l'information disponible (ou de l'incertitude)
+- Probabilité classique, probabilité fréquentiste </center>
+
+---
+class: inverse, center, middle
+background-image: url(figures/pill3.jpg)
+background-size: cover
+
+---
+class: middle, center
+
+# Contexte théorique - Inférence bayésienne
+
+---
+
+# Exercice - Problème du sac de billes (McElreath, 2015)
+
+Imaginons que nous disposions d'un sac contenant 4 billes. Ces billes peuvent être soit blanches, soit bleues. Nous savons qu'il y a précisément 4 billes, mais nous ne connaissons pas le nombre de billes de chaque couleur.
+
+--
+
+Nous savons cependant qu'il existe cinq possibilités (que nous considérons comme nos *hypothèses*) :
+
+<br>
+
+<p align = "center"> &#9898 &#9898 &#9898 &#9898</p>
+<p align = "center"> &#128309 &#9898 &#9898 &#9898</p>
+<p align = "center">&#128309 &#128309 &#9898 &#9898</p>
+<p align = "center">&#128309 &#128309 &#128309 &#9898</p>
+<p align = "center">&#128309 &#128309 &#128309 &#128309</p>
+
+---
+
+# Exercice - Problème du sac de billes (McElreath, 2015)
+
+Le but est de déterminer quelle combinaison serait la plus probable, **sachant certaines observations**. Imaginons que l'on tire trois billes à la suite, avec remise, et que l'on obtienne la séquence suivante :
+
+<p align = "center">&#128309 &#9898 &#128309</p>
+
+--
+
+Cette séquence représente nos données. À partir de là, quelle **inférence** peut-on faire sur le contenu du sac ? En d'autres termes, que peut-on dire de la probabilité de chaque hypothèse ?
+
+<p align = "center"> &#9898 &#9898 &#9898 &#9898</p>
+<p align = "center"> &#128309 &#9898 &#9898 &#9898</p>
+<p align = "center">&#128309 &#128309 &#9898 &#9898</p>
+<p align = "center">&#128309 &#128309 &#128309 &#9898</p>
+<p align = "center">&#128309 &#128309 &#128309 &#128309</p>
+
+--
+
+```{r countdown1, eval = TRUE, echo = FALSE}
+library(countdown)
+
+countdown(
+  minutes = 2, seconds = 0,
+  warn_when = 15,
+  play_sound = TRUE,
+  left = 0, right = 0,
+  # margin = "25%"
+  # right = "50%"
+  )
+```
+
+---
+
+# Énumérer les possibilités
+
+<p align = "center"> Hypothèse : &#128309 &#9898 &#9898 &#9898 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Données : &#128309 </p>
+
+```{r garden1, echo = FALSE, results = "hide", out.width = "75%"}
+library(rethinking)
+source("code/forking_data_McElreath.R")
+
+dat <- c(1)
+arc <- c(0, pi)
+
+garden(
+    arc = arc,
+    possibilities = c(0, 0, 0, 1),
+    data = dat,
+    hedge = 0.05,
+    ring_dist = ring_dist,
+    alpha.fade = 1
+    )
+```
+
+---
+
+# Énumérer les possibilités
+
+<p align = "center"> Hypothèse : &#128309 &#9898 &#9898 &#9898 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Données : &#128309 &#9898</p>
+
+```{r garden2, echo = FALSE, eval = TRUE, out.width = "75%"}
+dat <- c(1, 0)
+arc <- c(0, pi)
+
+garden(
+    arc = arc,
+    possibilities = c(0, 0, 0, 1),
+    data = dat,
+    hedge = 0.05,
+    ring_dist = ring_dist,
+    alpha.fade = 1
+    )
+```
+
+---
+
+# Énumérer les possibilités
+
+<p align = "center"> Hypothèse : &#128309 &#9898 &#9898 &#9898 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Données : &#128309 &#9898 &#128309</p>
+
+```{r garden3, echo = FALSE, eval = TRUE, out.width = "75%"}
+dat <- c(1, 0, 1)
+arc <- c(0, pi)
+
+garden(
+    arc = arc,
+    possibilities = c(0, 0, 0, 1),
+    data = dat,
+    hedge = 0.05,
+    ring_dist = ring_dist,
+    alpha.fade = 1
+    )
+```
+
+---
+
+# Énumérer les possibilités
+
+<p align = "center"> Hypothèse : &#128309 &#9898 &#9898 &#9898 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Données : &#128309 &#9898 &#128309 </p>
+
+```{r garden4, echo = FALSE, eval = TRUE, out.width = "75%"}
+dat <- c(1, 0, 1)
+arc <- c(0, pi)
+
+garden(
+    arc = arc,
+    possibilities = c(0, 0, 0, 1),
+    data = dat,
+    hedge = 0.05,
+    ring_dist = ring_dist,
+    alpha.fade = 0.3
+    )
+```
+
+---
+
+# Énumérer les possibilités
+
+Sous cette hypothèse, $3$ chemins (sur $4^{3} = 64$) conduisent au résultat obtenu. Qu'en est-il des autres hypothèses?
+
+<p align = "center"> &#9898 &#9898 &#9898 &#128309 &emsp;&emsp;&emsp;&emsp; &#9898 &#128309 &#128309 &#128309 &emsp;&emsp;&emsp;&emsp; &#9898 &#9898 &#128309 &#128309 </p>
+
+```{r garden5, echo = FALSE, eval = TRUE, out.width = "40%"}
+dat <- c(1, 0, 1)
+ac <- c(1.2, 0.9, 0.6)
+
+arc <- c( pi / 2, pi / 2 + (2 / 3) * pi)
+
+garden(
+    arc = arc,
+    possibilities = c(1, 0, 0, 0),
+    data = dat,
+    hedge = 0.05,
+    adj.cex = ac) 
+
+arc <- c(arc[2], arc[2] + (2 / 3) * pi)
+
+garden(
+    arc = arc,
+    possibilities = c(1, 1, 0, 0),
+    data = dat,
+    hedge = 0.05,
+    newplot = FALSE,
+    adj.cex = ac)
+
+arc <- c(arc[2], arc[2] + (2 / 3) * pi)
+
+garden(
+    arc = arc,
+    possibilities = c(1, 1, 1, 0),
+    data = dat,
+    hedge = 0.05,
+    newplot = FALSE,
+    adj.cex = ac)
+
+line.polar(c(0, 2), pi / 2, lwd = 1)
+line.polar(c(0, 2), pi / 2 + (2 / 3) * pi, lwd = 1)
+line.polar(c(0, 2), pi / 2 + 2 * (2 / 3) * pi, lwd = 1)
+```
+
+---
+
+# Comparer les hypothèses
+
+Au vu des données, cette hypothèse est la plus *probable* car c'est l'hypothèse qui **maximise le nombre de manières possibles d'obtenir les données obtenues**.
+
+<center>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg .tg-gq9a{font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif !important;;text-align:center;font-size:16px;font-weight:normal;padding:5px 5px 5px 5px}
+</style>
+<table class="tg" width="600" height="200">
+  <tr>
+    <th class="tg-gq9a">Hypothèse</th>
+    <th class="tg-gq9a">Façons d'obtenir les données</th>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"> <p> &#9898 &#9898 &#9898 &#9898 </p></td>
+    <td class="tg-gq9a"> 0 x 4 x 0 = 0</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#9898 &#9898 &#9898 </p></td>
+    <td class="tg-gq9a">1 x 3 x 1 = 3</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#128309 &#9898 &#9898 </p></td>
+    <td class="tg-gq9a">2 x 2 x 2 = 8</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#128309 &#128309 &#9898 </p></td>
+    <td class="tg-gq9a">3 x 1 x 3 = 9</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#128309 &#128309 &#128309 </p></td>
+    <td class="tg-gq9a">4 x 0 x 4 = 0</td>
+  </tr>
+</table>
+
+</center>
+
+---
+
+# Accumulation d'évidence
+
+Dans le cas précédent, nous avons considéré que toutes les hypothèses étaient équiprobables a priori (suivant le [principe d'indifférence](https://en.wikipedia.org/wiki/Principle_of_indifference)).
+
+--
+
+Cependant, on pourrait avoir de l'information a priori, provenant de nos connaissances (des particularités des sacs de billes par exemple) ou de données antérieures.
+
+--
+
+Imaginons que nous tirions une nouvelle bille du sac, comment incorporer cette nouvelle donnée ?
+
+---
+
+# Accumulation d'évidence
+
+Il suffit d'appliquer la même stratégie que précédemment, et de mettre à jour le dernier compte en le multipliant par ces nouvelles données. *Yesterday's posterior is today's prior* ([Lindley, 2000](https://rss.onlinelibrary.wiley.com/doi/abs/10.1111/1467-9884.00238)).
+
+<center>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg .tg-gq9a{font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif !important;;text-align:center;font-size:16px;font-weight:normal;padding:5px 5px 5px 5px}
+</style>
+<table class="tg" width="600" height="200">
+  <tr>
+    <th class="tg-gq9a">Hypothèse</th>
+    <th class="tg-gq9a"><p>Façons de produire &#128309</p></th>
+    <th class="tg-gq9a">Compte précédent</th>
+    <th class="tg-gq9a">Nouveau compte</th>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#9898 &#9898 &#9898 &#9898 </p></td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0 x 0 = 0</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#9898 &#9898 &#9898 </p></td>
+    <td class="tg-gq9a">1</td>
+    <td class="tg-gq9a">3</td>
+    <td class="tg-gq9a">3 x 1 = 3</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#128309 &#9898 &#9898 </p></td>
+    <td class="tg-gq9a">2</td>
+    <td class="tg-gq9a">8</td>
+    <td class="tg-gq9a">8 x 2 = 16</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#128309 &#128309 &#9898 </p></td>
+    <td class="tg-gq9a">3</td>
+    <td class="tg-gq9a">9</td>
+    <td class="tg-gq9a">9 x 3 = 27</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#128309 &#128309 &#128309 </p></td>
+    <td class="tg-gq9a">4</td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0 x 4 = 0</td>
+  </tr>
+</table>
+
+</center>
+
+---
+
+# Incorporer un prior
+
+Un employé de l'usine de fabrication des billes nous dit que pour chaque sac contenant 3 billes bleues, ils fabriquent deux sacs en contenant seulement deux, et trois sacs en contenant seulement une. Il nous apprend également que tous les sacs contiennent au moins une bille bleue et une bille blanche...
+
+<center>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg .tg-gq9a{font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif !important;;text-align:center;font-size:16px;font-weight:small;padding:5px 5px 5px 5px}
+</style>
+<table class="tg" width="600" height="200">
+  <tr>
+    <th class="tg-gq9a">Hypothèse</th>
+    <th class="tg-gq9a"><p>Comptes précédents</p></th>
+    <th class="tg-gq9a">Prior usine</th>
+    <th class="tg-gq9a">Nouveau compte</th>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#9898 &#9898 &#9898 &#9898 </p></td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0 x 0 = 0</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#9898 &#9898 &#9898 </p></td>
+    <td class="tg-gq9a">3</td>
+    <td class="tg-gq9a">3</td>
+    <td class="tg-gq9a">3 x 3 = 9</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#128309 &#9898 &#9898 </p></td>
+    <td class="tg-gq9a">16</td>
+    <td class="tg-gq9a">2</td>
+    <td class="tg-gq9a">16 x 2 = 32</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#128309 &#128309 &#9898 </p></td>
+    <td class="tg-gq9a">27</td>
+    <td class="tg-gq9a">1</td>
+    <td class="tg-gq9a">27 x 1 = 27</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"><p> &#128309 &#128309 &#128309 &#128309 </p></td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0 x 0 = 0</td>
+  </tr>
+</table>
+
+</center>
+
+---
+
+# Des énumérations aux probabilités
+
+La probabilité d'une hypothèse après avoir observé certaines données est proportionnelle au nombre de façons qu'a cette hypothèse de produire les données observées, multiplié par sa probabilité a priori.
+
+$$
+\Pr(\text{hypothèse}\ |\ \text{données}) \propto \Pr(\text{données}\ |\ \text{hypothèse}) \times \Pr(\text{hypothèse})
+$$
+
+--
+
+Pour calculer la probabilité d'une hypothèse, il suffit de standardiser ce produit (i.e., nombre de façons de produire les données multiplié par la probabilité a priori de l'hypothèse) de manière à ce que la somme des probabilités de toutes les hypothèses possibles soit égale à $1$.
+
+$$
+\Pr(\text{hypothèse}\ |\ \text{données}) = \frac{\Pr(\text{données}\ |\ \text{hypothèse})\times \Pr(\text{hypothèse})}{\text{somme des produits}}
+$$
+
+---
+
+# Des énumérations aux probabilités
+
+Par exemple, définissons $p$ comme la proportion de billes bleues.
+
+<center>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg .tg-gq9a{font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif !important;;text-align:center;font-size:18px;font-weight:normal;padding:5px 5px 5px 5px}
+</style>
+<table class="tg">
+  <tr>
+    <th class="tg-gq9a">Hypothèse</th>
+    <th class="tg-gq9a">p</th>
+    <th class="tg-gq9a">Manières de produire les données</th>
+    <th class="tg-gq9a">Probabilité</th>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"> &#9898 &#9898 &#9898 &#9898 </td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"> &#128309 &#9898 &#9898 &#9898 </td>
+    <td class="tg-gq9a">0.25</td>
+    <td class="tg-gq9a">3</td>
+    <td class="tg-gq9a">0.15</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"> &#128309 &#128309 &#9898 &#9898 </td>
+    <td class="tg-gq9a">0.5</td>
+    <td class="tg-gq9a">8</td>
+    <td class="tg-gq9a">0.40</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"> &#128309 &#128309 &#128309 &#9898 </td>
+    <td class="tg-gq9a">0.75</td>
+    <td class="tg-gq9a">9</td>
+    <td class="tg-gq9a">0.45</td>
+  </tr>
+  <tr>
+    <td class="tg-gq9a"> &#128309 &#128309 &#128309 &#128309 </td>
+    <td class="tg-gq9a">1</td>
+    <td class="tg-gq9a">0</td>
+    <td class="tg-gq9a">0</td>
+  </tr>
+</table>
+
+</center>
+
+--
+
+```{r ways, echo = TRUE, eval = TRUE}
+chemins <- c(0, 3, 8, 9, 0)
+(probs <- chemins / sum(chemins) )
+```
+
+---
+
+# Notations, terminologie
+
+
+- $\theta$ est un paramètre ou vecteur de paramètres (e.g., la proportion de billes bleues).
+- $\color{orangered}{p(x\vert \theta)}$ <span style="color:orangered"> la probabilité conditionnelle des données $x$ sachant le paramètre $\theta$ $\color{orangered}{[p(x | \theta = \theta)]}$. </span>
+- $\color{orangered}{p(x\vert \theta)}$ <span style="color:orangered"> une fois que la valeur de $x$ est connue, est vue comme la fonction de vraisemblance (*likelihood*) du paramètre $\theta$. Attention, il ne s'agit pas d'une distribution de probabilité $\color{orangered}{[p(x = x | \theta)]}$. </span>
+- $\color{steelblue}{p(\theta)}$ <span style="color:steelblue"> la probabilité a priori de $\theta$.</span>
+- $\color{purple}{p(\theta \vert x)}$ <span style="color:purple"> la probabilité a posteriori de $\theta$ (sachant $x$).</span>
+- $\color{green}{p(x)}$ <span style="color:green"> la probabilité marginale de $x$ (sur $\theta$) ou "vraisemblance marginale", "vraisemblance intégrée".</span>
+
+<br>
+
+$$\color{purple}{p(\theta \vert x)} = \dfrac{\color{orangered}{p(x\vert \theta)} \color{steelblue}{p(\theta)}}{\color{green}{p(x)}} = \dfrac{\color{orangered}{p(x\vert \theta)} \color{steelblue}{p(\theta)}}{\color{green}{\sum\limits_{\theta}p(x|\theta)p(\theta)}} = \dfrac{\color{orangered}{p(x\vert \theta)} \color{steelblue}{p(\theta)}}{\color{green}{\int\limits_{\theta}p(x|\theta)p(\theta)\mathrm{d}x}} \propto \color{orangered}{p(x\vert \theta)} \color{steelblue}{p(\theta)}$$
+---
+
+# Inférence bayésienne
+
+Dans ce cadre, pour chaque problème, nous allons suivre 3 étapes (from [Gelman et al., 2013](http://www.stat.columbia.edu/~gelman/book/)) :
+
+--
+
+- Construire le modèle (l'histoire des données): *likelihood* + *prior*
+
+--
+
+- Mettre à jour grâce aux données (*updating*), calculer la probabilité *a posteriori*
+
+--
+
+- Evaluer le modèle, *fit*, sensibilité, résumer les résultats, ré-ajuster
+
+---
+class: middle, center
+
+# Rappels de probabilité...
+
+---
+
+# Loi de probabilité, cas discret
+
+Une fonction de masse (*probability mass function*, ou *PMF*) est une fonction qui attribue une probabilité à chaque valeur d'une variable aléatoire. Exemple de la distribution binomiale pour une pièce non biaisée, c'est à dire lorsque $\theta = 0.5$, qui nous indique la probabilité d'obtenir $N$ faces sur 10 lancers. 
+
+```{r echo = FALSE, fig.align = "center", dev = "svg", fig.width = 6, fig.height = 3, out.width = "50%"}
+coin <- dbinom(x = 0:10, size = 10, prob = 0.5)
+barplot(coin, names.arg = 0:10, border = NA, axes = FALSE, cex.names = 1.5, col = "grey20")
+```
+
+--
+
+```{r eval = TRUE, echo = TRUE}
+# PMFs sum to 1
+dbinom(x = 0:10, size = 10, prob = 0.5) %>% sum
+```
+
+---
+
+# Loi de probabilité, cas continu
+
+Une (fonction de) densité de probabilité (*probability density function*, ou *PDF*), est une fonction qui permet de représenter une loi de probabilité sous forme d'intégrales (l'équivalent de la PMF pour des variables aléatoires strictement continues).
+
+```{r echo = FALSE, fig.align = "center", dev = "svg", fig.width = 6, fig.height = 3, out.width = "50%"}
+data.frame(x = c(0, 200) ) %>%
+    ggplot(aes(x) ) +
+    stat_function(
+        fun = dnorm,
+        args = list(mean = 100, sd = 15),
+        lwd = 1.5
+        ) +
+    theme_bw(base_size = 16) +
+    xlab("QI") + ylab("Densité de probabilité")
+```
+
+--
+
+```{r echo = TRUE}
+# PDFs integrate to 1
+integrate(dnorm, -Inf, Inf, mean = 100, sd = 15)
+```
+
+---
+
+# Aparté, qu'est-ce qu'une intégrale ?
+
+Une intégrale correspond à la **surface** (aire géométrique) délimitée par la représentation graphique d'une fonction, *l'aire sous la courbe*. Une distribution est dite **impropre** si son intégrale n'est pas égale à un nombre fini (e.g., $+ \infty$) et **normalisée** si son intégrale est égale à 1.
+
+```{r message = FALSE, echo = FALSE, dev = "svg", fig.align = "center", fig.width = 6, fig.height = 4, out.width = "50%"}
+cord.x <- c(90, seq(90, 96, 0.01), 96) 
+cord.y <- c(0, dnorm(seq(90, 96, 0.01), 100, 15), 0) 
+
+data.frame(x = c(0, 200) ) %>%
+    ggplot(aes(x) ) +
+    stat_function(
+        fun = dnorm,
+        args = list(mean = 100, sd = 15),
+        lwd = 2,
+        color = "black"
+        ) +
+    geom_polygon(
+        data = data.frame(cord.x, cord.y),
+        aes(cord.x, cord.y),
+        color = "black"
+        ) +
+    theme_bw(base_size = 16) +
+    xlab("QI") + ylab("Densité de probabilité")
+```
+
+---
+
+# Aparté, qu'est-ce qu'une intégrale ?
+
+```{r message = FALSE, echo = FALSE, fig.align = "center", dev = "svg", fig.width = 6, fig.height = 4, out.width = "50%"}
+data.frame(x = c(0, 200) ) %>%
+    ggplot(aes(x) ) +
+    stat_function(
+        fun = dnorm,
+        args = list(mean = 100, sd = 15),
+        lwd = 2
+        ) +
+    geom_polygon(
+        data = data.frame(cord.x, cord.y),
+        aes(cord.x, cord.y)
+        ) +
+    theme_bw(base_size = 16) +
+    xlab("QI") + ylab("Densité de probabilité")
+```
+
+L'intégrale de $f(x)$ sur l'intervalle [90 ; 96] vaut : $p(90 < x < 96) = \int_{90}^{96} f(x) \ \mathrm{d}x = 0.142$.
+
+```{r eval = TRUE, echo = TRUE, fig.align = "center", fig.width = 8, fig.height = 6}
+integrate(dnorm, 90, 96, mean = 100, sd = 15)
+```
+
+---
+
+# Probabilité conjointe
+
+```{r, message = FALSE, echo = TRUE} 
+library(tidyverse)
+data(HairEyeColor) # data adapted from Snee (1974)
+
+cont <- apply(HairEyeColor, c(1, 2), sum) %>% t 
+cont <- round(cont / sum(cont), 2)
+cont
+```
+
+Dans chaque cellule, on trouve la **probabilité conjointe** d'avoir telle couleur de cheveux **ET** telle couleur d'yeux, qui s'écrit $p(c, y) = p(y, c)$.
+
+---
+
+# Probabilité marginale
+
+```{r, echo = TRUE} 
+cont2 <- cont %>% as.data.frame %>% mutate(marginal_eye = rowSums(cont) )
+rownames(cont2) <- row.names(cont)
+cont2
+```
+
+On peut aussi s'intéresser à la probabilité d'avoir des yeux bleus, de manière générale. Il s'agit de la probabilité **marginale** de l'événement *yeux bleus*, qui s'obtient par la somme de toutes les probabilités jointes impliquant l'événement *yeux bleus*. Elle s'écrit $p(y)=\sum\limits_{c}p(y|c)p(c)$.
+
+---
+
+# Probabilité marginale
+
+```{r, echo = TRUE, eval = TRUE} 
+cont3 <- rbind(cont2, colSums(cont2) )
+rownames(cont3) <- c(row.names(cont2), "marginal_hair")
+cont3
+```
+
+On peut bien entendu aussi s'intéresser aux probabilités des couleurs de cheveux, de manière générale. Elle s'écrit $p(c) = \sum\limits_{y} p(c | y) p(y)$.
+
+---
+
+# Probabilité conditionnelle
+
+On pourrait aussi s'intéresser à la probabilité qu'une personne ait les cheveux blonds, **sachant** qu'elle a les yeux bleus. Il s'agit d'une probabilité **conditionnelle**, et s'écrit $p(c|y)$. Cette probabilité conditionnelle peut se ré-écrire : $p(c | y) = \frac{p(c, y)}{p(y)}$.
+
+```{r, echo = FALSE, eval = TRUE} 
+cont3["Blue", ]
+```
+
+--
+
+Par exemple, quelle est la probabilité d'avoir des yeux bleus lorsqu'on a les cheveux blonds ?
+
+```{r, echo = TRUE, eval = TRUE} 
+cont3["Blue", "Blond"] / cont3["Blue", "marginal_eye"]  
+```
+
+---
+
+# Probabilité conditionnelle, règle du produit
+
+On remarque dans le cas précédent que $p(blonds|bleus)$ **n'est pas nécessairement égal** à $p(bleus|blonds)$.
+
+--
+
+<iframe
+align="right" border=0 frameborder=0 height=400 width=600
+src="https://twitframe.com/show?url=https://twitter.com/BillGates/status/1118196606975787008">
+</iframe>
+
+Autre exemple : la probabilité de mourir sachant qu'on a été attaqué par un requin n'est pas la même que la probabilité d'avoir été attaqué par un requin, sachant qu'on est mort ([*confusion of the inverse*](https://en.wikipedia.org/wiki/Confusion_of_the_inverse)). De la même manière, $p(data|H_{0}) \neq p(H_{0}|data)$.
+
+--
+
+À partir des axiomes de Kolmogorov (cf. début du cours), et des définitions précédentes des probabilités conjointes, marginales, et conditionnelles, découle la **règle du produit** :
+
+$$p(a, b) = p(b) \times p(a|b) = p(a) \times p(b|a)$$
+
+---
+
+# Dérivation du théorème de Bayes
+
+$$p(x,y) = p(x|y) \times p(y) = p(y|x) \times p(x)$$
+
+--
+
+$$p(y|x) \times p(x) = p(x|y) \times p(y)$$
+
+--
+
+$$p(y|x) = \dfrac{p(x|y) \times p(y)}{p(x)}$$
+
+--
+
+$$p(x|y) = \dfrac{p(y|x) \times p(x)}{p(y)}$$
+
+--
+
+$$\Pr(\text{hypothèse}\ |\ \text{données}) = \frac{\Pr(\text{données}\ |\ \text{hypothèse})\times \Pr(\text{hypothèse})}{\text{somme des produits}}$$
+---
+class: middle, center
+
+# Contexte théorique - Modélisation statistique bayésienne
+
+---
+
+# Un premier modèle
+
+Cliquez sur l'icône <a href="https://osf.io/xungy/download" <i class="fas fa-file"></i> </a> ou visitez https://osf.io/xungy/ pour télécharger les données.
+
+--
+
+```{r, eval = TRUE, echo = TRUE}
+# importing data
+df <- read.csv("data/howell.csv")
+
+# prints the structure of the data
+str(df)
+```
+
+--
+
+```{r, eval = TRUE, echo = TRUE}
+# prints the first six rows
+head(df)
+```
+
+---
+
+# Un premier modèle
+
+$$h_{i} \sim \mathrm{Normal}(\mu, \sigma)$$
+
+```{r echo = TRUE, fig.width = 6, fig.height = 6, out.width = "33%"}
+df %>%
+    ggplot(aes(x = height) ) +
+    geom_histogram(bins = 10, col = "white") +
+    theme_bw(base_size = 16)
+```
+
+---
+
+# Loi normale
+
+$$p(x \ | \ \mu, \sigma) = \frac{1}{\sqrt{2 \pi \sigma^{2}}} \exp \left[-\frac{1}{2 \sigma^{2}} (\mu - x)^{2} \right]$$
+
+```{r eval = TRUE, echo = TRUE, fig.width = 6, fig.height = 6, out.width = "33%"}
+data.frame(value = rnorm(1e4, 10, 1) ) %>% # 10.000 samples from Normal(10, 1)
+    ggplot(aes(x = value) ) +
+    geom_histogram(col = "white") +
+    theme_bw(base_size = 20)
+```
+
+---
+
+# D'où vient la loi normale ?
+
+Certaines valeurs sont fortement probables (autour de la moyenne $\mu$). Plus on s'éloigne, moins les valeurs sont probables (en suivant une décroissance exponentielle).
+
+```{r normal-explain1, echo = FALSE, fig.width = 12, fig.height = 6, out.width = "75%"}
+f1 <- function(x) {exp(-x)}
+f2 <- function(x) {exp(-x^2)}
+
+ggplot(data.frame(x = c(0, 5) ), aes(x = x) ) + 
+  geom_path(aes(colour = "steelblue"), stat = "function", fun = f1, lwd = 1) +
+  geom_path(aes(colour = "orangered"), stat = "function", fun = f2, lwd = 1) +
+  labs(x = "x", y = "f(x)") +
+  scale_colour_identity(
+    "Function", guide = "legend",
+    labels = c("y = exp(-x)", "y = exp(-x^2)"),
+    breaks = c("steelblue", "orangered")
+    ) +
+  theme_bw(base_size = 20)
+```
+
+---
+
+# D'où vient la loi normale ?
+
+$$y = \exp \left[-x^{2} \right]$$
+
+On étend notre fonction aux valeurs négatives.
+
+```{r normal-explain2, echo = FALSE, fig.width = 12, fig.height = 6, out.width = "75%"}
+ggplot(data.frame(x = c(-5, 5) ), aes(x = x) ) + 
+  geom_path(aes(colour = "steelblue"), stat = "function", fun = f2, lwd = 1) +
+  labs(x = "x", y = "f(x)") +
+  scale_colour_identity(
+    "Function", guide = "legend",
+    labels = c("y = exp(-x^2)", "y = exp(-x^2)"),
+    breaks = c("steelblue", "orangered")
+    ) +
+  theme_bw(base_size = 20)
+```
+
+---
+
+# D'où vient la loi normale ?
+
+$$y = \exp \left[-x^{2} \right]$$
+
+Les points d'inflection nous donnent une bonne indication de là où la plupart des valeurs se trouvent (i.e., entre les points d'inflection). Les pics de la dérivée nous montrent les points d'inflection.
+
+```{r normal-explain3, echo = FALSE, fig.width = 12, fig.height = 6, out.width = "75%"}
+f <- expression(exp(-x^2) )
+f_derivative <- D(f, "x")
+
+f3 <- function(x) {-(exp(-x^2) * (2 * x) )}
+
+ggplot(data.frame(x = c(-5, 5) ), aes(x = x) ) + 
+  geom_path(aes(colour = "steelblue"), stat = "function", fun = f2, lwd = 1) +
+  geom_path(aes(colour = "orangered"), stat = "function", fun = f3, lwd = 1) +
+  labs(x = "x", y = "f(x)") +
+  scale_colour_identity(
+    "Function", guide = "legend",
+    labels = c("y = exp(-x^2)", "derivative"),
+    breaks = c("steelblue", "orangered")
+    ) +
+  theme_bw(base_size = 20)
+```
+
+---
+
+# D'où vient la loi normale ?
+
+$$y = \exp \left [- \frac{1}{2} x^{2} \right]$$
+
+Ensuite on standardise la distribution de manière à ce que les deux points d'inflection se trouvent à $x = -1$ et $x = 1$.
+
+```{r normal-explain4, echo = FALSE, fig.width = 12, fig.height = 6, out.width = "75%"}
+f <- expression(exp((-0.5) * x^2) )
+f_derivative <- D(f, "x")
+
+f4 <- function(x) {exp((-0.5) * x^2)}
+f5 <- function(x) {exp((-0.5) * x^2) * ((-0.5) * (2 * x) )}
+
+ggplot(data.frame(x = c(-5, 5) ), aes(x = x) ) + 
+  geom_path(aes(colour = "steelblue"), stat = "function", fun = f4, lwd = 1) +
+  geom_path(aes(colour = "orangered"), stat = "function", fun = f5, lwd = 1) +
+  labs(x = "x", y = "f(x)") +
+  scale_colour_identity(
+    "Function", guide = "legend",
+    labels = c("y = exp(-0.5x^2)", "derivative"),
+    breaks = c("steelblue", "orangered")
+    ) +
+  theme_bw(base_size = 20)
+```
+
+---
+
+# D'où vient la loi normale ?
+
+$$y = \exp \left[- \frac{1}{2 \color{steelblue}{\sigma^{2}}} x^{2} \right]$$
+
+On insère un paramètre $\sigma^{2}$ pour contrôler la distance entre les points d'inflection.
+
+```{r normal-explain5, echo = FALSE, fig.width = 12, fig.height = 6, out.width = "75%"}
+f4 <- function(x) {exp((-0.5) * x^2)}
+
+ggplot(data.frame(x = c(-5, 5) ), aes(x = x) ) + 
+  geom_path(
+    aes(colour = "steelblue"),
+    colour = "steelblue",
+    stat = "function", fun = f4, lwd = 1
+    ) +
+  labs(x = "x", y = "f(x)") +
+  theme_bw(base_size = 20)
+```
+
+---
+
+# D'où vient la loi normale ?
+
+$$y = \exp \left[- \frac{1}{2 \color{steelblue}{\sigma^{2}}} (\color{orangered}{\mu} - x)^{2} \right]$$
+
+On insère ensuite un paramètre $\mu$ afin de pouvoir contrôler la position (la tendance centrale) de la distribution.
+
+```{r normal-explain6, echo = FALSE, fig.width = 12, fig.height = 6, out.width = "75%"}
+f4 <- function(x) {exp((-0.5) * (x - 3)^2)}
+
+ggplot(data.frame(x = c(-5, 5) ), aes(x = x) ) + 
+  geom_path(
+    aes(colour = "steelblue"),
+    colour = "steelblue",
+    stat = "function", fun = f4, lwd = 1
+    ) +
+  labs(x = "x", y = "f(x)") +
+  theme_bw(base_size = 20)
+```
+
+---
+
+# D'où vient la loi normale ?
+
+$$y = \frac{1}{\sqrt{2 \pi \color{steelblue}{\sigma^{2}}}} \exp \left[-\frac{1}{2 \color{steelblue}{\sigma^{2}}} (\color{orangered}{\mu} - x)^{2} \right]$$
+
+Mais... cette distribution n'intègre pas à 1. On divise donc par une constante de normalisation (la partie gauche), afin d'obtenir une distribution de probabilité.
+
+```{r normal-explain7, echo = FALSE, fig.width = 12, fig.height = 6, out.width = "75%"}
+ggplot(data.frame(x = c(-5, 5) ), aes(x = x) ) + 
+  geom_path(
+    aes(colour = "steelblue"),
+    colour = "steelblue",
+    stat = "function", fun = dnorm, lwd = 1
+    ) +
+  labs(x = "x", y = "f(x)") +
+  theme_bw(base_size = 20)
+```
+
+---
+
+# Modèle gaussien
+
+Nous allons construire un modèle de régression, mais avant d'ajouter un prédicteur, essayons de modéliser la distribution des tailles.
+
+--
+
+On cherche à savoir quel est le modèle (la distribution) qui décrit le mieux la répartition des tailles. On va donc explorer toutes les combinaisons possibles de $\mu$ et $\sigma$ et les classer par leurs probabilités respectives. 
+
+--
+
+Notre but, une fois encore, est de décrire **la distribution postérieure**, qui sera donc d'une certaine manière **une distribution de distributions**.
+
+---
+
+# Modèle gaussien
+
+On définit $p(\mu, \sigma)$, la distribution a priori conjointe de tous les paramètres du modèle. On peut spécifier ces priors indépendamment pour chaque paramètre, sachant que $p(\mu, \sigma) = p(\mu) \cdot p(\sigma)$.
+
+$$\color{steelblue}{\mu \sim \mathrm{Normal}(178, 20)}$$
+
+```{r eval = TRUE, echo = FALSE, fig.align = "center", fig.width = 9, fig.height = 6, out.width = "50%"}
+data.frame(x = c(100, 250) ) %>%
+  ggplot(aes(x = x) ) +
+  stat_function(
+    fun = dnorm, args = list(mean = 178, sd = 20),
+    fill = "steelblue", geom = "area", alpha = 0.8
+    ) +
+  theme_bw(base_size = 20) +
+  labs(x = expression(mu), y = "Densité de probabilité")
+```
+
+---
+
+# Modèle gaussien
+
+On définit $p(\mu, \sigma)$, la distribution a priori conjointe de tous les paramètres du modèle. On peut spécifier ces priors indépendamment pour chaque paramètre, sachant que $p(\mu, \sigma) = p(\mu) \cdot p(\sigma)$.
+
+$$\color{steelblue}{\sigma \sim \mathrm{Uniform}(0, 50)}$$
+
+```{r eval = TRUE, echo = FALSE, fig.width = 9, fig.height = 6, out.width = "50%"}
+data.frame(x = c(-10, 60) ) %>%
+  ggplot(aes(x = x) ) +
+  stat_function(
+    fun = dunif, args = list(0, 50),
+    fill = "steelblue", geom = "area", alpha = 0.8
+    ) +
+  theme_bw(base_size = 20) +
+  labs(x = expression(sigma), y = "Densité de probabilité")
+```
+
+---
+
+# Visualiser le prior
+
+```{r prior-plot, echo = FALSE, out.width = "50%"}
+knitr::include_graphics("figures/prior.png")
+```
+
+---
+
+# Prior predictive checking
+
+```{r eval = TRUE, echo = TRUE, fig.width = 6, fig.height = 6, out.width = "33%"}
+sample_mu <- rnorm(1000, 178, 20)
+sample_sigma <- runif(1000, 0, 50)
+
+data.frame(x = rnorm(1000, sample_mu, sample_sigma) ) %>%
+    ggplot(aes(x) ) +
+    geom_histogram() +
+    labs(x = "Taille (en cm)", y = "Nombre d'échantillons") +
+    theme_bw(base_size = 20)
+```
+
+---
+
+# Fonction de vraisemblance
+
+```{r eval = TRUE, echo = TRUE}
+mu_exemple <- 151.23
+sigma_exemple <- 23.42
+
+df$height[34] # une observation de taille (pour exemple)
+```
+
+```{r eval = TRUE, echo = FALSE, fig.width = 6, fig.height = 6, out.width = "33%"}
+ggplot(data.frame(x = c(50, 250) ), aes(x) ) +
+    stat_function(
+        fun = dnorm, args = list(mu_exemple, sigma_exemple), lwd = 2) +
+    geom_segment(
+        aes(
+            x = df$height[34],
+            xend = df$height[34],
+            y = 0,
+            yend = dnorm(df$height[34], mu_exemple, sigma_exemple) ),
+        color = "black", size = 1, linetype = 2) +
+    geom_point(
+        data = df,
+        aes(x = df$height[34], y = dnorm(df$height[34], mu_exemple, sigma_exemple) ),
+        size = 4) +
+    xlab("Taille (en cm)") +
+    ylab("Vraisemblance") +
+    theme_bw(base_size = 20)
+```
+
+---
+
+# Fonction de vraisemblance
+
+On veut calculer la probabilité d'observer une certaine valeur de taille, sachant certaines valeurs de $\mu$ et $\sigma$, c'est à dire :
+
+$$
+p(x \ | \ \mu, \sigma) = \frac{1}{\sqrt{2 \pi \sigma^{2}}} \exp \bigg[-\frac{1}{2 \sigma^{2}} (\mu - x)^{2} \bigg]
+$$
+
+--
+
+On peut calculer cette *densité de probabilité* à l'aide des fonctions `dnorm`, `dbeta`, `dt`, `dexp`, `dgamma`, etc.
+
+```{r eval = TRUE, echo = TRUE, fig.align = "center"}
+dnorm(df$height[34], mu_exemple, sigma_exemple)
+```
+
+---
+
+# Fonction de vraisemblance
+
+$$p(x \ | \ \mu, \sigma) = \frac{1}{\sqrt{2 \pi \sigma^{2}}} \exp \left[-\frac{1}{2 \sigma^{2}} (\mu - x)^{2} \right]$$
+
+Ou à la main...
+
+```{r eval = TRUE, echo = TRUE}
+normal_likelihood <- function (x, mu, sigma) {
+  
+  bell <- exp( (- 1 / (2 * sigma^2) ) * (mu - x)^2 )
+  norm <- sqrt(2 * pi * sigma^2)
+  
+  return(bell / norm)
+  
+}
+```
+
+--
+
+```{r eval = TRUE, echo = TRUE}
+normal_likelihood(df$height[34], mu_exemple, sigma_exemple)
+```
+
+---
+
+# Distribution postérieure
+
+$$\color{purple}{p(\mu, \sigma \ | \ h)} = \frac{\prod_{i} \color{orangered}{\mathrm{Normal}(h_{i} \ | \ \mu, \sigma)}\color{steelblue}{\mathrm{Normal}(\mu \ | \ 178, 20)\mathrm{Uniform}(\sigma \ | \ 0, 50)}}
+{\color{green}{\int \int \prod_{i} \mathrm{Normal}(h_{i} \ | \ \mu, \sigma)\mathrm{Normal}(\mu \ | \ 178, 20)\mathrm{Uniform}(\sigma \ | \ 0, 50) \mathrm{d} \mu \mathrm{d} \sigma}}$$
+
+$$\color{purple}{p(\mu, \sigma \ | \ h)} \propto \prod_{i} \color{orangered}{\mathrm{Normal}(h_{i} \ | \ \mu, \sigma)}\color{steelblue}{\mathrm{Normal}(\mu \ | \ 178, 20)\mathrm{Uniform}(\sigma \ | \ 0, 50)}$$
+
+Il s'agit de la même formule vue précédemment, mais cette fois en considérant qu'il existe plusieurs observations de taille $h_{i}$, et deux paramètres à estimer $\mu$ et $\sigma$.
+
+--
+
+Pour calculer la **vraisemblance marginale** (en vert), il faut donc intégrer sur deux paramètres : $\mu$ et $\sigma$. On réalise ici encore que la probabilité a posteriori est proportionnelle au produit de la vraisemblance et du prior.
+
+--
+
+Petit problème : $p(data)$ se calcule en calculant la somme (pour des variables discrètes) ou l'intégrale (pour des variables continues) de la densité conjointe $p(data, \theta)$ sur toutes les valeurs possibles de $\theta$. Cela se complique lorsque le modèle comprend plusieurs paramètres...
+
+---
+exclude: true
+
+# Le problème avec la distribution postérieure
+
+```{r, eval = FALSE, echo = FALSE, fig.align = "center", out.width = "50%"}
+library(widgetframe)
+library(plotly)
+
+# from https://plotly.com/r/3d-surface-plots/
+
+z <- c(
+  c(8.83,8.89,8.81,8.87,8.9,8.87),
+  c(8.89,8.94,8.85,8.94,8.96,8.92),
+  c(8.84,8.9,8.82,8.92,8.93,8.91),
+  c(8.79,8.85,8.79,8.9,8.94,8.92),
+  c(8.79,8.88,8.81,8.9,8.95,8.92),
+  c(8.8,8.82,8.78,8.91,8.94,8.92),
+  c(8.75,8.78,8.77,8.91,8.95,8.92),
+  c(8.8,8.8,8.77,8.91,8.95,8.94),
+  c(8.74,8.81,8.76,8.93,8.98,8.99),
+  c(8.89,8.99,8.92,9.1,9.13,9.11),
+  c(8.97,8.97,8.91,9.09,9.11,9.11),
+  c(9.04,9.08,9.05,9.25,9.28,9.27),
+  c(9,9.01,9,9.2,9.23,9.2),
+  c(8.99,8.99,8.98,9.18,9.2,9.19),
+  c(8.93,8.97,8.97,9.18,9.2,9.18)
+  )
+
+dim(z) <- c(15, 6)
+# z2 <- z + 1
+# z3 <- z - 1
+
+fig <- plot_ly(showscale = FALSE)
+fig <- fig %>% add_surface(z = ~z)
+# fig <- fig %>% add_surface(z = ~z2, opacity = 0.98)
+# fig <- fig %>% add_surface(z = ~z3, opacity = 0.98)
+
+# exporting it to an html object
+# htmlwidgets::saveWidget(fig, file = "plotly1.html")
+frameWidget(fig, width = "75%", height = "50%")
+# <iframe src = "plotly1.html" scrolling = "yes"></iframe>
+```
+
+---
+
+# Échantillonner pour décrire une distribution
+
+Pour les modèles plus complexes, on ne va pas calculer explicitement la constante de normalisation.
+
+--
+
+- Pour des modèles simples, on peut utiliser la méthode par grille. On calcule la valeur exacte de la probabilité postérieure en un nombre fini de points dans l'espace des paramètres.
+
+--
+
+- Pour les modèles plus complexes, explorer tout l'espace des paramètres n'est pas tractable. On va plutôt échantillonner **intelligemment** un grand nombre de points dans l'espace des paramètres en utilisant des Markov Chain Monte-Carlo (MCMC).
+
+---
+class: middle, center
+
+<embed src="https://chi-feng.github.io/mcmc-demo/app.html?algorithm=RandomWalkMH&target=standard" width=1000px height=600px />
+
+---
+class: middle, center
+
+# Travaux pratiques - Introduction à brms
+
+---
+
+# Introduction à brms
+
+`Stan` est un langage de programmation probabiliste écrit en `C++`, et qui implémente plusieurs algorithmes de MCMC: HMC, NUTS, L-BFGS...
+
+```{r stan, eval = FALSE, echo = TRUE}
+data {
+  int<lower=0> J; // number of schools 
+  real y[J]; // estimated treatment effects
+  real<lower=0> sigma[J]; // s.e. of effect estimates 
+}
+
+parameters {
+  real mu; 
+  real<lower=0> tau;
+  real eta[J];
+}
+
+transformed parameters {
+  real theta[J];
+  for (j in 1:J)
+    theta[j] = mu + tau * eta[j];
+}
+
+model {
+  target += normal_lpdf(eta | 0, 1);
+  target += normal_lpdf(y | theta, sigma);
+}
+```
+
+---
+
+# Bayesian regression models using Stan
+
+Le package `brms` ([Bürkner, 2017](https://www.jstatsoft.org/article/view/v080i01)) permet de fitter des modèles multi-niveaux (ou pas) linéaires (ou pas) bayésiens en `Stan` mais en utilisant la syntaxe de `lme4`.
+
+--
+
+Par exemple, le modèle suivant :
+
+$$
+\begin{align}
+y_{i} &\sim \mathrm{Normal}(\mu_{i}, \sigma) \\
+\mu_{i} &= \alpha + \alpha_{subject[i]} + \alpha_{item[i]} + \beta x_{i} \\
+\end{align}
+$$
+
+--
+
+se spécifie avec `brms` (comme avec `lme4`) de la manière suivante :
+
+```{r eval = FALSE, echo = TRUE}
+brm(y ~ x + (1 | subject) + (1 | item), data = df, family = gaussian() )
+```
+
+---
+
+# Rappels de syntaxe
+
+Le package `brms` utilise la même syntaxe que les fonctions de base R (comme `lm`) ou que le package `lme4`.
+
+```{r eval = FALSE, echo = TRUE}
+Reaction ~ Days + (1 + Days | Subject)
+```
+
+--
+
+La partie gauche représente notre variable dépendante (ou *outcome*, i.e., ce qu'on essaye de prédire). Le package `brms` permet également de fitter des modèles multivariés (plusieurs outcomes) en les combinant avec `mvbind()`.
+
+```{r eval = FALSE, echo = TRUE}
+mvbind(Reaction, Memory) ~ Days + (1 + Days | Subject)
+```
+
+--
+
+La partie droite permet de définir les prédicteurs. L'intercept est généralement implicite, de sorte que les deux écritures ci-dessous sont équivalentes.
+
+```{r eval = FALSE, echo = TRUE}
+mvbind(Reaction, Memory) ~ Days + (1 + Days | Subject)
+mvbind(Reaction, Memory) ~ 1 + Days + (1 + Days | Subject)
+```
+
+---
+
+# Rappels de syntaxe
+
+Si l'on veut fitter un modèle sans intercept (why not), il faut le spécifier explicitement comme ci-dessous.
+
+```{r eval = FALSE, echo = TRUE}
+mvbind(Reaction, Memory) ~ 0 + Days + (1 + Days | Subject)
+```
+
+--
+
+Par défaut `brms` postule une vraisemblance gaussienne. Ce postulat peut être changé facilement en spécifiant la vraisemblance souhaitée via l'argument `family`.
+
+```{r eval = FALSE, echo = TRUE}
+brm(Reaction ~ 1 + Days + (1 + Days | Subject), family = lognormal() )
+```
+
+--
+
+Lisez la documentation (c'est très enthousiasmant à lire) accessible via `?brm`.
+
+---
+
+# Quelques fonctions utiles
+
+```{r fonctions-utiles, eval = FALSE, echo = TRUE}
+# générer le code du modèle en Stan
+make_stancode(formula, ...)
+stancode(fit)
+
+# définir les priors
+get_prior(formula, ...)
+set_prior(prior, ...)
+
+# récupérer les prédiction du modèle
+fitted(fit, ...)
+predict(fit, ...)
+conditional_effects(fit, ...)
+
+# posterior predictive checking
+pp_check(fit, ...)
+
+# comparaison de modèles
+loo(fit1, fit2, ...)
+bayes_factor(fit1, fit2, ...)
+model_weights(fit1, fit2, ...)
+
+# test d'hypothèse
+hypothesis(fit, hypothesis, ...)
+```
+
+---
+
+# Un premier exemple
+
+```{r mod1, eval = TRUE, echo = TRUE, results = "hide"}
+library(brms)
+
+mod1 <- brm(
+  height ~ 1, data = df,
+  # la ligne suivante n'est pas nécessaire pour vous
+  file = "models/mod1.rds"
+  )
+```
+
+--
+
+```{r summary-mod1, eval = TRUE, echo = TRUE}
+posterior_summary(mod1, pars = c("^b_", "sigma"), probs = c(0.025, 0.975) )
+```
+
+Ces données représentent les distributions marginales de chaque paramètre. En d'autres termes, la *probabilité* de chaque valeur de $\mu$, après avoir *moyenné* sur toutes les valeurs possible de $\sigma$, est décrite par une distribution gaussienne avec une moyenne de $154.59$ et un écart type de $0.4$. L'intervalle de crédibilité nous indique les 95% valeurs de $\mu$ ou $\sigma$ les plus probables (sachant les données et les priors).
+
+---
+
+# En utilisant notre prior
+
+Par défaut `brms` utilise un prior très peu informatif centré sur la valeur moyenne de la variable mesurée. On peut donc affiner l'estimation réalisée par ce modèle en utilisant nos connaissances sur la distribution habituelle des tailles chez les humains.
+
+--
+
+La fonction `get_prior()` permet de visualiser une liste des priors par défaut ainsi que de tous les prios qu'on peut spécifier, sachant une certaine formule (i.e., une manière d'écrire notre modèle) et un jeu de données.
+
+```{r get-prior, eval = TRUE, echo = TRUE}
+get_prior(height ~ 1, data = df)
+```
+
+---
+
+# En utilisant notre prior
+
+```{r mod2, eval = TRUE, echo = TRUE, results = "hide"}
+priors <- c(
+  prior(normal(178, 20), class = Intercept),
+  prior(exponential(0.01), class = sigma)
+  )
+
+mod2 <- brm(
+  height ~ 1,
+  prior = priors,
+  family = gaussian(),
+  data = df,
+  file = "models/mod2.rds"
+  )
+```
+
+```{r prior-mod2, echo = FALSE, fig.width = 15, fig.height = 5, out.width = "75%"}
+library(patchwork)
+
+p1 <- data.frame(x = c(100, 250) ) %>%
+  ggplot(aes(x = x) ) +
+  stat_function(
+    fun = dnorm, args = list(mean = 178, sd = 20),
+    fill = "steelblue", geom = "area", alpha = 0.8
+    ) +
+  theme_bw(base_size = 20) +
+  labs(x = expression(mu), y = "Densité de probabilité")
+
+p2 <- data.frame(x = c(0, 500) ) %>%
+  ggplot(aes(x = x) ) +
+  stat_function(
+    fun = dexp, args = list(0.01),
+    fill = "steelblue", geom = "area", alpha = 0.8
+    ) +
+  theme_bw(base_size = 20) +
+  labs(x = expression(sigma), y = "Densité de probabilité")
+
+p1 + p2
+```
+
+---
+
+# En utilisant notre prior
+
+```{r summary-mod2, eval = TRUE, echo = TRUE}
+summary(mod2)
+```
+
+---
+
+# En utilisant un prior plus informatif
+
+```{r mod3, eval = TRUE, echo = TRUE, results = "hide"}
+priors <- c(
+  prior(normal(178, 0.1), class = Intercept), #<<
+  prior(exponential(0.01), class = sigma)
+  )
+
+mod3 <- brm(
+  height ~ 1,
+  prior = priors,
+  family = gaussian(),
+  data = df,
+  file = "models/mod3.rds"
+  )
+```
+
+```{r prior-mod3, echo = FALSE, fig.width = 15, fig.height = 5, out.width = "75%"}
+library(patchwork)
+
+p1 <- data.frame(x = c(177, 179) ) %>%
+  ggplot(aes(x = x) ) +
+  stat_function(
+    fun = dnorm, args = list(mean = 178, sd = 0.1),
+    fill = "steelblue", geom = "area", alpha = 0.8
+    ) +
+  theme_bw(base_size = 20) +
+  labs(x = expression(mu), y = "Densité de probabilité")
+
+p2 <- data.frame(x = c(0, 500) ) %>%
+  ggplot(aes(x = x) ) +
+  stat_function(
+    fun = dexp, args = list(0.01),
+    fill = "steelblue", geom = "area", alpha = 0.8
+    ) +
+  theme_bw(base_size = 20) +
+  labs(x = expression(sigma), y = "Densité de probabilité")
+
+p1 + p2
+```
+
+---
+
+# En utilisant un prior plus informatif
+
+```{r summary-mod3, eval = TRUE, echo = TRUE}
+summary(mod3)
+```
+
+On remarque que la valeur estimée pour $\mu$ n'a presque pas "bougée" du prior... mais également que la valeur estimée pour $\sigma$ a largement augmentée. Nous avons dit au modèle que nous étions assez certain de notre valeur de $\mu$, le modèle s'est ensuite "adapté", ce qui explique la valeur de $\sigma$...
+
+---
+
+# Visualiser la distribution postérieure
+
+```{r plot-samples, eval = TRUE, echo = FALSE, fig.align = "center", fig.width = 12, fig.height = 8, out.width = "75%"}
+library(viridis)
+
+post <- posterior_samples(mod3)
+  # %>% mutate(density = get_density(b_Intercept, sigma, n = 1e2) )
+
+sample.mu <- post$b_Intercept
+sample.sigma <- post$sigma
+
+data.frame(sample.mu, sample.sigma) %>%
+    ggplot(aes(x = sample.mu, y = sample.sigma) ) + 
+    stat_density_2d(
+        geom = "raster",
+        aes(fill = ..density..),
+        contour = FALSE, show.legend = FALSE
+        ) +
+    geom_vline(xintercept = mean(sample.mu), lty = 2) +
+    geom_hline(yintercept = mean(sample.sigma), lty = 2) +
+    scale_fill_viridis(na.value = "black") +
+    coord_cartesian(
+        xlim = c(min(sample.mu), max(sample.mu) ),
+        ylim = c(min(sample.sigma), max(sample.sigma) )
+        ) +
+    scale_x_continuous(expand = c(0, 0) ) +
+    scale_y_continuous(expand = c(0, 0) ) +
+    labs(x = expression(mu), y = expression(sigma) ) +
+    theme_bw(base_size = 20)
+```
+
+---
+
+# Visualiser la distribution postérieure
+
+```{r posterior-plot, echo = FALSE, out.width = "50%"}
+knitr::include_graphics("figures/posterior.png")
+```
+
+---
+class: middle, center
+
+# Travaux pratiques <br> <br> Exemple #1 : Modèle de régression linéaire
+
+---
+
+# Ajouter un prédicteur
+
+Comment est-ce que la taille co-varie avec le poids ?
+
+```{r height-weight-plot, eval = TRUE, echo = TRUE, fig.align = "center", fig.width = 8, fig.height = 6, out.width = "50%"}
+df %>%
+  ggplot(aes(x = weight, y = height) ) +
+  geom_point(colour = "white", fill = "black", pch = 21, size = 3, alpha = 0.8) +
+  theme_bw(base_size = 20)
+```
+
+---
+
+# Modèle de régression linéaire
+
+$$
+\begin{align}
+h_{i} &\sim \mathrm{Normal}(\mu_{i}, \sigma) \\
+\mu_{i} &= \alpha + \beta x_{i} \\
+\end{align}
+$$
+
+--
+
+```{r lm-regression, eval = TRUE, echo = TRUE, fig.align = "center"}
+linear_model <- lm(height ~ weight, data = df)
+precis(linear_model, prob = 0.95)
+```
+
+--
+
+```{r lm-regression-plot, eval = TRUE, echo = FALSE, fig.align = "center", fig.width = 7.5, fig.height = 5, , out.width = "40%"}
+df %>%
+    ggplot(aes(x = weight, y = height) ) +
+    geom_point(
+      colour = "white", fill = "black",
+      pch = 21, size = 3, alpha = 0.8
+      ) +
+    geom_smooth(method = "lm", se = FALSE, color = "black", lwd = 1) +
+    theme_bw(base_size = 20)
+```
+
+---
+
+# Différentes notations
+
+On considère un modèle de régression linéaire avec un seul prédicteur, une pente, un intercept, et des résidus distribués selon une loi normale. La notation :
+
+$$h_{i} = \alpha + \beta x_{i} + \epsilon_{i} \quad \text{avec} \quad \epsilon_{i} \sim \mathrm{Normal}(0, \sigma)$$
+
+--
+
+est équivalente à :
+
+$$h_{i} - (\alpha + \beta x_{i}) \sim \mathrm{Normal}(0, \sigma)$$
+
+--
+
+et si on réduit encore un peu :
+
+$$h_{i} \sim \mathrm{Normal}(\alpha + \beta x_{i}, \sigma)$$
+
+--
+
+Les notations ci-dessus sont équivalentes, mais la dernière est plus flexible, et nous permettra par la suite de l'étendre plus simplement aux modèles multi-niveaux.
+
+---
+
+# Régression linéaire à un prédicteur continu
+
+$$\begin{aligned}
+\color{orangered}{h_{i}} \ &\color{orangered}{\sim \mathrm{Normal}(\mu_{i}, \sigma)} \\
+\color{black}{\mu_{i}} \ &\color{black}{= \alpha + \beta x_{i}} \\
+\color{steelblue}{\alpha} \ &\color{steelblue}{\sim \mathrm{Normal}(178, 20)} \\
+\color{steelblue}{\beta} \ &\color{steelblue}{\sim \mathrm{Normal}(0, 10)} \\
+\color{steelblue}{\sigma} \ &\color{steelblue}{\sim \mathrm{Exponential}(0.01)} \\
+\end{aligned}$$
+
+Dans ce modèle $\mu$ n'est plus un paramètre à estimer (car $\mu$ est *déterminé* par $\alpha$ et $\beta$). À la place, nous allons estimer $\alpha$ et $\beta$.
+
+--
+
+Rappels : $\alpha$ est l'*intercept*, c'est à dire la taille attendue, lorsque le poids est égal à $0$. $\beta$ est la pente, c'est à dire le changement de taille attendu quand le poids augmente d'une unité.
+
+---
+
+# Régression linéaire à un prédicteur continu
+
+```{r mod4, eval = TRUE, echo = TRUE, results = "hide"}
+priors <- c(
+  prior(normal(178, 20), class = Intercept),
+  prior(normal(0, 10), class = b),
+  prior(exponential(0.01), class = sigma)
+  )
+
+mod4 <- brm(
+  height ~ 1 + weight,
+  prior = priors,
+  family = gaussian(),
+  data = df,
+  file = "models/mod4.rds"
+  )
+```
+
+---
+
+# Régression linéaire à un prédicteur continu
+
+```{r summary-mod4, eval = TRUE, echo = TRUE}
+posterior_summary(mod4)
+```
+
+--
+
+$\beta = 0.90, 95\% \ \text{CrI} \ [0.82, 0.99]$ nous indique qu'une augmentation de 1kg entraîne une augmentation de 0.90cm.
+
+--
+
+$\alpha = 113.85, 95\% \ \text{CrI} \ [110.2, 117.57]$ représente la taille moyenne quand le poids est égal à 0kg...
+
+---
+
+# Régression linéaire à un prédicteur continu
+
+```{r mod5, eval = TRUE, echo = TRUE, results = "hide"}
+df$weight.c <- df$weight - mean(df$weight)
+
+mod5 <- brm(
+  height ~ 1 + weight.c,
+  prior = priors,
+  family = gaussian(),
+  data = df,
+  file = "models/mod5.rds"
+  )
+```
+
+--
+
+```{r fixef-mod5, eval = TRUE, echo = TRUE}
+fixef(mod5) # retrieves the fixed effects estimates
+```
+
+Après avoir centré la réponse, l'intercept représente la valeur attendue de *taille* lorsque le poids est à sa valeur moyenne.
+
+---
+
+# Représenter les prédictions du modèle
+
+```{r mod4-predictions, eval = TRUE, echo = TRUE, fig.align = "center", fig.width = 8, fig.height = 6, out.width = "50%"}
+df %>%
+    ggplot(aes(x = weight, y = height) ) +
+    geom_point(colour = "white", fill = "black", pch = 21, size = 3, alpha = 0.8) +
+    geom_abline(intercept = fixef(mod4)[1], slope = fixef(mod4)[2], lwd = 1) +
+    theme_bw(base_size = 20)
+```
+
+---
+
+# Représenter l'incertitude sur $\mu$ via fitted()
+
+```{r fitted-mod4, eval = TRUE, echo = TRUE}
+# on crée un vecteur de valeurs possibles pour "weight"
+weight.seq <- data.frame(weight = seq(from = 25, to = 70, by = 1) )
+
+# on récupère les prédictions du modèle pour ces valeurs de poids
+mu <- data.frame(fitted(mod4, newdata = weight.seq) ) %>% bind_cols(weight.seq)
+
+# on affiche les 10 premières lignes de mu
+head(mu, 10)
+```
+
+---
+
+# Représenter l'incertitude sur $\mu$ via fitted()
+
+```{r fitted-mod4-plot, eval = TRUE, echo = TRUE, fig.align = "center", fig.width = 8, fig.height = 5, out.width = "50%"}
+df %>%
+  ggplot(aes(x = weight, y = height) ) +
+  geom_point(colour = "white", fill = "black", pch = 21, size = 3, alpha = 0.8) +
+  geom_smooth(
+    data = mu, aes(y = Estimate, ymin = Q2.5, ymax = Q97.5),
+    stat = "identity",
+    color = "black", alpha = 0.8, size = 1
+    ) +
+  theme_bw(base_size = 20)
+```
+
+---
+
+# Intervalles de prédiction - Incorporer $\sigma$
+
+Pour rappel, voici notre modèle : $h_{i} \sim \mathrm{Normal}(\alpha + \beta x_{i}, \sigma)$. Pour l'instant, on a seulement représenté les prédictions pour $\mu$. Comment incorporer $\sigma$ dans nos prédictions ?
+
+```{r predict-mod4, eval = TRUE, echo = TRUE}
+# on crée un vecteur de valeurs possibles pour "weight"
+weight.seq <- data.frame(weight = seq(from = 25, to = 70, by = 1) )
+
+# on récupère les prédictions du modèle pour ces valeurs de poids
+pred_height <- data.frame(predict(mod4, newdata = weight.seq) ) %>% bind_cols(weight.seq)
+
+# on affiche les 10 premières lignes de pred_height
+head(pred_height, 10)
+```
+
+---
+
+# Intervalles de prédiction - Incorporer $\sigma$
+
+```{r predict-mod4-plot, eval = TRUE, echo = TRUE, fig.align = "center", fig.width = 8, fig.height = 4, out.width = "50%"}
+df %>%
+  ggplot(aes(x = weight, y = height) ) +
+  geom_point(colour = "white", fill = "black", pch = 21, size = 3, alpha = 0.8) +
+  geom_ribbon(
+    data = pred_height, aes(x = weight, ymin = Q2.5, ymax = Q97.5),
+    alpha = 0.2, inherit.aes = FALSE
+    ) +
+  geom_smooth(
+    data = mu, aes(y = Estimate, ymin = Q2.5, ymax = Q97.5),
+    stat = "identity", color = "black", alpha = 0.8, size = 1
+    ) +
+  theme_bw(base_size = 20)
+```
+
+---
+
+# Deux types d'incertitude
+
+Deux sources d'incertitude dans le modèle : incertitude concernant l'estimation de la valeur des paramètres mais également concernant le processus d'échantillonnage.
+
+--
+
+**Incertitude épistémique** : La distribution a posteriori ordonne toutes les combinaisons possibles des valeurs des paramètres selon leurs plausibilités relatives.
+
+--
+
+**Incertitude aléatoire** : La distribution des données simulées est elle, une distribution qui contient de l'incertitude liée à un processus d'échantillonnage (i.e., générer des données à partir d'une gaussienne).
+
+Voir aussi ce [court article](http://www.stat.columbia.edu/~gelman/stuff_for_blog/ohagan.pdf) par O'Hagan (2012).
+
+---
+
+# Modèles multi-niveaux (aka modèles à effets mixtes)
+
+Les modèles multi-niveaux sont des généralisations des modèles classiques, sur plusieurs niveaux.
+
+$$
+\begin{align}
+\text{Niveau 1}: y_{i} &\sim \mathrm{Normal}(\mu_{i},\sigma) \\
+\mu_{i} &= \alpha_{\text{group}[i]} + \beta \cdot x_{i} \\
+\text{Niveau 2}: \alpha_{\text{group}} &\sim \mathrm{Normal}(\alpha, \sigma_{\text{group}}) \\
+\end{align}
+$$
+
+--
+
+Le "prior" sur les intercepts par groupe $\alpha_{\text{group}}$ est fonction de deux paramètres : $\alpha$ et $\sigma_{\text{group}}$. Ces paramètres sont aussi appelés **hyper-paramètres**, étant des paramètres pour des paramètres. Il y a plusieurs niveaux dans le modèle...
+
+---
+class: middle, center
+
+<embed src="http://mfviz.com/hierarchical-models/" width=1000px height=600px />
+
+---
+
+# Shrinkage magic (Efron & Morris, 1977)
+
+```{r stein1, echo = FALSE, fig.align = "center", out.width = "66%"}
+knitr::include_graphics("figures/stein1.png")
+```
+
+L'estimateur James-Stein est défini comme $z = \bar{y} + c(y - \bar{y})$, où $\bar{y}$ est la moyenne de l'échantillon, $y$  une observation individuelle, et $c$ une constante, le **shrinking factor** ([Efron & Morris, 1977](http://statweb.stanford.edu/~ckirby/brad/other/Article1977.pdf)).
+
+---
+
+# Shrinkage magic (Efron & Morris, 1977)
+
+Le **shrinking factor** est déterminé à la fois par la variabilité (imprécision) de la mesure (e.g., son écart-type) et par la distance à l'estimation moyenne (i.e., $y - \bar{y}$). En d'autres termes, cet estimateur fait moins "confiance" (i.e., accorde moins de poids) aux observations imprécises et/ou extrêmes. Le **shrinkage** agit donc comme une protection contre le sur-apprentissage (*overfitting*).
+
+```{r stein2, echo = FALSE, fig.align = "center", out.width = "75%"}
+knitr::include_graphics("figures/stein2.png")
+```
+
+---
+
+# Exemple d'application du modèle multi-niveaux
+
+Le jeu de données `sleepstudy` contient des données issues de l'étude de [Belenky et al. (2003)](https://www.ncbi.nlm.nih.gov/pubmed/12603781). Ces données décrivent le temps de réaction mesuré lors d'une série des tâches cognitives dans un contexte de privation de sommeil. Au premier jour de l'étude (*Day 0*), les participants avaient leur quantité normale de sommeil. À partir du jour suivant, les participants ne dormaient que trois heures par nuit, et ce pour neuf jours.
+
+```{r sleep, eval = TRUE, echo = TRUE, message = FALSE, warning = FALSE}
+library(lme4)
+data(sleepstudy)
+head(sleepstudy, 10)
+```
+
+---
+
+# Exemple d'application du modèle multi-niveaux
+
+```{r plotsleep, eval = TRUE, echo = TRUE, dev = "svg", fig.align = "center", fig.asp = 0.5, out.width = "75%"}
+sleepstudy %>%
+    ggplot(aes(x = Days, y = Reaction) ) +
+    geom_smooth(method = "lm", colour = "black") +
+    geom_point() +
+    facet_wrap(~Subject, nrow = 2) +
+    theme_bw(base_size = 10) + scale_x_continuous(breaks = c(0, 2, 4, 6, 8) )
+```
+
+---
+
+# Exemple d'application du modèle multi-niveaux
+
+```{r prior6, eval = TRUE, echo = TRUE}
+prior6 <- c(
+    prior(normal(200, 10), class = Intercept),
+    prior(normal(0, 10), class = b, coef = Days),
+    prior(cauchy(0, 10), class = sigma),
+    prior(lkj(2), class = cor)
+    )
+```
+
+```{r mod6, eval = TRUE, echo = TRUE, results = "hide", message = FALSE, warning = FALSE}
+mod6 <- brm(
+    Reaction ~ Days + (1 + Days | Subject), #<<
+    data = sleepstudy,
+    family = gaussian(),
+    prior = prior6,
+    file = "models/mod6.rds",
+    warmup = 2000, iter = 1e4,
+    chains = 2
+    )
+```
+
+---
+
+# Exemple d'application du modèle multi-niveaux
+
+```{r postmod4, eval = TRUE, echo = TRUE}
+posterior_summary(mod6, pars = c("^b_", "^sd_", "sigma"), probs = c(0.025, 0.975) )
+```
+
+<br>
+
+--
+
+```{r easy, echo = FALSE, fig.align = "center", out.width = "33%"}
+knitr::include_graphics("figures/easy.gif")
+```
+
+---
+class: middle, center
+
+# Travaux pratiques <br> <br> Exemple #2 : Modèle de régression logistique
+
+---
+
+# Modèle linéaire généralisé
+
+On peut généraliser le modèle de régression linéaire en changeant l'hypothèse concernant la distribution de laquelle les données sont issues, en considérant les caractéristiques des données modélisées. On peut remplacer la distribution Gaussienne par n'importe quelle distribution. Le modèle linéaire **généralisé** peut être écrit de la manière suivante :
+
+$$\begin{aligned}
+y_{i} &\sim \mathrm{D}(f(\eta_{i}), \theta) \\
+\eta &= \mathbf{X} \beta \\
+\end{aligned}$$
+
+Où la réponse $y_{i}$ est **prédite** par une combinaison linéaire de prédicteurs $\eta$, transformés par une fonction de lien $f$, postulant une certaine distribution $D$ pour $y$ (aussi appellée *family*), et des paramètres $\theta$ spécifiques à cette distribution ([Bürkner, 2017](https://www.jstatsoft.org/article/view/v080i01)).
+
+---
+
+# Fonction de lien
+
+Les fonctions de lien  ont pour tâche de mettre en correspondance l'espace d'un modèle linéaire (non borné) avec l'espace d'un paramètre potentiellement borné comme une probabilité, définie sur l'intervalle $[0, 1]$.
+
+```{r, echo = FALSE, fig.width = 12, fig.height = 6, out.width = "75%"}
+# plot from https://bookdown.org/content/4857/big-entropy-and-the-generalized-linear-model.html#generalized-linear-models
+
+tibble(x = seq(from = -1, to = 3, by = 0.01) ) %>%
+  mutate(probability = 0.35 + x * 0.5) %>%
+  ggplot(aes(x = x, y = probability) ) +
+  geom_rect(xmin = -1, xmax = 3, ymin = 0,  ymax = 1, fill = "gray90") +
+  geom_hline(yintercept = 0:1, linetype = 2) +
+  geom_line(aes(linetype = probability > 1), size = 1) +
+  geom_segment(x = 1.3, xend = 3, y = 1, yend = 1, size = 2 / 3) +
+  scale_y_continuous(breaks = c(0, 0.5, 1) ) +
+  coord_cartesian(xlim = c(0, 2), ylim = c(0, 1.2) ) +
+  theme_bw(base_size = 20) +
+  theme(legend.position = "none", panel.grid = element_blank() ) +
+  labs(x = "Prédicteur", y = "Probabilité")
+```
+
+---
+
+# Fonction de lien
+
+Les fonctions de lien  ont pour tâche de mettre en correspondance l'espace d'un modèle linéaire (non borné) avec l'espace d'un paramètre potentiellement borné comme une probabilité, définie sur l'intervalle $[0, 1]$.
+
+```{r, echo = FALSE, fig.width = 12, fig.height = 6, out.width = "75%"}
+# plot from https://bookdown.org/content/4857/big-entropy-and-the-generalized-linear-model.html#generalized-linear-models
+# fonction logit utilisée dans le GLM binomial (ou régression logistique)
+
+# make data for the horizontal lines
+alpha <- 0
+beta  <- 4
+
+lines <-
+  tibble(x = seq(from = -1, to = 1, by = 0.25) ) %>% 
+  mutate(
+    `log-odds` = alpha + x * beta,
+    probability = exp(alpha + x * beta) / (1 + exp(alpha + x * beta) )
+    )
+
+# make the primary data 
+beta <- 2
+
+d <-
+  tibble(x = seq(from = -1, to = 1, length.out = 50) ) %>% 
+  mutate(
+    `log-odds`  = alpha + x * beta,
+    probability = exp(alpha + x * beta) / (1 + exp(alpha + x * beta) )
+    ) 
+
+# make the individual plots
+p1 <-
+  d %>% 
+  ggplot(aes(x = x, y = `log-odds`) ) +
+  geom_hline(
+    data = lines,
+    aes(yintercept = `log-odds`),
+    color = "gray"
+  ) +
+  geom_line(size = 1) +
+  coord_cartesian(xlim = c(-1, 1) ) +
+  theme_bw(base_size = 20) +
+  theme(panel.grid = element_blank() ) +
+  labs(x = "Prédicteur", y = "Log-odds")
+
+p2 <-
+  d %>% 
+  ggplot(aes(x = x, y = probability) ) +
+  geom_hline(
+    data = lines,
+    aes(yintercept = probability),
+    color = "gray"
+    ) +
+  geom_line(size = 1) +
+  coord_cartesian(xlim = c(-1, 1) ) +
+  theme_bw(base_size = 20) +
+  theme(panel.grid = element_blank() ) +
+  labs(x = "Prédicteur", y = "Probabilité")
+
+p1 + p2
+
+# finally, we're ready to mash the plots together and behold their nerdy glory
+# (p1 | p2) +
+#   plot_annotation(subtitle = "The logit link transforms a linear model (left) into a probability (right).")
+# 
+# 
+# x <- seq.int(from = -1, to = 1, length.out = 1e2)
+# y <- 0 + 2 * x
+# 
+# library(scales)
+# 
+# tn <- trans_new(
+#   name = "logpeps",
+#   transform = function(x) plogis(x),
+#   inverse = function(y) log(y / (1 - y) ),
+#   # inverse = function(y) y,
+#   domain = c(0, Inf),
+#   breaks = c(0, 0.1, 1)
+#   )
+# 
+# data.frame(x = x, y = y) %>%
+#   ggplot(aes(x = x, y = y) ) +
+#   geom_line() +
+#   theme_bw(base_size = 12) +
+#   ylim(-4, 4) +
+#   labs(y = "Log-odds")
+# 
+# data.frame(x = x, y = y) %>%
+#   ggplot(aes(x = x, y = y) ) +
+#   geom_line() +
+#   coord_trans(y = tn) +
+#   theme_bw(base_size = 12) +
+#   ylim(0, 1) +
+#   labs(y = "Probability")
+```
+
+---
+
+# Régression logistique
+
+La fonction logit du GLM binomial (on parle de "log-odds") :
+
+$$\text{logit}(p_{i}) = \log \left(\frac{p_{i}}{1 - p_{i}} \right)$$
+
+--
+
+La cote d'un événement (*odds* en anglais) est le ratio entre la probabilité que l'événement se produise et la probabilité qu'il ne se produise pas. Le logarithme de cette cote est prédit par un modèle linéaire.
+
+$$\log \left(\frac{p_{i}}{1 - p_{i}} \right) = \alpha + \beta \cdot x_{i}$$
+
+--
+
+Pour retrouver la probabilité d'un événement, il faut utiliser la fonction de **lien inverse**, la fonction **logistique** (ou logit-inverse) :
+
+$$p_{i} = \frac{\exp(\alpha + \beta \cdot x_{i})}{1 + \exp(\alpha + \beta \cdot x_{i})}$$
+
+---
+
+# Mise en application - Absentéisme expérimental
+
+Travailler avec des sujets humains implique un minimum de coopération réciproque. Mais ce n'est pas toujours le cas. Une partie non-négligeable des étudiants qui s'inscrivent pour passer des expériences de Psychologie ne se présentent pas le jour prévu... On a voulu estimer la **probabilité de présence d'un étudiant inscrit** en fonction de l'envoi (ou non) d'un mail de rappel (cet exemple est présenté en détails dans deux blogposts, accessibles [ici](http://www.barelysignificant.com/post/absenteeism/), et [ici](http://www.barelysignificant.com/post/absenteeism2/)).
+
+--
+
+Cliquez sur l'icône <a href="https://osf.io/kmyc3/download" <i class="fas fa-file"></i> </a> ou visitez https://osf.io/kmyc3/ pour télécharger les données.
+
+```{r absenteeism, eval = TRUE, echo = TRUE}
+library(tidyverse)
+
+data <- read.csv("data/absenteeism.csv")
+data %>% sample_frac %>% head(n = 10)
+```
+
+---
+
+# Modèle de régression logistique
+
+En d'autres termes, on souhaite estimer la probabilité qu'un participant soit présent. On postule que le nombre de participants présents $y_{i}$ (sur $n_{i}$ participants au total) est distribué selon une loi Binomiale avec une probabilité de présence $p_{i}$.
+
+$$y_{i} \sim \mathrm{Binomial}(n_{i}, p_{i})$$
+
+--
+
+Le logarithme de la cote $\text{logit}(p_{i})$ est prédit par une combinaison linéaire de prédicteurs :
+
+$$\text{logit}(p_{i}) = \log \left(\frac{p_{i}}{1-p_{i}}\right) = \alpha + \beta \times \text{reminder}_{i}$$
+
+Où $\text{logit}(\cdot)$ est une fonction de lienn, permettant de faire le lien entre l'échelle bornée du paramètre (i.e., $0 \leq p \leq 1$) est l'échelle (potentiellement non bornée) des prédicteurs.
+
+---
+
+# Modèle de régression logistique
+
+On peut étendre ce modèle sur plusieurs niveaux, permettant au logarithme de la cote moyen (i.e., l'intercept) et l'effet du mail de rappel (i.e., la pente) à varier par chercheur.
+
+```{r logit, echo = FALSE, out.width = "50%"}
+knitr::include_graphics("figures/logit.png")
+```
+
+<!--
+
+$$\begin{aligned}
+y_{i} &\sim \mathrm{Binomial}(n_{i}, p_{i}) \\
+\text{logit}(p_{i}) &= \alpha_{researcher_{[i]}} + \beta_{researcher_{[i]}} \times \text{reminder}_{i} \\
+\begin{bmatrix}
+\alpha_{\text{researcher}} \\
+\beta_{\text{researcher}} \\
+\end{bmatrix}
+&\sim \mathrm{MVNormal}\bigg(\begin{bmatrix} \alpha \\ \beta \end{bmatrix}, \textbf{S}\bigg) \\
+\textbf{S} &=
+\begin{pmatrix}
+\sigma_{\alpha} & 0 \\
+0 & \sigma_{\beta} \\
+\end{pmatrix}
+\textbf{R} \begin{pmatrix}
+\sigma_{\alpha} & 0 \\
+0 & \sigma_{\beta} \\
+\end{pmatrix} \\
+\alpha &\sim \mathrm{Normal}(0, 10) \\
+\beta &\sim \mathrm{Normal}(0, 10) \\
+(\sigma_{\alpha}, \sigma_{\beta}) &\sim \mathrm{HalfCauchy}(0, 10) \\
+\textbf{R} &\sim \mathrm{LKJcorr}(2) \\
+\end{aligned}$$
+
+-->
+
+---
+
+# Modèle de régression logistique
+
+```{r prior7, eval = TRUE, echo = TRUE}
+prior7 <- c(
+    prior(normal(0, 10), class = Intercept, coef = ""),
+    prior(normal(0, 5), class = b),
+    prior(cauchy(0, 10), class = sd),
+    prior(lkj(2), class = cor)
+    )
+```
+
+```{r mod7, eval = TRUE, echo = TRUE, results = "hide", message = FALSE, warning = FALSE}
+mod7 <- brm(
+    presence | trials(total) ~ 1 + reminder + (1 + reminder | researcher), 
+    family = binomial(link = "logit"),
+    prior = prior7,
+    data = data,
+    sample_prior = TRUE,
+    file = "models/mod7.rds",
+    warmup = 2000, iter = 1e4,
+    cores = parallel::detectCores(),
+    control = list(adapt_delta = 0.95) )
+```
+
+---
+
+# Modèle de régression logistique
+
+```{r plotmod7, eval = TRUE, echo = TRUE, fig.width = 12, fig.height = 7, out.width = "66%", message = FALSE}
+mod7 %>%
+    plot(
+        combo = c("dens_overlay", "trace"), widths = c(1, 1.5),
+        theme = theme_bw(base_size = 16)
+        )
+```
+
+---
+
+# Modèle de régression logistique
+
+```{r postmod7, eval = TRUE, echo = TRUE}
+posterior_summary(mod7, pars = c("^b_", "^sd_"), probs = c(0.025, 0.975) )
+```
+
+--
+
+Ces estimations portent sur le logarithme de la cote... Pour les interpréter plus facilement, on doit appliquer la fonction de lien inverse (i.e., la fonction logistique). Par exemple, la probabilité moyenne de présence (toutes choses étant égales par ailleurs) est donnée par $p = \exp(\alpha) / (1 + \exp(\alpha) )$.
+
+--
+
+```{r fixefmod7, eval = TRUE, echo = TRUE}
+# retrieving the intercept
+a <- fixef(mod7)[1]
+
+# transforming it back to the probability scale (equivalent to plogis(a) )
+exp(a) / (1 + exp(a) )
+```
+
+---
+
+# Modèle de régression logistique
+
+Pour évaluer l'effet du mail de rappel, on peut calculer un rapport de cotes ou [odds ratio](https://en.wikipedia.org/wiki/Odds_ratio), donné par $\text{exp}(\beta)$.
+
+--
+
+```{r expfixefmod5, eval = TRUE, echo = TRUE}
+fixef(mod7)[2, c(1, 3, 4)] %>% exp
+```
+
+On peut interpréter ce ratio (OR = 5.00, 95% HDI [3.53, 7.27])en disant qu'envoyer un mail de rappel multiplie par 5 les chances (la cote) que le participant soit présent.
+
+---
+
+# Représenter les prédictions du modèle
+
+Une manière élégante de représenter les prédictions du modèle et leur incertitude et de directement présenter différents échantillons (i.e., different droites ou courbes de régression) issus de la distribution postérieure. On appelle ce genre de visualisation un *spaghetti plot*.
+
+```{r, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, dev = "svg", fig.align = "center", fig.width = 12, fig.height = 7, out.width = "66%"}
+library(tidybayes)
+library(modelr)
+
+data %>%
+    group_by(researcher, total) %>%
+    data_grid(reminder = seq_range(reminder, n = 1e2) ) %>%
+    add_fitted_samples(mod7, newdata = ., n = 100, scale = "linear") %>%
+    mutate(estimate = plogis(estimate) ) %>%
+    group_by(reminder, .iteration) %>%
+    summarise(estimate = mean(estimate) ) %>%
+    ggplot(aes(x = reminder, y = estimate, group = .iteration) ) +
+    geom_hline(yintercept = 0.5, lty = 2) +
+    geom_line(aes(y = estimate, group = .iteration), size = 0.5, alpha = 0.1) +
+    theme_bw(base_size = 20) + labs(x = "Reminder", y = "Estimate")
+```
+
+---
+
+# Représenter les prédictions du modèle
+
+```{r, echo = TRUE, eval = TRUE, message = FALSE, warning = FALSE, dev = "svg", fig.align = "center", fig.width = 16, fig.height = 6, out.width = "75%"}
+data %>%
+    group_by(researcher, total) %>%
+    data_grid(reminder = seq_range(reminder, n = 1e2) ) %>%
+    add_fitted_samples(mod7, newdata = ., n = 100, scale = "linear") %>%
+    mutate(estimate = plogis(estimate) ) %>%
+    ggplot(aes(x = reminder, y = estimate, group = .iteration) ) +
+    geom_hline(yintercept = 0.5, lty = 2) +
+    geom_line(aes(y = estimate, group = .iteration), size = 0.5, alpha = 0.1) +
+    facet_wrap(~researcher, nrow = 2) +
+    theme_bw(base_size = 20) + labs(x = "Reminder", y = "Estimate")
+```
+
+---
+
+# Test d'hypothèse - 1
+
+Le package `brms` offre plusieurs manières de tester des hypothèses. La fonction `hypothesis()` permet de calculer un *evidence ratio* (équivalent à un Bayes factor pour des hypothèses ponctuelles commes $\theta = 0$). Lorsqu'on teste des hypothèses ponctuelles avec cette fonction, cet *evidence ratio* est un Bayes factor calculé via la méthode de *Savage-Dickey*.
+
+```{r, echo = TRUE}
+# computing the BF01
+(hyp1 <- hypothesis(mod7, "reminder = 0") )
+```
+
+--
+
+```{r, echo = TRUE}
+# prints the BF01 and its reciprocal (BF10 = 1 / BF01)
+c(hyp1$hypothesis$Evid.Ratio, 1 / hyp1$hypothesis$Evid.Ratio)
+```
+
+---
+
+# Test d'hypothèse - 1
+
+```{r, echo = TRUE, fig.width = 10, fig.height = 8, out.width = "50%"}
+plot(hyp1, plot = FALSE, theme = theme_bw(base_size = 20) )[[1]] +
+  geom_vline(xintercept = 0, linetype = 2) +
+  coord_cartesian(xlim = c(-10, 10) )
+```
+
+---
+
+# Comparer les distributions a priori et a posteriori
+
+```{r, echo = TRUE, fig.width = 14, fig.height = 6, out.width = "75%"}
+data.frame(prior = hyp1$prior_samples$H1, posterior = hyp1$samples$H1) %>%
+    gather(type, value) %>%
+    mutate(type = factor(type, levels = c("prior", "posterior") ) ) %>%
+    ggplot(aes(x = value) ) +
+    geom_histogram(bins = 50, alpha = 0.8, col = "white", fill = "steelblue") +
+    geom_vline(xintercept = 0, lty = 2, size = 1) +
+    facet_wrap(~type, scales = "free") +
+    labs(x = expression(beta[reminder]), y = "Number of samples") +
+    theme_bw(base_size = 20)
+```
+
+---
+
+# Test d'hypothèse - 2
+
+On peut également suivre l'approche par comparaison de modèles. Tester l'hypothèse selon laquelle $\theta = 0$ revient à comparer deux modèles : un modèle qui inclut l'effet d'intérêt et un modèle qui ne l'inclut pas.
+
+```{r mod8, eval = TRUE, echo = TRUE, results = "hide", message = FALSE, warning = FALSE}
+prior8 <- c(
+    prior(normal(0, 10), class = Intercept, coef = ""),
+    prior(cauchy(0, 10), class = sd),
+    prior(lkj(2), class = cor) )
+
+mod8 <- brm(presence | trials(total) ~ 1 + (1 + reminder | researcher), 
+    family = binomial(link = "logit"),
+    prior = prior8,
+    data = data,
+    # this line is important for bridgesampling
+    save_pars = save_pars(all = TRUE),
+    file = "models/mod8.rds",
+    warmup = 2000, iter = 1e4,
+    cores = parallel::detectCores(),
+    control = list(adapt_delta = 0.95) )
+
+mod9 <- brm(
+    presence | trials(total) ~ 1 + reminder + (1 + reminder | researcher), 
+    family = binomial(link = "logit"),
+    prior = prior7,
+    data = data,
+    # this line is important for bridgesampling
+    save_pars = save_pars(all = TRUE),
+    file = "models/mod9.rds",
+    warmup = 2000, iter = 1e4,
+    cores = parallel::detectCores(),
+    control = list(adapt_delta = 0.95) )
+```
+
+---
+
+# Test d'hypothèse - 2
+
+On peut ensuite comparer les vraisemblances marginales de deux modèles (i.e., calculer un Bayes factor). Le package `brms` propose la méthode `bayes_factor()`, qui repose sur une approximation de la vraisemblance marginale via `bridgesampling` ([Gronau & Singmann, 2017](https://arxiv.org/abs/1710.08162)).
+
+```{r bf, eval = TRUE, echo = TRUE}
+bayes_factor(mod8, mod9)
+```    
+
+---
+
+# Posterior predictive checking
+
+L'idée du *posterior predictive checking* (PPC) est simple : on va comparer des données simulées (générées) à partir de la distribution postérieure aux données observées. Une fois qu'on a calculé (ou approché) la distribution postérieure, on peut générer des données à partir de la *posterior predictive distribution* :
+
+$$p(\widetilde{y} | y) = \int p(\widetilde{y} | \theta) p(\theta | y) d \theta$$
+
+--
+
+Si un modèle est un bon modèle, alors il devrait pouvoir générer des données qui ressemblent aux données observées (e.g., [Gabry, Simpson, Vehtari, Betancourt, & Gelman, 2017](https://arxiv.org/abs/1709.01449)). D'une certaine manière, le *posterior predictive checking* peut être conçu comme une extension de la logique du test d'hypothèse nulle.
+
+---
+
+# Posterior predictive checking
+
+```{r ppc1, echo = TRUE, dev = "svg", fig.align = "center", fig.width = 12, fig.height = 6, out.width = "75%"}
+data %>%
+    ggplot(aes(x = presence / total) ) +
+    geom_density(fill = "grey20") +
+    theme_bw(base_size = 20)
+```
+
+---
+
+# Posterior predictive checking
+
+Cette procédure est implémentée via la méthode `pp_check()`, qui permet une multitude de checks. Par exemple, on compare ci-dessous 100 jeux de données simulés à partir de la distribution postérieure aux données observées.
+
+```{r ppc2, echo = TRUE, dev = "svg", fig.align = "center", fig.width = 12, fig.height = 6, out.width = "75%"}
+pp_check(mod7, nsamples = 1e2) + theme_bw(base_size = 20)
+```
+
+---
+
+# Posterior predictive checking
+
+```{r ppc3, echo = TRUE, dev = "svg", fig.align = "center", fig.width = 12, fig.height = 8, out.width = "66%"}
+pp_check(mod7, nsamples = 1e3, type = "stat_2d") + theme_bw(base_size = 20)
+```
+
+---
+
+# Ajuster le comportement de Stan
+
+En fittant des modèles plus complexes, vous allez probablement rencontrer des messages du genre `There were x divergent transitions after warmup`. Vous pouvez ajuster le comportement de `Stan` via l'argument `control` de la fonction `brm()`.
+
+```{r mod9, eval = FALSE, echo = TRUE}
+mod9 <- brm(
+    presence | trials(total) ~ 1 + reminder + (1 + reminder | researcher), 
+    family = binomial(link = "logit"),
+    prior = prior2,
+    data = data,
+    warmup = 2000, iter = 1e4,
+    cores = parallel::detectCores(), # using all available cores
+    control = list(adapt_delta = 0.95) # adjusting the delta step size
+    )
+```
+
+On peut par exemple ajuster le pas de l'algorithme via `adapt_delta` (par défaut fixé à 0.8). Cela ralentit l'échantillonnage mais améliore la qualité des échantillons obtenus. En général, faites attention aux messages d'erreur et warnings générés par `brms`, qui vous donnent des indices utiles permettant de résoudre le problème rencontré.
+
+---
+
+# Pour aller plus loin
+
+Une série d'articles de blog à propos de `brms` : https://paul-buerkner.github.io/blog/brms-blogposts/
+
+L'article d'introduction à `brms` ([Bürkner, 2017](https://www.jstatsoft.org/article/view/v080i01)) et la version "advanced" ([Bürkner, 2018](https://journal.r-project.org/archive/2018/RJ-2018-017/index.html)).
+
+Un article tutoriel sur le modèle de régression ordinale avec `brms` ([Bürkner & Vuorre, 2018](https://journals.sagepub.com/doi/10.1177/2515245918823199)).
+
+Notre article tutoriel sur les modèles multi-niveaux bayésiens avec `brms` ([Nalborczyk et al., 2019](https://pubs.asha.org/doi/10.1044/2018_JSLHR-S-18-0006), [preprint](https://psyarxiv.com/guhsa/)).
+
+Le matériel de l'édition 2020 de la formation doctorale que j'organise : "Introduction à la modélisation statistique bayésienne" ([slides + code](https://github.com/lnalborczyk/IMSB2020)).
+
+---
+
+# Quelques idées de livres pour Noël
+
+- McElreath, R. (2016, 2020). *Statistical Rethinking: A Bayesian Course with Examples in R and Stan*. CRC Press.
+
+- Kurz, S. (2019). *Statistical Rethinking with brms, ggplot2, and the tidyverse*. Available [online](https://bookdown.org/ajkurz/Statistical_Rethinking_recoded/).
+
+- Kruschke, J. K. (2015). *Doing Bayesian Data Analysis, Second Edition: A Tutorial with R, JAGS, and Stan*. Academic Press / Elsevier.
+
+- Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., Rubin, D. B. (2013). *Bayesian Data Analysis, third edition*. London: CRC Press.
+
+- Lambert, B. (2018). *A Student’s Guide to Bayesian Statistics*. SAGE Publications Ltd.
+
+---
+
+# Take-home messages
+
+<!--
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+
+<link rel = "stylesheet" href = "css/font-awesome.css"/>
+<link rel = "stylesheet" href = "css/academicons.css"/>
+-->
+
+* **Inférence bayésienne** : Un cadre général de l'estimation de paramètres reposant sur l'utilisation du théorème de Bayes. L'inférence bayésienne peut être vue comme une extension de la logique, où les conclusions (distribution a posteriori) dérivent des prémisses (distribution a priori) et de l'information contenue dans les données (fonction de vraisemblance).
+
+* **Modèles multi-niveaux** : Extensions hiérarchiques (ou pas) du modèle de régression linéaire classique, permettant de prendre en compte des structures de dépendances complexes, dans le but de réaliser des estimations plus précises via *partial pooling* (cf. le concept de *shrinkage*).
+
+* **Le package brms** : Équivalent bayésien du package `lme4` (en bien plus flexible). Interface au langage probabiliste `Stan`. Permet de fitter une large variété de modèles (linéaires, non-linéaires, multivariés, gaussian processes, modèles de diffusion, etc).
+
+<br>
+
+`r icon::fa("twitter")` &nbsp; [<font>lnalborczyk</font>](https://twitter.com/lnalborczyk) &nbsp; `r icon::fa("github")` &nbsp; [<font>lnalborczyk</font>](https://github.com/lnalborczyk) &nbsp; `r icon::ai("osf")` &nbsp; [<font>https://osf.io/ba8xt</font>](https://osf.io/profile/) &nbsp; `r icon::fa("globe-americas")` &nbsp; [<font>www.barelysignificant.com</font>](http://www.barelysignificant.com)
+
+<!--
+<i class="fa fa-twitter"></i> &nbsp; [<font>lnalborczyk</font>](https://twitter.com/lnalborczyk) &nbsp; <i class="fa fa-github"></i> &nbsp; [<font>lnalborczyk</font>](https://github.com/lnalborczyk) &nbsp; <i class = "ai ai-osf"></i> &nbsp; [<font>https://osf.io/ba8xt</font>](https://osf.io/profile/) &nbsp; <i class = "fa fa-globe"></i> &nbsp; [<font>www.barelysignificant.com</font>](http://www.barelysignificant.com)
+-->
+
+<!--
+Slide number: https://github.com/yihui/xaringan/wiki/Slide-number
+Footer and header: https://github.com/yihui/xaringan/wiki/Footer-and-header-lines
+
+<style>
+
+.remark-slide-number {
+  position: inherit;
+}
+
+.remark-slide-number {
+  font-size: 10pt;
+  margin-bottom: -11.6px;
+  margin-right: 10px;
+  color: #1c5253; /* white */
+  opacity: 1; /* default: 0.5 */
+}
+
+.remark-slide-number .progress-bar-container {
+  position: absolute;
+  bottom: 0;
+  height: 6px;
+  display: block;
+  left: 0;
+  right: 0;
+}
+
+.remark-slide-number .progress-bar {
+  height: 100%;
+  background-color: #1c5253;
+}
+
+</style>
+
+-->

@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction à la statistique bayésienne</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Ladislas Nalborczyk" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction à la statistique bayésienne
+### Ladislas Nalborczyk
+### Aix-Marseille Univ, CNRS, LPC, LNC, Marseille, France
+### 30.09.2021 <br><br> <svg viewBox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;fill:white;" xmlns="http://www.w3.org/2000/svg"> <path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"></path></svg> <a href="https://twitter.com/lnalborczyk" style="color:white;"><span class="citation">@lnalborczyk</span></a> <svg viewBox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;fill:white;" xmlns="http://www.w3.org/2000/svg"> <path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"></path></svg> Slides &gt;&gt; <a href="https://tinyurl.com/introbayes2021" style="color:white;"> tinyurl.com/introbayes2021</a>
+
+---
+
+
+
+
+# Au programme
+
+
+
+
+
+
+
+1. [Contexte théorique](#intro)
+    + Interprétations du concept de probabilité
+    + Qu'est-ce que l'inférence bayésienne ?
+    + Rappels : Théorie des probabilités
+    + Rappels : Test d'hypothèse fréquentiste
+    + Test d'hypothèse bayésien
+    + Analyse de la variance (ANOVA) bayésienne
+
+2. [Travaux pratiques avec jamovi](#jamovi)
+    + Présentation du module d'analyse bayésienne
+    + Conduire une ANOVA bayésienne, interpréter, et rapporter les résultats
+    
+---
+name: intro
+class: middle, center
+
+# Contexte théorique
+## Interprétations du concept de probabilité
+
+---
+
+# Axiomes des probabilités (Kolmogorov, 1933)
+
+Une probabilité est une valeur numérique assignée à un événement `\(A\)`, compris comme une possibilité appartenant à l'univers `\(\Omega\)` (l'ensemble de toutes les issues possibles). Les probabilités se conforment aux axiomes suivants :
+
+--
++ **Non-negativity :** `\(\Pr(A) \geq 0\)`
++ **Normalisation :** `\(\Pr(\Omega) = 1\)`
++ **Additivity (pour des événements incompatibles) :** `\(\Pr(A_{1} \cup A_{2}) = \Pr(A_{1}) + \Pr(A_{2})\)`
+
+--
+
+Le dernier axiome est également connu comme la **règle de la somme**, et peut se généraliser à des événements non mutuellement exclusifs : `\(\Pr(A_{1} \cup A_{2}) = \Pr(A_{1}) + \Pr(A_{2}) - \Pr(A_{1} \cap A_{2})\)`.
+
+---
+
+# Interprétations probabilistes
+
+Quelle est la probabilité...
+
++ D'obtenir un chiffre pair sur un lancer de dé ?
++ Que j'apprenne quelque chose pendant ce cours ?
+
+--
+
+Est-ce qu'il s'agit, pour chaque exemple, de la même **sorte** de probabilité ?
+
+&lt;img src="figures/thinking.gif" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Interprétation classique (ou théorique)
+
+$$
+\Pr(\text{pair}) = \frac{\text{nombre de cas favorables}}{\text{nombre de cas possibles}} = \frac{3}{6} = \frac{1}{2}
+$$
+
+Problème : cette définition est uniquement applicable aux situations dans lesquelles il n'y a qu'un nombre **fini** de résultats possibles **équiprobables**...
+
+--
+
+Quelle est la probabilité qu'il pleuve demain ?
+
+`$$\Pr(\text{pluie}) = \frac{\text{pluie}}{ \{ \text{pluie, non-pluie} \} } = \frac{1}{2}$$`
+
+---
+
+# Interprétation fréquentiste (ou empirique)
+
+`$$\Pr(x) = \lim_{n_{t} \to \infty}\frac{n_{x}}{n_{t}}$$`
+
+Où `\(n_{x}\)` est le nombre d'occurrences de l’événement `\(x\)` et `\(n_{t}\)` le nombre total d'essais. L'interprétation **fréquentiste** postule que, à long-terme (i.e., quand le nombre d'essais s'approche de l'infini), la fréquence relative va converger *exactement* vers ce qu'on appelle "probabilité".
+
+--
+
+Conséquence : le concept de probabilité s'applique uniquement aux **collectifs**, et non aux événements singuliers.
+
+---
+
+# Interprétation fréquentiste (ou empirique)
+
+
+```r
+library(tidyverse)
+
+*sample(c(0, 1), 500, replace = TRUE) %&gt;%
+        data.frame %&gt;%
+        mutate(x = seq_along(.), y = cumsum(.) / seq_along(.) ) %&gt;%
+        ggplot(aes(x = x, y = y), log = "y") +
+        geom_line(lwd = 1) +
+        geom_hline(yintercept = 0.5, lty = 3) +
+        labs(x = "Nombre de lancers", y = "Proportion de faces") +
+        ylim(0, 1) + theme_bw(base_size = 20)
+```
+
+&lt;img src="Bayes_M2RSCOG_files/figure-html/frequency-1.svg" width="40%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Limites de l'interprétation fréquentiste...
+
+Quelle classe de référence ? *Quelle est la probabilité que je vive jusqu'à 80 ans ? En tant qu'homme ? En tant que Français ?*
+
+--
+
+Quid des événements qui ne peuvent pas se répéter ? *Quelle est la probabilité que j'apprenne quelque chose pendant ce cours ?*
+
+--
+
+À partir de combien de lancers (d'une pièce par exemple) a-t-on une bonne approximation de la probabilité ? Une classe finie d’événements de taille `\(n\)` ne peut produire que des fréquences relatives de précision `\(1/n\)`...
+
+---
+
+# Interprétation logique
+
+&lt;center&gt;Il y a 10 étudiants dans cette salle&lt;/center&gt;
+&lt;center&gt;9 portent un t-shirt &lt;font color = "green"&gt;vert&lt;/font&gt;&lt;/center&gt;
+&lt;center&gt;1 porte un t-shirt &lt;font color = "red"&gt;rouge&lt;/font&gt;&lt;/center&gt;
+&lt;center&gt;Une personne est tirée au sort...&lt;/center&gt;
+
+--
+
+&lt;hr width = "75%%" size = "2" align = "center" noshade&gt;
+
+&lt;center&gt;Conclusion n°1 : l'étudiant tiré au sort porte un t-shirt &amp;#10004; &lt;/center&gt;
+
+--
+
+&lt;hr width = "75%%" size = "1" align = "center" noshade&gt;
+
+&lt;center&gt;Conclusion n°2 : l'étudiant tiré au sort porte un t-shirt &lt;font color = "green"&gt;vert&lt;/font&gt; &amp;#10007; &lt;/center&gt;
+
+--
+
+&lt;hr width = "75%%" size = "1" align = "center" noshade&gt;
+
+&lt;center&gt;Conclusion n°3 : l'étudiant tiré au sort porte un t-shirt &lt;font color = "red"&gt;rouge&lt;/font&gt; &amp;#10007; &lt;/center&gt;
+
+---
+
+# Interprétation logique
+
+L'interprétation logique du concept de probabilité essaye de généraliser la logique (vrai / faux) au monde probabiliste. La probabilité représente donc le *degré de support logique* qu'une conclusion peut avoir, relativement à un ensemble de prémisses ([Keynes, 1921](https://archive.org/details/treatiseonprobab007528mbp); [Carnap, 1950](http://fitelson.org/confirmation/carnap_logical_foundations_of_probability.pdf)).
+
+--
+
+Conséquence : toute probabilité est **conditionnelle**.
+
+---
+
+# Interprétation bayésienne
+
+**La probabilité est une mesure du degré d'incertitude**. Un événement *certain* aura donc une probabilité de 1 et un événement *impossible* aura une probabilité de 0.
+
+--
+
+Pour parler de probabilités, dans ce cadre, nous n'avons donc plus besoin de nous référer à la limite d'occurrence d'un événement (fréquence).
+
+--
+
+.bg-washed-green.b--dark-green.ba.bw2.br3.shadow-5.ph4.mt5[
+So to assign equal probabilities to two events is not in any way an assertion that they must occur equally often in any random experiment [...], it is only a formal way of saying I don't know.
+
+.tr[
+[Edwin T. Jaynes (1986)](http://bayes.wustl.edu/etj/articles/general.background.pdf)
+]]
+
+---
+
+# Interprétations probabilistes
+
++ Interprétation classique (Laplace, Bernouilli, Leibniz)
++ **Interprétation fréquentiste** (Venn, Reichenbach, von Mises)
++ Interprétation propensionniste (Popper, Miller)
++ Interprétation logique (Keynes, Carnap)
++ **Interprétation bayésienne** (Jeffreys, de Finetti, Savage)
+
+*[Plus de détails sur la Stanford Encyclopedia of Philosophy...](http://plato.stanford.edu/entries/probability-interpret/)*
+
+---
+
+# Interprétations probabilistes - résumé
+
+**Probabilité épistémique**
+- Toute probabilité est conditionnelle à de l'information disponible (e.g., prémisses ou données)
+- La probabilité comme moyen de quantifier l'incertitude
+- Probabilité logique, probabilité bayésienne
+
+--
+
+**Probabilité physique**
+- Les probabilités dépendent d'un état du monde, de caractéristiques physiques, elles sont indépendantes de l'information disponible (ou de l'incertitude)
+- Probabilité classique, probabilité fréquentiste &lt;/center&gt;
+
+---
+class: inverse, center, middle
+background-image: url(figures/pill3.jpg)
+background-size: cover
+
+---
+class: middle, center
+
+# Contexte théorique
+## Qu'est-ce que l'inférence bayésienne ?
+
+---
+
+# Exercice - Problème du sac de billes (McElreath, 2015)
+
+Imaginons que nous disposions d'un sac contenant 4 billes. Ces billes peuvent être soit blanches, soit bleues. Nous savons qu'il y a précisément 4 billes, mais nous ne connaissons pas le nombre de billes de chaque couleur.
+
+--
+
+Nous savons cependant qu'il existe cinq possibilités (que nous considérons comme nos *hypothèses*) :
+
+&lt;br&gt;
+
+&lt;p align = "center"&gt; &amp;#9898 &amp;#9898 &amp;#9898 &amp;#9898&lt;/p&gt;
+&lt;p align = "center"&gt; &amp;#128309 &amp;#9898 &amp;#9898 &amp;#9898&lt;/p&gt;
+&lt;p align = "center"&gt;&amp;#128309 &amp;#128309 &amp;#9898 &amp;#9898&lt;/p&gt;
+&lt;p align = "center"&gt;&amp;#128309 &amp;#128309 &amp;#128309 &amp;#9898&lt;/p&gt;
+&lt;p align = "center"&gt;&amp;#128309 &amp;#128309 &amp;#128309 &amp;#128309&lt;/p&gt;
+
+---
+
+# Exercice - Problème du sac de billes (McElreath, 2015)
+
+Le but est de déterminer quelle combinaison serait la plus probable, **sachant certaines observations**. Imaginons que l'on tire trois billes à la suite, avec remise, et que l'on obtienne la séquence suivante :
+
+&lt;p align = "center"&gt;&amp;#128309 &amp;#9898 &amp;#128309&lt;/p&gt;
+
+--
+
+Cette séquence représente nos données. À partir de là, quelle **inférence** peut-on faire sur le contenu du sac ? En d'autres termes, que peut-on dire de la probabilité de chaque hypothèse ?
+
+&lt;p align = "center"&gt; &amp;#9898 &amp;#9898 &amp;#9898 &amp;#9898&lt;/p&gt;
+&lt;p align = "center"&gt; &amp;#128309 &amp;#9898 &amp;#9898 &amp;#9898&lt;/p&gt;
+&lt;p align = "center"&gt;&amp;#128309 &amp;#128309 &amp;#9898 &amp;#9898&lt;/p&gt;
+&lt;p align = "center"&gt;&amp;#128309 &amp;#128309 &amp;#128309 &amp;#9898&lt;/p&gt;
+&lt;p align = "center"&gt;&amp;#128309 &amp;#128309 &amp;#128309 &amp;#128309&lt;/p&gt;
+
+--
+
+<div class="countdown" id="timer_614aecc0" style="right:0;bottom:0;left:0;" data-audio="true" data-warnwhen="15">
+<code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+# Énumérer les possibilités
+
+&lt;p align = "center"&gt; Hypothèse : &amp;#128309 &amp;#9898 &amp;#9898 &amp;#9898 &amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp; Données : &amp;#128309 &lt;/p&gt;
+
+&lt;img src="Bayes_M2RSCOG_files/figure-html/garden1-1.svg" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Énumérer les possibilités
+
+&lt;p align = "center"&gt; Hypothèse : &amp;#128309 &amp;#9898 &amp;#9898 &amp;#9898 &amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp; Données : &amp;#128309 &amp;#9898&lt;/p&gt;
+
+&lt;img src="Bayes_M2RSCOG_files/figure-html/garden2-1.svg" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Énumérer les possibilités
+
+&lt;p align = "center"&gt; Hypothèse : &amp;#128309 &amp;#9898 &amp;#9898 &amp;#9898 &amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp; Données : &amp;#128309 &amp;#9898 &amp;#128309&lt;/p&gt;
+
+&lt;img src="Bayes_M2RSCOG_files/figure-html/garden3-1.svg" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Énumérer les possibilités
+
+&lt;p align = "center"&gt; Hypothèse : &amp;#128309 &amp;#9898 &amp;#9898 &amp;#9898 &amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp; Données : &amp;#128309 &amp;#9898 &amp;#128309 &lt;/p&gt;
+
+&lt;img src="Bayes_M2RSCOG_files/figure-html/garden4-1.svg" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Énumérer les possibilités
+
+Sous cette hypothèse, `\(3\)` chemins (sur `\(4^{3} = 64\)`) conduisent au résultat obtenu. Qu'en est-il des autres hypothèses?
+
+&lt;p align = "center"&gt; &amp;#9898 &amp;#9898 &amp;#9898 &amp;#128309 &amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp; &amp;#9898 &amp;#128309 &amp;#128309 &amp;#128309 &amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp; &amp;#9898 &amp;#9898 &amp;#128309 &amp;#128309 &lt;/p&gt;
+
+&lt;img src="Bayes_M2RSCOG_files/figure-html/garden5-1.svg" width="40%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Comparer les hypothèses
+
+Au vu des données, cette hypothèse est la plus *probable* car c'est l'hypothèse qui **maximise le nombre de manières possibles d'obtenir les données obtenues**.
+
+&lt;center&gt;
+
+&lt;style type="text/css"&gt;
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg .tg-gq9a{font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif !important;;text-align:center;font-size:16px;font-weight:normal;padding:5px 5px 5px 5px}
+&lt;/style&gt;
+&lt;table class="tg" width="600" height="200"&gt;
+  &lt;tr&gt;
+    &lt;th class="tg-gq9a"&gt;Hypothèse&lt;/th&gt;
+    &lt;th class="tg-gq9a"&gt;Façons d'obtenir les données&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt; &lt;p&gt; &amp;#9898 &amp;#9898 &amp;#9898 &amp;#9898 &lt;/p&gt;&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt; 0 x 4 x 0 = 0&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt;&lt;p&gt; &amp;#128309 &amp;#9898 &amp;#9898 &amp;#9898 &lt;/p&gt;&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;1 x 3 x 1 = 3&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt;&lt;p&gt; &amp;#128309 &amp;#128309 &amp;#9898 &amp;#9898 &lt;/p&gt;&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;2 x 2 x 2 = 8&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt;&lt;p&gt; &amp;#128309 &amp;#128309 &amp;#128309 &amp;#9898 &lt;/p&gt;&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;3 x 1 x 3 = 9&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt;&lt;p&gt; &amp;#128309 &amp;#128309 &amp;#128309 &amp;#128309 &lt;/p&gt;&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;4 x 0 x 4 = 0&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;/center&gt;
+
+---
+
+# Accumulation d'évidence
+
+Dans le cas précédent, nous avons considéré que toutes les hypothèses étaient équiprobables a priori (suivant le [principe d'indifférence](https://en.wikipedia.org/wiki/Principle_of_indifference)).
+
+--
+
+Cependant, on pourrait avoir de l'information a priori, provenant de nos connaissances (des particularités des sacs de billes par exemple) ou de données antérieures.
+
+--
+
+Imaginons que nous tirions une nouvelle bille du sac, comment incorporer cette nouvelle donnée ?
+
+---
+
+# Accumulation d'évidence
+
+Il suffit d'appliquer la même stratégie que précédemment, et de mettre à jour le dernier compte en le multipliant par ces nouvelles données. *Yesterday's posterior is today's prior* ([Lindley, 2000](https://rss.onlinelibrary.wiley.com/doi/abs/10.1111/1467-9884.00238)).
+
+&lt;center&gt;
+
+&lt;style type="text/css"&gt;
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg .tg-gq9a{font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif !important;;text-align:center;font-size:16px;font-weight:normal;padding:5px 5px 5px 5px}
+&lt;/style&gt;
+&lt;table class="tg" width="600" height="200"&gt;
+  &lt;tr&gt;
+    &lt;th class="tg-gq9a"&gt;Hypothèse&lt;/th&gt;
+    &lt;th class="tg-gq9a"&gt;&lt;p&gt;Façons de produire &amp;#128309&lt;/p&gt;&lt;/th&gt;
+    &lt;th class="tg-gq9a"&gt;Compte précédent&lt;/th&gt;
+    &lt;th class="tg-gq9a"&gt;Nouveau compte&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt;&lt;p&gt; &amp;#9898 &amp;#9898 &amp;#9898 &amp;#9898 &lt;/p&gt;&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0 x 0 = 0&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt;&lt;p&gt; &amp;#128309 &amp;#9898 &amp;#9898 &amp;#9898 &lt;/p&gt;&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;1&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;3&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;3 x 1 = 3&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt;&lt;p&gt; &amp;#128309 &amp;#128309 &amp;#9898 &amp;#9898 &lt;/p&gt;&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;2&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;8&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;8 x 2 = 16&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt;&lt;p&gt; &amp;#128309 &amp;#128309 &amp;#128309 &amp;#9898 &lt;/p&gt;&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;3&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;9&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;9 x 3 = 27&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt;&lt;p&gt; &amp;#128309 &amp;#128309 &amp;#128309 &amp;#128309 &lt;/p&gt;&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;4&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0 x 4 = 0&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;/center&gt;
+
+---
+
+# Incorporer un prior
+
+Un employé de l'usine de fabrication des billes nous dit que pour chaque sac contenant 3 billes bleues, ils fabriquent deux sacs en contenant seulement deux, et trois sacs en contenant seulement une. Il nous apprend également que tous les sacs contiennent au moins une bille bleue et une bille blanche...
+
+&lt;center&gt;
+
+&lt;style type="text/css"&gt;
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg .tg-gq9a{font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif !important;;text-align:center;font-size:16px;font-weight:small;padding:5px 5px 5px 5px}
+&lt;/style&gt;
+&lt;table class="tg" width="600" height="200"&gt;
+  &lt;tr&gt;
+    &lt;th class="tg-gq9a"&gt;Hypothèse&lt;/th&gt;
+    &lt;th class="tg-gq9a"&gt;&lt;p&gt;Comptes précédents&lt;/p&gt;&lt;/th&gt;
+    &lt;th class="tg-gq9a"&gt;Prior usine&lt;/th&gt;
+    &lt;th class="tg-gq9a"&gt;Nouveau compte&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt;&lt;p&gt; &amp;#9898 &amp;#9898 &amp;#9898 &amp;#9898 &lt;/p&gt;&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0 x 0 = 0&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt;&lt;p&gt; &amp;#128309 &amp;#9898 &amp;#9898 &amp;#9898 &lt;/p&gt;&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;3&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;3&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;3 x 3 = 9&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt;&lt;p&gt; &amp;#128309 &amp;#128309 &amp;#9898 &amp;#9898 &lt;/p&gt;&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;16&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;2&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;16 x 2 = 32&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt;&lt;p&gt; &amp;#128309 &amp;#128309 &amp;#128309 &amp;#9898 &lt;/p&gt;&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;27&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;1&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;27 x 1 = 27&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt;&lt;p&gt; &amp;#128309 &amp;#128309 &amp;#128309 &amp;#128309 &lt;/p&gt;&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0 x 0 = 0&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;/center&gt;
+
+---
+
+# Des énumérations aux probabilités
+
+La probabilité d'une hypothèse après avoir observé certaines données est proportionnelle au nombre de façons qu'a cette hypothèse de produire les données observées, multiplié par sa probabilité a priori.
+
+$$
+\Pr(\text{hypothèse}\ |\ \text{données}) \propto \Pr(\text{données}\ |\ \text{hypothèse}) \times \Pr(\text{hypothèse})
+$$
+
+--
+
+Pour calculer la probabilité d'une hypothèse, il suffit de standardiser ce produit (i.e., nombre de façons de produire les données multiplié par la probabilité a priori de l'hypothèse) de manière à ce que la somme des probabilités de toutes les hypothèses possibles soit égale à `\(1\)`.
+
+$$
+\Pr(\text{hypothèse}\ |\ \text{données}) = \frac{\Pr(\text{données}\ |\ \text{hypothèse})\times \Pr(\text{hypothèse})}{\text{somme des produits}}
+$$
+
+---
+
+# Des énumérations aux probabilités
+
+Par exemple, définissons `\(p\)` comme la proportion de billes bleues.
+
+&lt;center&gt;
+
+&lt;style type="text/css"&gt;
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg .tg-gq9a{font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif !important;;text-align:center;font-size:18px;font-weight:normal;padding:5px 5px 5px 5px}
+&lt;/style&gt;
+&lt;table class="tg"&gt;
+  &lt;tr&gt;
+    &lt;th class="tg-gq9a"&gt;Hypothèse&lt;/th&gt;
+    &lt;th class="tg-gq9a"&gt;p&lt;/th&gt;
+    &lt;th class="tg-gq9a"&gt;Manières de produire les données&lt;/th&gt;
+    &lt;th class="tg-gq9a"&gt;Probabilité&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt; &amp;#9898 &amp;#9898 &amp;#9898 &amp;#9898 &lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt; &amp;#128309 &amp;#9898 &amp;#9898 &amp;#9898 &lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0.25&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;3&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0.15&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt; &amp;#128309 &amp;#128309 &amp;#9898 &amp;#9898 &lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0.5&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;8&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0.40&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt; &amp;#128309 &amp;#128309 &amp;#128309 &amp;#9898 &lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0.75&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;9&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0.45&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="tg-gq9a"&gt; &amp;#128309 &amp;#128309 &amp;#128309 &amp;#128309 &lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;1&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0&lt;/td&gt;
+    &lt;td class="tg-gq9a"&gt;0&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;/center&gt;
+
+--
+
+
+```r
+chemins &lt;- c(0, 3, 8, 9, 0)
+(probs &lt;- chemins / sum(chemins) )
+```
+
+```
+## [1] 0.00 0.15 0.40 0.45 0.00
+```
+
+---
+
+# Notations, terminologie
+
+
+- `\(\theta\)` est un paramètre ou vecteur de paramètres (e.g., la proportion de billes bleues).
+- `\(\color{orangered}{p(x\vert \theta)}\)` &lt;span style="color:orangered"&gt; la probabilité conditionnelle des données `\(x\)` sachant le paramètre `\(\theta\)` `\(\color{orangered}{[p(x | \theta = \theta)]}\)`. &lt;/span&gt;
+- `\(\color{orangered}{p(x\vert \theta)}\)` &lt;span style="color:orangered"&gt; une fois que la valeur de `\(x\)` est connue, est vue comme la fonction de vraisemblance (*likelihood*) du paramètre `\(\theta\)`. Attention, il ne s'agit pas d'une distribution de probabilité `\(\color{orangered}{[p(x = x | \theta)]}\)`. &lt;/span&gt;
+- `\(\color{steelblue}{p(\theta)}\)` &lt;span style="color:steelblue"&gt; la probabilité a priori de `\(\theta\)`.&lt;/span&gt;
+- `\(\color{purple}{p(\theta \vert x)}\)` &lt;span style="color:purple"&gt; la probabilité a posteriori de `\(\theta\)` (sachant `\(x\)`).&lt;/span&gt;
+- `\(\color{green}{p(x)}\)` &lt;span style="color:green"&gt; la probabilité marginale de `\(x\)` (sur `\(\theta\)`) ou "vraisemblance marginale", "vraisemblance intégrée".&lt;/span&gt;
+
+&lt;br&gt;
+
+`$$\color{purple}{p(\theta \vert x)} = \dfrac{\color{orangered}{p(x\vert \theta)} \color{steelblue}{p(\theta)}}{\color{green}{p(x)}} = \dfrac{\color{orangered}{p(x\vert \theta)} \color{steelblue}{p(\theta)}}{\color{green}{\sum\limits_{\theta}p(x|\theta)p(\theta)}} = \dfrac{\color{orangered}{p(x\vert \theta)} \color{steelblue}{p(\theta)}}{\color{green}{\int\limits_{\theta}p(x|\theta)p(\theta)\mathrm{d}x}} \propto \color{orangered}{p(x\vert \theta)} \color{steelblue}{p(\theta)}$$`
+
+---
+class: middle, center
+
+# Contexte théorique
+## Rappels : Théorie des probabilités
+
+---
+
+# Loi de probabilité, cas discret
+
+Une fonction de masse (*probability mass function*, ou *PMF*) est une fonction qui attribue une probabilité à chaque valeur d'une variable aléatoire. Exemple de la distribution binomiale pour une pièce non biaisée, c'est à dire lorsque `\(\theta = 0.5\)`, qui nous indique la probabilité d'obtenir `\(N\)` faces sur 10 lancers. 
+
+&lt;img src="Bayes_M2RSCOG_files/figure-html/unnamed-chunk-1-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
+
+--
+
+
+```r
+# PMFs sum to 1
+dbinom(x = 0:10, size = 10, prob = 0.5) %&gt;% sum
+```
+
+```
+## [1] 1
+```
+
+---
+
+# Loi de probabilité, cas continu
+
+Une (fonction de) densité de probabilité (*probability density function*, ou *PDF*), est une fonction qui permet de représenter une loi de probabilité sous forme d'intégrales (l'équivalent de la PMF pour des variables aléatoires strictement continues).
+
+&lt;img src="Bayes_M2RSCOG_files/figure-html/unnamed-chunk-3-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
+
+--
+
+
+```r
+# PDFs integrate to 1
+integrate(dnorm, -Inf, Inf, mean = 100, sd = 15)
+```
+
+```
+## 1 with absolute error &lt; 1.3e-06
+```
+
+---
+
+# Aparté, qu'est-ce qu'une intégrale ?
+
+Une intégrale correspond à la **surface** (aire géométrique) délimitée par la représentation graphique d'une fonction, *l'aire sous la courbe*. Une distribution est dite **impropre** si son intégrale n'est pas égale à un nombre fini (e.g., `\(+ \infty\)`) et **normalisée** si son intégrale est égale à 1.
+
+&lt;img src="Bayes_M2RSCOG_files/figure-html/unnamed-chunk-5-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Aparté, qu'est-ce qu'une intégrale ?
+
+&lt;img src="Bayes_M2RSCOG_files/figure-html/unnamed-chunk-6-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
+
+L'intégrale de `\(f(x)\)` sur l'intervalle [90 ; 96] vaut : `\(p(90 &lt; x &lt; 96) = \int_{90}^{96} f(x) \ \mathrm{d}x = 0.142\)`.
+
+
+```r
+integrate(dnorm, 90, 96, mean = 100, sd = 15)
+```
+
+```
+## 0.1423704 with absolute error &lt; 1.6e-15
+```
+
+---
+
+# Probabilité conjointe
+
+
+```r
+library(tidyverse)
+data(HairEyeColor) # data adapted from Snee (1974)
+
+cont &lt;- apply(HairEyeColor, c(1, 2), sum) %&gt;% t 
+cont &lt;- round(cont / sum(cont), 2)
+cont
+```
+
+```
+##        Hair
+## Eye     Black Brown  Red Blond
+##   Brown  0.11  0.20 0.04  0.01
+##   Blue   0.03  0.14 0.03  0.16
+##   Hazel  0.03  0.09 0.02  0.02
+##   Green  0.01  0.05 0.02  0.03
+```
+
+Dans chaque cellule, on trouve la **probabilité conjointe** d'avoir telle couleur de cheveux **ET** telle couleur d'yeux, qui s'écrit `\(p(c, y) = p(y, c)\)`.
+
+---
+
+# Probabilité marginale
+
+
+```r
+cont2 &lt;- cont %&gt;% as.data.frame %&gt;% mutate(marginal_eye = rowSums(cont) )
+rownames(cont2) &lt;- row.names(cont)
+cont2
+```
+
+```
+##       Black Brown  Red Blond marginal_eye
+## Brown  0.11  0.20 0.04  0.01         0.36
+## Blue   0.03  0.14 0.03  0.16         0.36
+## Hazel  0.03  0.09 0.02  0.02         0.16
+## Green  0.01  0.05 0.02  0.03         0.11
+```
+
+On peut aussi s'intéresser à la probabilité d'avoir des yeux bleus, de manière générale. Il s'agit de la probabilité **marginale** de l'événement *yeux bleus*, qui s'obtient par la somme de toutes les probabilités jointes impliquant l'événement *yeux bleus*. Elle s'écrit `\(p(y)=\sum\limits_{c}p(y|c)p(c)\)`.
+
+---
+
+# Probabilité marginale
+
+
+```r
+cont3 &lt;- rbind(cont2, colSums(cont2) )
+rownames(cont3) &lt;- c(row.names(cont2), "marginal_hair")
+cont3
+```
+
+```
+##               Black Brown  Red Blond marginal_eye
+## Brown          0.11  0.20 0.04  0.01         0.36
+## Blue           0.03  0.14 0.03  0.16         0.36
+## Hazel          0.03  0.09 0.02  0.02         0.16
+## Green          0.01  0.05 0.02  0.03         0.11
+## marginal_hair  0.18  0.48 0.11  0.22         0.99
+```
+
+On peut bien entendu aussi s'intéresser aux probabilités des couleurs de cheveux, de manière générale. Elle s'écrit `\(p(c) = \sum\limits_{y} p(c | y) p(y)\)`.
+
+---
+
+# Probabilité conditionnelle
+
+On pourrait aussi s'intéresser à la probabilité qu'une personne ait les cheveux blonds, **sachant** qu'elle a les yeux bleus. Il s'agit d'une probabilité **conditionnelle**, et s'écrit `\(p(c|y)\)`. Cette probabilité conditionnelle peut se ré-écrire : `\(p(c | y) = \frac{p(c, y)}{p(y)}\)`.
+
+
+```
+##      Black Brown  Red Blond marginal_eye
+## Blue  0.03  0.14 0.03  0.16         0.36
+```
+
+--
+
+Par exemple, quelle est la probabilité d'avoir des yeux bleus lorsqu'on a les cheveux blonds ?
+
+
+```r
+cont3["Blue", "Blond"] / cont3["Blue", "marginal_eye"]  
+```
+
+```
+##      Blue 
+## 0.4444444
+```
+
+---
+
+# Probabilité conditionnelle, règle du produit
+
+On remarque dans le cas précédent que `\(p(blonds|bleus)\)` **n'est pas nécessairement égal** à `\(p(bleus|blonds)\)`.
+
+--
+
+&lt;iframe
+align="right" border=0 frameborder=0 height=400 width=600
+src="https://twitframe.com/show?url=https://twitter.com/BillGates/status/1118196606975787008"&gt;
+&lt;/iframe&gt;
+
+Autre exemple : la probabilité de mourir sachant qu'on a été attaqué par un requin n'est pas la même que la probabilité d'avoir été attaqué par un requin, sachant qu'on est mort ([*confusion of the inverse*](https://en.wikipedia.org/wiki/Confusion_of_the_inverse)). De la même manière, `\(p(data|H_{0}) \neq p(H_{0}|data)\)`.
+
+--
+
+À partir des axiomes de Kolmogorov (cf. début du cours), et des définitions précédentes des probabilités conjointes, marginales, et conditionnelles, découle la **règle du produit** :
+
+`$$p(a, b) = p(b) \times p(a|b) = p(a) \times p(b|a)$$`
+
+---
+
+# Dérivation du théorème de Bayes
+
+`$$p(x,y) = p(x|y) \times p(y) = p(y|x) \times p(x)$$`
+
+--
+
+`$$p(y|x) \times p(x) = p(x|y) \times p(y)$$`
+
+--
+
+`$$p(y|x) = \dfrac{p(x|y) \times p(y)}{p(x)}$$`
+
+--
+
+`$$p(x|y) = \dfrac{p(y|x) \times p(x)}{p(y)}$$`
+
+--
+
+`$$\Pr(\text{hypothèse}\ |\ \text{données}) = \frac{\Pr(\text{données}\ |\ \text{hypothèse})\times \Pr(\text{hypothèse})}{\text{somme des produits}}$$`
+---
+class: middle, center
+
+# Contexte théorique
+## Rappels : Test d'hypothèse fréquentiste
+
+---
+
+# Null Hypothesis Significance Testing (NHST)
+
+On s'intéresse aux différences de taille entre hommes et femmes. On va mesurer 100 femmes et 100 hommes.
+
+
+```r
+men &lt;- rnorm(100, 175, 10) # 100 tailles d'hommes
+women &lt;- rnorm(100, 170, 10) # 100 tailles de femmes
+```
+
+--
+
+
+```r
+t.test(x = men, y = women)
+```
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  men and women
+## t = 2.1708, df = 197.3, p-value = 0.03114
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  0.2739671 5.7114655
+## sample estimates:
+## mean of x mean of y 
+##  173.0879  170.0952
+```
+
+---
+
+# Null Hypothesis Significance Testing (NHST)
+
+On va simuler des t-valeurs issues de données générées sous l'hypothèse d'une absence de différence entre hommes et femmes.
+
+
+```r
+nsims &lt;- 1e4 # nombre de simulations
+t &lt;- rep(NA, nsims) # initialisation d'un vecteur vide
+
+for (i in 1:nsims) {
+    
+    men2 &lt;- rnorm(100, 170, 10) # 100 tailles d'hommes
+    women2 &lt;- rnorm(100, 170, 10) # 100 tailles de femmes
+    t[i] &lt;- t.test(men2, women2)$statistic # on conserve la t-valeur
+    
+}
+```
+
+--
+
+Ou sans boucle `for`.
+
+
+```r
+t &lt;- replicate(n = nsims, expr = t.test(x = rnorm(100, 170, 10), y = rnorm(100, 170, 10) )$statistic)
+```
+
+---
+
+# Null Hypothesis Significance Testing (NHST)
+
+
+```r
+data.frame(t = t) %&gt;%
+  ggplot(aes(x = t) ) +
+  geom_histogram() +
+  theme_bw(base_size = 20) +
+  labs(x = "Valeur de t", y = "Nombre d'échantillons")
+```
+
+&lt;img src="Bayes_M2RSCOG_files/figure-html/unnamed-chunk-17-1.svg" width="40%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Null Hypothesis Significance Testing (NHST)
+
+
+```r
+data.frame(t = c(-5, 5) ) %&gt;%
+  ggplot(aes(x = t) ) +
+  stat_function(fun = dt, args = list(df = t.test(men, women)$parameter), size = 1.5) +
+  theme_bw(base_size = 20) +
+  labs(x = "Valeur de t", y = "Densité de probabilité")
+```
+
+&lt;img src="Bayes_M2RSCOG_files/figure-html/unnamed-chunk-18-1.svg" width="40%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Null Hypothesis Significance Testing (NHST)
+
+
+```r
+alpha &lt;- .05
+abs(qt(alpha / 2, df = t.test(x = men, y = women)$parameter) ) # valeur de t critique
+```
+
+```
+## [1] 1.97206
+```
+
+&lt;img src="Bayes_M2RSCOG_files/figure-html/unnamed-chunk-20-1.svg" width="40%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Null Hypothesis Significance Testing (NHST)
+
+
+```r
+tobs &lt;- t.test(x = men, y = women)$statistic # valeur de t observée
+tobs %&gt;% as.numeric
+```
+
+```
+## [1] 2.170784
+```
+
+&lt;img src="Bayes_M2RSCOG_files/figure-html/unnamed-chunk-22-1.svg" width="40%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# P-values
+
+La p-valeur (p-value) est une aire sous la courbe, une intégrale, sous la distribution de statistiques de test sous l'hypothèse nulle (i.e., étant admis que l'hypothèse nulle est vraie). La p-valeur indique la probabilité d'observer la valeur de la statistique de test observée, ou une valeur plus extrême, sous l'hypothèse nulle.
+
+`$$p[\mathbf{t}(\mathbf{x}^{\text{rep}}|H_{0}) \geq t(x)]$$`
+
+--
+
+
+```r
+t.test(x = men, y = women)$p.value
+```
+
+```
+## [1] 0.03114148
+```
+
+--
+
+
+```r
+tvalue &lt;- abs(t.test(x = men, y = women)$statistic)
+df &lt;- t.test(x = men, y = women)$parameter
+2 * integrate(f = dt, lower = tvalue, upper = Inf, df = df)$value
+```
+
+```
+## [1] 0.03114148
+```
+
+---
+
+# Fisher versus Neyman &amp; Pearson
+
+&lt;img src="figures/fisher.jpeg" width="33%" style="display: block; margin: auto;" /&gt;
+
+.pull-left[
+Fisher utilisait la p-valeur pour quantifier l'évidence *contre* l'hypothèse nulle. Plus petite est la p-valeur, plus forte est l'évidence contre l'hypothèse nulle. Cette interprétation "continue" de la p-valeur a été très largement critiquée (cf. slide suivante et [Wagenmakers, 2007](http://www.ejwagenmakers.com/2007/pValueProblems.pdf)).
+]
+
+--
+
+.pull-right[
+Neyman &amp; Pearson proposèrent d'utiliser la p-valeur de manière à *contrôler* les erreurs de type 1 (faux positifs) et de type 2 (faux négatifs) sur le long terme (in the long run). Avec cette méthode, on n'interprète pas la p-valeur de manière continue, mais on classifie simplement les résultats comme "significatifs" ou "non-significatifs" en fonction d'un seuil pré-défini. Cette procédure a aussi de nombreux problèmes. Un problème majeur est celui du *domain problem* (e.g., [Trafimow &amp; Earp, 2017](https://www.sciencedirect.com/science/article/pii/S0732118X16301076?via%3Dihub)).
+]
+
+---
+
+# Logique, fréquentisme, et raisonnement probabiliste
+
+Le *modus tollens* est un des raisonnements logiques les plus importants et les plus performants. Dans le cadre de l'inférence statistique, il s'applique parfaitement au cas suivant : "Si `\(H_{0}\)` est vraie, alors `\(x\)` ne devrait pas se produire. On observe `\(x\)`. Alors `\(H_{0}\)` est fausse".
+
+MAIS nous avons le plus souvent affaire à des hypothèses "continues", probabilistes.
+
+--
+
+L'inférence fréquentiste (Fishérienne) est elle aussi probabiliste, de la forme "Si `\(H_{0}\)` est vraie, alors `\(x\)` est peu probable. On observe `\(x\)`. Alors `\(H_{0}\)` est peu probable."
+
+--
+
+Or cet argument est invalide, le *modus tollens* ne s'applique pas au monde probabiliste (e.g., [Pollard &amp; Richardson, 1987](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.505.9968&amp;rep=rep1&amp;type=pdf); [Rouder, Morey, Verhagen, Province, &amp; Wagenmakers, 2016](http://www.ejwagenmakers.com/2016/RouderEtAl2016FreeLunch.pdf)). 
+
+Par exemple : *Si un individu est un homme, alors il est peu probable qu'il soit pape. François est pape. François n'est donc certainement pas un homme...*
+
+---
+class: middle, center
+
+# Contexte théorique
+## Test d'hypothèse bayésien
+
+---
+
+# Facteur de Bayes
+
+Au lieu de tester une seule hypothèse (i.e., l'hypothèse nulle), on compare deux modèles :
+
+- `\(H_{0}: \mu_{1} = \mu_{2} \rightarrow \delta = 0\)`
+- `\(H_{1}: \mu_{1} \neq \mu_{2} \rightarrow \delta \neq 0\)`
+
+--
+
+`$$\underbrace{\dfrac{p(H_{0}|D)}{p(H_{1}|D)}}_{\text{Posterior model odds}} = \underbrace{\dfrac{p(D|H_{0})}{p(D|H_{1})}}_{\text{Bayes factor BF}_{01}} \times \underbrace{\dfrac{p(H_{0})}{p(H_{1})}}_{\text{Prior model odds}}$$`
+
+--
+
+`$$\text{evidence}\ = p(D|H) = \int p(\theta|H) p(D|\theta, H) \text{d}\theta$$`
+
+L'évidence en faveur d'un modèle correspond à la *vraisemblance marginale* d'un modèle (le dénominateur du théorème de Bayes), c'est à dire à la vraisemblance moyennée sur le prior... Ce qui fait du facteur de Bayes un ratio de vraisemblances, pondéré par (ou moyenné sur) le prior.
+
+---
+
+# Facteur de Bayes, exemple d'application
+
+On lance une pièce 100 fois et on essaye d'estimer la probabilité `\(\theta\)` (le biais de la pièce) d'obtenir Face. On compare deux modèles qui diffèrent par leur prior sur `\(\theta\)`.
+
+$$
+`\begin{align}
+\mathcal{M_{1}} : y_{i} &amp;\sim \mathrm{Binomial}(n, \theta) \\
+\theta &amp;\sim \mathrm{Beta}(6, 10) \\
+\end{align}`
+$$
+
+$$
+`\begin{align}
+\mathcal{M_{2}} : y_{i} &amp;\sim \mathrm{Binomial}(n, \theta) \\
+\theta &amp;\sim \mathrm{Beta}(20, 12) \\
+\end{align}`
+$$
+
+&lt;img src="Bayes_M2RSCOG_files/figure-html/unnamed-chunk-26-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Facteur de Bayes, exemple d'application
+
+&lt;img src="figures/bf.gif" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Le facteur de Bayes est la nouvelle p-valeur
+
+Attention à ne pas interpréter le BF comme un *posterior odds*...
+
+Le BF est un facteur qui nous indique de combien nos *prior odds* doivent changer, au vue des données. Il ne nous dit pas quelle est l'hypothèse la plus probable, sachant les données (sauf si les *prior odds* sont 1:1).
+
+--
+
+Considérons un autre exemple :
+
+- `\(H_{0}\)`: la précognition n'existe pas !
+- `\(H_{1}\)`: la précognition existe
+
+On fait une expérience et on calcule un `\(BF_{10} = 27\)`. Quelle est la probabilité a posteriori de H1 ?
+
+--
+
+`$$\underbrace{\dfrac{p(H_{1}|D)}{p(H_{0}|D)}}_{\text{Posterior model odds}} = \underbrace{\dfrac{27}{1}}_{\text{Bayes factor BF}_{10}} \times \underbrace{\dfrac{1}{1000}}_{\text{Prior model odds}} = \dfrac{27}{1000} = 0.027$$`
+---
+
+# Grille de lecture
+
+Bien que le BF s'interprète de manière continue, des grilles d'interprétation ont été proposées.
+
+&lt;img src="figures/grid.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Attention au double sens
+
+Dans le cadre bayésien, le terme de *prior* peut faire référence soit :
+
+* À la probabilité *a priori* ou *a posteriori* d'un modèle (par rapport à un autre modèle), c'est à dire `\(\Pr(M_{i})\)`. Voir cet [article de blog](http://www.nicebread.de/two-meanings-of-priors-1/).
+
+--
+
+* Aux prédictions d'un modèle, par exemple `\(\theta \sim \mathrm{Normal}(0, 10)\)`. Voir cet [article de blog](http://www.nicebread.de/two-meanings-of-priors-2/).
+
+&lt;img src="Bayes_M2RSCOG_files/figure-html/unnamed-chunk-28-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+class: middle, center
+
+# Contexte théorique
+## Analyse de la variance (ANOVA) bayésienne
+
+---
+
+# Analyse de la variance (ANOVA) bayésienne
+
+L'ANOVA fréquentiste implique une comparaison de variances. On compare la variance *entre* les différents niveaux d'un prédicteur (variance inter) à la variance *au sein* de ces niveaux (variance intra). Lorsqu'un prédicteur catégoriel n'a pas d'effet, la variance (dans la population) entre les niveaux est égale à la variance (dans la population) au sein des niveaux. Le ratio de ces variances est distribué selon une loi de Fisher-Snedecor. Sous l'hypothèse nulle, on peut calculer (comme nous l'avons fait pour le t-test), la probabilité d'obtenir un ratio de variances au moins aussi large que celui que nous avons observé (i.e., on peut calculer une p-value).
+
+--
+
+L'ANOVA bayésienne compare les capacités de prédiction de différents modèles. Les capacités de prédiction de différents modèles sont évaluées en confrontant leurs prédictions a priori avec les données (cf. exemple précédent sur le biais de la pièce). On va comparer deux modèles et quantifier le support relatif fourni par un jeu de données à ces deux modèles en calculant un facteur de Bayes. On peut comparer n'importe quelle paire de modèles (pas seulement l'hypothèse nulle et l'hypothèse alternative).
+
+---
+
+# Approche par comparaison de modèles
+
+Afin de tester l'effet d'un prédicteur (sur une variable dépendante), on adopte donc une approche par comparaison de modèles. Par exemple, dans une situation avec deux variables indépendantes (VIs), on peut estimer l'effet de la première VI en comparant le modèle complet (e.g., `VD ~ VI1 + VI2 + VI1 * VI2`) à un modèle similaire mais sans l'effet de la première VI (i.e.,  `VD ~ VI2 + VI1 * VI2`). La comparaison de ces deux modèles nous renseigne sur l'effet (i.e., le "gain prédictif" apporté par `VI1`).
+
+--
+
+À noter que le facteur de Bayes implémente une sorte de rasoir d'Ockham automatique. En effet, comme le facteur de Bayes pondère la vraisemblance par les prédictions a priori du modèle, les modèles simples (qui font des prédictions plus précises) sont favorisés.
+
+---
+
+# Rasoir d'Ockham automatique
+
+`$$\text{BF}_{01} = \dfrac{p(D|H_{0})}{p(D|H_{1})} = \dfrac{\int p(\theta | H_{0}) \cdot p(D|\theta, H_{0}) \text{d}\theta}{\int p(\theta | H_{1}) \cdot p(D|\theta, H_{1}) \text{d}\theta}$$`
+
+On voit que les modèles complexes, qui prédisent une plus grande variété de données possibles (en abscisse) sont "récompensés" par moins d'évidence (en ordonnée).
+
+&lt;img src="figures/ockham.jpg" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+name: jamovi
+class: middle, center
+
+# Travaux pratiques avec jamovi
+
+---
+
+# Example d'application
+
+On a mesuré le nombre de doses d'épices administrées (mesure indirecte de l'agressivité) en fonction de la quantité d'alcool espérée `QAE` (aucune, faible, importante) et de la quantité d'alcool bue `QAB` (aucune, faible, importante).
+
+
+```r
+df &lt;- read.csv("data/alcool_data.csv", sep = ";")
+str(df)
+```
+
+```
+## 'data.frame':	165 obs. of  5 variables:
+##  $ sujet: int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ Genre: chr  "H" "F" "H" "F" ...
+##  $ QAB  : int  0 0 0 1 1 1 2 2 2 0 ...
+##  $ QAE  : int  0 1 2 0 1 2 0 1 2 0 ...
+##  $ QE   : int  3 6 9 5 6 8 4 4 9 4 ...
+```
+
+---
+
+# Exploration graphique des données
+
+&lt;img src="Bayes_M2RSCOG_files/figure-html/unnamed-chunk-30-1.svg" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# ANOVA bayésienne
+
+&lt;img src="figures/anova_results.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+On compare tous les modèles possibles incluant ces deux prédicteurs et leur interaction. La colonne `\(\text{P(M)}\)` indique la probabilité a priori de chaque modèle, par défaut fixée à 1 divisé par le nombre de modèles. La colonne `\(\text{P(M | data)}\)` indique la probabilité a posteriori de chaque modèle (sachant les données et les priors de chaque modèle).
+
+---
+
+# ANOVA bayésienne
+
+&lt;img src="figures/anova_results.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+La colonne `\(\text{BF}_{\text{M}}\)` indique le changement des prior odds vers les posterior odds pour chaque modèle. Par exemple, pour le meilleur modèle avec seulement l'effet de `QAE`, `\(\text{BF}_{\text{M}} = 0.9187 / (1 - 0.9187) \times (1 - 0.2) / 0.2 \approx 45.2\)`. La colonne `\(\text{BF}_{10}\)` indique le BF en faveur du modèle (vs. le modèle nul). Enfin, la dernière colonne rapporte l'erreur dans l'approximation de la valeur du BF. En général, et selon la valeur du BF, un taux d'erreur jusqu'à 20% est acceptable. Notons également que nous pouvons toujours passer de `\(\text{BF}_{01}\)` à `\(\text{BF}_{10}\)` en prenant la réciproque du premier, `\(\text{BF}_{10} = 1\ /\ \text{BF}_{01}\)`.
+
+---
+
+# ANOVA bayésienne
+
+&lt;img src="figures/anova_results.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+Les facteurs de Bayes sont *transitifs*, ce qui veut dire que si le modèle avec seulement `QAE` surpasse le modèle nul d'un facteur `\(a\)` (i.e., si `\(\text{BF}_{10} = a\)`) et que le modèle avec seulement `QAB` surpasse le modèle avec seulement `QAE` d'un facteur `\(b\)`, alors le modèle avec seulement `QAB` surpasse le modèle nul d'un facteur `\(a \times b\)`. Cette propriété de transitivité nous permet de calculer le facteur de Bayes pour des comparaisons non présentées dans la table. Par exemple, pour évaluer le BF associé à l'effet d'interaction, nous pouvons diviser le `\(\text{BF}_{10}\)` du modèle complet par le `\(\text{BF}_{10}\)` du même modèle sans l'effet d'interaction, ce qui nous donne `\(3.05e+42\ /\ 5.62e+41 \approx 5.43\)` (en faveur du modèle sans l'effet d'interaction).
+
+---
+
+# Analyses post-hoc
+
+&lt;img src="figures/post_hoc.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+Une analyse approfondie, utilisant l'équivalent bayésien du t-test, nous révèle que toutes les conditions (tous les niveaux de `QAE`) considérées par paire diffèrent l'une de l'autre.
+
+---
+
+# Rapporter les résultats
+
+#### Methods
+
+We conducted a Bayesian two-way ANOVA with default priors (Rouder et al., 2017) using a medium scale for the alternative hypothesis with `\(r = 0.5\)`. All analyses were conducted in jamovi (The jamovi project, 2021).
+
+#### Results
+
+This analyis revealed that the best model was the model including only an effect of the perceived quantity of alcohol, `\(\text{BF}_{10} = 4.08e+43\)`. However, we found no effect of the actual consumption of alcohol on the number of doses of spices administred by the participant, with `\(\text{BF}_{10} = 0.06\)`, indicating that the data were `\(1\ /\ 0.06 \approx 16.67\)` times more likely under the null hypothesis than under the alternative hypothesis.
+
+#### References
+
+The jamovi project (2021). jamovi. (Version 1.6) [Computer Software]. Retrieved from https://www.jamovi.org.
+
+Rouder, J. N., Morey, R. D., Speckman, P. L., &amp; Province, J. M. (2012). Default Bayes factors for ANOVA designs. Journal of Mathematical Psychology, 56, 356-374.
+
+---
+
+# Pour aller plus loin
+
+Le matériel de l'édition 2021 de la formation doctorale que j'organise : "Introduction à la modélisation statistique bayésienne en R" ([slides + code](https://github.com/lnalborczyk/IMSB2021)).
+
+- McElreath, R. (2016, 2020). *Statistical Rethinking: A Bayesian Course with Examples in R and Stan*. CRC Press.
+
+- Kurz, S. (2019). *Statistical Rethinking with brms, ggplot2, and the tidyverse*. Available [online](https://bookdown.org/ajkurz/Statistical_Rethinking_recoded/).
+
+- Noël, Y. (2015). Psychologie statistique avec R. Coll. PratiqueR, Paris: EDP Sciences.
+
+- Lambert, B. (2018). *A Student’s Guide to Bayesian Statistics*. SAGE Publications Ltd.
+
+- Kruschke, J. K. (2015). *Doing Bayesian Data Analysis, Second Edition: A Tutorial with R, JAGS, and Stan*. Academic Press / Elsevier.
+
+- Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., Rubin, D. B. (2013). *Bayesian Data Analysis, third edition*. London: CRC Press.
+
+---
+
+# Take-home messages
+
+* **Inférence bayésienne** : Un cadre général de l'estimation de paramètres reposant sur l'utilisation du théorème de Bayes. L'inférence bayésienne peut être vue comme une extension de la logique, où les conclusions (distribution a posteriori) dérivent des prémisses (distribution a priori) et de l'information contenue dans les données (fonction de vraisemblance).
+
+* **Facteur de Bayes (*Bayes factor*)** : Mesure du support relatif fourni par un jeu de données pour deux hypothèses alternatives. Si on considère deux hypothèses `\(\mathcal{H}_{1}\)` et `\(\mathcal{H}_{2}\)` et certaines données `\(x\)`, alors le facteur de Bayes en faveur de `\(\mathcal{H}_{1}\)` est `\(\text{BF}_{12} = p(x \ | \ \mathcal{H}_{1}) \ /\ p(x \ | \ \mathcal{H}_{2})\)`. Ce dernier peut-être interprété comme un "facteur de mise à jour" du rapport des chances a priori (i.e., avant de prendre connaissance des données) vers le rapport des chances a posteriori (i.e., après avoir pris connaissance des données).
+
+&lt;br&gt;
+
+&amp;nbsp; &lt;svg viewBox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"&gt;&lt;/path&gt;&lt;/svg&gt; [lnalborczyk](https://twitter.com/lnalborczyk) &amp;nbsp; &lt;svg viewBox="0 0 496 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt; [lnalborczyk](https://github.com/lnalborczyk) &amp;nbsp; &lt;svg viewBox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;g label="icon" id="layer6" groupmode="layer"&gt;    &lt;path id="path2" d="m 255.9997,7.9999987 c -34.36057,0 -62.21509,27.8545563 -62.21509,62.2151643 0,20.303056 9.87066,38.160947 24.91769,49.517247 0.18814,-20.457899 16.79601,-36.993393 37.29685,-36.993393 20.50082,0 37.11091,16.535494 37.29909,36.993393 15.04533,-11.3563 24.9177,-29.212506 24.9177,-49.517247 C 318.21272,35.854555 290.35915,7.9999987 255.99915,7.9999987 Z M 293.29654,392.2676 c -0.18814,20.4601 -16.79601,36.99338 -37.29684,36.99338 -20.50082,0 -37.10922,-16.53551 -37.29684,-36.99338 -15.04759,11.35627 -24.91769,29.21246 -24.91769,49.51722 0,34.36059 27.85453,62.21518 62.2151,62.21518 34.36056,0 62.21508,-27.85459 62.21508,-62.21518 0,-20.30306 -9.87066,-38.16095 -24.91767,-49.51722 z M 441.78489,193.78484 c -20.30301,0 -38.16309,9.87068 -49.51717,24.91769 20.45786,0.18819 36.99333,16.79605 36.99333,37.29689 0,20.50085 -16.53547,37.11096 -36.9911,37.29916 11.35634,15.04533 29.21249,24.91769 49.51721,24.91769 C 476.14549,318.21327 504,290.35948 504,255.99942 504,221.6394 476.14549,193.78425 441.78489,193.78425 Z M 82.738898,255.99997 c 0,-20.50139 16.535509,-37.11096 36.993392,-37.29689 -11.35632,-15.04756 -29.214164,-24.91769 -49.517197,-24.91769 -34.36057,0 -62.2150945,27.85455 -62.2150945,62.21517 0,34.3606 27.8545245,62.21516 62.2150945,62.21516 20.303033,0 38.160877,-9.87068 49.517197,-24.91773 -20.457883,-0.18818 -36.993391,-16.796 -36.993391,-37.29688 z M 431.3627,80.636814 c -24.29549,-24.295544 -63.68834,-24.295544 -87.9844,0 -14.35704,14.357057 -20.00298,33.963346 -17.39331,52.633806 -0.0824,0.0809 -0.18198,0.13437 -0.26434,0.21491 -14.578,14.57799 -14.578,38.21689 0,52.79488 14.57797,14.57799 38.21681,14.57799 52.79484,0 0.0824,-0.0824 0.13455,-0.18198 0.21732,-0.26434 18.66819,2.60796 38.27445,-3.03799 52.63151,-17.39336 24.29378,-24.29778 24.29378,-63.68837 -0.003,-87.986153 z M 186.2806,378.51178 c 14.57798,-14.57799 14.57798,-38.21461 0,-52.79319 -14.57798,-14.57853 -38.21683,-14.57798 -52.79481,0 -0.0825,0.0824 -0.13448,0.18199 -0.21476,0.26215 -18.67046,-2.60795 -38.276723,3.03572 -52.63376,17.39505 -24.297753,24.29552 -24.297753,63.6884 0,87.98449 24.29551,24.29552 63.68833,24.29552 87.98439,0 14.35702,-14.35703 20.00297,-33.96333 17.39333,-52.63386 0.0848,-0.0786 0.18364,-0.13228 0.26672,-0.21505 z m 0,-245.02583 c -0.0826,-0.0824 -0.18198,-0.13436 -0.26445,-0.21494 2.60795,-18.66823 -3.038,-38.27452 -17.39332,-52.633811 -24.29777,-24.295544 -63.68832,-24.295544 -87.984405,0 -24.297747,24.297781 -24.297747,63.688381 0,87.986151 14.357042,14.35706 33.963315,20.00301 52.631515,17.39336 0.0808,0.0824 0.13447,0.18199 0.21475,0.26434 14.57799,14.57799 38.21684,14.57799 52.79482,0 14.57797,-14.57802 14.57797,-38.21689 0,-52.79488 z m 245.0821,209.89048 c -14.35703,-14.35703 -33.96329,-20.00301 -52.63378,-17.39505 -0.0809,-0.0824 -0.13228,-0.18199 -0.21506,-0.26215 -14.57797,-14.57799 -38.21685,-14.57799 -52.79482,0 -14.57797,14.57799 -14.57797,38.21461 0,52.79316 0.0827,0.0828 0.18198,0.13455 0.26434,0.21505 -2.60796,18.67053 3.03802,38.27683 17.39334,52.63386 24.29552,24.29552 63.68834,24.29552 87.98439,0 24.29775,-24.29552 24.29775,-63.68841 0.003,-87.98451 z" style="stroke-width:0.07717"&gt;&lt;/path&gt;  &lt;/g&gt;&lt;/svg&gt; [https://osf.io/ba8xt](https://osf.io/ba8xt) &amp;nbsp; &lt;svg viewBox="0 0 496 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M336.5 160C322 70.7 287.8 8 248 8s-74 62.7-88.5 152h177zM152 256c0 22.2 1.2 43.5 3.3 64h185.3c2.1-20.5 3.3-41.8 3.3-64s-1.2-43.5-3.3-64H155.3c-2.1 20.5-3.3 41.8-3.3 64zm324.7-96c-28.6-67.9-86.5-120.4-158-141.6 24.4 33.8 41.2 84.7 50 141.6h108zM177.2 18.4C105.8 39.6 47.8 92.1 19.3 160h108c8.7-56.9 25.5-107.8 49.9-141.6zM487.4 192H372.7c2.1 21 3.3 42.5 3.3 64s-1.2 43-3.3 64h114.6c5.5-20.5 8.6-41.8 8.6-64s-3.1-43.5-8.5-64zM120 256c0-21.5 1.2-43 3.3-64H8.6C3.2 212.5 0 233.8 0 256s3.2 43.5 8.6 64h114.6c-2-21-3.2-42.5-3.2-64zm39.5 96c14.5 89.3 48.7 152 88.5 152s74-62.7 88.5-152h-177zm159.3 141.6c71.4-21.2 129.4-73.7 158-141.6h-108c-8.8 56.9-25.6 107.8-50 141.6zM19.3 352c28.6 67.9 86.5 120.4 158 141.6-24.4-33.8-41.2-84.7-50-141.6h-108z"&gt;&lt;/path&gt;&lt;/svg&gt; [www.barelysignificant.com](https://www.barelysignificant.com)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"slideNumberFormat": "%current%/%total%"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

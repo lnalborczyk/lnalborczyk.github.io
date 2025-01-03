@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Baeyens, C. | Ladislas Nalborczyk</title>
+    <link>/authors/baeyens-c./</link>
+      <atom:link href="/authors/baeyens-c./index.xml" rel="self" type="application/rss+xml" />
+    <description>Baeyens, C.</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2017-2025, Ladislas Nalborczyk</copyright>
+    <image>
+      <url>/img/icon.png</url>
+      <title>Baeyens, C.</title>
+      <link>/authors/baeyens-c./</link>
+    </image>
+    
+    <item>
+      <title>Orofacial electromyographic correlates of induced verbal rumination</title>
+      <link>/publication/2017-nalborczyk-etal/</link>
+      <pubDate>Thu, 20 Jul 2017 00:00:00 +0000</pubDate>
+      <guid>/publication/2017-nalborczyk-etal/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

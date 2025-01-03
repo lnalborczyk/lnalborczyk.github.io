@@ -1,0 +1,496 @@
+---
+title: "A priori power analyses using simulation"
+subtitle: ""
+author: "Ladislas Nalborczyk"
+institute: "Aix Marseille Univ, CNRS, LPC, LNC, Marseille, France"
+date: '04.06.2021 <br><br> `r icon::fa("twitter")` <a href="https://twitter.com/lnalborczyk" style="color:white;">@lnalborczyk</a> `r icon::fa("link")` Slides available at <a href="https://twitter.com/lnalborczyk" style="color:white;"> tinyurl.com/power_simulation </a>'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["css/xaringan-themer.css"]
+    mathjax: "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML"
+    self-contained: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+      slideNumberFormat: "%current%/%total%"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r xaringan-themer, include = FALSE} 
+library(xaringanthemer)
+
+mono_accent(
+    base_color = "#1c5253",
+    header_font_google = google_font("Josefin Sans"),
+    text_font_google = google_font("Montserrat", "300", "300i"),
+    code_font_google = google_font("Droid Mono"),
+    header_h1_font_size = "40px",
+    header_h2_font_size = "35px",
+    header_h3_font_size = "30px",
+    text_font_size = "20px",
+    code_font_size = "15px"
+    )
+```
+
+# Statistical power
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(icons)
+library(knitr)
+library(keras)
+
+# setting up knitr options
+knitr::opts_chunk$set(
+  cache = TRUE, echo = TRUE, warning = FALSE, message = FALSE,
+  fig.align = "center", dev = "svg", out.width = "75%"
+  )
+
+# for interactive stuffs
+options(htmltools.dir.version = FALSE)
+
+# setting seed for reproducibility
+set.seed(666)
+```
+
+```{r xaringanExtra-clipboard, echo = FALSE}
+xaringanExtra::use_clipboard()
+```
+
+```{r xaringan-tachyons, echo = FALSE}
+xaringanExtra::use_tachyons()
+```
+
+In the Null Hypothesis Significance Testing (NHST) framework, statistical power is defined as the probability of rejecting the hypothesis of null effect when this hypothesis is indeed false.
+
+```{r, eval = TRUE, echo = FALSE, fig.align = "center", out.width = "50%"}
+knitr::include_graphics("figures/errors.png")
+```
+
+---
+
+# Statistical power, more broadly
+
+.bg-washed-green.b--dark-green.ba.bw2.br3.shadow-5.ph4.mt5[
+Statistical power is the probability of achieving the goal of a planned empirical study,
+if a suspected underlying state of the world is true.
+
+.tr[
+— Kruschke, J. (2015). Doing Bayesian Data Analysis.
+]]
+
+--
+
+These goals may include (non-exhaustively):
+
+* Obtaining a p-value inferior to $\alpha$ (where $\alpha$ is your favourite significance level)
+
+--
+
+* Obtaining a Bayes factor (or a Likelihood Ratio) superior to some threshold $T$
+
+--
+
+* Rejecting the null value for some parameter (e.g., by showing that a region of practical equivalence (ROPE) around the null value excludes the 95% CI/CrI)
+
+--
+
+* Affirming a predicted value for some parameter (e.g., by showing that a ROPE around the predicted value includes the 95% CI/CrI)
+
+--
+
+* Achieving some level of precision in the estimate of a parameter (e.g., as assessed by the width of the 95% CI/CrI)
+
+---
+
+# Why using simulation?
+
+Why the hell would we need to use simulation? We already have [G*Power](http://www.gpower.hhu.de)!
+
+--
+
+YES, but what about designs that are not covered? And what about other **goals**? In other words, simplicity of use comes at the price of **flexibility**. You can only compute power for a limited set of designs and for a limited set of goals (usually only for significance).
+
+```{r bean, echo = FALSE, fig.align = "center", out.width = "33%"}
+knitr::include_graphics("figures/bean.gif")
+```
+
+---
+
+# General steps to conduct power analyses via simulation
+
+Four (five) general steps for (Bayesian) power analysis (from [Kruschke, 2015](http://www.indiana.edu/~kruschke/DoingBayesianDataAnalysis/)):
+
+1. (Generate representative parameter values from hypothesis)
+2. Generate a random sample of data from the hypothetical parameter values
+3. Retrieve the (posterior distribution of the) estimate of interest based on the fake dataset
+4. Tally whether goal was attained
+5. Repeat many (many) times
+
+---
+
+# A gentle introduction to power analyses via simulation
+
+We first write a short function that, given a sample size `n` (per group) and a standardised effect size `d`, outputs the p-value issued from a two-sample t-test.
+
+```{r, eval = TRUE, echo = TRUE}
+library(tidyverse)
+
+sim_power <- function(n, d) {
+    
+    x <- rnorm(n, mean = 0, sd = 1)
+    y <- rnorm(n, mean = d, sd = 1)
+    p <- t.test(x, y)$p.value
+    
+    return(p)
+    
+}
+```
+
+--
+
+```{r, eval = TRUE, echo = TRUE}
+sim_power(n = 36, d = 0.5)
+```
+
+---
+
+# A gentle introduction to power analyses via simulation
+
+```{r, eval = TRUE, echo = TRUE, fig.align = "center", fig.asp = 0.5, out.width = "50%"}
+# replicating the sim_power function 1e4 times
+results <- replicate(1e4, sim_power(n = 36, d = 0.5) )
+
+# plotting it
+results %>% qplot + theme_minimal(base_size = 20) + xlab("p-values")
+
+# what proportion of p-values are below .05 ?
+sum(results < .05) / length(results)
+```
+
+---
+
+# Aparté: the distribution of p-values
+
+<iframe src="https://barelysignificant.shinyapps.io/pdist/" height="75%" width="100%"></iframe>
+
+---
+
+# A gentle introduction to power analysis via simulation
+
+Approximate power for different sample sizes (from n = 20 to n = 200) and effect sizes (from d = 0.1 to d = 1) using `dplyr`.
+
+```{r, eval = FALSE, echo = TRUE}
+# set up parameters
+crossing(n = seq(20, 200, 10), d = seq(0.1, 1, 0.1) ) %>%
+    # for each sample size and effect size
+    group_by(n, d) %>%
+    # add observations
+    expand(reps = 1:n) %>%
+    ungroup %>%
+    # add 1000 simulations
+    crossing(sim = 1:1e3) %>%
+    # generate data
+    mutate(x = rnorm(n(), mean = 0, sd = 1), y = rnorm(n(), mean = d, sd = 1) ) %>%
+    # for each sample size, effect size, and simulated dataset
+    group_by(n, d, sim) %>%
+    # compute a t-test and extract the p-value
+    mutate(p = t.test(x, y, data = .)$p.value) %>%
+    ungroup %>%
+    # for each sample size and effect size
+    group_by(n, d) %>%
+    # compute power
+    summarise(power = 1 - sum(p > 0.05) / n() ) %>%
+    ungroup
+```
+
+---
+
+# A gentle introduction to power analysis via simulation
+
+```{r, eval = TRUE, echo = FALSE, cache = TRUE}
+# set up parameters
+res <-
+    crossing(n = seq(20, 200, 10), d = seq(0.1, 1, 0.1) ) %>%
+    # for each sample size and effect size
+    group_by(n, d) %>%
+    # add observations
+    expand(reps = 1:n) %>%
+    ungroup %>%
+    # add 1000 simulations
+    crossing(sim = 1:1e3) %>%
+    # generate data
+    mutate(x = rnorm(n(), mean = 0, sd = 1), y = rnorm(n(), mean = d, sd = 1) ) %>%
+    # for each sample size, effect size, and simulated dataset
+    group_by(n, d, sim) %>%
+    # compute a t-test and extract the p-value
+    mutate(p = t.test(x, y, data = .)$p.value) %>%
+    # for each sample size and effect size
+    group_by(n, d) %>%
+    # compute power
+    summarise(power = 1 - sum(p > 0.05) / n() ) %>%
+    ungroup()
+```
+
+```{r, eval = FALSE, echo = FALSE, results = "hide", fig.align = "center"}
+########################################
+# plotting it
+################################
+
+library(gganimate)
+
+p <- res %>%
+    mutate(id = rep(1:19, each = 10) ) %>%
+    ggplot(aes(x = n, y = power, group = d, colour = d, fill = d) ) +
+    geom_hline(yintercept = 0.8, linetype = 2) +
+    geom_line(size = 1) +
+    geom_point(aes(colour = NULL), shape = 21, size = 3) +
+    xlab("Sample size") +
+    ylab("Statistical power") +
+    theme_minimal(base_size = 20) +
+    theme(legend.position = "none") +
+    transition_reveal(id)
+
+anim_save(filename = "figures/animation.gif", animation = p, width = 1200, height = 800)
+
+###############################################################
+# making it plotly
+############################################
+
+# https://stackoverflow.com/questions/39035308/how-to-include-plotly-in-r-studio-presentations-rpres/41039646#41039646
+# library(plotly)
+# p <- ggplotly(gg)#, session = "knitr", kwargs = list(filename = "cars_knitr", fileopt = "overwrite") )
+# htmlwidgets::saveWidget(as.widget(p), file = "demo.html")
+# <iframe src="demo.html" style="height:10px;width:80%"></iframe>
+```
+
+```{r, echo = FALSE, fig.align = "center", out.width = "66%"}
+knitr::include_graphics("figures/animation.gif")
+```
+
+---
+
+# Another example using the ROPE+HDI procedure
+
+This procedure makes it possible to either *accept* or *reject* a null value. The *Region of Practical Equivalence* defines the range of values that we consider as *practically equivalent* to the null value under examination. The following figure summarises potential outcomes of this procedure (from [Kruschke, 2018](https://journals.sagepub.com/doi/abs/10.1177/2515245918771304)).
+
+```{r, eval = TRUE, echo = FALSE, fig.align = "center", out.width = "50%"}
+knitr::include_graphics("figures/hdi_rope.png")
+```
+
+---
+
+# Another example using the ROPE+HDI procedure
+
+Let's consider the usual 2x2 between-subject design where we are interested in the interaction effect $\beta_{12}$.
+
+$$
+\begin{align}
+y_{i} &\sim \mathrm{Normal}(\mu_{i}, \sigma) \\
+\mu_{i} &= \alpha + \beta_{1} \cdot x_{1i} + \beta_{2} \cdot x_{2i} + \beta_{12} \cdot x_{1i} x_{2i} \\
+\end{align}
+$$
+
+--
+
+We are going to i) *generate* data that satisfy some constraints, ii) *compute* the posterior distribution on the parameter of interest, iii) *tally* whether the 95% HDI is either completely inside or outside the ROPE and iv) *repeat* this procedure many times.
+
+---
+
+# Another example using the ROPE+HDI procedure
+
+$$
+\begin{align}
+y_{i} &\sim \mathrm{Normal}(\mu_{i}, \sigma) \\
+\mu_{i} &= \alpha + \beta_{1} \cdot x_{1i} + \beta_{2} \cdot x_{2i} + \beta_{12} \cdot x_{1i} x_{2i} \\
+\end{align}
+$$
+
+```{r, eval = TRUE, echo = TRUE, cache = TRUE}
+sim_data <- function(n, beta12) {
+    
+    # set coefficients
+    alpha <- 10
+    beta1 <- 0.3
+    beta2 <- -0.5
+    
+    # generate design structure
+    x1 <- c(rep(c(0), n / 2), rep(c(1), n / 2) )
+    x2 <- rep(c(rep(c(0), n / 4), rep(c(1), n / 4) ), 2)
+    sigma <- rnorm(n, 0, sd = 1) # random noise, with standard deviation of 1
+    
+    # generate data using the regression equation
+    y <- alpha + beta1 * x1 + beta2 * x2 + beta12 * x1 * x2 + sigma
+    
+    # join the variables in a common dataframe
+    data <- data.frame(cbind(x1, x2, y) )
+    
+    # output this dataframe
+    return(data)
+    
+}
+```
+
+---
+
+# Another example using the ROPE+HDI procedure
+
+```{r, eval = TRUE, echo = TRUE, cache = TRUE}
+# defining the combinations of parameters values to explore
+grid <- crossing(n = seq(20, 200, 10), sim = 1:1e3)
+
+# hypothesised value for beta12
+beta12 <- 1.1
+
+# initialising the results dataframe
+res <- data.frame(n = numeric(), beta12 = numeric(), lower = numeric(), upper = numeric() )
+
+for (i in 1:nrow(grid) ) {
+    
+    # generating data
+    df <- sim_data(n = grid$n[i], beta12 = beta12)
+    
+    # fitting the model
+    BF <- BayesFactor::lmBF(
+        y ~ 1 + x1 * x2, data = df,
+        posterior = TRUE, iterations = 1e3, progress = FALSE
+        )
+    
+    # retrieving the posterior samples
+    samples <- BF[, 4]
+    
+    # computing the 95% credible interval
+    CrI <- quantile(samples, probs = c(0.025, 0.975) )
+
+    # storing the results
+    res[i, ] <- cbind(grid$n[i], beta12, CrI[1], CrI[2])
+    
+}
+```
+
+---
+
+# Another example using the ROPE+HDI procedure
+
+```{r, eval = FALSE, echo = TRUE}
+# defining the ROPE
+rope <- c(-.1, .1)
+
+# approximating the power function
+res %>%
+    mutate(
+        success = case_when(
+            lower < min(rope) & upper < min(rope) ~ 1,
+            lower > min(rope) & upper < max(rope) ~ 1,
+            lower > min(rope) & upper > max(rope) ~ 1,
+            TRUE ~ 0
+            )
+        ) %>%
+    group_by(n, beta12) %>%
+    summarise(power = mean(success) ) %>%
+    ungroup %>%
+    # plotting it
+    ggplot(aes(x = n, y = power, group = beta12, fill = beta12) ) +
+    geom_hline(yintercept = 0.8, linetype = 2) +
+    geom_area(alpha = 0.5) +
+    geom_line(aes(colour = beta12), size = 1) +
+    geom_point(shape = 21, size = 3) +
+    xlab("Sample size") +
+    ylab("Statistical power") +
+    theme_minimal(base_size = 20) +
+    theme(legend.position = "none")
+```
+
+---
+
+# Another example using the ROPE+HDI procedure
+
+```{r, eval = TRUE, echo = FALSE, cache = TRUE, fig.align = "center", fig.width = 15, fig.height = 10}
+# defining the ROPE
+rope <- c(-.1, .1)
+
+# computing the power function
+res %>%
+    mutate(
+        success = case_when(
+            lower < min(rope) & upper < min(rope) ~ 1,
+            lower > min(rope) & upper < max(rope) ~ 1,
+            lower > min(rope) & upper > max(rope) ~ 1,
+            TRUE ~ 0
+            )
+        ) %>%
+    group_by(n, beta12) %>%
+    summarise(
+        power = mean(success),
+        std_error = sd(success) / sqrt(length(success) ),
+        lower = power - 1.96 * std_error,
+        upper = power + 1.96 * std_error
+            ) %>%
+    ungroup %>%
+    # plotting it
+    ggplot(aes(x = n, y = power, group = beta12, fill = beta12) ) +
+    geom_hline(yintercept = 0.8, linetype = 2) +
+    geom_area(alpha = 0.5) +
+    geom_line(aes(colour = beta12), size = 1) +
+    # geom_ribbon(aes(ymin = lower, ymax = upper, colour = beta12), width = 0, alpha = 0.5) +
+    geom_errorbar(aes(ymin = lower, ymax = upper, colour = beta12), width = 0, size = 1) +
+    geom_point(shape = 21, size = 3) +
+    xlab("Sample size") +
+    ylab("Statistical power") +
+    theme_minimal(base_size = 20) +
+    theme(legend.position = "none")
+```
+
+---
+
+# Planning for precision
+
+At what sample size do correlations stabilise? ([Schönbrodt & Perugini, 2013](https://www.sciencedirect.com/science/article/abs/pii/S0092656613000858))
+
+```{r, eval = TRUE, echo = FALSE, fig.align = "center", out.width = "75%"}
+knitr::include_graphics("figures/precision.png")
+```
+
+---
+
+# Planning for precision
+
+A related but more important question is that of measurement precision: given some priors and a certain number of participants, how close can we get to the unknown population value (Maxwell et al., 2008; Schönbrodt & Perugini, 2013; Peters & Crutzen, 2018)?
+
+--
+
+Basically, planning for precision involves first defining a *Region of Practical Equivalence* (ROPE), or equivalently, the *Smaller Effect Size Of Interest* (SESOI). Let's say for instance, effect sizes in the [-0.1, 0.1] interval on the scale of the standardised effect size. Then, we plan for a predefined level of precision (e.g., the width of the 95% CrI), let's say 80% of the width of the ROPE (as suggested by [Kruschke, 2015](http://www.indiana.edu/~kruschke/DoingBayesianDataAnalysis/)), that is, a precision of 0.16.
+
+--
+
+See this blogpost on [basic statistics](https://garstats.wordpress.com/2018/08/27/precision/), this [paper](https://journals.lww.com/epidem/Fulltext/2018/09000/Planning_Study_Size_Based_on_Precision_Rather_Than.1.aspx) by Rothman & Greenland (2018), as well as a [package](https://github.com/malcolmbarrett/precisely) and a [shiny app](https://malcolmbarrett.shinyapps.io/precisely/) based on this paper.
+
+---
+
+# Take-home messages, further resources
+
+<!--
+
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+
+<link rel = "stylesheet" href = "css/font-awesome.css"/>
+<link rel = "stylesheet" href = "css/academicons.css"/>
+
+-->
+
+* **Statistical power** can be defined as *the probability of achieving the goal of a planned empirical study, if a suspected underlying state of the world is true*.
+
+* Simulation can be used to approximate this probability in virtually any kind of design and for any kind of goal.
+
+* Four steps: i) **generate** data ii) **estimate** the parameter of interest, iii) **tally** whether goal is attained iv) **repeat** many times.
+
+[This blogpost](https://cognitivedatascientist.com/2015/12/14/power-simulation-in-r-the-repeated-measures-anova-5/) uses a similar approach to approximate power in repeated measures ANOVA designs. See also this [vignette](https://cran.r-project.org/web/packages/paramtest/vignettes/Simulating-Power.html) from the `paramtest` package, and this [blogpost on power simulations](http://disjointedthinking.jeffhughes.ca/2017/09/power-simulations-r/). Finally, this [blogpost](http://www.imachordata.com/linear-model-power-analysis-with-dplyr/) explains how to run power simulations using `dplyr` whereas [this one](https://gitlab.com/vuorre/bayesplan) presents a worklflow for Bayesian sample size planning with `brms`.
+
+<br>
+
+&nbsp; `r icons::fontawesome("twitter")` [lnalborczyk](https://twitter.com/lnalborczyk) &nbsp; `r icons::fontawesome("github")` [lnalborczyk](https://github.com/lnalborczyk) &nbsp; `r icons::academicons("osf")` [https://osf.io/ba8xt](https://osf.io/ba8xt) &nbsp; `r icons::fontawesome("globe")` [www.barelysignificant.com](https://www.barelysignificant.com)
