@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
     )
 ```
 
-*NB: I strongly recommend reading the [first part](../2018-07-12-corroboration1/2018-07-12-corroboration1.qmd) of this series before moving to the second part.*
+*NB: I strongly recommend reading the [first part](../2018-07-12-corroboration1/) of this series before moving to the second part.*
 
 # The Meehlian Corroboration-Verisimilitude Theory of Science
 

@@ -15,7 +15,8 @@ aliases:
 
 ```{r setup, message = FALSE, echo = FALSE}
 knitr::opts_chunk$set(
-    error = FALSE, warning = FALSE, message = FALSE,
+    error = FALSE, warning = FALSE,
+    message = FALSE,
     fig.align = "center"
     )
 ```
