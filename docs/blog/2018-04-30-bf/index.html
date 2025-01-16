@@ -294,7 +294,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="model-comparison">Model comparison</h2>
 <p>Statisticians love coins. Why? These toy examples are extremely useful to illustrate difficult concepts while still being expressible in a convenient mathematical framework. As an example, let’s say we want to estimate the bias <span class="math inline">\(\theta\)</span> of a coin (i.e., its probability of landing heads up).</p>
 <p>We compare two models of the bias <span class="math inline">\(\theta\)</span>, these two models differing only by their prior on <span class="math inline">\(\theta\)</span>. For instance, I could bet with a friend that the coin is probably biased toward tails (i.e., that the coin would, on average, lands more often tails up than heads up), while my friend rather think that the coin is biased toward heads. While we think that the coin is probably slightly biased, neither of us is completely certain of the exact value of this bias. Fortunately, probability theory gives us a way to express our prediction (as well as our uncertainty) in the form of a probability distribution.</p>
-<p>For convenience, we can write our predictions as two beta-binomial models (check this <a href="../2018-01-23-ppc/2018-01-23-ppc.qmd">previous blogpost</a> to know why a beta prior is a convenient choice for the coin example):</p>
+<p>For convenience, we can write our predictions as two beta-binomial models (check this <a href="../2018-01-23-ppc/">previous blogpost</a> to know why a beta prior is a convenient choice for the coin example):</p>
 <p><span class="math display">\[
 \begin{align}
 \mathcal{M_{1}} : y_{i} &amp;\sim \mathrm{Binomial}(n, \theta) \\

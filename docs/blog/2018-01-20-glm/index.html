@@ -690,12 +690,12 @@ Residual Deviance: 258.7    AIC: 262.7</code></pre>
 <span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  head</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   height   weight male pred_mod1     sim1
-1 151.765 47.82561    1  157.1630 150.8900
-2 139.700 36.48581    0  146.9001 140.6271
-3 136.525 31.86484    0  142.7180 136.4450
-4 156.845 53.04191    1  161.8839 155.6109
-5 145.415 41.27687    0  151.2362 144.9632
-6 163.830 62.99259    1  170.8895 164.6165</code></pre>
+1 151.765 47.82561    1  157.1630 157.5894
+2 139.700 36.48581    0  146.9001 147.3266
+3 136.525 31.86484    0  142.7180 143.1445
+4 156.845 53.04191    1  161.8839 162.3103
+5 145.415 41.27687    0  151.2362 151.6626
+6 163.830 62.99259    1  170.8895 171.3160</code></pre>
 </div>
 </div>
 <p>The <code>simulate</code> function allows to automate the previous step and to run it <code>nsims</code> times.</p>
@@ -706,12 +706,12 @@ Residual Deviance: 258.7    AIC: 262.7</code></pre>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>sims[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     sim_1    sim_2    sim_3    sim_4    sim_5    sim_6
-1 153.4623 144.9603 156.3070 153.9208 155.2848 164.3996
-2 140.8794 137.1671 145.2417 153.6900 135.6464 143.5053
-3 136.5193 146.7893 137.5192 139.2745 147.7782 148.4528
-4 171.1628 162.4432 157.0834 166.2178 162.9167 167.9813
-5 159.6189 157.5319 156.3198 150.2240 144.3771 150.5606
-6 164.5527 172.0227 173.4904 181.0220 164.2144 168.1470</code></pre>
+1 155.1966 152.3657 153.1179 161.4845 160.2923 159.0453
+2 148.9630 150.0875 147.1953 149.3843 146.7999 146.2022
+3 138.8108 140.8546 137.6547 151.7646 142.1443 139.4768
+4 161.3402 159.3450 158.3032 171.5432 168.4163 159.2901
+5 139.0983 150.8975 149.5892 151.8493 156.2820 141.4221
+6 169.1424 174.3771 165.1934 153.7336 167.4561 165.0166</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>lower_ci_sim <span class="ot">&lt;-</span> <span class="fu">apply</span>(sims, <span class="dv">1</span>, <span class="cf">function</span>(x) <span class="fu">quantile</span>(x, <span class="at">probs =</span> <span class="fl">0.025</span>) )</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>upper_ci_sim <span class="ot">&lt;-</span> <span class="fu">apply</span>(sims, <span class="dv">1</span>, <span class="cf">function</span>(x) <span class="fu">quantile</span>(x, <span class="at">probs =</span> <span class="fl">0.975</span>) )</span>
@@ -792,7 +792,7 @@ Click to expand
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>For more details on the logit model, please check this <a href="../2017-08-05-absenteeism1/2017-08-05-absenteeism1.qmd">previous post</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>For more details on the logit model, please check this <a href="../2017-08-05-absenteeism1/">previous post</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{nalborczyk2018,
   author = {Nalborczyk, Ladislas},
