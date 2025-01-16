@@ -9,6 +9,8 @@ categories:
     - RSA
     - Cognitive neuroscience
 description: "Using commonality analysis to identify unique and shared (common) variance across three or more variables."
+aliases:
+  - /post/commonality/
 ---
 
 ```{r setup, include = FALSE}
