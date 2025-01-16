@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.549">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ladislas Nalborczyk">
+<meta name="dcterms.date" content="2016-11-04">
+<meta name="description" content="According to Rubin (1984), a Bayesianly justifiable analysis is one that “treats known values as observed values of random variables, treats unknown values as unobserved random variables, and calculates the conditional distribution of unknowns given knowns and model specifications using Bayes’ theorem”.">
+
+<title>Ladislas Nalborczyk - Why the Akaike information criterion is as much ‘Bayesian’ as the Bayesian information criterion</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../images/icon.png" rel="icon" type="image/png">
+<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/academicons-1.9.4/size.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+<script type="text/plain" cookie-consent="tracking">
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-86650162-1', 'auto');
+
+ga('send', {
+  hitType: 'pageview',
+  'anonymizeIp': true,
+});
+</script>
+
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({
+  "notice_banner_type":"headline",
+  "consent_type":"express",
+  "palette":"dark",
+  "language":"en",
+  "page_load_consent_levels":["strictly-necessary"],
+  "notice_banner_reject_button_hide":false,
+  "preferences_center_close_button_hide":false,
+  "website_name":""
+  ,
+"language":"en"
+  });
+});
+</script> 
+  
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../assets/styles.css">
+<meta property="og:title" content="Ladislas Nalborczyk - Why the Akaike information criterion is as much ‘Bayesian’ as the Bayesian information criterion">
+<meta property="og:description" content="According to Rubin (1984), a Bayesianly justifiable analysis is one that “treats known values as observed values of random variables, treats unknown values as unobserved random variables, and calculates the conditional distribution of unknowns given knowns and model specifications using Bayes’ theorem”.">
+<meta property="og:site_name" content="Ladislas Nalborczyk">
+<meta name="twitter:title" content="Ladislas Nalborczyk - Why the Akaike information criterion is as much ‘Bayesian’ as the Bayesian information criterion">
+<meta name="twitter:description" content="According to Rubin (1984), a Bayesianly justifiable analysis is one that “treats known values as observed values of random variables, treats unknown values as unobserved random variables, and calculates the conditional distribution of unknowns given knowns and model specifications using Bayes’ theorem”.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Ladislas Nalborczyk</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">HOME</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications/index.html"> 
+<span class="menu-text">PUBLICATIONS</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../team/index.html"> 
+<span class="menu-text">TEAM</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../positions/index.html"> 
+<span class="menu-text">POSITIONS</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cv/cv.pdf"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">BLOG</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="mailto:ladislas.nalborczyk@gmail.com"> 
+<span class="menu-text"><i class="fa-solid fa-envelope" aria-label="envelope"></i></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lnalborczyk"> <i class="bi bi-github" role="img" aria-label="github">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://orcid.org/0000-0002-7419-9855"> 
+<span class="menu-text"><i class="fa-brands fa-orcid" aria-label="orcid"></i></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://osf.io/ba8xt/"> 
+<span class="menu-text"><i class="ai  ai-osf" aria-label="osf"></i></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://scholar.google.com/citations?user=na-dkLYAAAAJ&amp;hl"> 
+<span class="menu-text"><i class="fa-solid fa-graduation-cap" aria-label="graduation-cap"></i></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://bsky.app/profile/lnalborczyk.bsky.social"> 
+<span class="menu-text"><i class="fa-brands fa-bluesky" aria-label="bluesky"></i></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Why the Akaike information criterion is as much ‘Bayesian’ as the Bayesian information criterion</h1>
+                  <div>
+        <div class="description">
+          According to Rubin (1984), a Bayesianly justifiable analysis is one that “treats known values as observed values of random variables, treats unknown values as unobserved random variables, and calculates the conditional distribution of unknowns given knowns and model specifications using Bayes’ theorem”.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Bayesian</div>
+                <div class="quarto-category">Model comparison</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Ladislas Nalborczyk </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">2016-11-04</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">CONTENTS</h2>
+   
+  <ul>
+  <li><a href="#model-based-inference" id="toc-model-based-inference" class="nav-link active" data-scroll-target="#model-based-inference">Model-based inference</a></li>
+  <li><a href="#akaike-information-criterion" id="toc-akaike-information-criterion" class="nav-link" data-scroll-target="#akaike-information-criterion">Akaike information criterion</a></li>
+  <li><a href="#bayesian-information-criterion" id="toc-bayesian-information-criterion" class="nav-link" data-scroll-target="#bayesian-information-criterion">Bayesian information criterion</a></li>
+  <li><a href="#aic-as-a-bayesian-result-mathematical-derivations-taken-from-burnham-and-anderson-2002-2004" id="toc-aic-as-a-bayesian-result-mathematical-derivations-taken-from-burnham-and-anderson-2002-2004" class="nav-link" data-scroll-target="#aic-as-a-bayesian-result-mathematical-derivations-taken-from-burnham-and-anderson-2002-2004">AIC as a Bayesian result <sub><sup>(mathematical derivations taken from Burnham and Anderson, 2002, 2004)</sup></sub></a></li>
+  <li><a href="#author-note" id="toc-author-note" class="nav-link" data-scroll-target="#author-note">Author note</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<p>According to Rubin (1984), a Bayesianly justifiable analysis is one that:</p>
+<blockquote class="blockquote">
+<p>treats known values as observed values of random variables, treats unknown values as unobserved random variables, and calculates the conditional distribution of unknowns given knowns and model specifications using Bayes’ theorem.</p>
+</blockquote>
+<p>The Bayesian approach is then characterised by the explicit use of probability to model the <strong>uncertainty</strong>, which is done by assigning probability distributions to unknowns (the <em>prior</em>), then by updating them the information contained in the data (the <em>likelihood</em>), to lead to updated probability distributions (the <em>posterior</em>).</p>
+<section id="model-based-inference" class="level2">
+<h2 class="anchored" data-anchor-id="model-based-inference">Model-based inference</h2>
+<p>When one writes a paper (or a blogpost) about model selection, it is of good taste to begin with the famous Box’ statement that “Essentially, all models are wrong but some are useful” (Box &amp; Drapers, 1987).</p>
+<p>Ok, so all models are wrong, in the sense that all models we can build are not exactly like the model which has generated the data (i.e., the <em>full reality</em>). But still, we can surely construct models that are <em>better</em> than others. Interestingly, as outlined by Burnham &amp; Anderson (2004), the concept of a “good model”, depends on the sample size, as smaller effect sizes can often only be revealed as sample size increases. Then, the set of models aiming to explain the data at hand has to take into account the size of the effects.</p>
+<p>More generally, we can outline three general principles guiding model-based inference in science:</p>
+<ul>
+<li><strong>Simplicity and parsimony</strong> (<a href="https://en.wikipedia.org/wiki/Occam%27s_razor">Occam’s razor</a>). Model selection is a classic <a href="http://scott.fortmann-roe.com/docs/BiasVariance.html">bias-variance trade-off</a>.</li>
+<li><strong>Multiple working hypotheses</strong> (<a href="http://www.auburn.edu/~tds0009/Articles/Chamberlain%201965.pdf">Chamberlin, 1890</a>). At any point in time there must be several hypotheses (models) under consideration, but number of alternative should be kept small.</li>
+<li><strong>Strength of evidence</strong>. Providing quantitative information to judge the “strength of evidence” is central to science (e.g., see Royall’s <a href="https://www.crcpress.com/Statistical-Evidence-A-Likelihood-Paradigm/Royall/p/book/9780412044113">book</a> on the likelihood-based approach).</li>
+</ul>
+<p>Steps of the model selection approach usually consist in establishing a set of <span class="math inline">\(R\)</span> relevant models, ranking these models (and attributing them weights), and choosing the best model from the set to make an inference from this best model.</p>
+<p>Wait, how can we rank models? We need tools that account for the basic principles (presented above) that make a model a good model, like how well a model fit the observed data or how parsimonious is a model…</p>
+</section>
+<section id="akaike-information-criterion" class="level2">
+<h2 class="anchored" data-anchor-id="akaike-information-criterion">Akaike information criterion</h2>
+<p>In 1951, Kullback and Leibler published a now-famous paper that quantified the meaning of <em>information</em> as related to Fisher’s concept of <a href="https://en.wikipedia.org/wiki/Sufficient_statistic">sufficient statistics</a> (Kullback &amp; Leibler, 1951). They developped the <a href="https://en.wikipedia.org/wiki/Kullback–Leibler_divergence">Kullback-Leibler divergence</a> (or K-L information) that measures the information that is lost when approximating reality. K-L information can also be conceptualised as a <em>distance</em> between full reality and a specific model (Burnham &amp; Anderson, 2004).</p>
+<p>Two decades later, Akaike (1973) showed that this distance can be estimated by finding the parameters values that maximise the probability of the data given the model (i.e., the maximised likelihood or <a href="https://en.wikipedia.org/wiki/Maximum_likelihood_estimation">MLE</a>). He used this relationship to derive a criterion known as the <em>Akaike Information Criterion</em> (AIC), that is</p>
+<p><span class="math display">\[AIC=-2\log (\mathcal{L}(\hat{\theta}\vert data))+2K\]</span></p>
+<p>where <span class="math inline">\(\theta\)</span> is the set of model parameters, <span class="math inline">\(\mathcal{L}(\hat{\theta}\vert data)\)</span> the likelihood of the candidate model given the data when evaluated at the MLE of <span class="math inline">\(\theta\)</span>, and <span class="math inline">\(K\)</span> is the number of estimated parameters in the candidate model. The first component, <span class="math inline">\(-2log(\mathcal{L}(\hat{\theta}\vert data))\)</span> is known as the <a href="https://en.wikipedia.org/wiki/Deviance_(statistics)">deviance</a> of the candidate model.</p>
+<p>Basically, we can see that AIC then account for the <a href="https://en.wikipedia.org/wiki/Goodness_of_fit">goodness-of-fit</a> of a model (i.e., the strength of evidence for this model), but penalises it for having too much parameters, that is for not being parsimonious. Clearly, the smaller AIC, the better.</p>
+<p>It is important to acknowledge that when <span class="math inline">\(n/K\)</span> &gt; about 40, the “small sample AIC” (second-order bias correction), called AICc, should be used (Burnham &amp; Anderson, 2004).</p>
+<p>Absolute AIC values are not directly interpretable as they contain arbitrary constants and are much affected by sample size. We then need to rescale AIC or AICc to:</p>
+<p><span class="math display">\[\Delta_{i}= AIC_{i}-AIC_{min}.\]</span></p>
+<p>Hence, <span class="math inline">\(\Delta_{i}\)</span> is the information loss experienced if we are using fitted model <span class="math inline">\(g_{i}\)</span> rather than the best model, <span class="math inline">\(g_{min}\)</span>, for inference.</p>
+<p>Moreover, the simple transformation <span class="math inline">\(exp(-\Delta_{i}/2)\)</span>, for <span class="math inline">\(i=1,2,...,R\)</span>, provides the <strong>likelihood</strong> of the model (Akaike, 1981) given the data: <span class="math inline">\(\mathcal{L}(g_{i}\vert data)\)</span>.</p>
+<p>It is convenient to normalise the model likelihoods such that they sum to 1 in order to treat them as probabilities. Hence, we use:</p>
+<p><span class="math display">\[w_{i}=\dfrac{exp(-\Delta_{i}/2)}{\sum_{r=1}^{R}exp(-\Delta_{r}/2)}.\]</span></p>
+<p>The <span class="math inline">\(w_{i}\)</span>, called <strong>Akaike weights</strong>, are useful as the <em>weight of evidence</em> in favor of model <span class="math inline">\(g_{i}(\cdot \vert \theta)\)</span>, as being the actual K-L best model in the set.</p>
+</section>
+<section id="bayesian-information-criterion" class="level2">
+<h2 class="anchored" data-anchor-id="bayesian-information-criterion">Bayesian information criterion</h2>
+<p>The Bayesian Information Criterion (BIC), was introduced by Schwarz (1978) as a competitor to the AIC. Schwarz derived the BIC to serve as an asymptotic approximation to a transformation of the Bayesian posterior probability of a candidate model. The computation of BIC is based on the empirical log-likelihood and does not require the specification of priors.</p>
+<p><span class="math display">\[BIC=-2\log (\mathcal{L}(\hat{\theta}|data))+K \log (n)\]</span></p>
+<p>We can see that both AIC and BIC measure the same <a href="https://en.wikipedia.org/wiki/Goodness_of_fit">goodness-of-fit</a> but the penalty term of BIC is more stringent than the penalty term of AIC (for <span class="math inline">\(n \geq 8\)</span>, <span class="math inline">\(k \cdot \log (n)\)</span> exceeds <span class="math inline">\(2k\)</span>). Consequently, BIC tends to favor smaller models than AIC.</p>
+<p>As with <span class="math inline">\(\Delta AIC_{i}\)</span>, we define <span class="math inline">\(\Delta BIC_{i}\)</span> as the difference of BIC for model <span class="math inline">\(g_{i}\)</span> and the minimum BIC value. More complete usage entails computing <strong>posterior model probabilities</strong>, as:</p>
+<p><span class="math display">\[P(g_{i}\vert data) = \dfrac{\exp(-\frac{1}{2}\Delta BIC_{i})}{\sum_{r=1}^{R}\exp(-\frac{1}{2}\Delta BIC_{r})}\]</span></p>
+<p>(Raftery, 1995). The above posterior model probabilities are based on assuming that <strong>prior model probabilities</strong> are all <span class="math inline">\(1/R\)</span>. Most applications of BIC use it in a frequentist “spirit” and hence ignore issues of prior and posterior model probabilities (Burnham &amp; Anderson, 2004).</p>
+</section>
+<section id="aic-as-a-bayesian-result-mathematical-derivations-taken-from-burnham-and-anderson-2002-2004" class="level2">
+<h2 class="anchored" data-anchor-id="aic-as-a-bayesian-result-mathematical-derivations-taken-from-burnham-and-anderson-2002-2004">AIC as a Bayesian result <sub><sup>(mathematical derivations taken from Burnham and Anderson, 2002, 2004)</sup></sub></h2>
+<p>We said before that the BIC arises in a context when one assumes equal priors on models but the BIC statistic can be used more generally with any set of model priors. Let <span class="math inline">\(p_{i}\)</span> be the <strong>prior probability</strong> placed on model <span class="math inline">\(g_{i}\)</span>. Then the Bayesian <strong>posterior model probability</strong> is approximated as:</p>
+<p><span class="math display">\[P(g_{i}\vert data) = \dfrac{\exp(-\frac{1}{2}\Delta BIC_{i})p_{i}}{\sum_{r=1}^{R}\exp(-\frac{1}{2}\Delta BIC_{r})p_{r}}.\]</span></p>
+<p>To get back to Akaike weights (described above) from there we use the model prior:</p>
+<p><span class="math display">\[p_{i}= B \cdot \exp(\frac{1}{2}\Delta BIC_{i})\cdot \exp (\frac{1}{2}\Delta AIC_{i})\]</span></p>
+<p>where <span class="math inline">\(B\)</span> is a normalising constant. Clearly,</p>
+<p><span class="math display">\[\exp(-\frac{1}{2}\Delta BIC_{i})\cdot \exp (\frac{1}{2}\Delta BIC_{i})\cdot \exp(-\frac{1}{2}\Delta AIC_{i}) = \exp (-\frac{1}{2}\Delta AIC_{i});\]</span></p>
+<p>hence, with this prior probability distribution we get:</p>
+<p><span class="math display">\[P(g_{i}\vert data) = \dfrac{\exp(-\frac{1}{2}\Delta BIC_{i})p_{i}}{\sum_{r=1}^{R}\exp(-\frac{1}{2}\Delta BIC_{r})p_{r}}=\dfrac{\exp(-\frac{1}{2}\Delta AIC_{i})}{\sum_{r=1}^{R}\exp(-\frac{1}{2}\Delta AIC_{r})}=w_{i},\]</span></p>
+<p>which is the Akaike weight for model <span class="math inline">\(g_{i}\)</span>.</p>
+<p>The prior probability on models <span class="math inline">\(p_{i}\)</span> can then be expressed in a simple form as:</p>
+<p><span class="math display">\[p_{i}= C \cdot \exp(\frac{1}{2}K_{i}\log (n)-K_{i})\]</span></p>
+<p>where:</p>
+<p><span class="math display">\[C=\dfrac{1}{\sum_{r=1}^{R}\exp (\frac{1}{2}K_{r}\log (n)-K_{r})}.\]</span></p>
+<p>Thus, formally, the Akaike weights from AIC are (for large samples) Bayesian <strong>posterior model probabilities</strong> for this particular prior. Burnham &amp; Anderson (2002, 2004) call this prior the <strong>K-L model prior</strong>.</p>
+<p>To sum up, AIC can then be justified as Bayesian using a <strong>savvy prior</strong> (i.e., a prior that is an increasing function of <span class="math inline">\(n\)</span> and a decreasing function of <span class="math inline">\(K\)</span>). Thus, AIC model selection is just as much a Bayesian procedure as BIC model selection is. The difference is in the prior distribution placed on the model set.</p>
+</section>
+<section id="author-note" class="level2">
+<h2 class="anchored" data-anchor-id="author-note">Author note</h2>
+<p><em>Please correct me if you identify mistakes, I am probably wrong on many aspects of what is discussed above…</em></p>
+</section>
+<section id="references" class="level1">
+<h1>References</h1>
+<details>
+<summary>
+Click to expand
+</summary>
+<div data-markdown="1">
+<p>Akaike, H. (1981). Likelihood of a model and information criteria. <em>Journal of Econometrics</em>, <em>16</em>, 3–14. <a href="http://dx.doi.org/10.1016/0304-4076(81)90071-3" class="uri">http://dx.doi.org/10.1016/0304-4076(81)90071-3</a></p>
+<p>Box, G. E. P., Draper, N. R. (1987). Empirical <em>Model-Building and Response Surfaces</em>. John Wiley &amp; Sons.</p>
+<p>Burnham, K. P., &amp; Anderson, D. R. (2002). <em>Model Selection and Multimodel Inference: A Practical Information-Theoretical Approach</em>. 2d ed.&nbsp;New York: Springer-Verlag.</p>
+<p>Burnham, K. P., &amp; Anderson, D. R. (2004). Multimodel inference: Understanding AIC and BIC in model selection. <em>Sociological Methods and Research</em>, <em>33</em>(2), 261–304. <a href="http://dx.doi.org/10.1177/0049124104268644" class="uri">http://dx.doi.org/10.1177/0049124104268644</a></p>
+<p>Kullback, S., &amp; Leibler, R. A. (1951). On information and sufficiency. <em>Annals of Mathematical Statistics</em>, <em>22</em>, 79–86. <a href="http://dx.doi.org/10.1214/aoms/1177729694" class="uri">http://dx.doi.org/10.1214/aoms/1177729694</a></p>
+<p>Raftery, A. E. (1995). Bayesian Model Selection in Social Research (With Discussion). <em>Sociological Methodology</em>, <em>25</em>, 111-95. <a href="http://dx.doi.org/10.2307/271063" class="uri">http://dx.doi.org/10.2307/271063</a></p>
+<p>Rubin, D. B. (1984). Bayesianly justifiable and relevant frequency calculations for the applied statistician. <em>The Annals of Statistics</em>, <em>12</em>(4), 1151–1172. <a href="https://doi.org/doi:10.1214/aos/1176346785" class="uri">https://doi.org/doi:10.1214/aos/1176346785</a></p>
+<p>Schwarz, G. E. (1978). Estimating the dimension of a model. <em>Annals of Statistics</em>, <em>6</em>(2), 461–464. <a href="https://doi.org/doi:10.1214/aos/1176344136" class="uri">https://doi.org/doi:10.1214/aos/1176344136</a></p>
+</div>
+</details>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{nalborczyk2016,
+  author = {Nalborczyk, Ladislas},
+  title = {Why the {Akaike} Information Criterion Is as Much
+    “{Bayesian}” as the {Bayesian} Information Criterion},
+  date = {2016-11-04},
+  url = {https://lnalborczyk.github.io/blog/2016-11-04-aicbic},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-nalborczyk2016" class="csl-entry quarto-appendix-citeas" role="listitem">
+Nalborczyk, L. (2016, November 4). <em>Why the Akaike information
+criterion is as much <span>“Bayesian”</span> as the Bayesian information
+criterion</em>. <a href="https://lnalborczyk.github.io/blog/2016-11-04-aicbic">https://lnalborczyk.github.io/blog/2016-11-04-aicbic</a>
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://utteranc.es/client.js" repo="lnalborczyk/lnalborczyk.github.io" issue-term="title" theme="boxy-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2017-2025, Ladislas Nalborczyk ∙ Made with <a href="https://quarto.org">Quarto</a></p>
+</div>   
+    <div class="nav-footer-center">
+
+<div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
