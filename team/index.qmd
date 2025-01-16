@@ -71,9 +71,9 @@ Position: Researcher in computational cognitive neuroscience
 ## Alumni
 
 - Vincent Pauline (2023 -- 2024): MSc student in my previous lab. Now a research assistant at Helmoltz AI (Germany).
-- Hermine de Torcy, (2023 -- 2024): MSc student in my previous lab. Now a PhD student at ULB (Belgium).
-- Maël Delem (2021 -- 2022): MSc student in my previous lab. Now a PhD student at Lyon Univ. (France)
-- Nina Stauffert (2021 -- 2022): MSc student in my previous lab. Now a PhD student at Lyon Univ. (France)
-- Clara Grégoire (2021 -- 2022): MSc student in my previous lab. Now a PhD student at LPL - Aix-Marseille Univ. (France)
-- Victor Serveau (2021 -- 2022): MSc student in my previous lab. Now working in the private sector. (France)
+- Hermine de Torcy (2023 -- 2024): MSc student in my previous lab. Now a PhD student at ULB (Belgium).
+- Maël Delem (2021 -- 2022): MSc student in my previous lab. Now a PhD student at Lyon Univ (France).
+- Nina Stauffert (2021 -- 2022): MSc student in my previous lab. Now a PhD student at Lyon Univ (France).
+- Clara Grégoire (2021 -- 2022): MSc student in my previous lab. Now a PhD student at LPL - Aix-Marseille Univ (France).
+- Victor Serveau (2021 -- 2022): MSc student in my previous lab. Now working in the private sector.
 :::

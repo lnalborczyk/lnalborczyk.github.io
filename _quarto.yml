@@ -48,9 +48,9 @@ website:
   site-url: https://lnalborczyk.github.io
   open-graph: true
   cookie-consent:
-    type: express
+    type: express # implied
     style: headline
-    palette: dark
+    palette: light # dark
   google-analytics:
     tracking-id: "UA-86650162-1"
     anonymize-ip: true
