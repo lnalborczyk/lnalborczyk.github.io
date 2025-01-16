@@ -1,0 +1,68 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Ladislas Nalborczyk"
+  search: 
+    location: navbar
+    type: textbox
+  navbar:
+    background: primary
+    pinned: true
+    left:
+      - text: HOME
+        href: index.qmd
+      - text: PUBLICATIONS
+        href: publications/index.qmd
+      - text: TEAM
+        href: team/index.qmd
+      - text: POSITIONS
+        href: positions/index.qmd
+      - text: CV
+        href: cv/cv.pdf
+      - text: BLOG
+        href: blog/index.qmd
+    right:
+      - text: "{{< fa envelope >}}"
+        aria-label: email
+        href: "mailto:ladislas.nalborczyk@gmail.com"
+      - icon: github
+        aria-label: github
+        href: https://github.com/lnalborczyk
+      - text: "{{< fa brands orcid >}}"
+        aria-label: orcid
+        href: https://orcid.org/0000-0002-7419-9855
+      - text: "{{< ai osf >}}"
+        aria-label: osf
+        href: https://osf.io/ba8xt/
+      - text: "{{< fa graduation-cap >}}"
+        aria-label: google-scholar
+        href: https://scholar.google.com/citations?user=na-dkLYAAAAJ&hl
+      - text: "{{< fa brands bluesky >}}"
+        aria-label: bluesky
+        href: https://bsky.app/profile/lnalborczyk.bsky.social
+  reader-mode: false
+  favicon: images/icon.png
+  twitter-card: true
+  site-url: https://lnalborczyk.github.io
+  open-graph: true
+  cookie-consent:
+    type: express
+    style: headline
+    palette: dark
+  google-analytics:
+    tracking-id: "UA-86650162-1"
+    anonymize-ip: true
+  page-footer: 
+    background: light
+    left: "&#169; 2017-2025, Ladislas Nalborczyk &#8729; Made with [Quarto](https://quarto.org)"
+    
+# see https://quarto.org/docs/output-formats/html-themes.html
+format:
+  html:
+    fontsize: 1.2em
+    theme:
+      light: flatly
+      dark: darkly
+    css: assets/styles.css

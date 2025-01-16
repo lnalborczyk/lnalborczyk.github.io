@@ -1,0 +1,39 @@
+---
+title: "Orofacial electromyographic correlates of induced verbal rumination"
+description: "Experimental paper in which we used surface electromyography as a physiological marker of induced mental rumination."
+date: "2017-07-20"
+author: 
+  - name: Ladislas Nalborczyk
+    orcid: 0000-0002-7419-9855
+  - name: Marcela Perrone-Bertolotti
+    orcid: 0000-0003-0792-476X
+  - name: Céline Baeyens
+    orcid: 0000-0003-2422-4378
+  - name: Romain Grandchamp
+    orcid: 0000-0002-0786-1319
+  - name: Mircea Polosan
+    orcid: 0009-0006-3849-3981
+  - name: Elsa Spinelli
+    orcid: 0000-0001-7024-9387
+  - name: Ernst Koster
+    orcid: 0000-0003-0792-476X
+  - name: Hélène Lœvenbruck
+    orcid: 0000-0003-4015-3565
+image: featured.jpeg
+categories:
+  - Inner speech
+  - Rumination
+  - Electromyography
+  - Motor simulation
+links:
+  - name: "{{< fa lock >}} Journal"
+    url: "http://www.sciencedirect.com/science/article/pii/S0301051117300820"
+  - name: "{{< ai osf >}} OSF project"
+    url: "https://osf.io/882te/"
+  - name: "{{< ai osf >}} Preprint"
+    url: "https://osf.io/h8rqa"
+---
+
+## Abstract
+
+Rumination is predominantly experienced in the form of repetitive verbal thoughts. Verbal rumination is a particular case of inner speech. According to the Motor Simulation view, inner speech is a kind of motor action, recruiting the speech motor system. In this framework, we predicted an increase in speech muscle activity during rumination as compared to rest. We also predicted increased forehead activity, associated with anxiety during rumination. We measured electromyographic activity over the orbicularis oris superior and inferior, frontalis and flexor carpi radialis muscles. Results showed increased lip and forehead activity after rumination induction compared to an initial relaxed state, together with increased self-reported levels of rumination. Moreover, our data suggest that orofacial relaxation is more effective in reducing rumination than non-orofacial relaxation. Altogether, these results support the hypothesis that verbal rumination involves the speech motor system, and provide a promising psychophysiological index to assess the presence of verbal rumination.

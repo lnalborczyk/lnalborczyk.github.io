@@ -1,0 +1,41 @@
+# date format
+date-format: "YYYY-MM-DD"
+
+# enabling banner style title blocks
+# title-block-banner: "#003366"
+title-block-banner: true
+
+# adding blog-post class to the banner header area
+format: 
+  html:
+    code-overflow: wrap
+    knitr:
+      opts_chunk:
+        dev: png
+        dev.args:
+          bg: transparent
+
+# defaults for table of contents
+toc: true
+toc-title: CONTENTS
+toc-location: left
+
+# freezing computed outputs
+freeze: true
+
+# default fields for citation
+citation: true
+
+# removing LaTeX
+# appendix-cite-as: display
+
+# specifying the citation style (APA7)
+csl: ../assets/apa7.csl
+
+# enabling comments
+comments: 
+  utterances:
+    repo: lnalborczyk/lnalborczyk.github.io
+    issue-term: title
+    theme: boxy-light
+    label: "comments :crystal_ball:"

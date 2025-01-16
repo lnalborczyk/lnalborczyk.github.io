@@ -1,0 +1,79 @@
+---
+title: Team
+excerpt: "People working in my team"
+toc-location: right
+---
+
+## Principal investigator (PI)
+
+::: {.grid}
+::: {.g-col-12 .g-col-md-3}
+<br /> 
+![](../images/ladislas.jpg){width=100% fig-alt="A portrait of Ladislas Nalborczyk."}
+:::
+::: {.g-col-12 .g-col-md-9}
+### Ladislas Nalborczyk {#ladislas}
+---
+
+Background: Cognitive Neuroscience, Experimental Psychology, Statistical modelling
+
+Position: Researcher in computational cognitive neuroscience
+
+[Mail](mailto:ladislas.nalborczyk@gmail.com){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
+[GitHub](https://github.com/lnalborczyk){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
+[Google Scholar](https://scholar.google.com/citations?user=na-dkLYAAAAJ&hl){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
+[Bluesky](https://bsky.app/profile/lnalborczyk.bsky.social){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
+:::
+:::
+
+---
+
+<br /> 
+<br /> 
+
+## Postdoctoral researchers
+
+::: {.grid}
+::: {.g-col-12 .g-col-md-3}
+<br /> 
+![](../images/missing.png){width=100% fig-alt="A missing portrait."}
+:::
+::: {.g-col-12 .g-col-md-9}
+### You?
+---
+
+...
+
+:::
+:::
+
+---
+
+## PhD students
+
+::: {.grid}
+::: {.g-col-12 .g-col-md-3}
+<br /> 
+![](../images/missing.png){width=100% fig-alt="A missing portrait."}
+:::
+::: {.g-col-12 .g-col-md-9}
+### You?
+---
+
+...
+
+:::
+:::
+
+---
+
+::: {.callout-note icon=false collapse="true"}
+## Alumni
+
+- Vincent Pauline (2023 -- 2024): MSc student in my previous lab. Now a research assistant at Helmoltz AI (Germany).
+- Hermine de Torcy, (2023 -- 2024): MSc student in my previous lab. Now a PhD student at ULB (Belgium).
+- Maël Delem (2021 -- 2022): MSc student in my previous lab. Now a PhD student at Lyon Univ. (France)
+- Nina Stauffert (2021 -- 2022): MSc student in my previous lab. Now a PhD student at Lyon Univ. (France)
+- Clara Grégoire (2021 -- 2022): MSc student in my previous lab. Now a PhD student at LPL - Aix-Marseille Univ. (France)
+- Victor Serveau (2021 -- 2022): MSc student in my previous lab. Now working in the private sector. (France)
+:::

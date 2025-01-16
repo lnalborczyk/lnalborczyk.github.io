@@ -1,0 +1,29 @@
+---
+title: "Action effects on visual perception of distances: A multilevel Bayesian meta-analysis"
+description: "Examining sequential effects in an action-mode switching paradigm (typing execution and typing imagery)."
+date: "2020-04-09"
+author: 
+  - name: Lisa Molto
+  - name: Ladislas Nalborczyk
+    orcid: 0000-0002-7419-9855
+  - name: Richard Palluel-Germain
+    orcid: 0000-0002-2650-2602
+  - name: Nicolas Morgado
+    orcid: 0000-0001-9345-915X
+image: featured.jpeg
+categories:
+  - Bayesian
+  - Meta-analysis
+  - Motor simulation
+links:
+  - name: "{{< fa lock >}} Journal"
+    url: "https://doi.org/10.1177/0956797619900336"
+  - name: "{{< ai osf >}} OSF project"
+    url: "https://osf.io/bc3wn/"
+  - name: "{{< ai osf >}} Preprint"
+    url: "https://psyarxiv.com/2zutq/"
+---
+
+## Abstract
+
+Previous studies have suggested that action constraints influence visual perception of distances. For instance, the greater the effort to cover a distance, the longer people perceive this distance to be. The present multilevel Bayesian meta-analysis (37 studies with 1,035 total participants) supported the existence of a small action-constraint effect on distance estimation, Hedges's g = 0.29, 95% credible interval = [0.16, 0.47]. This effect varied slightly according to the action-constraint category (effort, weight, tool use) but not according to participants’ motor intention. Some authors have argued that such effects reflect experimental demand biases rather than genuine perceptual effects. Our meta-analysis did not allow us to dismiss this possibility, but it also did not support it. We provide field-specific conventions for interpreting action-constraint effect sizes and the minimum sample sizes required to detect them with various levels of power. We encourage researchers to help us update this meta-analysis by directly uploading their published or unpublished data to our online repository (<https://osf.io/bc3wn/>).

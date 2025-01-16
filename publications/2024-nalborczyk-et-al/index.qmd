@@ -1,0 +1,32 @@
+---
+title: "Towards formal models of inhibitory mechanisms involved in motor imagery: a commentary on Bach et al. (2022)"
+description: "Modelling the inhibitory mechanisms underlying motor imagery."
+author: 
+  - name: Ladislas Nalborczyk
+    orcid: 0000-0002-7419-9855
+  - name: Marieke Longcamp
+    orcid: 0000-0003-0454-2934
+  - name: Thibault Gajdos
+    orcid: 0000-0001-6906-4836
+  - name: Mathieu Servant
+    orcid: 0000-0002-1864-5881
+  - name: F.-X. Alario
+    orcid: 0000-0002-8627-5034
+date: "2024-01-12"
+image: featured.png
+categories:
+  - Motor imagery
+  - Motor inhibition
+  - Cognitive modelling
+links:
+  - name: "{{< fa lock >}} Journal"
+    url: "https://doi.org/10.1007/s00426-023-01915-8"
+  - name: "{{< ai osf >}} OSF project"
+    url: "https://osf.io/d8a34/"
+  - name: "{{< ai osf >}} Preprint"
+    url: "https://osf.io/preprints/psyarxiv/tz6x2"
+---
+
+## Abstract
+
+A vast body of research suggests that the primary motor cortex is involved in motor imagery. This raises the issue of inhibition: how is it possible for motor imagery not to lead to motor execution? Bach et al. (2022) suggest that the motor execution threshold may be 'upregulated' during motor imagery to prevent execution. Alternatively, it has been proposed that, in parallel to excitatory mechanisms, inhibitory mechanisms may be actively suppressing motor output during motor imagery. These theories are verbal in nature, with well-known limitations. Here, we describe a toy-model of the inhibitory mechanisms thought to be at play during motor imagery to start disentangling predictions from competing hypotheses.

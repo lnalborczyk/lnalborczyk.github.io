@@ -1,0 +1,28 @@
+---
+title: "Motor inhibition prevents motor execution during typing imagery: Evidence from an action-mode switching paradigm"
+description: "Examining sequential effects in an action-mode switching paradigm (typing execution and typing imagery)."
+author: 
+  - name: Ladislas Nalborczyk
+    orcid: 0000-0002-7419-9855
+  - name: F.-X. Alario
+    orcid: 0000-0002-8627-5034
+  - name: Marieke Longcamp
+    orcid: 0000-0003-0454-2934
+date: "2024-11-04"
+image: featured.jpeg
+categories:
+  - Motor imagery 
+  - Motor inhibition
+  - Cognitive modelling
+links:
+  - name: "{{< fa unlock >}} Journal"
+    url: "https://www.sciencedirect.com/science/article/pii/S001002772400283X"
+  - name: "{{< ai osf >}} OSF project"
+    url: "https://osf.io/y9a3k/"
+  - name: "{{< ai osf >}} Preprint"
+    url: "https://osf.io/preprints/psyarxiv/jn845"
+---
+
+## Abstract
+
+Motor imagery is accompanied by a subjective multisensory experience. This sensory experience is thought to result from the deployment of internal models developed for the execution and monitoring of overt actions. If so, how is it that motor imagery does not lead to overt execution? It has been proposed that inhibitory mechanisms may prevent execution during imagined actions such as imagined typing. To test this hypothesis, we combined an experimental with a modelling approach. We conducted an experiment in which participants (N = 49) were asked to alternate between overt (executed) and covert (imagined) typing. We predicted that motor inhibition should lead to longer reaction and movement times when the current trial is preceded by an imagined vs. an executed trial. This prediction was borne out by movement times, but not by reaction times. We introduced and fitted an algorithmic model of motor imagery to disentangle potentially distinct inhibitory mechanisms underlying these effects. Results from this analysis suggest that motor inhibition may affect different aspects of the latent activation function (e.g., the shape of the activation function or the motor execution threshold) with distinct consequences on reaction times and movement times. Overall, these results suggest that typing imagery involves the inhibition of motor commands related to typing acts. Preregistration, complete source code, and reproducible analyses are available at <https://osf.io/y9a3k/>.

@@ -1,0 +1,33 @@
+---
+title: "The role of motor inhibition during covert speech production"
+description: "Perspective paper on the role of motor inhibition during covert speech production."
+author: 
+  - name: Ladislas Nalborczyk
+    orcid: 0000-0002-7419-9855
+  - name: Ursula Debarnot
+    orcid: 0000-0002-9628-2350
+  - name: Marieke Longcamp
+    orcid: 0000-0003-0454-2934
+  - name: Aymeric Guillot
+    orcid: 0000-0003-1081-7375
+  - name: F.-X. Alario
+    orcid: 0000-0002-8627-5034
+date: "2022-03-09"
+image: featured.jpg
+categories:
+  - Inner speech
+  - Motor imagery
+  - Motor simulation
+  - Motor inhibition
+links:
+  - name: "{{< fa unlock >}} Journal"
+    url: "https://doi.org/10.3389/fnhum.2022.804832"
+  - name: "{{< ai osf >}} OSF project"
+    url: "https://osf.io/dsfgb/"
+  - name: "{{< ai osf >}} Preprint"
+    url: "https://psyarxiv.com/3df57/"
+---
+
+## Abstract
+
+Covert speech is accompanied by a subjective multisensory experience with auditory and kinaesthetic components. An influential hypothesis states that these sensory percepts result from a simulation of the corresponding motor action that relies on the same internal models recruited for the control of overt speech. This simulationist view raises the question of how it is possible to imagine speech without executing it. In this perspective, we discuss the possible role(s) played by motor inhibition during covert speech production. We suggest that considering covert speech as an inhibited form of overt speech maps naturally to the purported progressive internalisation of overt speech during childhood. We further argue that the role of motor inhibition may differ widely across different forms of covert speech (e.g., condensed vs. expanded covert speech) and that considering this variety helps reconciling seemingly contradictory findings from the neuroimaging literature.

@@ -1,0 +1,18 @@
+---
+title: "Time perception: When randomisation hurts"
+description: "Short journal club about the unexpected consequences of randomisation in psychological research."
+author: 
+  - name: Ladislas Nalborczyk
+    orcid: 0000-0002-7419-9855
+date: "2023-01-24"
+image: featured.jpg
+categories:
+  - Time perception
+  - Sequential effects
+  - Randomisation
+links:
+  - name: "{{< fa lock >}} Journal"
+    url: "https://www.nature.com/articles/s44159-023-00155-2"
+  - name: "{{< ai osf >}} Preprint"
+    url: "https://psyarxiv.com/3df57/"
+---

@@ -1,0 +1,858 @@
+---
+title: Making sense of commonality analysis
+author: Ladislas Nalborczyk
+slug: commonality
+image: img/comm.png
+date: 2025-01-07
+categories:
+    - Statistics
+    - RSA
+    - Cognitive neuroscience
+description: "Using commonality analysis to identify unique and shared (common) variance across three or more variables."
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  eval = TRUE,
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = "center"
+  )
+```
+
+```{r set, echo = FALSE}
+library(ggVennDiagram)
+library(RColorBrewer)
+library(tidyverse)
+library(glue)
+
+venn_3d <- function (
+    total_variance = 100, # total number of items
+    unique_x1 = 0.3, # 30% unique to X1
+    unique_x2 = 0.3, # 30% unique to X2
+    unique_y = 0.3, # 30% unique to Y
+    shared_x1_x2 = 0.05, # % shared between X1 and X2
+    shared_x1_y = 0.05, # % shared between X1 and Y
+    shared_x2_y = 0.05, # % shared between X2 and Y
+    shared_all = 0.1 # 10% shared across X1, X2, and Y
+    ){
+
+  # computing the number of elements for each component
+  n_unique_x1 <- total_variance * unique_x1
+  n_unique_x2 <- total_variance * unique_x2
+  n_unique_y <- total_variance * unique_y
+  n_shared_x1_x2 <- round(total_variance * shared_x1_x2)
+  n_shared_x1_y <- round(total_variance * shared_x1_y)
+  n_shared_x2_y <- round(total_variance * shared_x2_y)
+  n_shared_all <- round(total_variance * shared_all)
+  
+  # generating numbers for each component
+  x1_unique_numbers <- seq(1, n_unique_x1)
+  x2_unique_numbers <- seq(max(x1_unique_numbers) + 1, max(x1_unique_numbers) + n_unique_x2)
+  y_unique_numbers <- seq(max(x2_unique_numbers) + 1, max(x2_unique_numbers) + n_unique_y)
+  shared_x1_x2_numbers <- seq(max(y_unique_numbers) + 1, max(y_unique_numbers) + n_shared_x1_x2)
+  shared_x1_y_numbers <- seq(max(shared_x1_x2_numbers) + 1, max(shared_x1_x2_numbers) + n_shared_x1_y)
+  shared_x2_y_numbers <- seq(max(shared_x1_y_numbers) + 1, max(shared_x1_y_numbers) + n_shared_x2_y)
+  shared_all_numbers <- seq(max(shared_x2_y_numbers) + 1, max(shared_x2_y_numbers) + n_shared_all)
+  
+  # combining into lists for x1, x2, and y
+  x <- list(
+    Y = c(y_unique_numbers, shared_x1_y_numbers, shared_x2_y_numbers, shared_all_numbers),
+    X1 = c(x1_unique_numbers, shared_x1_x2_numbers, shared_x1_y_numbers, shared_all_numbers),
+    X2 = c(x2_unique_numbers, shared_x1_x2_numbers, shared_x2_y_numbers, shared_all_numbers)
+    )
+  
+  # 3D Venn diagram
+  # ggVennDiagram(
+  #   x,
+  #   label = "none",
+  #   edge_size = 0.5,
+  #   show_intersect = FALSE
+  #   ) +
+  #   theme(legend.position = "none") +
+  #   scale_fill_distiller(palette = fill_palette) +
+  #   # adding custom labels for subsets
+  #   annotate(
+  #     geom = "text", x = 2, y = 1.5,
+  #     label = glue("a: {format(round(shared_x1_y, 2), nsmall = 2)}"),
+  #     size = 4, color = "white"
+  #     ) +
+  #   annotate(
+  #     geom = "text", x = -0.25, y = -2.5,
+  #     label = glue("b: {format(round(shared_x2_y, 2), nsmall = 2)}"),
+  #     size = 4, color = "white") +
+  #   annotate(
+  #     geom = "text", x = 2, y = -1.5,
+  #     label = glue("c: {format(round(shared_all, 2), nsmall = 2)}"),
+  #     size = 4, color = "white") +
+  #   annotate(
+  #     geom = "text", x = -1.5, y = 1,
+  #     label = glue("d: {format(round(unique_y, 2), nsmall = 2)}"),
+  #     size = 4, color = "white")
+  
+  # custom made Venn diagram
+  # see https://gaospecial.github.io/ggVennDiagram/articles/fully-customed.html
+  venn <- Venn(x)
+  data <- process_data(venn)
+  ggplot() +
+    geom_polygon(aes(X, Y, fill = as.factor(id), group = id), data = venn_regionedge(data) ) +
+    geom_path(
+      aes(x = X, y = Y, group = id),
+      data = venn_setedge(data),
+      show.legend = FALSE,
+      linewidth = 1
+      ) +
+    geom_text(
+      aes(x = X, y = Y, label = name),
+      data = venn_setlabel(data),
+      size = 5
+      ) +
+    # adding custom labels for subsets
+    annotate(
+      geom = "text", x = 2, y = 1.5,
+      label = glue("a: {format(round(shared_x1_y, 2), nsmall = 2)}"),
+      size = 5
+      ) +
+    annotate(
+      geom = "text", x = -0.25, y = -2.6,
+      label = glue("b: {format(round(shared_x2_y, 2), nsmall = 2)}"),
+      size = 5
+      ) +
+    annotate(
+      geom = "text", x = 2, y = -1.5,
+      label = glue("c: {format(round(shared_all, 2), nsmall = 2)}"),
+      size = 5
+      ) +
+    annotate(
+      geom = "text", x = -1.5, y = 0.75,
+      label = glue("d: {format(round(unique_y, 2), nsmall = 2)}"),
+      size = 5
+      ) +
+    scale_fill_brewer(palette = "Spectral") +
+    coord_equal() +
+    theme_void() +
+    theme(legend.position = "none")
+  
+}
+
+venn_4d <- function (
+    total_variance = 100,
+    unique_x1 = 0.2,
+    unique_x2 = 0.2,
+    unique_x3 = 0.2,
+    unique_y = 0.2,
+    shared_x1_x2 = 0.05,
+    shared_x1_y = 0.05,
+    shared_x2_y = 0.05,
+    shared_x1_x3 = 0.05,
+    shared_x2_x3 = 0.05,
+    shared_x3_y = 0.05,
+    shared_all = 0.05,
+    labels = FALSE,
+    alpha = 1
+    ) {
+  
+  # increasing the number of colour in the "Spectral" palette
+  # https://stackoverflow.com/questions/34106898/extending-rcolorbrewer-to-support-more-colors
+  mycolors <- colorRampPalette(brewer.pal(11, "Spectral") )(15)
+  
+  # computing the number of elements for each component
+  n_unique_x1 <- total_variance * unique_x1
+  n_unique_x2 <- total_variance * unique_x2
+  n_unique_x3 <- total_variance * unique_x3
+  n_unique_y <- total_variance * unique_y
+  n_shared_x1_x2 <- round(total_variance * shared_x1_x2)
+  n_shared_x1_y <- round(total_variance * shared_x1_y)
+  n_shared_x2_y <- round(total_variance * shared_x2_y)
+  n_shared_x1_x3 <- round(total_variance * shared_x1_x3)
+  n_shared_x2_x3 <- round(total_variance * shared_x2_x3)
+  n_shared_x3_y <- round(total_variance * shared_x3_y)
+  n_shared_all <- round(total_variance * shared_all)
+  
+  # generating numbers for each component
+  x1_unique_numbers <- seq(1, n_unique_x1)
+  x2_unique_numbers <- seq(max(x1_unique_numbers) + 1, max(x1_unique_numbers) + n_unique_x2)
+  x3_unique_numbers <- seq(max(x2_unique_numbers) + 1, max(x2_unique_numbers) + n_unique_x3)
+  y_unique_numbers <- seq(max(x3_unique_numbers) + 1, max(x3_unique_numbers) + n_unique_y)
+  shared_x1_x2_numbers <- seq(max(y_unique_numbers) + 1, max(y_unique_numbers) + n_shared_x1_x2)
+  shared_x1_y_numbers <- seq(max(shared_x1_x2_numbers) + 1, max(shared_x1_x2_numbers) + n_shared_x1_y)
+  shared_x2_y_numbers <- seq(max(shared_x1_y_numbers) + 1, max(shared_x1_y_numbers) + n_shared_x2_y)
+  shared_x1_x3_numbers <- seq(max(shared_x2_y_numbers) + 1, max(shared_x2_y_numbers) + n_shared_x1_x3)
+  shared_x2_x3_numbers <- seq(max(shared_x1_x3_numbers) + 1, max(shared_x1_x3_numbers) + n_shared_x2_x3)
+  shared_x3_y_numbers <- seq(max(shared_x2_x3_numbers) + 1, max(shared_x2_x3_numbers) + n_shared_x3_y)
+  shared_all_numbers <- seq(max(shared_x3_y_numbers) + 1, max(shared_x3_y_numbers) + n_shared_all)
+  
+  # combining into lists for Y, X1, X2, and X3
+  x <- list(
+    Y = c(y_unique_numbers, shared_x1_y_numbers, shared_x2_y_numbers, shared_x3_y_numbers, shared_all_numbers),
+    X1 = c(x1_unique_numbers, shared_x1_x2_numbers, shared_x1_y_numbers, shared_x1_x3_numbers, shared_all_numbers),
+    X2 = c(x2_unique_numbers, shared_x1_x2_numbers, shared_x2_y_numbers, shared_x2_x3_numbers, shared_all_numbers),
+    X3 = c(x3_unique_numbers, shared_x1_x3_numbers, shared_x2_x3_numbers, shared_x3_y_numbers, shared_all_numbers)
+    )
+  
+  # creating the Venn diagram using ellipses
+  venn <- Venn(x)
+  data <- process_data(venn)
+  
+  ggplot() +
+    geom_polygon(
+      aes(X, Y, fill = as.factor(id), group = id),
+      data = venn_regionedge(data), alpha = alpha
+      ) +
+    geom_path(
+      aes(X, Y, group = id),
+      data = venn_setedge(data),
+      show.legend = FALSE,
+      linewidth = 1
+      ) +
+    geom_text(
+      aes(x = X, y = Y, label = name),
+      data = venn_setlabel(data),
+      size = 5
+      ) + {
+        if (labels) annotate(
+          geom = "text", x = 0.32, y = 0.675,
+          label = glue("a: {format(round(shared_x1_y, 2), nsmall = 2)}"),
+          size = 5
+          )
+        } + {
+          if (labels) annotate(
+            geom = "text", x = 0.32, y = 0.425,
+            label = glue("b: {format(round(shared_x2_y, 2), nsmall = 2)}"),
+            size = 5
+            )
+          } + {
+            if (labels) annotate(
+              geom = "text", x = 0.4, y = 0.575,
+              label = glue("d: {format(round(shared_x1_x2, 2), nsmall = 2)}"),
+              size = 5
+              ) } + {
+                if (labels) annotate(
+                  geom = "text", x = 0.2, y = 0.55,
+                  label = glue("h: {format(round(unique_y, 2), nsmall = 2)}"),
+                  size = 5
+                  ) } + {
+                    if (labels) annotate(
+                      geom = "text", x = 0.5, y = 0.48,
+                      label = glue("g: {format(round(shared_all, 2), nsmall = 2)}"),
+                      size = 5
+                      ) } + {
+                      if (labels) annotate(
+                        geom = "text", x = 0.425, y = 0.38,
+                        label = glue("f: {format(round(shared_x2_x3, 2), nsmall = 2)}"),
+                        size = 5
+                        ) } + {
+                        if (labels) annotate(
+                          geom = "text", x = 0.575, y = 0.38,
+                          label = glue("e: {format(round(shared_x1_x3, 2), nsmall = 2)}"),
+                          size = 5
+                          ) } + {
+                          if (labels) annotate(
+                            geom = "text", x = 0.5, y = 0.3,
+                            label = glue("c: {format(round(shared_x3_y, 2), nsmall = 2)}"),
+                            size = 5
+                            ) } +
+    scale_fill_manual(values = mycolors) +
+    coord_equal() +
+    theme_void() +
+    theme(legend.position = "none")
+  
+}
+
+# introduction diagram
+venn_4d()
+```
+
+What proportion of variance in intelligence (e.g., IQ) can be uniquely attributed to genetic factors, independent of socio-economic influences? How do neuroimaging data from different modalities (e.g., fMRI and M/EEG) relate to one another and to theoretical models?
+
+These questions highlight the critical role of shared variance in understanding complex systems. Commonality analysis provides a valuable tool for addressing such questions by partitioning the explained variance ($R^{2}$) in multiple regression into distinct components. It identifies how much variance is uniquely attributable to each predictor and how much arises from shared contributions among predictors. This approach helps to clarify multivariate relationships and assess the relative importance of each independent variable (Seibold & McPhee, 1979).
+
+In this post, I will illustrate this method with practical examples in `R` and visual aids.
+
+*Disclaimer*: This post reflects my personal effort to gain a better understanding of commonality analysis and should be interpreted with caution. I do not claim to have any special expertise on this topic.
+
+# Identifying unique and shared variance
+
+Let's start by generating and plotting some data. We will create a dataset with one dependent (or "outcome") variable $Y$ and two predictor variables, $X1$ and $X2$. Below is an example of how to generate these data in `R`.
+
+```{r generating-data}
+library(ggVennDiagram)
+library(tidyverse)
+library(MASS)
+
+# correlation between Y and X1
+py1 <- 0.6
+
+# correlation between Y and X2
+py2 <- 0.4
+
+# correlation between X1 and X2
+p12 <- 0.3
+
+# defining the means of the variables (zero for simplicity)
+means <- c(0, 0, 0)
+
+# creating the covariance matrix 
+cov_mat <- matrix(c(1, p12, py1, p12, 1, py2, py1, py2, 1), 3, 3)
+
+# creating the correlated variables
+df <- as.data.frame(mvrnorm(n = 50, mu = means, Sigma = cov_mat, empirical = TRUE) )
+colnames(df) <- c("x1", "x2", "y")
+
+# moving the y columns to first position
+df <- df %>% relocate(y)
+
+# computing the zero-order (Pearson) correlations
+ry1 <- cor(x = df$y, y = df$x1)
+ry2 <- cor(x = df$y, y = df$x2)
+r12 <- cor(x = df$x1, y = df$x2)
+```
+
+```{r plotting-data, echo = FALSE, fig.width = 9, fig.height = 3, out.width = "100%"}
+library(tidyverse)
+library(patchwork)
+
+p1 <- df %>%
+  ggplot(aes(x = x1, y = y) ) +
+  geom_point() +
+  geom_smooth(method = "lm", color = "black") +
+  theme_light()
+
+p2 <- df %>%
+  ggplot(aes(x = x2, y = y) ) +
+  geom_point() +
+  geom_smooth(method = "lm", color = "black") +
+  theme_light()
+
+p3 <- df %>%
+  ggplot(aes(x = x1, y = x2) ) +
+  geom_point() +
+  geom_smooth(method = "lm", color = "black") +
+  theme_light()
+
+p1 + p2 + p3
+```
+
+The shared variance among these variables can be visually represented as overlapping regions on a Venn diagram, as shown below.
+
+```{r venn-example, echo = FALSE, out.width = "75%"}
+# see https://r-charts.com/part-whole/ggvenndiagram/
+# and https://github.com/gaospecial/ggVennDiagram
+# and https://www.frontiersin.org/journals/genetics/articles/10.3389/fgene.2021.706907/full
+library(ggVennDiagram)
+library(tidyverse)
+
+# defining a list of items
+x <- list(Y = 5:14, X1 = 1:5, X2 = 2:8)
+
+# 3D Venn diagram
+# ggVennDiagram(x, label = "none") +
+#   scale_fill_distiller(palette = "Spectral") +
+#   theme(legend.position = "none") +
+#   # adding custom labels for subsets
+#   annotate(
+#     geom = "text", x = 2, y = 1.5,
+#     label = "a", size = 5
+#     ) +
+#   annotate(
+#     geom = "text", x = -0.25, y = -2.5,
+#     label = "b", size = 5
+#     ) +
+#   annotate(
+#     geom = "text", x = 2, y = -1.5,
+#     label = "c", size = 5
+#     ) +
+#   annotate(
+#     geom = "text", x = -1.5, y = 1,
+#     label = "d", size = 5
+#     ) +
+#   theme(legend.position = "none")
+
+venn <- Venn(x)
+data <- process_data(venn)
+ggplot() +
+  geom_polygon(
+    aes(X, Y, fill = as.factor(id), group = id),
+    data = venn_regionedge(data)
+    ) +
+  geom_path(
+    aes(x = X, y = Y, group = id),
+    # colour = "white",
+    data = venn_setedge(data),
+    show.legend = FALSE,
+    linewidth = 1
+    ) +
+  geom_text(
+    aes(x = X, y = Y, label = name),
+    data = venn_setlabel(data),
+    size = 5
+    ) +
+  # adding custom labels for subsets
+  annotate(
+    geom = "text", x = 2, y = 1.5,
+    label = "a", size = 5
+    ) +
+  annotate(
+    geom = "text", x = -0.25, y = -2.5,
+    label = "b", size = 5
+    ) +
+  annotate(
+    geom = "text", x = 2, y = -1.5,
+    label = "c", size = 5
+    ) +
+  annotate(
+    geom = "text", x = -1.5, y = 1,
+    label = "d", size = 5
+    ) +
+  scale_fill_brewer(palette = "Spectral") +
+  coord_equal() +
+  theme_void() +
+  theme(legend.position = "none")
+
+# defining a list of items
+# x <- list(x1 = 1:100, x2 = 91:190, y = c(91:100, 291:380) )
+
+# 3D Venn diagram
+# ggVennDiagram(
+#   x,
+#   label = "count",
+#   label_color = "white",
+#   label_alpha = 0,
+#   set_color = "white",
+#   edge_size = 0.5,
+#   order.intersect.by = "none",
+#   order.set.by = "none",
+#   show_intersect = FALSE
+#   ) +
+#   theme(legend.position = "none") +
+#   # scale_fill_distiller(palette = "RdBu") +
+#   # scale_fill_distiller(palette = "Spectral")
+#   # scale_fill_manual(
+#   #   values = c(
+#   #     "1" = "red",    # Unique to X1
+#   #     "2" = "blue",   # Unique to X2
+#   #     "3" = "green",  # Unique to Y
+#   #     "12" = "purple", # Shared by X1 and X2
+#   #     "13" = "orange", # Shared by X1 and Y
+#   #     "23" = "pink",   # Shared by X2 and Y
+#   #     "123" = "yellow" # Shared by all three
+#   #     )
+#   #   ) +
+#   # adding custom labels for subsets
+#   annotate(geom = "text", x = 2, y = 2.25, label = "a", size = 5, color = "white") +
+#   annotate(geom = "text", x = 2, y = -0.5, label = "b", size = 5, color = "white") +
+#   # theme_minimal() +
+#   theme(legend.position = "none")
+
+# defining a list of items
+# x <- list(x1 = 1:5, x2 = 2:7, x3 = 5:10, y = 8:15)
+
+# 4D Venn diagram
+# ggVennDiagram(x, label = "percent", label_alpha = 0) +
+#   theme(legend.position = "none")
+```
+
+Where:
+
+- $a$ represents the proportion of variance uniquely shared between $Y$ and $X1$
+- $b$ represents the proportion of variance uniquely shared between $Y$ and $X2$
+- $c$ represents the proportion of common variance between $Y$, $X1$, and $X2$ (i.e., $1-a+b+d$)
+- $d$ represents the proportion of variance unique to $Y$
+- $a+b+c+d=1$ represents the total variance in $Y$
+- $R_{Y.X1X2}^{2}=a+b+c$ represents the proportion of variance in $Y$ that is explainable from $X1$ and $X2$, and is computed as:
+
+$$
+R_{Y.X1X2}^{2} = a+b+c = \frac{r_{YX1}^2+r_{YX2}^2-2r_{YX1} r_{YX2} r_{X1X2}}{1-r_{X1X2}^2}
+$$ {#eq-r2total}
+
+In the regression framework, $R^{2}$ can also be computed as $1-\frac{s^{2}_{\hat{Y}}}{s^{2}_{Y}}$, that is, the ratio between the sum of squares of the residuals and the sum of squares in the outcome variable $Y$.
+
+```{r r2}
+# fitting a regression to predict Y from X1 and X2
+model <- lm(y ~ x1 + x2, data = df)
+
+# retrieving the coefficient of determination R^2
+summary(model)$r.squared
+
+# which is computed as:
+ss_residuals <- sum(residuals(model)^2)
+ss_total <- sum((df$y - mean(df$y) )^2)
+1 - ss_residuals / ss_total
+```
+
+# Semi-partial correlations
+
+A semi-partial correlation, also known as "part correlation" and denoted as $r_{Y(X1.X2)}$, refers to the correlation between variables $Y$ and $X1$ with variation from variable $X2$ removed *only* from variable $X1$. In other words, this correlation assesses the extent to which the part of $X1$ that is independent of $X2$ correlates with all of $Y$. It corresponds to region $a$ in the Venn diagram below (divided by all parts of $Y$, that is, $a+b+c+d=1$).
+
+```{r venn-semi, echo = FALSE, out.width = "75%"}
+R2Y.X1X2 <- (ry1^2 + ry2^2 - (2 * ry1 * ry2 * r12) ) / (1 - r12^2)
+shared_x1_y <- R2Y.X1X2 - ry2^2
+shared_x2_y <- R2Y.X1X2 - ry1^2
+unique_y <- 1 - R2Y.X1X2
+shared_all <- 1 - (shared_x1_y + shared_x2_y + unique_y)
+unique_x1 <- sum((df$x1 - mean(df$x1) )^2) - shared_x1_y
+unique_x2 <- sum((df$x2 - mean(df$x2) )^2) - shared_x2_y
+shared_x1_x2 <- R2Y.X1X2 - r12^2
+
+venn_3d(
+  unique_x1 = unique_x1,
+  unique_x2 = unique_x2,
+  unique_y = unique_y,
+  shared_x1_x2 = shared_x1_x2,
+  shared_x1_y = shared_x1_y,
+  shared_x2_y = shared_x2_y,
+  shared_all = shared_all
+  )
+```
+
+Semi-partial correlations can be computed as follows:
+
+$$
+\begin{aligned}
+sr_{X1} &= r_{Y(X1.X2)}=\frac{r_{YX1}-r_{YX2} r_{X1X2}}{\sqrt{1-r_{X1X2}^2}}\\
+sr_{X1}^{2} &= r_{Y(X1.X2)}^{2} = \frac{a}{a+b+c+d} = R_{Y.X1X2}^2-r_{YX2}^2\\
+sr_{X2} &= r_{Y(X2.X1)}=\frac{r_{YX1}-r_{YX2} r_{X1X2}}{\sqrt{1-r_{X1X2}^2}}\\
+sr_{X2}^{2} &= r_{Y(X2.X1)}^{2} = \frac{b}{a+b+c+d} = R_{Y.X1X2}^2-r_{YX1}^2
+\end{aligned}
+$$ {#eq-semi}
+
+```{r semipartial}
+# proportion of variance in Y that is explainable from X1 and X2
+R2Y.X1X2 <- (ry1^2 + ry2^2 - 2*ry1*ry2*r12) / (1 - r12^2)
+
+# proportion of variance in Y that is explainable from the part of X1
+# that is independent of X2
+shared_x1_y <- R2Y.X1X2 - ry2^2
+
+# proportion of variance in Y that is explainable from the part of X2
+# that is independent of X1
+shared_x2_y <- R2Y.X1X2 - ry1^2
+
+# printing the results
+cat("sr2_x1 (a):", shared_x1_y, "\nsr2_x2 (b):", shared_x2_y)
+```
+
+In brief, the variance in $Y$ that is uniquely shared with $X1$ is the total variance shared between $Y$, $X1$, and $X2$ (i.e., $a+b+c$) minus the variance in $Y$ that is shared with $X2$ (i.e., $b+c$). Reciprocally, the variance in $Y$ that is uniquely shared with $X2$ is the total variance shared between $Y$, $X1$, and $X2$ (i.e., $a+b+c$) minus the variance in $Y$ that is shared with $X1$ (i.e., $a+c$).
+
+# Partial correlations
+
+A partial correlation, denoted as $r_{YX1.X2}$, refers to the correlation between variables $Y$ and $X1$ with variable $X2$ removed from *both* variables. In other words, this correlation assesses the extent to which the part of $X1$ that is independent of $X2$ is correlated with the part of $Y$ that is also independent of $X2$. It also corresponds to region $a$ in the Venn diagram (but divided now *only by the parts of $Y$ that are independent of $X2$*, that is, $a+d$).^[For this reason, the absolute value of the semi-partial correlation of $X$ with $Y$ is always less than or equal to that of the partial correlation of $X$ with $Y$.] Partial correlations can be computed as follows:
+
+$$
+\begin{aligned}
+pr_{X1}^{2} &= r_{YX1.X2}^{2} = \frac{a}{a+d} = \frac{R_{Y.X1X2}^2-r_{YX2}^2}{1-r_{YX2}^2}\\
+pr_{X2}^{2} &= r_{YX2.X1}^{2} = \frac{b}{b+d} = \frac{R_{Y.X1X2}^2-r_{YX1}^2}{1-r_{YX1}^2}
+\end{aligned}
+$$ {#eq-partial}
+
+```{r partial}
+# proportion of variance in the part of Y that is independent of X2
+# that is explainable from the part of X1 that is independent of X2
+r2_YX1.X2 <- (R2Y.X1X2 - ry2^2) / (1 - ry2^2)
+
+# proportion of variance in the part of Y that is independent of X1
+# that is explainable from the part of X2 that is independent of X1
+r2_YX2.X1 <- (R2Y.X1X2 - ry1^2) / (1 - ry1^2)
+
+# printing the results
+cat("pr2_x1 (a):", r2_YX1.X2, "\npr2_x2 (b):", r2_YX2.X1)
+```
+
+Note that if $X1$ and $X2$ are uncorrelated, the semi-partial correlation $r_{Y(X1.X2)}$ is equal to the correlation $r_{YX1}$. However, the partial correlation $r_{YX1.X2}$ is *not* necessarily equal to the correlation $r_{YX1}$.
+
+# Relation to regression
+
+Recall that the residuals of a univariate regression represent the part of the outcome $Y$ that is independent of the predictor $X$ (cf. this [course](https://brendanhcullen.github.io/psy612/lectures/7-partial.html)):
+
+$$
+\begin{aligned}
+\hat{Y} &= \alpha + \beta X\\
+\epsilon_{i} &= Y_i-\hat{Y}_i
+\end{aligned}
+$$ {#eq-reg1}
+
+We can use this to construct a measure of $X1$ that is independent of $X2$:
+
+$$
+\begin{aligned}
+\hat{X}_{1.2} &= \alpha + \beta X_{2}\\
+\epsilon_{X1} &= X_{1} - \hat{X}_{1.2}
+\end{aligned}
+$$ {#eq-reg2}
+
+We can then correlate that value with $Y$ to compute our semi-partial correlation:
+
+$$
+r_{\epsilon_{X1}, Y}=r_{Y(X1.X2)}
+$$ {#eq-reg3}
+
+Or we can compute a measure of $Y$ that is also independent of $X2$ and correlate that with our $X1$ residuals (equivalent to the partial correlation).
+
+$$
+\begin{aligned}
+\hat{Y} &= \alpha + \beta X_{2}\\
+\epsilon_{Y} &= Y - \hat{Y}\\
+r_{\epsilon_{X1}, \epsilon_{Y}} &= r_{YX1.X2}
+\end{aligned}
+$$ {#eq-reg4}
+
+```{r reg-semi, echo = TRUE, eval = TRUE}
+# creating a measure of X1 that is independent of X2
+model_x1_x2 <- lm(x1 ~ x2, data = df)
+
+# creating a measure of Y that is independent of X2
+model_y_x2 <- lm(y ~ x2, data = df)
+
+# computing the semi-partial correlation r_Y(X1.X2)
+cor(residuals(model_x1_x2), df$y)^2
+
+# computing the partial correlation r_YX1.X2
+cor(residuals(model_x1_x2), residuals(model_y_x2) )^2
+```
+
+# Commonality analysis
+
+Developed in the 1960s, commonality analysis (or element analysis) is a statistical technique designed to partition explained variance into unique and shared components (Nimon et al., 2008). This technique identifies how much variance each independent variable, individually and in combination with others, contributes to explaining the dependent variable (Seibold & McPhee, 1979).
+
+The unique contribution $U$ of a predictor variable (e.g., $X1$) is defined as the squared semi-partial correlation between the predictor variable of interest and the dependent variable, after removing the influence of all other predictors (Pedhazur, 1997). For example, consider a regression model with two predictors, $X1$ and $X2$:
+
+$$
+\begin{aligned}
+U_{YX1} &= a = (a+b+c) - (b+c) = R_{Y.X1X2}^{2} - R_{Y.X2}^{2}\\
+U_{YX2} &= b = (a+b+c) - (a+c) = R_{Y.X1X2}^{2} - R_{Y.X1}^{2}\\
+\end{aligned}
+$$ {#eq-common1}
+And the commonality coefficient is computed as:
+
+$$
+\begin{aligned}
+C_{YX1X2} &= (a+b+c) - a - b = c\\
+&= R_{Y.X1X2}^{2} - U_{YX1} - U_{YX2}\\
+&=R_{Y.X1X2}^2-\left(R_{Y.X1X2}^2-R_{Y.X2}^2\right)-\left(R_{Y.X1X2}^2-R_{Y.X1}^2\right)\quad&&\text{plugging the equations for the unique contributions}\\
+&=R_{Y.X1X2}^2-R_{Y.X1X2}^2+R_{Y.X2}^2-R_{Y.X1X2}^2+R_{Y.X1}^2\quad&&\text{distributing the negative signs into each term}\\
+&=\left(-R_{Y.X1X2}^2+R_{Y.X1X2}^2-R_{Y.X1X2}^2\right)+R_{Y.X1}^2+R_{Y.X2}^2\quad&&\text{combining similar terms}\\
+&= R_{Y.X1}^{2} + R_{Y.X2}^{2} - R_{Y.X1X2}^{2}
+\end{aligned}
+$$ {#eq-common2}
+
+```{r common_2var}
+# computing the commonality coefficient
+c_YX1X2 <- ry1^2 + ry2^2 - R2Y.X1X2
+
+# printing the results
+cat("c_y_x1_x2 (c):", c_YX1X2)
+```
+
+```{r venn-common-3d, echo = FALSE, out.width = "75%"}
+R2Y.X1X2 <- (ry1^2 + ry2^2 - (2 * ry1 * ry2 * r12) ) / (1 - r12^2)
+shared_x1_y <- R2Y.X1X2 - ry2^2
+shared_x2_y <- R2Y.X1X2 - ry1^2
+unique_y <- 1 - R2Y.X1X2
+shared_all <- 1 - (shared_x1_y + shared_x2_y + unique_y)
+unique_x1 <- sum((df$x1 - mean(df$x1) )^2) - shared_x1_y
+unique_x2 <- sum((df$x2 - mean(df$x2) )^2) - shared_x2_y
+shared_x1_x2 <- R2Y.X1X2 - r12^2
+
+venn_3d(
+  unique_x1 = unique_x1,
+  unique_x2 = unique_x2,
+  unique_y = unique_y,
+  shared_x1_x2 = shared_x1_x2,
+  shared_x1_y = shared_x1_y,
+  shared_x2_y = shared_x2_y,
+  shared_all = shared_all
+  )
+```
+
+The computation involves adding the variance shared between $Y$ and $X1$ (i.e., $a+c$) and the variance shared between $Y$ and $X2$ (i.e., $b+c$), then subtracting the total variance shared among $Y$, $X1$, and $X2$ (i.e., $a+b+c$). In simpler terms, this corresponds to the following computation on the Venn diagram: $(a+c)+(b+c)-(a+b+c)=c$.
+
+The number of equations required for a commonality analysis is $2^{k} - 1$ components, where $k$ is the number of predictor variables in the regression analysis. Therefore, the complexity of commonality analysis increases exponentially with the number of variables entered into the model (Seibold & McPhee, 1979).
+
+Let's now move to an example involving three predictors, where:
+
+- $a$ represents the proportion of variance shared between $Y$ and $X1$
+- $b$ represents the proportion of variance shared between $Y$ and $X2$
+- $c$ represents the proportion of variance shared between $Y$ and $X3$
+- $d$ represents the proportion of variance shared between $Y$, $X1$, and $X2$
+- $e$ represents the proportion of variance shared between $Y$, $X1$, and $X3$
+- $f$ represents the proportion of variance shared between $Y$, $X2$, and $X3$
+- $g$ represents the proportion of variance shared between $Y$, $X1$, $X2$, and $X3$
+- $h$ represents the proportion of variance that is unique to $Y$
+
+```{r venn-common-4d, echo = FALSE, out.width = "80%"}
+library(MASS)
+library(yhat)
+
+# correlation between y and x1
+py1 <- 0.6
+
+# correlation between y and x2
+py2 <- 0.4
+
+# correlation between y and x3
+py3 <- 0.5
+
+# correlation between x1 and x2
+p12 <- 0.3
+
+# correlation between x1 and x3
+p13 <- 0.2
+
+# correlation between x2 and x3
+p23 <- 0.35
+
+# defining the means of the variables (all zero for simplicity)
+means <- c(0, 0, 0, 0)
+
+# creating the covariance matrix
+cov_mat <- matrix(
+  c(
+    1, p12, p13, py1,
+    p12, 1, p23, py2,
+    p13, p23, 1, py3,
+    py1, py2, py3, 1
+    ),
+  nrow = 4,
+  ncol = 4
+  )
+
+# generating the correlated data
+df <- as.data.frame(mvrnorm(n = 50, mu = means, Sigma = cov_mat, empirical = TRUE) )
+colnames(df) <- c("x1", "x2", "x3", "y")
+
+# moving y to the first column
+df <- df %>% relocate(y)
+
+# computing the zero-order (Pearson) correlations
+ry1 <- cor(x = df$y, y = df$x1)
+ry2 <- cor(x = df$y, y = df$x2)
+ry3 <- cor(x = df$y, y = df$x3)
+r12 <- cor(x = df$x1, y = df$x2)
+r13 <- cor(x = df$x1, y = df$x3)
+r23 <- cor(x = df$x2, y = df$x3)
+
+# computing unique and common variance
+commonality_table <- commonalityCoefficients(
+  dataMatrix = df,
+  dv = "y",
+  ivlist = list("x1", "x2", "x3")
+  )$CC %>% data.frame()
+
+venn_4d(
+  unique_x1 = 0.2,
+  unique_x2 = 0.2,
+  unique_x3 = 0.2,
+  unique_y = 1 - commonality_table[8, 1],
+  shared_x1_x2 = commonality_table[4, 1],
+  shared_x1_y = commonality_table[1, 1],
+  shared_x2_y = commonality_table[2, 1],
+  shared_x1_x3 = commonality_table[5, 1],
+  shared_x2_x3 = commonality_table[6, 1],
+  shared_x3_y = commonality_table[3, 1],
+  shared_all = commonality_table[7, 1],
+  labels = TRUE,
+  alpha = 0.8
+  )
+
+```
+
+In this case (second line of @eq-common3, the commonality coefficient for the variance shared between $Y$, $X1$, and $X2$, after partialling out $X3$, corresponds to region $d$ in the Venn diagram. The commonality coefficient for the variance shared between $Y$, $X1$, $X2$, and $X3$, however, corresponds to region $g$.
+
+$$
+\begin{aligned}
+\text{N=2:}\ &C_{YX1X2} = d + g = R_{Y.X1}^{2} + R_{Y.X2}^{2} - R_{Y.X1X2}^{2}\\
+\text{N=3:}\ &C_{YX1X2} = d = R_{Y.X1X3}^{2} + R_{Y.X2X3}^{2} - R_{Y.X3}^{2} - R_{Y.X1X2X3}^{2}\\
+\text{N=3:}\ &C_{YX1X2X3} = g = R_{Y.X1}^{2} + R_{Y.X2}^{2} + R_{Y.X3}^{2} - R_{Y.X1X2}^{2} - R_{Y.X1X3}^{2} - R_{Y.X2X3}^{2} + R_{Y.X1X2X3}^{2}\\
+\end{aligned}
+$$ {#eq-common3}
+
+Seibold & McPhee (1979) and Nimon et al. (2008) provide tables with equations for calculating commonality coefficients in regression models with up to 5 predictor variables. These equations are also implemented in the [`yhat` package](https://cran.r-project.org/web/packages/yhat/index.html).
+
+Below we use the `commonalityCoefficients()` function to compute commonality coefficients for our data. The resulting table includes 7 rows, corresponding to the 7 subsets of $Y$ that share variance with $X1$, $X2$, $X3$, or their combinations.
+
+```{r common_3var}
+library(yhat)
+
+commonalityCoefficients(
+  dataMatrix = df,
+  dv = "y",
+  ivlist = list("x1", "x2", "x3")
+  )$CC
+```
+
+Keep in mind that commonality coefficients can occasionally be negative. This happens either due to numerical inaccuracies or suppressor effects, where one variable interferes with or distorts the variance explained by another (Seibold & McPhee, 1979).
+
+# Application to cognitive neuroscience: MEG-fMRI fusion
+
+I got interested in commonality analysis by reading about representational similarity analysis (RSA, Kriegeskorte, Mur, & Bandettini, 2009) and the "fusion" of MEG and fMRI data (e.g., Cichy & Oliva, 2020; Hebart et al., 2018) through RSA. The basic idea is summarised in Figure 6A from Hebart et al. (2018), reproduced below.
+
+```{r rsa, eval = FALSE, echo = FALSE, fig.width = 9, fig.height = 4.5, out.width = "75%"}
+library(correlation)
+library(patchwork)
+
+# generating two random distance matrix (or RDM)
+x <- correlation(data.frame(matrix(rnorm(100), 10) ), redundant = TRUE)
+x <- cor_lower(x)
+
+y <- correlation(data.frame(matrix(rnorm(100), 10) ), redundant = TRUE)
+y <- cor_lower(x)
+
+# plotting those RDMs
+px <- x %>%
+  ggplot(aes(x = Parameter2, y = Parameter1, fill = r) ) +
+  geom_tile(show.legend = FALSE) +
+  theme_void() +
+  labs(title = "RDM1")
+
+py <- y %>%
+  ggplot(aes(x = Parameter2, y = Parameter1, fill = r) ) +
+  geom_tile(show.legend = FALSE) +
+  theme_void() +
+  labs(title = "RDM2")
+
+px + py
+```
+
+![](img/hebart.png){fig-align="center" width=50%}
+
+MEG-fMRI fusion reflects the shared variance (commonality) between three dissimilarity matrices: i) an fMRI RDM generated from voxel patterns of a given ROI, ii) a model RDM reflecting the expected dissimilarity structure for a variable of interest *while excluding the influence of another variable of interest* and iii) an MEG RDM from MEG data at a given time point. This sort of analysis is conducted for each MEG time point independently, yielding a time course of commonality coefficients for each ROI.
+
+In this context, commonality analysis therefore constitutes a powerful tool to compare brain patterns across modalities in terms of second-order (pattern) similarities. As put by Hebart et al. (2018):
+
+> RSA-based MEG-fMRI fusion allows a researcher to ask the following question: At what point in time does the representational structure in a given brain area (as determined from fMRI) match the representational structure determined from the time-resolved MEG signal? The reasoning for this approach is that if the fMRI RDM of a brain region and the MEG RDM of a time point show a correspondence, this suggests that there is a shared representational format in a given brain location and at a given point in time.
+
+# Conclusions
+
+In summary, commonality analysis is a powerful tool for disentangling the unique and shared contributions of predictor variables in regression models. By partitioning variance into its constituent components, it provides insights into the relationships between predictors and outcomes, helping to clarify the role of each variable. Whereas commonality analysis does not establish causal relationships, its ability to quantify shared and unique variance can complement causal inference approaches by offering a nuanced understanding of variable interdependencies. By complementing conventional statistical methods with commonality analysis, researchers can better navigate the intricacies of variable relationships, paving the way for deeper data insights.
+
+# References
+
+<details>
+  <summary>Click to expand</summary>
+
+<div markdown="1">
+
+Cichy, R. M., & Oliva, A. (2020). A M/EEG-fMRI Fusion Primer: Resolving Human Brain Responses in Space and Time. Neuron, 107(5), 772–781. https://doi.org/10.1016/j.neuron.2020.07.001
+
+Flounders, M. W., González-García, C., Hardstone, R., & He, B. J. (2019). Neural dynamics of visual ambiguity resolution by perceptual prior. eLife, 8, e41861. https://doi.org/10.7554/eLife.41861
+
+Gao, C.-H., Yu, G., & Cai, P. (2021). ggVennDiagram: An Intuitive, Easy-to-Use, and Highly Customizable R Package to Generate Venn Diagram. Frontiers in Genetics, 12, 706907. https://doi.org/10.3389/fgene.2021.706907
+
+Hebart, M. N., Bankson, B. B., Harel, A., Baker, C. I., & Cichy, R. M. (2018). The representational dynamics of task and object processing in humans. eLife, 7, e32816. https://doi.org/10.7554/eLife.32816
+
+Kriegeskorte, N. (2008). Representational similarity analysis – connecting the branches of systems neuroscience. Frontiers in Systems Neuroscience. https://doi.org/10.3389/neuro.06.004.2008
+
+McPhee, R.D., & Seibold, D.R. (1979). Rationale, procedures, and applications for decomposition of explained variance in mul- tiple regression analyses. Communication Research, 6(3), 345–384. https://doi.org/10.1177/009365027900600305 
+
+Nimon, K., Lewis, M., Kane, R., & Haynes, R. M. (2008). An R package to compute commonality coefficients in the multiple regression case: An introduction to the package and a practical example. Behavior Research Methods, 40(2), 457–466. https://doi.org/10.3758/BRM.40.2.457
+
+Pedhazur, E. J. (1997). Multiple regression in behavioral research: Explanation and prediction (3rd ed.). Fort Worth, TX: Harcourt Brace.
+
+Seibold, D. R., & McPhee, R. D. (1979). Commonality analysis: A method for decomposing explained variance in multiple regression analyses. Human Communication Research, 5(4), 355-365. https://doi.org/10.1111/j.1468-2958.1979.tb00649.x
+
+Weston, S. (2020). Psy 612: Data Analysis II. Course available online: https://brendanhcullen.github.io/psy612/index.html
+
+</div>
+
+</details>

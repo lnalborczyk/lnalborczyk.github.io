@@ -1,0 +1,35 @@
+---
+title: "A cognitive neuroscience view of inner language: To predict and to hear, see, feel"
+description: "Book chapter reviewing core findinds in the cognitive neuroscience study of inner speech and proposing a novel neurocognitive model of (voluntary) inner speech production."
+date: "2018-10-18"
+author: 
+  - name: Hélène Lœvenbruck
+    orcid: 0000-0003-4015-3565
+  - name: Romain Grandchamp
+    orcid: 0000-0002-0786-1319
+  - name: Lucile Rapin
+  - name: Ladislas Nalborczyk
+    orcid: 0000-0002-7419-9855
+  - name: Marion Dohen
+  - name: Pascal Perrier
+    orcid: 0000-0003-2192-4176
+  - name: Monica Baciu
+    orcid: 0000-0002-6842-1317
+  - name: Marcela Perrone-Bertolotti
+    orcid: 0000-0003-0792-476X
+image: featured.jpeg
+categories:
+  - Inner speech
+  - Motor control
+  - Predictive control
+  - Motor simulation
+links:
+  - name: "{{< fa lock >}} Publisher"
+    url: "https://global.oup.com/academic/product/inner-speech-9780198796640?cc=fr&lang=en&"
+  - name: "{{< ai osf >}} Preprint"
+    url: "https://hal.archives-ouvertes.fr/hal-01898992/document"
+---
+
+## Abstract
+
+Inner verbalisation can be willful, when we deliberately engage in inner speech (e.g., mental rehearsing, counting, list making) or more involuntary, when unbidden verbal thoughts occur. It can either be expanded (fully phonologically specified) or condensed (cast in a prelinguistic format). Introspection and empirical data suggest that willful expanded inner speech recruits the motor system and involves auditory, proprioceptive, tactile as well as perhaps visual sensations. We present a neurocognitive predictive control model, in which willful inner speech is considered as deriving from multisensory goals arising from sensory cortices. An inverse model transforms desired sensory states into motor commands which are specified in motor regions and inhibited by prefrontal cortex. An efference copy of these motor commands is transformed by a forward model into simulated multimodal acts (inner phonation, articulation, gesture). These simulated acts provide predicted multisensory percepts that are processed in sensory regions and perceived as an inner voice unfolding over time. The comparison between desired sensory states and predicted sensory end states provides the sense of agency, of feeling in control of one’s inner speech. Three types of inner verbalisation can be accounted for in this framework: unbidden thoughts, willful expanded inner speech, and auditory verbal hallucination.

@@ -1,0 +1,18 @@
+# date format
+date-format: "YYYY-MM-DD"
+
+# freezing computed outputs
+freeze: true
+
+# enabling banner style title blocks
+title-block-banner: true
+
+# default fields for citation
+citation: false
+
+# wrapping overflow code
+format: 
+  html: 
+    code-overflow: wrap
+    template-partials: 
+      - ../_partials/title-block-link-buttons/title-block.html

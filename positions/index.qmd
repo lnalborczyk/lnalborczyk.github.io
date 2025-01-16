@@ -1,0 +1,70 @@
+---
+title: Open positions
+excerpt: "Open positions in my team"
+toc-location: right
+---
+
+If you are interested in joining my team in [Aix-en-Provence](https://en.wikipedia.org/wiki/Aix-en-Provence) as a Master's student, PhD student, or postdoctoral researcher, feel free to [contact me](mailto:ladislas.nalborczyk@gmail.com) at any time, even if no open position matching your profile is currently advertised.
+
+---
+
+## Postdoctoral positions
+
+There are currently no officially announced postdoctoral positions, but feel free to contact me at any time to inquire about opportunities.
+
+## PhD positions
+
+There are currently no officially announced PhD positions, but feel free to contact me at any time to inquire about opportunities.
+
+## Master's degree research internships
+
+::: {.callout-note icon=false collapse="true"}
+## Uncovering the neural dynamics of inner speech from EEG signals
+
+**Supervision**: [Ladislas Nalborczyk](../team#ladislas){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
+
+**Problem description**: TBD
+
+**Project structure**:
+
+- Understanding the problem (literature work on inner speech and multivariate pattern analyses)
+- Implementing (from partially existing code) and performing individual-level and group-level analyses (in Python using MNE-Python)
+- Discussing the results and writing a report (thesis)
+
+**Key references**: 
+
+- King, J.-R., & Dehaene, S. (2014). Characterizing the dynamics of mental representations: The temporal generalization method. Trends in Cognitive Sciences, 18(4), 203–210. <https://doi.org/10.1016/j.tics.2014.01.002>
+- Lœvenbruck, H., Grandchamp, R., Rapin, L., Nalborczyk, L., Dohen, M., Perrier, P., Baciu, M., & Perrone-Bertolotti, M. (2018). A cognitive neuroscience view of inner language: To predict and to hear, see, feel. In P. Langland-Hassan & A. Vicente (Eds.), Inner speech: New voices (p. 37). Oxford University Press.
+
+**Computer tools**: Python, MNE-Python, scikit-learn, MVPA
+
+**Key-words**: Cognitive Neuroscience, Electroencephalography
+
+:::
+
+::: {.callout-note icon=false collapse="true"}
+## Does the the corollary discharge provide the sensory content of inner speech?
+
+**Supervision**: [Ladislas Nalborczyk](../team#ladislas){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
+
+**Problem description**: TBD
+
+**Project structure**:
+
+- Understanding the problem (literature work on inner speech and internal models)
+- Implementing the experiment (from partially existing code) in Python/PsychoPy
+- Collecting the behavioural data
+- Analysing the behavioural data (in R)
+- Discussing the results and writing a report (thesis)
+
+**Key references**: 
+
+- Delem, M., Stauffert, N., Nguyen, N., Debarnot, U., Guillot, A., & Nalborczyk, L. (2024, March 27). Does the corollary discharge provide the sensory content of inner speech? A preregistered direct replication and extension of Scott  (2013). <https://doi.org/10.31234/osf.io/abps9>
+- Scott, M. (2013). Corollary Discharge Provides the Sensory Content of Inner Speech. Psychological Science, 24(9), 1824–1830. <https://doi.org/10.1177/0956797613478614>
+- Lœvenbruck, H., Grandchamp, R., Rapin, L., Nalborczyk, L., Dohen, M., Perrier, P., Baciu, M., & Perrone-Bertolotti, M. (2018). A cognitive neuroscience view of inner language: To predict and to hear, see, feel. In P. Langland-Hassan & A. Vicente (Eds.), Inner speech: New voices (p. 37). Oxford University Press.
+
+**Computer tools**: R, Python, PsychoPy
+
+**Key-words**: Experimental Psychology, Psycholinguistics
+
+:::

@@ -1,0 +1,139 @@
+---
+title: Why the Akaike information criterion is as much 'Bayesian' as the Bayesian information criterion
+author: Ladislas Nalborczyk
+date: 2016-11-04
+categories:
+  - Bayesian
+  - Model comparison
+description: According to Rubin (1984), a Bayesianly justifiable analysis is one that "treats known values as observed values of random variables, treats unknown values as unobserved random variables, and calculates the conditional distribution of unknowns given knowns and model specifications using Bayes' theorem".
+---
+
+According to Rubin (1984), a Bayesianly justifiable analysis is one that:
+
+> treats known values as observed values of random variables, treats unknown values as unobserved random variables, and calculates the conditional distribution of unknowns given knowns and model specifications using Bayes’ theorem.
+
+The Bayesian approach is then characterised by the explicit use of probability to model the **uncertainty**, which is done by assigning probability distributions to unknowns (the *prior*), then by updating them the information contained in the data (the *likelihood*), to lead to updated probability distributions (the *posterior*).
+
+## Model-based inference
+
+When one writes a paper (or a blogpost) about model selection, it is of good taste to begin with the famous Box' statement that "Essentially, all models are wrong but some are useful" (Box & Drapers, 1987).
+
+Ok, so all models are wrong, in the sense that all models we can build are not exactly like the model which has generated the data (i.e., the *full reality*). But still, we can surely construct models that are *better* than others. Interestingly, as outlined by Burnham & Anderson (2004), the concept of a "good model", depends on the sample size, as smaller effect sizes can often only be revealed as sample size increases. Then, the set of models aiming to explain the data at hand has to take into account the size of the effects.
+
+More generally, we can outline three general principles guiding model-based inference in science:
+
+-   **Simplicity and parsimony** ([Occam's razor](https://en.wikipedia.org/wiki/Occam%27s_razor)). Model selection is a classic [bias-variance trade-off](http://scott.fortmann-roe.com/docs/BiasVariance.html).
+-   **Multiple working hypotheses** ([Chamberlin, 1890](http://www.auburn.edu/~tds0009/Articles/Chamberlain%201965.pdf)). At any point in time there must be several hypotheses (models) under consideration, but number of alternative should be kept small.
+-   **Strength of evidence**. Providing quantitative information to judge the “strength of evidence” is central to science (e.g., see Royall's [book](https://www.crcpress.com/Statistical-Evidence-A-Likelihood-Paradigm/Royall/p/book/9780412044113) on the likelihood-based approach).
+
+Steps of the model selection approach usually consist in establishing a set of $R$ relevant models, ranking these models (and attributing them weights), and choosing the best model from the set to make an inference from this best model.
+
+Wait, how can we rank models? We need tools that account for the basic principles (presented above) that make a model a good model, like how well a model fit the observed data or how parsimonious is a model...
+
+## Akaike information criterion
+
+In 1951, Kullback and Leibler published a now-famous paper that quantified the meaning of *information* as related to Fisher’s concept
+of [sufficient statistics](https://en.wikipedia.org/wiki/Sufficient_statistic) (Kullback & Leibler, 1951). They developped the [Kullback-Leibler divergence](https://en.wikipedia.org/wiki/Kullback–Leibler_divergence) (or K-L information) that measures the information that is lost when approximating reality. K-L information can also be conceptualised as a *distance* between full reality and a specific model (Burnham & Anderson, 2004).
+
+Two decades later, Akaike (1973) showed that this distance can be estimated by finding the parameters values that maximise the probability of the data given the model (i.e., the maximised likelihood or [MLE](https://en.wikipedia.org/wiki/Maximum_likelihood_estimation)). He used this relationship to derive a criterion known as the *Akaike Information Criterion* (AIC), that is
+
+$$AIC=-2\log (\mathcal{L}(\hat{\theta}\vert data))+2K$$
+
+where $\theta$ is the set of model parameters, $\mathcal{L}(\hat{\theta}\vert data)$ the likelihood of the candidate model given the data when evaluated at the MLE of $\theta$, and $K$ is the number of estimated parameters in the candidate model. The first component, $-2log(\mathcal{L}(\hat{\theta}\vert data))$ is known as the [deviance](https://en.wikipedia.org/wiki/Deviance_(statistics)) of the candidate model.
+
+Basically, we can see that AIC then account for the [goodness-of-fit](https://en.wikipedia.org/wiki/Goodness_of_fit) of a model (i.e., the strength of evidence for this model), but penalises it for having too much parameters, that is for not being parsimonious. Clearly, the smaller AIC, the better.
+
+It is important to acknowledge that when $n/K$ > about 40, the "small sample AIC" (second-order bias correction), called AICc, should be used (Burnham & Anderson, 2004).
+
+Absolute AIC values are not directly interpretable as they contain arbitrary constants and are much affected by sample size. We then need to rescale AIC or AICc to:
+
+$$\Delta_{i}= AIC_{i}-AIC_{min}.$$
+
+Hence, $\Delta_{i}$ is the information loss experienced if we are using fitted model $g_{i}$ rather than the best model, $g_{min}$, for inference.
+
+Moreover, the simple transformation $exp(-\Delta_{i}/2)$, for $i=1,2,...,R$, provides the **likelihood** of the model (Akaike, 1981) given the data: $\mathcal{L}(g_{i}\vert data)$.
+
+It is convenient to normalise the model likelihoods such that they sum to 1 in order to treat them as probabilities. Hence, we use:
+
+$$w_{i}=\dfrac{exp(-\Delta_{i}/2)}{\sum_{r=1}^{R}exp(-\Delta_{r}/2)}.$$
+
+The $w_{i}$, called **Akaike weights**, are useful as the *weight of evidence* in favor of model $g_{i}(\cdot \vert \theta)$, as being the actual K-L best model in the set.
+
+## Bayesian information criterion
+
+The Bayesian Information Criterion (BIC), was introduced by Schwarz (1978) as a competitor to the AIC. Schwarz derived the BIC to serve as an asymptotic approximation to a transformation of the Bayesian posterior probability of a candidate model. The computation of BIC is based on the empirical log-likelihood and does not require the specification of priors.
+
+$$BIC=-2\log (\mathcal{L}(\hat{\theta}|data))+K \log (n)$$
+
+We can see that both AIC and BIC measure the same [goodness-of-fit](https://en.wikipedia.org/wiki/Goodness_of_fit) but the penalty term of BIC is more stringent than the penalty term of AIC (for $n \geq 8$, $k \cdot \log (n)$ exceeds $2k$). Consequently, BIC tends to favor smaller models than AIC.
+
+As with $\Delta AIC_{i}$, we define $\Delta BIC_{i}$ as the difference of BIC for model $g_{i}$ and the minimum BIC value. More complete usage entails computing **posterior model probabilities**, as:
+
+$$P(g_{i}\vert data) = \dfrac{\exp(-\frac{1}{2}\Delta BIC_{i})}{\sum_{r=1}^{R}\exp(-\frac{1}{2}\Delta BIC_{r})}$$
+
+(Raftery, 1995). The above posterior model probabilities are based on assuming that **prior model probabilities** are all $1/R$. Most applications of BIC use it in a frequentist "spirit" and hence ignore issues of prior and posterior model probabilities (Burnham & Anderson, 2004).
+ 
+## AIC as a Bayesian result <sub><sup>(mathematical derivations taken from Burnham and Anderson, 2002, 2004)</sup></sub>
+
+We said before that the BIC arises in a context when one assumes equal priors on models but the BIC statistic can be used more generally with any set of model priors. Let $p_{i}$ be the **prior probability** placed on model $g_{i}$. Then the Bayesian **posterior model probability** is approximated as:
+
+$$P(g_{i}\vert data) = \dfrac{\exp(-\frac{1}{2}\Delta BIC_{i})p_{i}}{\sum_{r=1}^{R}\exp(-\frac{1}{2}\Delta BIC_{r})p_{r}}.$$
+
+To get back to Akaike weights (described above) from there we use the model prior:
+
+$$p_{i}= B \cdot \exp(\frac{1}{2}\Delta BIC_{i})\cdot \exp (\frac{1}{2}\Delta AIC_{i})$$
+
+where $B$ is a normalising constant. Clearly,
+
+$$\exp(-\frac{1}{2}\Delta BIC_{i})\cdot \exp (\frac{1}{2}\Delta BIC_{i})\cdot \exp(-\frac{1}{2}\Delta AIC_{i}) = \exp (-\frac{1}{2}\Delta AIC_{i});$$
+
+hence, with this prior probability distribution we get:
+
+$$P(g_{i}\vert data) = \dfrac{\exp(-\frac{1}{2}\Delta BIC_{i})p_{i}}{\sum_{r=1}^{R}\exp(-\frac{1}{2}\Delta BIC_{r})p_{r}}=\dfrac{\exp(-\frac{1}{2}\Delta AIC_{i})}{\sum_{r=1}^{R}\exp(-\frac{1}{2}\Delta AIC_{r})}=w_{i},$$
+
+which is the Akaike weight for model $g_{i}$.
+
+The prior probability on models $p_{i}$ can then be expressed in a simple form as:
+
+$$p_{i}= C \cdot \exp(\frac{1}{2}K_{i}\log (n)-K_{i})$$
+
+where:
+
+$$C=\dfrac{1}{\sum_{r=1}^{R}\exp (\frac{1}{2}K_{r}\log (n)-K_{r})}.$$
+
+Thus, formally, the Akaike weights from AIC are (for large samples) Bayesian **posterior model probabilities** for this particular prior. Burnham & Anderson (2002, 2004) call this prior the **K-L model prior**.
+
+To sum up, AIC can then be justified as Bayesian using a **savvy prior** (i.e., a prior that is an increasing function of $n$ and a decreasing function of $K$). Thus, AIC model selection is just as much a Bayesian procedure as BIC model selection is. The difference is in the prior distribution placed on the model set.
+
+## Author note
+
+*Please correct me if you identify mistakes, I am probably wrong on many aspects of what is discussed above...*
+
+# References
+
+<details>
+  <summary>Click to expand</summary>
+
+<div markdown="1">
+
+Akaike, H. (1981). Likelihood of a model and information criteria. *Journal of Econometrics*, *16*, 3–14. <http://dx.doi.org/10.1016/0304-4076(81)90071-3>
+
+Box, G. E. P., Draper, N. R. (1987). Empirical *Model-Building and Response Surfaces*. John Wiley & Sons.
+
+Burnham, K. P., & Anderson, D. R. (2002). *Model Selection and Multimodel Inference: A Practical Information-Theoretical Approach*. 2d ed. New York: Springer-Verlag.
+
+Burnham, K. P., & Anderson, D. R. (2004). Multimodel inference: Understanding AIC and BIC in model selection. *Sociological Methods and
+Research*, *33*(2), 261–304. <http://dx.doi.org/10.1177/0049124104268644>
+
+Kullback, S., & Leibler, R. A. (1951). On information and sufficiency. *Annals of Mathematical Statistics*, *22*, 79–86. <http://dx.doi.org/10.1214/aoms/1177729694>
+
+Raftery, A. E. (1995). Bayesian Model Selection in Social Research (With Discussion). *Sociological Methodology*, *25*, 111-95. <http://dx.doi.org/10.2307/271063>
+
+Rubin, D. B. (1984). Bayesianly justifiable and relevant frequency calculations for the applied statistician. *The Annals of Statistics*,
+*12*(4), 1151–1172. <https://doi.org/doi:10.1214/aos/1176346785>
+
+Schwarz, G. E. (1978). Estimating the dimension of a model. *Annals of Statistics*, *6*(2), 461–464. <https://doi.org/doi:10.1214/aos/1176344136>
+
+</div>
+
+</details>

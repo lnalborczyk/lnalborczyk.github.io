@@ -1,0 +1,33 @@
+---
+title: "An introduction to Bayesian multilevel models using brms"
+description: "Tutorial paper on Bayesian multilevel modelling in R using the brms package."
+date: "2019-05-21"
+author: 
+  - name: Ladislas Nalborczyk
+    orcid: 0000-0002-7419-9855
+  - name: Cédric Batailler
+    orcid: 0000-0003-0553-6827
+  - name: Hélène Lœvenbruck
+    orcid: 0000-0003-4015-3565
+  - name: Anne Vilain
+    orcid: 0000-0001-5570-9621
+  - name: Paul Bürkner
+    orcid: 0000-0001-5765-8995
+image: featured.jpeg
+categories:
+  - Bayesian
+  - brms
+  - Multilevel models
+  - Statistical modelling
+links:
+  - name: "{{< fa lock >}} Journal"
+    url: "https://doi.org/10.1044/2018_JSLHR-S-18-0006"
+  - name: "{{< ai osf >}} OSF project"
+    url: "https://osf.io/dpzcb/"
+  - name: "{{< ai osf >}} Preprint"
+    url: "https://psyarxiv.com/guhsa/"
+---
+
+## Abstract
+
+Bayesian multilevel models are increasingly used to overcome the limitations of frequentist approaches in the analysis of complex structured data. This paper introduces Bayesian multilevel modelling for the specific analysis of speech data, using the brms package developed in R. In this tutorial, we provide a practical introduction to Bayesian multilevel modelling, by reanalysing a phonetic dataset containing formant (F1 and F2) values for five vowels of Standard Indonesian (ISO 639-3:ind), as spoken by eight speakers (four females), with several repetitions of each vowel. We first give an introductory overview of the Bayesian framework and multilevel modelling. We then show how Bayesian multilevel models can be fitted using the probabilistic programming language Stan and the R package brms, which provides an intuitive formula syntax. Through this tutorial, we demonstrate some of the advantages of the Bayesian framework for statistical modelling and provide a detailed case study, with complete source code for full reproducibility of the analyses.

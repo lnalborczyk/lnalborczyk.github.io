@@ -1,0 +1,24 @@
+/* css styles */
+p {
+  text-align: justify;
+}
+
+.btn-group-xs > .btn, .btn-xs {
+  padding: .25rem .4rem;
+  font-size: .875rem;
+  line-height: .8;
+  border-radius: .2rem;
+}
+
+.about-image {
+  margin-top: 20px;
+  width: 15rem !important;
+  height: 15rem !important;
+}
+
+/* centering the subtitle */
+.subtitle {
+  text-align: center;
+}
+
+/* new color palette */

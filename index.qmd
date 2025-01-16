@@ -1,0 +1,66 @@
+---
+title: Ladislas Nalborczyk
+page-layout: full
+subtitle: "Permanent researcher (CRCN)<br>[LPL, CNRS UMR 7309](https://www.lpl-aix.fr/en/lab/)"
+about:
+  id: about-heading
+  template: trestles
+  image: images/ladislas.jpg
+  image-shape: rounded # rectangle, round, rounded
+  links:
+    - text: "{{< fa envelope >}} Mail"
+      aria-label: email
+      href: "mailto:ladislas.nalborczyk@gmail.com"
+    - icon: github
+      text: GitHub
+      aria-label: github
+      href: https://github.com/lnalborczyk
+    - text: "{{< fa graduation-cap >}} Google Scholar"
+      aria-label: google-scholar
+      href: https://scholar.google.com/citations?user=na-dkLYAAAAJ&hl
+    - text: "{{< fa brands bluesky >}} Bluesky"
+      aria-label: bluesky
+      href: https://bsky.app/profile/lnalborczyk.bsky.social
+aliases:
+  - /about
+editor_options: 
+  chunk_output_type: console
+---
+
+::: {#about-heading}
+
+## Research interests
+
+### Mental production of speech (inner speech)
+
+I am a computational cognitive neuroscientist interested in the conscious experience of inner speech and its neural underpinnings. My research combines experimental (e.g., psychophysics, EMG, M/EEG, TMS) and computational (e.g., mathematical modelling, machine learning) methods to understand how complex patterns of neural activity (in both biological and artificial neural networks) give rise to algorithms supporting the mental simulation of speech.
+
+### Statistical modelling and slow science
+
+In parallel, I also work on the development and dissemination of rigorous experimental and statistical methods. Besides, I feel very concerned about the issue of making our research more open, reproducible, and sustainable.
+
+## Working together
+
+If you are a scientist who wants to collaborate with me, a PhD student or a postdoctoral researcher interested in my research, please [reach out to me](mailto:ladislas.nalborczyk@gmail.com)! Please also check out the [open positions](../positions) in my team, which includes a list of thesis topics for Master students.
+
+:::
+
+```{r writing-redirects, echo = FALSE}
+# listing names of post folders
+posts <- list.dirs(
+  path = here::here("blog"),
+  full.names = FALSE,
+  recursive = FALSE
+  )
+
+# extracting the slugs
+# slugs <- gsub("^.*_", "", posts)
+slugs <- gsub(".*-(.*)$", "\\1", posts)
+
+# lines to insert to a netlify _redirect file
+redirects <- paste0("/post/", slugs, "/ ", "/blog/", posts, "/")
+
+# writing the _redirect file
+# writeLines(redirects, here::here("static", "_redirects") )
+writeLines(redirects, here::here("docs", "_redirects") )
+```

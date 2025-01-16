@@ -1,0 +1,34 @@
+[
+  {
+    "listing": "/blog/index.html",
+    "items": [
+      "/blog/2025-01-07-commonality/2025-01-07-commonality.html",
+      "/blog/2018-07-23-corroboration2/2018-07-23-corroboration2.html",
+      "/blog/2018-07-12-corroboration1/2018-07-12-corroboration1.html",
+      "/blog/2018-04-30-bf/2018-04-30-bf.html",
+      "/blog/2018-01-23-ppc/2018-01-23-ppc.html",
+      "/blog/2018-01-20-glm/2018-01-20-glm.html",
+      "/blog/2017-10-10-icc/2017-10-10-icc.html",
+      "/blog/2017-09-30-summersaga/2017-09-30-summersaga.html",
+      "/blog/2017-09-22-absenteeism2/2017-09-22-absenteeism2.html",
+      "/blog/2017-08-05-absenteeism1/2017-08-05-absenteeism1.html",
+      "/blog/2016-11-04-aicbic/2016-11-04-aicbic.html"
+    ]
+  },
+  {
+    "listing": "/publications/index.html",
+    "items": [
+      "/publications/2025-nalborczyk-et-al/index.html",
+      "/publications/2024-nalborczyk-et-al/index.html",
+      "/publications/2023-nalborczyk-etal/index.html",
+      "/publications/2023-nalborczyk/index.html",
+      "/publications/2022-nalborczyk-etal/index.html",
+      "/publications/2021-beffara-etal/index.html",
+      "/publications/2020-nalborczyk-etal/index.html",
+      "/publications/2020-molto-etal/index.html",
+      "/publications/2019-nalborczyk-etal/index.html",
+      "/publications/2018-loevenbruck-etal/index.html",
+      "/publications/2017-nalborczyk-etal/index.html"
+    ]
+  }
+]

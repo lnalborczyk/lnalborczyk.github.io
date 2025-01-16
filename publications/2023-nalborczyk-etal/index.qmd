@@ -1,0 +1,34 @@
+---
+title: "Distinct neural mechanisms support inner speaking and inner hearing"
+description: "Experimental paper in which we used transcranial magnetic stimulation to test the involvement of the primary motor cortex during inner speaking and inner hearing."
+author: 
+  - name: Ladislas Nalborczyk
+    orcid: 0000-0002-7419-9855
+  - name: Marieke Longcamp
+    orcid: 0000-0003-0454-2934
+  - name: Mireille Bonnard
+    orcid: 0000-0001-5134-1583
+  - name: Victor Serveau
+  - name: Laure Spieser
+    orcid: 0000-0002-5535-1604
+  - name: F.-X. Alario
+    orcid: 0000-0002-8627-5034
+date: "2023-10-10"
+image: featured.jpg
+categories:
+  - Inner speech
+  - Motor imagery
+  - Surface electromyography
+  - Transcranial magnetic stimulation
+links:
+  - name: "{{< fa lock >}} Journal"
+    url: "https://doi.org/10.1016/j.cortex.2023.09.007"
+  - name: "{{< ai osf >}} OSF project"
+    url: "https://osf.io/7kwv6/"
+  - name: "{{< ai osf >}} Preprint"
+    url: "https://psyarxiv.com/x7emk"
+---
+
+## Abstract
+
+Humans have the ability to mentally examine speech. This covert form of speech production is often accompanied by sensory (e.g., auditory) percepts. However, the cognitive and neural mechanisms that generate these percepts are still debated. According to a prominent proposal, inner speech has at least two distinct phenomenological components: inner speaking and inner hearing. We used transcranial magnetic stimulation to test whether these two phenomenologically distinct processes are supported by distinct neural mechanisms. We hypothesised that inner speaking relies more strongly on an online motor-to-sensory simulation that constructs a multisensory experience, whereas inner hearing relies more strongly on a memory-retrieval process, where the multisensory experience is reconstructed from stored motor-to-sensory associations. Accordingly, we predicted that the speech motor system will be involved more strongly during inner speaking than inner hearing. This would be revealed by modulations of TMS evoked responses at muscle level following stimulation of the lip primary motor cortex. Overall, data collected from 31 participants corroborated this prediction, showing that inner speaking increases the excitability of the primary motor cortex more than inner hearing. Moreover, this effect was more pronounced during the inner production of a syllable that strongly recruits the lips (vs. a syllable that recruits the lips to a lesser extent). These results are compatible with models assuming a central role of the primary motor cortex for inner speech production and contribute to clarify the neural implementation of the fundamental ability of silently speaking in one's mind.
