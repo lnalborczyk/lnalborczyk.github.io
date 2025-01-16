@@ -6,6 +6,8 @@ categories:
   - Bayesian
   - Model comparison
 description: According to Rubin (1984), a Bayesianly justifiable analysis is one that "treats known values as observed values of random variables, treats unknown values as unobserved random variables, and calculates the conditional distribution of unknowns given knowns and model specifications using Bayes' theorem".
+aliases:
+  - /post/aicbic/
 ---
 
 According to Rubin (1984), a Bayesianly justifiable analysis is one that:

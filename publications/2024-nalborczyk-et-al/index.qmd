@@ -25,6 +25,8 @@ links:
     url: "https://osf.io/d8a34/"
   - name: "{{< ai osf >}} Preprint"
     url: "https://osf.io/preprints/psyarxiv/tz6x2"
+  - name: "{{< fa file >}} PDF"
+    url: "paper.pdf"
 ---
 
 ## Abstract

@@ -7,6 +7,8 @@ categories:
   - R
   - GLM
 description: What is the difference between the errors and the residuals? What does it mean for a model to *predict* something? What is a link function? In the current post, we use four `R` functions (the `predict`, `fitted`, `residuals` and `simulate` functions) to illustrate the mechanisms and assumptions of the generalised linear model.
+aliases:
+  - /post/glm/
 ---
 
 ```{r setup, include = FALSE}
@@ -164,7 +166,7 @@ $$
 logit(p_{i}) = log\Big(\frac{p_{i}}{1 - p_{i}}\Big) = \alpha + \beta _{1} x_{1} + \cdots + \beta _{n} x_{n}
 $$
 
-Thus, although the observed outcome variable is a dichotomic variable, the logistic regression estimates the **log-odds**, as a continuous variable, that the outcome variable is in a certain state (in our case, that the individual is a man)^[For more details on the logit model, please check this [previous post](../2017-08-05-absenteeism1/2017-08-05-absenteeism1.qmd).]. This model can be written as follows, where $p_{i}$ is the probability that an individual is a man.
+Thus, although the observed outcome variable is a dichotomic variable, the logistic regression estimates the **log-odds**, as a continuous variable, that the outcome variable is in a certain state (in our case, that the individual is a man)^[For more details on the logit model, please check this [previous post](../2017-08-05-absenteeism1/).]. This model can be written as follows, where $p_{i}$ is the probability that an individual is a man.
 
 $$
 \begin{aligned}

@@ -28,6 +28,8 @@ links:
     url: "https://global.oup.com/academic/product/inner-speech-9780198796640?cc=fr&lang=en&"
   - name: "{{< ai osf >}} Preprint"
     url: "https://hal.archives-ouvertes.fr/hal-01898992/document"
+  - name: "{{< fa file >}} PDF"
+    url: "paper.pdf"
 ---
 
 ## Abstract

@@ -15,4 +15,6 @@ links:
     url: "https://www.nature.com/articles/s44159-023-00155-2"
   - name: "{{< ai osf >}} Preprint"
     url: "https://psyarxiv.com/3df57/"
+  - name: "{{< fa file >}} PDF"
+    url: "paper.pdf"
 ---

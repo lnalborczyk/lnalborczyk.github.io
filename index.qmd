@@ -45,7 +45,8 @@ If you are a scientist who wants to collaborate with me, a PhD student or a post
 
 :::
 
-```{r writing-redirects, echo = FALSE}
+```{r writing-redirects, echo = FALSE, eval = FALSE}
+# NB: this only works for Netlify...
 # listing names of post folders
 posts <- list.dirs(
   path = here::here("blog"),

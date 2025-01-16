@@ -6,6 +6,8 @@ categories:
   - Philosophy of science
   - Paul Meehl
 description: My compiled reading notes on Meehl's metatheory and related meta-peregrinations.
+aliases:
+  - /post/corroboration1/
 ---
 
 ```{r setup, include = FALSE}

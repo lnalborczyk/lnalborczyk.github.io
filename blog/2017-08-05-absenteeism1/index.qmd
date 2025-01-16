@@ -7,6 +7,8 @@ categories:
   - Bayesian
   - Logistic regression
 description: This post aims to assess the average probability of participant presence in psychological experiments and, in the meantime, to introduce Bayesian logistic regression using `R` and the `rethinking` package.
+aliases:
+  - /post/absenteeism/
 ---
 
 ```{r, message = FALSE, echo = FALSE}

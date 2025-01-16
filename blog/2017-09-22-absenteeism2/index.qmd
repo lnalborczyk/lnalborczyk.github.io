@@ -9,6 +9,8 @@ categories:
   - Logistic regression
   - Multilevel model
 description: This post continues our exploration of the logistic regression model by extending it to a multilevel logistic regression model, using the `brms` package.
+aliases:
+  - /post/absenteeism2/
 ---
 
 ```{r, message = FALSE, echo = FALSE}
@@ -19,7 +21,7 @@ knitr::opts_chunk$set(
     )
 ```
 
-In a [previous post](../2017-08-05-absenteeim1/2017-08-05-absenteeism1.qmd), we tried to determine whether we could predict the presence of students that registered for psychological experiments, based on their mode of enrolment and the sending of a reminder by e-mail. As these two factors were confounded, we will focus in the current post on evaluating the effect of the reminder only, based on a bigger dataset gathered by several researchers.
+In a [previous post](../2017-08-05-absenteeim1/), we tried to determine whether we could predict the presence of students that registered for psychological experiments, based on their mode of enrolment and the sending of a reminder by e-mail. As these two factors were confounded, we will focus in the current post on evaluating the effect of the reminder only, based on a bigger dataset gathered by several researchers.
 
 Let's say that I have convinced ten of my colleagues to systematically send a reminder to one half of the participants of their next study, and no reminder to the other half.[^1] As my colleagues love high-powered studies, each of them aimed at recruiting approximately 200 participants per experiment, while this sample size could vary a little bit from one researcher to another (+/- 20%).
 

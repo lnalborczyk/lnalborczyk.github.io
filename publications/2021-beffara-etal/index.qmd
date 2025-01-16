@@ -23,6 +23,8 @@ links:
     url: "https://osf.io/mwtvk/"
   - name: "{{< ai osf >}} Preprint"
     url: "https://psyarxiv.com/v7xpg/"
+  - name: "{{< fa file >}} PDF"
+    url: "paper.pdf"
 ---
 
 ## Abstract

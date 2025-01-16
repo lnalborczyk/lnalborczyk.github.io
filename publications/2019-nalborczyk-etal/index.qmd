@@ -26,6 +26,8 @@ links:
     url: "https://osf.io/dpzcb/"
   - name: "{{< ai osf >}} Preprint"
     url: "https://psyarxiv.com/guhsa/"
+  - name: "{{< fa file >}} PDF"
+    url: "paper.pdf"
 ---
 
 ## Abstract

@@ -8,6 +8,8 @@ categories:
   - Bayesian
   - PPC
 description: "As put by Gelman et al. (2013, page 148): 'because a probability model can fail to reflect the process that generated the data in any number of ways, posterior predictive *p*-values can be computed for a variety of test quantities in order to evaluate more than one possible model failure'."
+aliases:
+  - /post/ppc/
 ---
 
 ```{r setup, include = FALSE}
@@ -22,7 +24,7 @@ knitr::opts_chunk$set(
 
 What is a posterior predictive check ? According to Gelman et al. (2013, page 151), "Bayesian predictive checking generalizes classical hypothesis testing by averaging over the posterior distibution of the unknown parameters vector $\theta$ rather than fixing it at some estimate $\hat{\theta}$".
 
-To explore this idea in more details, we are going to extend an example presented in Gelman et al. (2013, page 147) to a case study I have already discussed in two previous blogposts ([here](http://www.barelysignificant.com/post/absenteeism/) and [here](http://www.barelysignificant.com/post/absenteeism2/)). Let's say I am recruiting participants for a psychology study that is lasting for approximately half an hour. If everything goes smoothly, I can manage to recruit 2 participants per hour, and doing it between 9am and 6pm (having the first participant at 9am, the second one at 9.30am and the last one at 5.30pm) for a whole week (from Monday to Friday) would give me 90 potential participants.
+To explore this idea in more details, we are going to extend an example presented in Gelman et al. (2013, page 147) to a case study I have already discussed in two previous blogposts ([here](../2017-08-05-absenteeism1/) and [here](../2017-09-22-absenteeism2/)). Let's say I am recruiting participants for a psychology study that is lasting for approximately half an hour. If everything goes smoothly, I can manage to recruit 2 participants per hour, and doing it between 9am and 6pm (having the first participant at 9am, the second one at 9.30am and the last one at 5.30pm) for a whole week (from Monday to Friday) would give me 90 potential participants.
 
 ## Beta-Binomial model
 

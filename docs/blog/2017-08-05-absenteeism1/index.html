@@ -408,7 +408,7 @@ logit(p_{i}) &amp;= \alpha\\
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">precis</span>(mod1, <span class="at">prob =</span> <span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      mean        sd      2.5%    97.5%
-a 1.182715 0.1959509 0.7986586 1.566772</code></pre>
+a 1.182719 0.1959511 0.7986619 1.566776</code></pre>
 </div>
 </div>
 <p>which gives the mode of the posterior distribution for the intercept <span class="math inline">\(\alpha\)</span> along with the standard deviation of the distribution as well as the credible intervals. The intercept represents the estimated <strong>log-odds</strong> of being present, which can be translated back to the overall probability of being present, as we know that:</p>
@@ -417,7 +417,7 @@ a 1.182715 0.1959509 0.7986586 1.566772</code></pre>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(mod1)) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(<span class="fu">coef</span>(mod1) ) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        a 
-0.7654357 </code></pre>
+0.7654363 </code></pre>
 </div>
 </div>
 <p>which is equivalent to using the <code>plogis</code> function:</p>
@@ -425,7 +425,7 @@ a 1.182715 0.1959509 0.7986586 1.566772</code></pre>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plogis</span>(<span class="fu">coef</span>(mod1) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        a 
-0.7654357 </code></pre>
+0.7654363 </code></pre>
 </div>
 </div>
 <p>So we already know that there is an estimated 0.77 probability that a registered participant will come to his appointment…and if the intercept represents the <strong>log-odds</strong> of being present, a simple exponential transformation allows to get back to odds:</p>
@@ -433,7 +433,7 @@ a 1.182715 0.1959509 0.7986586 1.566772</code></pre>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(mod1) ) <span class="co"># odds of presence</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       a 
-3.263223 </code></pre>
+3.263235 </code></pre>
 </div>
 </div>
 <p>which can be interpreted directly by saying that the odds of a registered participant being present are of 3.26 (or 3.26:1)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
@@ -476,8 +476,8 @@ logit(p_{i}) &amp;= \alpha + \beta \times \text{reminder} \\
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compare</span>(mod1, mod2) <span class="co"># yeah, model 2 wins</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         WAIC       SE    dWAIC      dSE    pWAIC     weight
-mod2 47.88022 8.570971 0.000000       NA 3.203260 0.98117266
-mod1 55.78709 7.313621 7.906877 9.424182 1.952515 0.01882734</code></pre>
+mod2 48.33272 8.926933 0.000000       NA 3.534778 0.97616377
+mod1 55.75756 7.308822 7.424847 9.667886 1.942421 0.02383623</code></pre>
 </div>
 </div>
 <p>This comparison reveals that the second model is better in the sense of the WAIC (as for the deviance, the lower is the better), and that the parameter we added (i.e., the slope <span class="math inline">\(\beta\)</span>) improved the predictive abilities of the model.</p>
@@ -486,7 +486,7 @@ mod1 55.78709 7.313621 7.906877 9.424182 1.952515 0.01882734</code></pre>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(mod2)[<span class="dv">2</span>]) <span class="co"># odds ratio between no-reminder and reminder</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       b 
-3.774537 </code></pre>
+3.774536 </code></pre>
 </div>
 </div>
 <p>which can be read as a propotionnal increase of 3.77 in the <strong>odds</strong> of being present when a reminder is sent. We also might be interested in the absolute change in probability, rather than the <strong>odds ratio</strong>. To answer this question, we first extract the samples from the posterior distribution estimated by this second model and store it in <code>post1</code>.</p>
@@ -535,8 +535,8 @@ logit(p_{i}) &amp;= \alpha + \beta \times \text{inscription} \\
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compare</span>(mod1, mod3) <span class="co"># yeah, model 3 wins</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         WAIC       SE    dWAIC      dSE    pWAIC    weight
-mod3 53.98496 9.424608 0.000000       NA 4.747716 0.7104794
-mod1 55.78039 7.319395 1.795427 10.16737 1.950731 0.2895206</code></pre>
+mod3 54.26925 9.913801 0.000000       NA 4.898551 0.6515147
+mod1 55.52065 7.267908 1.251408 10.70296 1.794424 0.3484853</code></pre>
 </div>
 </div>
 <p>this time again the model comparison tells us that the inclusion of this predictor in the model improves the predictions abilities of the model.</p>
@@ -593,11 +593,11 @@ logit(p_{i}) &amp;= \alpha + \beta_{r} \times \text{reminder} + \beta_{i} \times
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compare</span>(mod1, mod2, mod3, mod4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>         WAIC        SE    dWAIC      dSE    pWAIC     weight
-mod2 48.46002  8.890854 0.000000       NA 3.566953 0.74917695
-mod4 51.48444 10.132040 3.024419 1.665125 5.147498 0.16513540
-mod3 53.30233  9.361360 4.842312 3.158742 4.323248 0.06654107
-mod1 55.79372  7.319671 7.333702 9.642265 1.965242 0.01914658</code></pre>
+<pre><code>         WAIC       SE    dWAIC      dSE    pWAIC     weight
+mod2 48.21541 8.781045 0.000000       NA 3.443579 0.71913505
+mod4 50.60255 9.641261 2.387147 1.314572 4.630774 0.21799578
+mod3 53.80681 9.754853 5.591401 3.282625 4.667485 0.04391907
+mod1 55.48789 7.258086 7.272480 9.580430 1.773878 0.01895010</code></pre>
 </div>
 </div>
 <p>Ok so model 4 performs worse than the others, and the best model seems to be the second model (effet of <code>reminder</code> only). Why <code>inscription</code> does not seem to have an influence anymore, in the full model? Oh yeah… I forgot to tell you that we were two experimenters running experiments and collecting data about absenteeism. I am used to recruit participants only through doodle and this time I was too <del>busy</del> lazy to send a reminder to each participant (and so sometimes I forgot), while my colleague recruited participants through an IRL panel and sent an e-mail reminder to each participant. In other words, it means that the <code>reminder</code> and the <code>inscription</code> variables are almost perfectly counfounded (i.e., “correlated”).</p>

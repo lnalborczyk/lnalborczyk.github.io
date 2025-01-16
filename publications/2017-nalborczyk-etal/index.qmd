@@ -32,6 +32,8 @@ links:
     url: "https://osf.io/882te/"
   - name: "{{< ai osf >}} Preprint"
     url: "https://osf.io/h8rqa"
+  - name: "{{< fa file >}} PDF"
+    url: "paper.pdf"
 ---
 
 ## Abstract

@@ -451,12 +451,12 @@ Formula: admit | trials(applications) ~ 1 + gender + (1 | dept_id)
 Multilevel Hyperparameters:
 ~dept_id (Number of levels: 6) 
               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-sd(Intercept)     1.18      0.32     0.71     1.94 1.01      415      732
+sd(Intercept)     1.21      0.33     0.73     2.01 1.01      434      613
 
 Regression Coefficients:
           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-Intercept    -0.64      0.50    -1.61     0.32 1.02      362      641
-gender       -0.09      0.08    -0.25     0.07 1.01      952      694
+Intercept    -0.60      0.51    -1.60     0.51 1.01      368      368
+gender       -0.09      0.08    -0.25     0.07 1.00     1179      879
 
 Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -482,7 +482,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>ICC1 <span class="ot">&lt;-</span> tau2 <span class="sc">/</span> (tau2 <span class="sc">+</span> (pi<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="dv">3</span>) )</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>ICC1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.2973733</code></pre>
+<pre><code>[1] 0.3070678</code></pre>
 </div>
 </div>
 <p>Note though that when there are predictors in the model, the ICC should have a conditional interpretation: of the residual variation in outcomes that remains after accounting for the variables in the model, it is the proportion that is attributable to systematic differences between clusters (i.e., in our example between departments).</p>
@@ -531,7 +531,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(ICC2.f, ICC2.m)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.2118767 0.2100947</code></pre>
+<pre><code>[1] 0.2192562 0.2175437</code></pre>
 </div>
 </div>
 <p>We see that this method provides estimates slightly inferior to the latent variable approach, and indicates no noticeable differences between females and males.</p>
@@ -566,7 +566,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(ICC3.f, ICC3.m)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Intercept Intercept 
-0.2420874 0.2369956 </code></pre>
+0.2526226 0.2475386 </code></pre>
 </div>
 </div>
 <p>Here again, the amount of variation by department seem to be similar for both females and males. Below we summarise the results of the three methods.</p>
@@ -585,9 +585,9 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">ICC</td>
-<td style="text-align: right;">0.2973733</td>
-<td style="text-align: right;">0.2118767</td>
-<td style="text-align: right;">0.2420874</td>
+<td style="text-align: right;">0.3070678</td>
+<td style="text-align: right;">0.2192562</td>
+<td style="text-align: right;">0.2526226</td>
 </tr>
 </tbody>
 </table>

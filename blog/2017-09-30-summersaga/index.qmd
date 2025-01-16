@@ -6,6 +6,8 @@ categories:
   - NHST
   - alpha wars
 description: A short summary of the "alpha wars" that occurred during the summer of year 2017.
+aliases:
+  - /post/summersaga/
 ---
 
 The adequacy of *Null-Hypothesis-Significance-Testing* (NHST) -and particularly of the dichotomised use of p-values- to scientific progress has long been questioned (e.g., Bakan, 1966; Gigerenzer, Krauss, & Vitouch, 2004; Kline, 2004; Lambdin, 2012). Despite this wealth of critics, the p-value stays one of the favourite statistical tool of the experimentalist. As an optimistic person though, I like to see recent institutional changes such as the ASA statement on the use of the p-values as an encouraging sign (Wassertein & Lazar, 2016). However, statements such as the ASA statement do not obtain a majority of agreements, neither within statisticians nor within applied scientists. Moreover, efforts to distancing p-values from scientific daily practice might be hindered by *alternative* usages of NHST that have been suggested during the last years (e.g., the *New Statistics* of Cumming, 2012).[^1]

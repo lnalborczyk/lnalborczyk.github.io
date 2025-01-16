@@ -9,6 +9,8 @@ categories:
   - Intra-class correlation
   - Multilevel regression
 description: In the current post, we present and compare three methods of obtaning an estimation of the ICC in multilevel logistic regression models.
+aliases:
+  - /post/icc/
 ---
 
 ```{r setup, message = FALSE, echo = FALSE}
@@ -18,7 +20,7 @@ knitr::opts_chunk$set(
     )
 ```
 
-In a [previous post](../2017-09-22-absenteeism2/2017-09-22-absenteeism2.qmd), we introduced the mutilevel logistic regression model and implemented it in R, using the `brms` package. We tried to predict the presence of students that registered for psychological experiments. We also discussed the use of the *intra-class correlation* (ICC) --also known as the *variance partitioning coefficient* (VPC)--, as a mean to quantifies the proportion of observed variation in the outcome that is attributable to the effect of clustering.
+In a [previous post](../2017-09-22-absenteeism2/), we introduced the multilevel logistic regression model and implemented it in R, using the `brms` package. We tried to predict the presence of students that registered for psychological experiments. We also discussed the use of the *intra-class correlation* (ICC) --also known as the *variance partitioning coefficient* (VPC)--, as a mean to quantifies the proportion of observed variation in the outcome that is attributable to the effect of clustering.
 
 However, the computation and the interpretation of the ICC in the context of the logistic regression are not straightforward. In the current post, we will then present and compare three methods of obtaining an estimation of the ICC in multilevel logistic regression models.
 
@@ -115,7 +117,7 @@ We can easily obtain a summary of the model as follows:
 summary(model1, parameters = c("^b_", "^sd_"), prob = 0.95)
 ```
 
-As [previously](http://www.barelysignificant.com/absenteeism2/), we can interpret the variation of the intercept $\alpha$ between departments by considering the ICC, which goes from 0 if the grouping conveys no information to 1 if all levels of a cluster are identical (Gelman, 2006, p. 258). In other words, ICC = 0 indicates perfect independence of residuals: the observations do not depend on cluster membership. When the ICC is not different from zero or negligible, one could consider running traditional one-level regression analysis. On the contrary, ICC = 1 indicates perfect interdependence of residuals: the observations only vary between clusters (Sommet & Morselli, 2017).
+As [previously](../2017-09-22-absenteeism2/), we can interpret the variation of the intercept $\alpha$ between departments by considering the ICC, which goes from 0 if the grouping conveys no information to 1 if all levels of a cluster are identical (Gelman, 2006, p. 258). In other words, ICC = 0 indicates perfect independence of residuals: the observations do not depend on cluster membership. When the ICC is not different from zero or negligible, one could consider running traditional one-level regression analysis. On the contrary, ICC = 1 indicates perfect interdependence of residuals: the observations only vary between clusters (Sommet & Morselli, 2017).
 
 ## What is the problem?
 

@@ -474,12 +474,12 @@ y &amp;\sim \mathrm{Binomial}(n, \theta) \\
 </div>
 </div>
 </div>
-<p>This histogram reveals that the mean number of switches accross the <code>nsims</code> replications is about 42.06, and the green vertical dotted line represents the position of <span class="math inline">\(T(y)\)</span> in the distribution of <span class="math inline">\(T(y^{rep})\)</span> values.</p>
+<p>This histogram reveals that the mean number of switches accross the <code>nsims</code> replications is about 42.09, and the green vertical dotted line represents the position of <span class="math inline">\(T(y)\)</span> in the distribution of <span class="math inline">\(T(y^{rep})\)</span> values.</p>
 <p>To know whether the observed number of switches is surprising given the assumptions of our model (<em>represented</em> by its predictions), we can count the number of replications that lead to a greater number of switches than the number of switches <span class="math inline">\(T(y)\)</span> in the observed data.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(Trep <span class="sc">&gt;</span> Ty)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 9926</code></pre>
+<pre><code>[1] 9927</code></pre>
 </div>
 </div>
 <p>Or we can compute a Bayesian <em>p</em>-value as (Gelman et al., 2013, page 146):</p>
@@ -487,7 +487,7 @@ y &amp;\sim \mathrm{Binomial}(n, \theta) \\
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">sum</span>(Trep <span class="sc">&gt;</span> Ty) <span class="sc">/</span> nsims <span class="co"># equivalent to sum(Trep &lt;= Ty) / nsims</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0074</code></pre>
+<pre><code>[1] 0.0073</code></pre>
 </div>
 </div>
 <p>Which gives the probability of observing this number of switches under our model. What does it mean ? Does it mean that our model is <em>wrong</em> ? Well, not exactly. Models are neither right or wrong (see Crane &amp; Martin, 2018). But our model does not seem to capture the full story, it does not seem to give a good representation of the process that generated our data (which is arguably one of the characteristics that contribute to the <em>soundness</em> of a model).</p>
