@@ -47,7 +47,8 @@ There are currently no officially announced PhD positions, but feel free to cont
 
 **Supervision**: [Ladislas Nalborczyk](../team#ladislas){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
 
-**Problem description**: TBD
+**Project description**: The mental production of speech or "inner speech" is a remarkable and foundational ability in humans, involved in a plethora of activities such as reading, writing, planning, or remembering. Inner speech is generally accompanied by a subjective multisensory experience featuring most notably auditory percepts (the "inner voice"). Despite the ubiquity of this inner voice, the cognitive and neural mechanisms leading to this rich subjective experience remain poorly known. One prominent perspective is that the auditory content of inner speech would
+correspond to the predicted sensory consequences of inhibited speech acts. The study conducted by Scott (2013) provided one of the few pieces of experimental evidence suggesting that inner speech indeed involves a mental simulation of speech motor commands, as evidenced by sensory attenuation of the concomitant (and congruent) perception of external speech sounds during inner speech. Although being widely cited in the inner speech literature, one major limitation of this study is that it does not assess inner speech, but rather what is commonly referred to as silent speech, which is the mouthed but silent production of speech (i.e., speech produced with visible articulatory movements, but without phonation). Inner speech, on the other hand, does not involve visible articulatory movements. Therefore, we aim to replicate this study with a larger sample of participants and, crucially, by adding a proper inner speech condition. The protocol for this study currently under review as a registered report.
 
 **Project structure**:
 
