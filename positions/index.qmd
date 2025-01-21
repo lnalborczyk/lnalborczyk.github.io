@@ -10,7 +10,7 @@ If you are interested in joining my team within the [LPL (CNRS UMR 7309)](https:
 
 ## Postdoctoral positions
 
-There are currently no officially announced postdoctoral positions, but feel free to contact me at any time to inquire about opportunities.
+There are currently no officially announced postdoctoral positions, but feel free to contact me at any time to inquire about opportunities. For instance, if you are currently working out of France, you could consider applying to a [MSCA postdoc grant](https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships) (deadline: around September 2025) or a [Fyssen postdoc grant](https://www.fondationfyssen.fr/en/study-grants/aim-award/) (deadline: March 31, 2025) in my team.
 
 ## PhD positions
 
@@ -19,15 +19,15 @@ There are currently no officially announced PhD positions, but feel free to cont
 ## Master's degree research internships
 
 ::: {.callout-note icon=false collapse="true"}
-## Uncovering the neural dynamics of inner speech from EEG signals
+## Uncovering the neural dynamics of inner speech from EEG signals (5-6 months)
 
 **Supervision**: [Ladislas Nalborczyk](../team#ladislas){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
 
-**Problem description**: TBD
+**Project description**: The mental production of speech or "inner speech" is a cornerstone of human cognition. It is involved in a plethora of activities such as reading, writing, planning, or remembering. Inner speech is generally accompanied by a rich subjective multisensory experience featuring most notably auditory percepts (the "inner voice"). Despite the ubiquity of this inner voice, the cognitive and neural mechanisms leading to this subjective experience remain poorly known. One prominent perspective is that the sensory content of inner speech would correspond to the predicted sensory consequences of inhibited speech acts. However, the precise timecourse of each sub-process is unknown. The main objective of this project is to test core predictions of the mental simulation perspective on inner speech and to delineate its timecourse. To this end, we will use time-resolved MVPA (aka "decoding") to reanalyse an existing EEG dataset of overt and covert (inner) speech production.
 
 **Project structure**:
 
-- Understanding the problem (literature work on inner speech and multivariate pattern analyses)
+- Understanding the problem (literature work on inner speech and multivariate pattern analysis)
 - Implementing (from partially existing code) and performing individual-level and group-level analyses (in Python using MNE-Python)
 - Discussing the results and writing a report (thesis)
 
@@ -43,12 +43,11 @@ There are currently no officially announced PhD positions, but feel free to cont
 :::
 
 ::: {.callout-note icon=false collapse="true"}
-## Does the the corollary discharge provide the sensory content of inner speech?
+## Does the the corollary discharge provide the sensory content of inner speech? (5-6 months)
 
 **Supervision**: [Ladislas Nalborczyk](../team#ladislas){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
 
-**Project description**: The mental production of speech or "inner speech" is a remarkable and foundational ability in humans, involved in a plethora of activities such as reading, writing, planning, or remembering. Inner speech is generally accompanied by a subjective multisensory experience featuring most notably auditory percepts (the "inner voice"). Despite the ubiquity of this inner voice, the cognitive and neural mechanisms leading to this rich subjective experience remain poorly known. One prominent perspective is that the auditory content of inner speech would
-correspond to the predicted sensory consequences of inhibited speech acts. The study conducted by Scott (2013) provided one of the few pieces of experimental evidence suggesting that inner speech indeed involves a mental simulation of speech motor commands, as evidenced by sensory attenuation of the concomitant (and congruent) perception of external speech sounds during inner speech. Although being widely cited in the inner speech literature, one major limitation of this study is that it does not assess inner speech, but rather what is commonly referred to as silent speech, which is the mouthed but silent production of speech (i.e., speech produced with visible articulatory movements, but without phonation). Inner speech, on the other hand, does not involve visible articulatory movements. Therefore, we aim to replicate this study with a larger sample of participants and, crucially, by adding a proper inner speech condition. The protocol for this study currently under review as a registered report.
+**Project description**: The mental production of speech or "inner speech" is a remarkable and foundational ability in humans, involved in a plethora of activities such as reading, writing, planning, or remembering. Inner speech is generally accompanied by a subjective multisensory experience featuring most notably auditory percepts (the "inner voice"). Despite the ubiquity of this inner voice, the cognitive and neural mechanisms leading to this rich subjective experience remain poorly known. One prominent perspective is that the auditory content of inner speech would correspond to the predicted sensory consequences of inhibited speech acts. The study conducted by Scott (2013) provided one of the few pieces of experimental evidence suggesting that inner speech indeed involves a mental simulation of speech motor commands, as evidenced by sensory attenuation of the concomitant (and congruent) perception of external speech sounds during inner speech. Although being widely cited in the inner speech literature, one major limitation of this study is that it does not assess inner speech, but rather what is commonly referred to as silent speech, which is the mouthed but silent production of speech (i.e., speech produced with visible articulatory movements, but without phonation). Inner speech, on the other hand, does not involve visible articulatory movements. Therefore, we aim to replicate this study with a larger sample of participants and, crucially, by adding a proper inner speech condition. The protocol for this study currently under review as a registered report.
 
 **Project structure**:
 

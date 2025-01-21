@@ -75,18 +75,15 @@ Position: Researcher in computational cognitive neuroscience
 - Victor Serveau (2021 -- 2022): MSc student in my previous lab. Now working in the private sector.
 :::
 
-<!--
-
-## Main collaborations (alphabetic order)
+## Main current collaborations (alphabetic order)
 
 - [Xavier Alario](https://crpn.univ-amu.fr/en/directory/alario-xavier) (CNRS, Marseille, France)
 - [JJ Aucouturier](https://neuro-team-femto.github.io/people/jj_aucouturier/) (CNRS, Besançon, France)
-- [Paul Bürkner ](https://paulbuerkner.com) (Dortmund University, Germany)
+- [Paul Bürkner](https://paulbuerkner.com) (Dortmund University, Germany)
 - [Laurent Cohen](https://parisbraininstitute.org/collaborators/laurent-cohen) (APHP, Paris, France)
+- [Stanislas Dehaene](https://www.college-de-france.fr/en/chair/stanislas-dehaene-experimental-cognitive-psychology-statutory-chair/biography) (CdF, CEA, Paris, France)
 - [Thibault Gajdos](https://thibault-gajdos.github.io) (CNRS, Marseille, France)
 - [Camille Grasso](https://grassocamille.netlify.app) (CEA, Paris, France)
 - [Thomas Hueber](https://www.gipsa-lab.grenoble-inp.fr/~thomas.hueber/recherches_en.html) (CNRS, Grenoble, France)
 - [Hélène Lœvenbruck](https://lpnc.univ-grenoble-alpes.fr/en/user/40) (CNRS, Grenoble, France)
 - [Ana Pinheiro](https://voicesneurolab.com/team/lab-director/) (Lisbon Univ, Portugal)
-
--->
