@@ -61,7 +61,7 @@ website:
 # see https://quarto.org/docs/output-formats/html-themes.html
 format:
   html:
-    # fontsize: 1.25em
+    fontsize: 1.2em
     theme:
       light: flatly
       dark: darkly
