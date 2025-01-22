@@ -1,7 +1,7 @@
 ---
 title: Ladislas Nalborczyk
 page-layout: full
-subtitle: "Permanent researcher (CRCN)<br>[LPL, CNRS UMR 7309](https://www.lpl-aix.fr/en/lab/)"
+subtitle: "Permanent researcher (CRCN)<br>[LPL, CNRS UMR 7309](https://www.lpl-aix.fr/en/lab/) - Aix-en-Provence, France"
 about:
   id: about-heading
   template: trestles

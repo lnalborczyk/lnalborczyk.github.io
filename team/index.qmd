@@ -86,4 +86,5 @@ Position: Researcher in computational cognitive neuroscience
 - [Camille Grasso](https://grassocamille.netlify.app) (CEA, Paris, France)
 - [Thomas Hueber](https://www.gipsa-lab.grenoble-inp.fr/~thomas.hueber/recherches_en.html) (CNRS, Grenoble, France)
 - [Hélène Lœvenbruck](https://lpnc.univ-grenoble-alpes.fr/en/user/40) (CNRS, Grenoble, France)
+- [Noël Nguyen](https://www.lpl-aix.fr/contact/noel-nguyen/) (AMU, Aix-en-Provence, France)
 - [Ana Pinheiro](https://voicesneurolab.com/team/lab-director/) (Lisbon Univ, Portugal)
