@@ -14,6 +14,7 @@ author:
   - name: F.-X. Alario
     orcid: 0000-0002-8627-5034
 date: "2023-10-10"
+journalname: "<br>Published in *Cortex*"
 image: featured.jpg
 categories:
   - Inner speech

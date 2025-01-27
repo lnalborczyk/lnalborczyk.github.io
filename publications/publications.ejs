@@ -1,0 +1,22 @@
+<% for (const item of items) { %>
+<div class="quarto-list-item">
+  <%- include("title.ejs") %>
+  <% if (item.subtitle) { %>
+    <div class="listing-subtitle"><%- item.subtitle %></div>
+  <% } %>
+
+  <div class="listing-metadata">
+    <% if (item.date) { %>
+      <div class="listing-date"><%- item.date %></div>
+    <% } %>
+    <% if (item.journalname) { %>
+      <div class="listing-journalname"><%- item.journalname %></div>
+    <% } %>
+    <% if (item.author) { %>
+      <div class="listing-author"><%- item.author %></div>
+    <% } %>
+  </div>
+
+  <%- include("description.ejs") %>
+</div>
+<% } %>

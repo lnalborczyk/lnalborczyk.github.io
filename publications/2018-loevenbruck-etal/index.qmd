@@ -2,7 +2,8 @@
 title: "A cognitive neuroscience view of inner language: To predict and to hear, see, feel"
 description: "Book chapter reviewing core findinds in the cognitive neuroscience study of inner speech and proposing a novel neurocognitive model of (voluntary) inner speech production."
 date: "2018-10-18"
-author: 
+journalname: "<br>Published in *Inner Speech: New Voices*"
+author:
   - name: Hélène Lœvenbruck
     orcid: 0000-0003-4015-3565
   - name: Romain Grandchamp

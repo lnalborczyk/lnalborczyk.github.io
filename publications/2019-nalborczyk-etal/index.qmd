@@ -2,6 +2,7 @@
 title: "An introduction to Bayesian multilevel models using brms"
 description: "Tutorial paper on Bayesian multilevel modelling in R using the brms package."
 date: "2019-05-21"
+journalname: "<br>Published in *Journal of Speech, Language, and Hearing Research*"
 author: 
   - name: Ladislas Nalborczyk
     orcid: 0000-0002-7419-9855

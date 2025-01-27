@@ -2,6 +2,7 @@
 title: "A fully automated, transparent, reproducible, and blind protocol for sequential analyses"
 description: "Tutorial paper on automated sequential analyses."
 date: "2021-03-11"
+journalname: "<br>Published in *Meta-Psychology*"
 author: 
   - name: Brice Beffara
     orcid: 0000-0002-0586-6650

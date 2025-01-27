@@ -2,6 +2,7 @@
 title: "Orofacial electromyographic correlates of induced verbal rumination"
 description: "Experimental paper in which we used surface electromyography as a physiological marker of induced mental rumination."
 date: "2017-07-20"
+journalname: "<br>Published in *Biological Psychology*"
 author: 
   - name: Ladislas Nalborczyk
     orcid: 0000-0002-7419-9855

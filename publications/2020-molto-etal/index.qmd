@@ -2,6 +2,7 @@
 title: "Action effects on visual perception of distances: A multilevel Bayesian meta-analysis"
 description: "Examining sequential effects in an action-mode switching paradigm (typing execution and typing imagery)."
 date: "2020-04-09"
+journalname: "<br>Published in *Psychological Science*"
 author: 
   - name: Lisa Molto
   - name: Ladislas Nalborczyk

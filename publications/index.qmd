@@ -6,10 +6,12 @@ listing:
   categories: false
   sort-ui: true
   filter-ui: false
-  fields: [title, author, description, categories, date, image]
+  fields: [title, author, description, categories, date, image, journalname]
   image-align: left
 format:
   html:
     page-layout: full
+    template-partials: publications.ejs
 title-block-banner: true
 ---
+

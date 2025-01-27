@@ -13,6 +13,7 @@ author:
   - name: F.-X. Alario
     orcid: 0000-0002-8627-5034
 date: "2022-03-09"
+journalname: "<br>Published in *Frontiers in Human Neuroscience*"
 image: featured.jpg
 categories:
   - Inner speech

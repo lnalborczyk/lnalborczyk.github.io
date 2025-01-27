@@ -2,6 +2,7 @@
 title: "Can we decode phonetic features in inner speech using surface electromyography?"
 description: "Experimental paper in which we tried to decode the phonetic content of inner speech from surface electromyography."
 date: "2020-05-27"
+journalname: "<br>Published in *PLOS ONE*"
 author: 
   - name: Ladislas Nalborczyk
     orcid: 0000-0002-7419-9855
