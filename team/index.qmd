@@ -67,11 +67,11 @@ Position: Researcher in computational cognitive neuroscience
 ::: {.callout-note icon=false collapse="true"}
 ## Alumni
 
-- Vincent Pauline (2023 -- 2024): MSc student in my previous lab. Now a research assistant at Helmoltz AI (Germany).
-- Hermine de Torcy (2023 -- 2024): MSc student in my previous lab. Now a PhD student at ULB (Belgium).
-- Maël Delem (2021 -- 2022): MSc student in my previous lab. Now a PhD student at Lyon Univ (France).
-- Nina Stauffert (2021 -- 2022): MSc student in my previous lab. Now a PhD student at Lyon Univ (France).
-- Clara Grégoire (2021 -- 2022): MSc student in my previous lab. Now a PhD student at LPL - Aix-Marseille Univ (France).
+- Vincent Pauline (2023 -- 2024): MSc student in my previous lab. Now research assistant at Helmoltz AI (Germany).
+- Hermine de Torcy (2023 -- 2024): MSc student in my previous lab. Now PhD student at ULB (Belgium).
+- Maël Delem (2021 -- 2022): MSc student in my previous lab. Now PhD student at Lyon Univ (France).
+- Nina Stauffert (2021 -- 2022): MSc student in my previous lab. Now PhD student at Lyon Univ (France).
+- Clara Grégoire (2021 -- 2022): MSc student in my previous lab. Now PhD student at LPL - Aix-Marseille Univ (France).
 - Victor Serveau (2021 -- 2022): MSc student in my previous lab. Now working in the private sector.
 :::
 
@@ -86,5 +86,6 @@ Position: Researcher in computational cognitive neuroscience
 - [Camille Grasso](https://grassocamille.netlify.app) (CEA, Paris, France)
 - [Thomas Hueber](https://www.gipsa-lab.grenoble-inp.fr/~thomas.hueber/recherches_en.html) (CNRS, Grenoble, France)
 - [Hélène Lœvenbruck](https://lpnc.univ-grenoble-alpes.fr/en/user/40) (CNRS, Grenoble, France)
+- [Marieke Longcamp](https://crpn.univ-amu.fr/fr/annuaire/longcamp-marieke) (AMU, Marseille, France)
 - [Noël Nguyen](https://www.lpl-aix.fr/contact/noel-nguyen/) (AMU, Aix-en-Provence, France)
 - [Ana Pinheiro](https://voicesneurolab.com/team/lab-director/) (Lisbon Univ, Portugal)
