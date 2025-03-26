@@ -10,7 +10,7 @@ If you are interested in joining my team within the [LPL (CNRS UMR 7309)](https:
 
 ## Postdoctoral positions
 
-There are currently no officially announced postdoctoral positions, but feel free to contact me at any time to inquire about opportunities. For instance, if you are currently working out of France, you could consider applying to a [MSCA postdoc grant](https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships) (deadline: around September 2025) or a [Fyssen postdoc grant](https://www.fondationfyssen.fr/en/study-grants/aim-award/) (deadline: March 31, 2025) in my team.
+There are currently no officially announced postdoctoral positions, but feel free to contact me at any time to inquire about opportunities. For instance, if you are currently working out of France, you could consider applying to a [MSCA postdoc grant](https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships) (deadline: around September every year) or a [Fyssen postdoc grant](https://www.fondationfyssen.fr/en/study-grants/aim-award/) (deadline: around March every year) in my team.
 
 ## PhD positions
 
@@ -43,7 +43,7 @@ There are currently no officially announced PhD positions, but feel free to cont
 :::
 
 ::: {.callout-note icon=false collapse="true"}
-## Does the the corollary discharge provide the sensory content of inner speech? (5-6 months)
+## Does the corollary discharge provide the sensory content of inner speech? (5-6 months)
 
 **Supervision**: [Ladislas Nalborczyk](../team#ladislas){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
 
@@ -59,7 +59,7 @@ There are currently no officially announced PhD positions, but feel free to cont
 
 **Key references**: 
 
-- Delem, M., Stauffert, N., Nguyen, N., Debarnot, U., Guillot, A., & Nalborczyk, L. (2024, March 27). Does the corollary discharge provide the sensory content of inner speech? A preregistered direct replication and extension of Scott  (2013). <https://doi.org/10.31234/osf.io/abps9>
+- Delem, M., Stauffert, N., Nguyen, N., Debarnot, U., Guillot, A., & Nalborczyk, L. (2024, in-principle accepted as a Stage-1 registered report). Does the corollary discharge provide the sensory content of inner speech? A preregistered direct replication and extension of Scott  (2013). <https://doi.org/10.31234/osf.io/abps9>
 - Scott, M. (2013). Corollary Discharge Provides the Sensory Content of Inner Speech. Psychological Science, 24(9), 1824–1830. <https://doi.org/10.1177/0956797613478614>
 - Lœvenbruck, H., Grandchamp, R., Rapin, L., Nalborczyk, L., Dohen, M., Perrier, P., Baciu, M., & Perrone-Bertolotti, M. (2018). A cognitive neuroscience view of inner language: To predict and to hear, see, feel. In P. Langland-Hassan & A. Vicente (Eds.), Inner speech: New voices (p. 37). Oxford University Press.
 
