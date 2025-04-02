@@ -10,7 +10,7 @@ about:
   links:
     - text: "{{< fa envelope >}} Mail"
       aria-label: email
-      href: "mailto:ladislas.nalborczyk@gmail.com"
+      href: "mailto:ladislas.nalborczyk@cnrs.fr"
     - icon: github
       text: GitHub
       aria-label: github

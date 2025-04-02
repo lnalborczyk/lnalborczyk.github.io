@@ -26,7 +26,7 @@ website:
     right:
       - text: "{{< fa envelope >}}"
         aria-label: email
-        href: "mailto:ladislas.nalborczyk@gmail.com"
+        href: "mailto:ladislas.nalborczyk@cnrs.fr"
       - icon: github
         aria-label: github
         href: https://github.com/lnalborczyk
@@ -66,4 +66,3 @@ format:
       light: flatly
       dark: darkly
     css: assets/styles.css
-    

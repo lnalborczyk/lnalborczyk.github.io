@@ -19,7 +19,7 @@ Background: Cognitive Neuroscience, Experimental Psychology, Statistical modelli
 
 Position: Researcher in computational cognitive neuroscience
 
-[Mail](mailto:ladislas.nalborczyk@gmail.com){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
+[Mail](mailto:ladislas.nalborczyk@cnrs.fr){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
 [GitHub](https://github.com/lnalborczyk){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
 [Google Scholar](https://scholar.google.com/citations?user=na-dkLYAAAAJ&hl){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
 [Bluesky](https://bsky.app/profile/lnalborczyk.bsky.social){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}

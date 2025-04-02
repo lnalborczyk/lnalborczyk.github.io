@@ -4,7 +4,7 @@ title: Open positions
 # toc-location: right
 ---
 
-If you are interested in joining my team within the [LPL (CNRS UMR 7309)](https://www.lpl-aix.fr/en/lab/) in [Aix-en-Provence](https://en.wikipedia.org/wiki/Aix-en-Provence) (France) as a Master's student, PhD student, or postdoctoral researcher, feel free to [contact me](mailto:ladislas.nalborczyk@gmail.com) at any time, even if no open position matching your profile is currently advertised.
+If you are interested in joining my team within the [LPL (CNRS UMR 7309)](https://www.lpl-aix.fr/en/lab/) in [Aix-en-Provence](https://en.wikipedia.org/wiki/Aix-en-Provence) (France) as a Master's student, PhD student, or postdoctoral researcher, feel free to [contact me](mailto:ladislas.nalborczyk@cnrs.fr) at any time, even if no open position matching your profile is currently advertised.
 
 ---
 
@@ -68,7 +68,7 @@ There are currently no officially announced PhD positions, but feel free to cont
 :::
 
 ::: {.callout-note icon=false collapse="true"}
-## Modelling the onset and duration of imagined actions: Assessing a novel algorithmic model of motor imagery (5-6 months)
+## Modelling the onset and duration of imagined actions (5-6 months)
 
 **Supervision**: [Ladislas Nalborczyk](../team#ladislas){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
 
