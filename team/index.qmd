@@ -15,7 +15,7 @@ title: Team
 ### Ladislas Nalborczyk {#ladislas}
 ---
 
-Background: Cognitive Neuroscience, Experimental Psychology, Statistical modelling
+Background: Cognitive Neuroscience, Experimental Psychology, Statistical and cognitive modelling
 
 Position: Researcher in computational cognitive neuroscience
 
