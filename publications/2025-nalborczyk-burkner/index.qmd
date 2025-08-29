@@ -1,0 +1,31 @@
+---
+title: "Precise temporal localisation of M/EEG effects with Bayesian generalised additive multilevel models"
+description: "Precise temporal localisation of M/EEG effects with Bayesian generalised additive multilevel models."
+author: 
+  - name: Ladislas Nalborczyk
+    orcid: 0000-0002-7419-9855
+  - name: Paul Bürkner
+    orcid: 0000-0001-5765-8995
+date: "2025-08-29"
+journalname: "<br>*BiorXiv*"
+image: featured.png
+categories:
+  - Bayesian statistics
+  - Generalised additive models
+  - Cluster-based permutation tests
+  - M/EEG data
+  - Cognitive Neuroscience
+links:
+  - name: "{{< ai github >}} Github project"
+    url: "https://github.com/lnalborczyk/brms_meeg"
+  - name: "{{< ai github >}} R package"
+    url: "https://github.com/lnalborczyk/neurogam"
+  - name: "{{< ai osf >}} Preprint"
+    url: "https://osf.io/preprints/psyarxiv/jn845"
+  - name: "{{< fa file >}} PDF"
+    url: "paper.pdf"
+---
+
+## Abstract
+
+Time-resolved electrophysiological measurements such as those obtained through magneto- and electroencephalography (M/EEG) offer a unique window onto the neural activity underlying cognitive processes. Researchers are often interested in determining whether and when these signals differ across experimental conditions or participant groups. The conventional approach involves mass univariate statistical testing across time and space followed by corrections for multiple comparisons or some form of cluster-based inference. While effective for controlling error rates at the cluster-level, cluster-based inference comes with a significant limitation: by shifting the focus of inference from individual time points to clusters, it prevents drawing conclusions about the precise onset or offset of observed effects. Here, we present a *model-based* alternative for analysing M/EEG timeseries, such as event-related potentials or time-resolved decoding accuracy. Our approach leverages Bayesian generalised additive multilevel models, providing posterior odds that an effect exceeds zero (or chance) at each time point, while naturally accounting for temporal dependencies and between-subject variability. Using both simulated and empirical M/EEG datasets, we show that this approach substantially outperforms conventional methods in estimating the onset and offset of neural effects, yielding more precise and reliable estimates. We provide an open-source R package implementing the method and describe how it can be integrated into M/EEG analysis pipelines using MNE-Python.
