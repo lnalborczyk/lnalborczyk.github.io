@@ -1,6 +1,6 @@
 ---
 title: "Precise temporal localisation of M/EEG effects with Bayesian generalised additive multilevel models"
-description: "Precise temporal localisation of M/EEG effects with Bayesian generalised additive multilevel models."
+description: "Introducing a novel model-based approach for estimating the onset and offset of M/EEG effects."
 author: 
   - name: Ladislas Nalborczyk
     orcid: 0000-0002-7419-9855
@@ -16,11 +16,11 @@ categories:
   - M/EEG data
   - Cognitive Neuroscience
 links:
-  - name: "{{< ai github >}} Github project"
+  - name: "{{< fa github >}} Github project"
     url: "https://github.com/lnalborczyk/brms_meeg"
-  - name: "{{< ai github >}} R package"
+  - name: "{{< fa github >}} R package"
     url: "https://github.com/lnalborczyk/neurogam"
-  - name: "{{< ai osf >}} Preprint"
+  - name: "{{< ai biorxiv >}} Preprint"
     url: "https://osf.io/preprints/psyarxiv/jn845"
   - name: "{{< fa file >}} PDF"
     url: "paper.pdf"
