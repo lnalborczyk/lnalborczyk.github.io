@@ -16,12 +16,12 @@ categories:
   - M/EEG data
   - Cognitive Neuroscience
 links:
-  - name: "{{< fa github >}} Github project"
+  - name: "{{< fa brands github >}} Code"
     url: "https://github.com/lnalborczyk/brms_meeg"
-  - name: "{{< fa github >}} R package"
+  - name: "{{< fa brands github >}} R package"
     url: "https://github.com/lnalborczyk/neurogam"
   - name: "{{< ai biorxiv >}} Preprint"
-    url: "https://osf.io/preprints/psyarxiv/jn845"
+    url: "https://www.biorxiv.org/content/10.1101/2025.08.29.672336v1"
   - name: "{{< fa file >}} PDF"
     url: "paper.pdf"
 ---
