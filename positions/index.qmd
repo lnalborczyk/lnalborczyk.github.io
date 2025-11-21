@@ -106,7 +106,7 @@ There are currently no officially announced PhD positions, but feel free to cont
 - Implementing the analyses in Python
 - Discussing the results and writing a report (thesis)
 
-**Computer tools**: Python, R
+**Computer tools**: Python
 
 **Key-words:** Mental Imagery, Cognitive Neuroscience, Natural Language Processing
 :::
@@ -136,7 +136,7 @@ Master student in statistics, informatics, data science, computational statistic
 - Nalborczyk, L. & Bürkner, P. (2025). Precise temporal localisation of M/EEG effects with Bayesian generalised additive multilevel models. bioRxiv. <https://www.biorxiv.org/content/10.1101/2025.08.29.672336>
 - Wood, S. N. (2017). Generalized Additive Models: An Introduction with R (2nd edition).
 
-**Computer tools**: R, Python
+**Computer tools**: R, Stan, brms
 
-**Key-words**: Bayesian Modelling, Computational Statistic, M/EEG
+**Key-words**: Bayesian Modelling, Computational Statistics, Cognitive Neuroscience, M/EEG
 :::
