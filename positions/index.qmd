@@ -93,32 +93,50 @@ There are currently no officially announced PhD positions, but feel free to cont
 **Key-words**: Experimental Psychology, Cognitive Neuroscience, Cognitive Modelling
 :::
 
-<!--
-
 ::: {.callout-note icon=false collapse="true"}
 ## Mental imagery: what are vividness ratings made of? (5-6 months)
 
 **Supervision**: [Ladislas Nalborczyk](../team#ladislas){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
 
-**Project description**: The ability to mentally prepare, simulate, or withhold actions is crucial to smooth motor execution. Whereas motor imagery has been shown to overlap with motor execution in terms of functional consequences and neural implementation, the lack of a precise description of the mechanisms involved in motor imagery has hindered better understanding of this ubiquitous phenomenon. To fill this gap, we developed an algorithmic model of motor imagery able to simulate the onset and duration of imagined actions. This model provides a simplified overarching description of how the motor system is involved over time during motor imagery and allows separating the influence of distinct inhibitory mechanisms during motor imagery. We assessed the recoverability of the model's parameters with more than satisfactory results and validated its predictions against available data from the literature. In addition to providing an excellent fit to these data, interpreting parameters from this model allowed us disentangling multiple inhibitory mechanisms at play during motor imagery, with distinct behavioural consequences. The objective of this research project is to further test some assumptions and predictions of this model using both novel empirical data and simulations.
+**Project description**: How do people judge the vividness of what they imagine? Mental imagery tasks routinely rely on subjective vividness ratings, yet we know surprisingly little about what drives these ratings. Beyond perceptual qualities, vividness judgements may partly reflect the semantic content of the imagined item; specifically, how informative, specific, or unique the described item is in relation to the world. Recent advances in natural language processing allow quantifying this "semantic specificity" using language models and text–to-image models. The aim of this project is to determine whether subjective vividness ratings are systematically biased by the semantic informativeness of the items used in mental imagery experiments. By applying these analyses to existing behavioural datasets, this project will shed new light on the cognitive foundations of vividness judgements and contribute to a more mechanistic understanding of mental imagery.
 
 **Project structure**:
 
 - Understanding the problem (literature work on mental imagery)
-- Implementing the experiment (from partially existing code) in Python/PsychoPy
-- Collecting the behavioural data
-- Analysing the behavioural data (in R or Python)
+- Implementing the analyses in Python
 - Discussing the results and writing a report (thesis)
+
+**Computer tools**: Python, R
+
+**Key-words:** Mental Imagery, Cognitive Neuroscience, Natural Language Processing
+:::
+
+::: {.callout-note icon=false collapse="true"}
+## Multilevel Bayesian modelling of M/EEG data (5-6 months)
+
+**Supervision**: [Ladislas Nalborczyk](../team#ladislas){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs} in collaboration with [Paul Bürkner](https://paulbuerkner.com)
+
+**Project description**: Recent work has shown that Bayesian Generalised Additive Multilevel Models (BGAMMs) provide a powerful and principled alternative to cluster-based permutation tests for analysing M/EEG data, as they naturally account for temporal dependencies, yield smooth time courses of effects, and allow both participant- and group-level inference. Building on our recent paper, the goal of this internship is to extend this modelling framework to the spatiotemporal domain by incorporating sensor-level structure (e.g., adjacency matrices, spatial bases, covariance kernels) into the multilevel Bayesian model. A central challenge is to design a method that remains computationally efficient, scalable to high-dimensional M/EEG datasets, and compatible with practical workflows in MNE-Python and R. The student will work on model development, simulation studies, and empirical applications using real M/EEG datasets.
+
+**Project structure**:
+
+- Reviewing statistical approaches for modelling temporal and spatial dependencies in M/EEG data
+- Developing a spatiotemporal Bayesian GAMM (e.g., tensor-product smooths, sparse or low-rank spatial bases, adjacency-informed priors)
+- Implementing computationally efficient inference (e.g., reduced-rank smooths, variational Bayes, efficient basis selection)
+- Running extensive simulation studies to assess recoverability, speed, and accuracy
+- Applying the model to real M/EEG data and comparing it with classical permutation-based statistics
+- Writing the thesis and documenting the modelling framework
+
+**Student profile**
+
+Master student in statistics, informatics, data science, computational statistics, or applied mathematics. Strong interest in Bayesian modelling and numerical optimisation. Experience with R and/or Python is recommended.
 
 **Key references**: 
 
-- Guillot, A., Di Rienzo, F., MacIntyre, T., Moran, A., & Collet, C. (2012). Imagining is not doing but involves specific motor commands: A review of experimental data related to motor inhibition. *Frontiers in Human Neuroscience, 6, 141*. <https://doi.org/10.3389/fnhum.2012.00247>
-- Jeannerod, M. (2001). Neural simulation of action: A unifying mechanism for motor cognition. *NeuroImage, 14*(1), S103–S109. <https://doi.org/10.1006/nimg.2001.0832>
-- Nalborczyk, L., Longcamp, M., Gajdos, T., Servant, M., & Alario, F.X. (2024). Towards formal models of inhibitory mechanisms involved in motor imagery: a commentary on Bach et al. (2022). *Psychological Research 88*, 1810–1813. <https://doi.org/10.1007/s00426-023-01915-8>
+- Nalborczyk, L. & Bürkner, P. (2025). Precise temporal localisation of M/EEG effects with Bayesian generalised additive multilevel models. bioRxiv. <https://www.biorxiv.org/content/10.1101/2025.08.29.672336>
+- Wood, S. N. (2017). Generalized Additive Models: An Introduction with R (2nd edition).
 
-**Computer tools**: R, Python, PsychoPy
+**Computer tools**: R, Python
 
-**Key-words**: Experimental Psychology, Cognitive Neuroscience
+**Key-words**: Bayesian Modelling, Computational Statistic, M/EEG
 :::
-
--->
