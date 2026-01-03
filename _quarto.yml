@@ -56,7 +56,7 @@ website:
     anonymize-ip: true
   page-footer: 
     background: light
-    left: "&#169; 2017-2025, Ladislas Nalborczyk &#8729; Made with [Quarto](https://quarto.org)"
+    left: "&#169; 2017-2026, Ladislas Nalborczyk &#8729; Made with [Quarto](https://quarto.org)"
     
 # see https://quarto.org/docs/output-formats/html-themes.html
 format:

@@ -67,6 +67,34 @@ There are currently no officially announced PhD positions, but feel free to cont
 **Key-words**: Experimental Psychology, Psycholinguistics
 :::
 
+<!--
+
+::: {.callout-note icon=false collapse="true"}
+## Investigatin the impact of inner speech diversity on the representation of (external) speech sounds (5-6 months)
+
+**Supervision**: [Ladislas Nalborczyk](../team#ladislas){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
+
+**Project description**: The mental production of speech or "inner speech" is a remarkable and foundational ability in humans, involved in a plethora of activities such as reading, writing, planning, or remembering. Inner speech is generally accompanied by a subjective multisensory experience featuring most notably auditory percepts (the "inner voice"). Despite the ubiquity of this inner voice, the cognitive and neural mechanisms leading to this rich subjective experience remain poorly known. One prominent perspective is that the auditory content of inner speech would correspond to the predicted sensory consequences of inhibited speech acts. The study conducted by Scott (2013) provided one of the few pieces of experimental evidence suggesting that inner speech indeed involves a mental simulation of speech motor commands, as evidenced by sensory attenuation of the concomitant (and congruent) perception of external speech sounds during inner speech. Although being widely cited in the inner speech literature, one major limitation of this study is that it does not assess inner speech, but rather what is commonly referred to as silent speech, which is the mouthed but silent production of speech (i.e., speech produced with visible articulatory movements, but without phonation). Inner speech, on the other hand, does not involve visible articulatory movements. Therefore, we aim to replicate this study with a larger sample of participants and, crucially, by adding a proper inner speech condition. The protocol for this study has already been "in-principle accepted" as a registered report.
+
+**Project structure**:
+
+- Understanding the problem (literature work on inner speech and internal models)
+- Implementing the experiment (from partially existing code) in Python/PsychoPy
+- Collecting the behavioural data
+- Analysing the behavioural data (in R)
+- Discussing the results and writing a report (thesis)
+
+**Key references**: 
+
+- Lœvenbruck, H., Grandchamp, R., Rapin, L., Nalborczyk, L., Dohen, M., Perrier, P., Baciu, M., & Perrone-Bertolotti, M. (2018). A cognitive neuroscience view of inner language: To predict and to hear, see, feel. In P. Langland-Hassan & A. Vicente (Eds.), Inner speech: New voices (p. 37). Oxford University Press.
+
+**Computer tools**: R, Python, PsychoPy
+
+**Key-words**: Experimental Psychology, Psycholinguistics
+:::
+
+-->
+
 ::: {.callout-note icon=false collapse="true"}
 ## Modelling the onset and duration of imagined actions (5-6 months)
 
@@ -112,24 +140,23 @@ There are currently no officially announced PhD positions, but feel free to cont
 :::
 
 ::: {.callout-note icon=false collapse="true"}
-## Multilevel Bayesian modelling of M/EEG data (5-6 months)
+## Multilevel Bayesian modelling of spatio-temporal M/EEG data (5-6 months)
 
 **Supervision**: [Ladislas Nalborczyk](../team#ladislas){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs} in collaboration with [Paul Bürkner](https://paulbuerkner.com)
 
-**Project description**: Recent work has shown that Bayesian Generalised Additive Multilevel Models (BGAMMs) provide a powerful and principled alternative to cluster-based permutation tests for analysing M/EEG data, as they naturally account for temporal dependencies, yield smooth time courses of effects, and allow both participant- and group-level inference. Building on our recent paper, the goal of this internship is to extend this modelling framework to the spatiotemporal domain by incorporating sensor-level structure (e.g., adjacency matrices, spatial bases, covariance kernels) into the multilevel Bayesian model. A central challenge is to design a method that remains computationally efficient, scalable to high-dimensional M/EEG datasets, and compatible with practical workflows in MNE-Python and R. The student will work on model development, simulation studies, and empirical applications using real M/EEG datasets.
+**Project description**: Recent work has shown that Bayesian Generalised Additive Multilevel Models (BGAMMs) provide a powerful and principled alternative to cluster-based permutation tests for analysing M/EEG data, as they naturally account for temporal dependencies, yield smooth time courses of effects, and allow both participant- and group-level inference. The goal of this internship is to extend this modelling framework to the spatiotemporal domain by incorporating sensor-level structure (e.g., adjacency matrices, spatial bases, covariance kernels) into the multilevel Bayesian model. A central challenge is to design a method that remains computationally efficient, scalable to high-dimensional M/EEG datasets, and compatible with practical workflows in `MNE-Python` and `R`. The student will work on model development, simulation studies, and empirical applications (all in `R`) using empirical M/EEG datasets.
 
 **Project structure**:
 
 - Reviewing statistical approaches for modelling temporal and spatial dependencies in M/EEG data
-- Developing a spatiotemporal Bayesian GAMM (e.g., tensor-product smooths, sparse or low-rank spatial bases, adjacency-informed priors)
-- Implementing computationally efficient inference (e.g., reduced-rank smooths, variational Bayes, efficient basis selection)
+- Developing a computationally-efficient spatiotemporal Bayesian GAMM or GP (e.g., sparse or low-rank spatial bases) in `R`
 - Running extensive simulation studies to assess recoverability, speed, and accuracy
-- Applying the model to real M/EEG data and comparing it with classical permutation-based statistics
-- Writing the thesis and documenting the modelling framework
+- Applying the model to empirical M/EEG data and comparing it with classical permutation-based statistics
+- Writing the thesis and documenting the modelling framework in the `neurogam R` package (<https://lnalborczyk.github.io/neurogam/>)
 
 **Student profile**
 
-Master student in statistics, informatics, data science, computational statistics, or applied mathematics. Strong interest in Bayesian modelling and numerical optimisation. Experience with R and/or Python is recommended.
+M2 student in statistics, informatics, data science, computational statistics, or applied mathematics, with interest in Bayesian modelling, cognitive neuroscience, and M/EEG signals. Strong programming skills in `R` is a must, and experience in software development is a plus.
 
 **Key references**: 
 

@@ -28,6 +28,8 @@ Position: Researcher in computational cognitive neuroscience
 
 ---
 
+<!--
+
 ## Postdoctoral researchers
 
 ::: {.grid}
@@ -64,6 +66,32 @@ Position: Researcher in computational cognitive neuroscience
 
 ---
 
+-->
+
+## MSc students
+
+::: {.grid}
+::: {.g-col-12 .g-col-md-3}
+<br /> 
+![](../images/missing.png){width=100% fig-alt="A missing portrait."}
+:::
+::: {.g-col-12 .g-col-md-9}
+### Virgile Segaux
+---
+
+Background: Cognitive Science, Engineering, Psychology
+
+Position: MSc student in cognitive science
+
+Project: Uncovering the neural dynamics of inner speech from EEG signals
+
+[Mail](mailto:virgile.segaux@grenoble-inp.org){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
+
+:::
+:::
+
+---
+
 ::: {.callout-note icon=false collapse="true"}
 ## Alumni
 
@@ -80,12 +108,13 @@ Position: Researcher in computational cognitive neuroscience
 - [Xavier Alario](https://crpn.univ-amu.fr/en/directory/alario-xavier) (CNRS, Marseille, France)
 - [JJ Aucouturier](https://neuro-team-femto.github.io/people/jj_aucouturier/) (CNRS, Besançon, France)
 - [Paul Bürkner](https://paulbuerkner.com) (Dortmund University, Germany)
+- [Gregory Cogan](https://www.coganlab.org) (Duke University, North Carolina, USA)
 - [Laurent Cohen](https://parisbraininstitute.org/collaborators/laurent-cohen) (APHP, Paris, France)
 - [Stanislas Dehaene](https://www.college-de-france.fr/en/chair/stanislas-dehaene-experimental-cognitive-psychology-statutory-chair/biography) (CdF, CEA, Paris, France)
 - [Thibault Gajdos](https://thibault-gajdos.github.io) (CNRS, Marseille, France)
-- [Camille Grasso](https://grassocamille.netlify.app) (CEA, Paris, France)
+- [Camille Grasso](https://grassocamille.netlify.app) (CNRS, Grenoble, France)
 - [Thomas Hueber](https://www.gipsa-lab.grenoble-inp.fr/~thomas.hueber/recherches_en.html) (CNRS, Grenoble, France)
 - [Hélène Lœvenbruck](https://lpnc.univ-grenoble-alpes.fr/en/user/40) (CNRS, Grenoble, France)
 - [Marieke Longcamp](https://crpn.univ-amu.fr/fr/annuaire/longcamp-marieke) (AMU, Marseille, France)
 - [Noël Nguyen](https://www.lpl-aix.fr/contact/noel-nguyen/) (AMU, Aix-en-Provence, France)
-- [Ana Pinheiro](https://voicesneurolab.com/team/lab-director/) (Lisbon Univ, Portugal)
+- [Ana Pinheiro](https://voicesneurolab.com/team/lab-director/) (Lisbon University, Portugal)
