@@ -12,7 +12,7 @@ title: Team
 ![](../images/ladislas.jpg){width=100% fig-alt="A portrait of Ladislas Nalborczyk."}
 :::
 ::: {.g-col-12 .g-col-md-9}
-### Ladislas Nalborczyk {#ladislas}
+Ladislas Nalborczyk {#ladislas}
 ---
 
 Background: Cognitive Neuroscience, Experimental Psychology, Statistical and cognitive modelling
@@ -76,7 +76,7 @@ Position: Researcher in computational cognitive neuroscience
 ![](../images/missing.png){width=100% fig-alt="A missing portrait."}
 :::
 ::: {.g-col-12 .g-col-md-9}
-### Virgile Segaux
+Virgile Segaux {#virgile}
 ---
 
 Background: Cognitive Science, Engineering, Psychology
