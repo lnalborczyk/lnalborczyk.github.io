@@ -73,7 +73,7 @@ Position: Researcher in computational cognitive neuroscience
 ::: {.grid}
 ::: {.g-col-12 .g-col-md-3}
 <br /> 
-![](../images/missing.png){width=100% fig-alt="A missing portrait."}
+![](../images/virgile.jpeg){width=100% fig-alt="A missing portrait."}
 :::
 ::: {.g-col-12 .g-col-md-9}
 Virgile Segaux {#virgile}
