@@ -1,7 +1,5 @@
 ---
 title: Team
-# excerpt: "People working in my team"
-# toc-location: right
 ---
 
 ## Principal investigator (PI)

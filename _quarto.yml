@@ -1,6 +1,7 @@
 project:
   type: website
   output-dir: docs
+  post-render: encrypt.r
 
 website:
   title: "Ladislas Nalborczyk"
@@ -23,6 +24,8 @@ website:
         href: cv/cv.pdf
       - text: BLOG
         href: blog/index.qmd
+      - text: INTERNAL
+        href: internal/index.qmd
     right:
       - text: "{{< fa envelope >}}"
         aria-label: email
