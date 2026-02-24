@@ -7,8 +7,8 @@ toc-expand: 2
 
 ## General information
 
-- Team chat via Discord: <https://discord.gg/xgzYKDEYhf>
-- Check my availabilities and book me at <https://koalendar.com/e/meet-with-ladislas-nalborczyk>
+- Chat in the [Discord's team server](https://discord.gg/xgzYKDEYhf)
+- Check my availabilities and book me via [Koalendar](https://koalendar.com/e/meet-with-ladislas-nalborczyk)
 
 ## Resources
 
@@ -18,15 +18,12 @@ A list of useful resources for a modern, transparent, and reproducible scientifi
 
 #### Preregistration and registered reports
 
-* The preregistration revolution (Nosek et al., [2018](https://www.pnas.org/content/115/11/2600))
-
-* What are [registered reports](https://cos.io/rr/)? 
+- The preregistration revolution (Nosek et al., [2018](https://www.pnas.org/content/115/11/2600))
+- What are [registered reports](https://cos.io/rr/)? 
 
 #### Version control and automation, a reproducible workflow
 
-Using Git and Github, eventually from RStudio.
-
-* Curating Research Assets: A Tutorial on the Git Version Control System (Vuorre & Curley, [2018](https://journals.sagepub.com/doi/abs/10.1177/2515245918754826))
+* A Tutorial on the Git Version Control System (Vuorre & Curley, [2018](https://journals.sagepub.com/doi/abs/10.1177/2515245918754826))
 
 * RStudio, Git and Github (Wickham, [2015](http://r-pkgs.had.co.nz/git.html))
 
@@ -34,102 +31,82 @@ Using Git and Github, eventually from RStudio.
 
 How should we determine the sample size of our study? Do we have to do it a priori or can we stop recruitment when we have sufficient evidence to conclude?
 
-* When power analyses based on pilot data are biased: Inaccurate effect size estimators and follow-up bias (Albers & Lakens, [2018](https://www.sciencedirect.com/science/article/abs/pii/S002210311630230X))
-
-* At what sample size do correlations stabilize? (Schönbrodt & Perugini, [2013](https://www.sciencedirect.com/science/article/abs/pii/S0092656613000858))
-
-* Sequential hypothesis testing with Bayes factors: Efficiently testing mean differences (Schönbrodt, Wagenmakers, Zehetleitner, & Perugini, [2017](https://psycnet.apa.org/record/2015-56330-001)).
-
-* BFDA Bayes factor design analysis: <https://github.com/nicebread/BFDA>
-
-* A fully automatised, transparent, reproducible and blind protocol for sequential analyses (Beffara Bret, Beffara Bret, & Nalborczyk, [2021](https://open.lnu.se/index.php/metapsychology/article/view/869/2461)).
+- When power analyses based on pilot data are biased (Albers & Lakens, [2018](https://www.sciencedirect.com/science/article/abs/pii/S002210311630230X))
+- At what sample size do correlations stabilize? (Schönbrodt & Perugini, [2013](https://www.sciencedirect.com/science/article/abs/pii/S0092656613000858))
+- Sequential hypothesis testing with Bayes factors: Efficiently testing mean differences (Schönbrodt, Wagenmakers, Zehetleitner, & Perugini, [2017](https://psycnet.apa.org/record/2015-56330-001)).
+- BFDA Bayes factor design analysis: <https://github.com/nicebread/BFDA>
+- A fully automatised, transparent, reproducible and blind protocol for sequential analyses (Beffara Bret, Beffara Bret, & Nalborczyk, [2021](https://open.lnu.se/index.php/metapsychology/article/view/869/2461)).
 
 #### Large-scale collaborations
 
-To counter the pervasive problem of low-powered experimental designs, researchers started to mutualise efforts to provide high-powered responses to debated questions in psychological researchers as well as to assess the generalisability of the findings. The idea is pretty simple: instead of running a single study in our lab, what if we could run the study in (let's say) 20 different labs all across the world?
+To counter the pervasive problem of low-powered experimental designs, researchers started to pool efforts to provide high-powered responses to debated questions in psychological researchers as well as to assess the generalisability of the findings. The idea is pretty simple: instead of running a single study in our lab, what if we could run the study in (let's say) 20 different labs all across the world?
 
-* Many-labs initiatives, such [many lab (1 to 5)](https://osf.io/89vqh/), [many primates](https://manyprimates.github.io), [many babies](https://manybabies.github.io), etc.
-
-* Study-swap: a research community for sharing resources and collaborations (<https://osf.io/meetings/studyswap/>)
-
-* The Psychological Science Accelerator: Advancing Psychology through a Distributed Collaborative Network (Moshontz, H., Campbell, L., Ebersole, C. R., IJzerman, H., Urry, H. L., Forscher, P. S., ... Chartier, C. R., [2018](https://journals.sagepub.com/doi/10.1177/2515245918797607))
-
-#### Analysing data
-
-Introduction to Frequentist and Bayesian statistical modelling in `R`.
-
-* Free and complete course in R programming at [Coursera](https://www.coursera.org/learn/r-programming)
-
-* MOOC - Improving your statistical inferences (Lakens, [2017](https://www.coursera.org/learn/statistical-inferences))
-
-* Course - Statistical Rethinking: A Bayesian Course Using `R` and `Stan` (McElreath, [2019](https://github.com/rmcelreath/statrethinking_winter2019))
-
-* Introduction to Bayesian statistical modelling in `R` and `Stan` using `brms` (Master/PhD course, in French) (Nalborczyk, [2026](https://lnalborczyk.github.io/IMSB2026/))
+- Many-labs initiatives, such [many lab (1 to 5)](https://osf.io/89vqh/), [many primates](https://manyprimates.github.io), [many babies](https://manybabies.github.io), etc.
+- [Study-swap](https://osf.io/meetings/studyswap/): a research community for sharing resources and collaborations
+- The Psychological Science Accelerator ([2018's paper](https://journals.sagepub.com/doi/10.1177/2515245918797607))
 
 ### Writing empirical papers
 
 #### Writing style
 
-* "Writing in the Sciences" MOOC (Sainani Kristin, 2017): <https://www.coursera.org/learn/sciwrite/>
-
-* Writing and Revising, writing guide (Simmons, [2019](http://www.dansimons.com/resources/Simons_on_writing_1.5.pdf))
-
-* Writing Empirical Articles: Transparency, Reproducibility, Clarity, and Memorability (Gernsbacher, [2018](https://journals.sagepub.com/doi/abs/10.1177/2515245918754485))
-
-* Improving Scholarly Communication: An Online Course (Gernsbacher, [2013](https://osf.io/c4xyq/))
-
-* Teaching Graduate Students How to Write Clearly (Wagenmakers, [2009](http://www.ejwagenmakers.com/2009/TeachingTipsWriting.pdf))
-
-* Writing the Empirical Journal Article (Bem, [2002](https://pdfs.semanticscholar.org/0403/b24ae2c7dbe81c05529436167646f1b21c08.pdf))
-
-* Strunk, William Jr. The Elements of Style. Pearson Education Limited (England, 2014).
+- Writing in the Sciences, MOOC (Sainani Kristin, [2017](https://www.coursera.org/learn/sciwrite/))
+- Writing and Revising, writing guide (Simmons, [2019](http://www.dansimons.com/resources/Simons_on_writing_1.5.pdf))
+- Writing Empirical Articles: Transparency, Reproducibility, Clarity, and Memorability (Gernsbacher, [2018](https://journals.sagepub.com/doi/abs/10.1177/2515245918754485))
+- Improving Scholarly Communication: An Online Course (Gernsbacher, [2013](https://osf.io/c4xyq/))
+- Teaching Graduate Students How to Write Clearly (Wagenmakers, [2009](http://www.ejwagenmakers.com/2009/TeachingTipsWriting.pdf))
+- Writing the Empirical Journal Article (Bem, [2002](https://pdfs.semanticscholar.org/0403/b24ae2c7dbe81c05529436167646f1b21c08.pdf))
+- Strunk, William Jr. The Elements of Style. Pearson Education Limited (England, 2014).
 
 #### Reproducible writing
 
-* LaTeX + Overleaf v2 permits to collaborate online on LaTeX documents: <https://www.overleaf.com/>
-
-* Writing paper from RStudio in RMarkdown with the [papaja package](https://github.com/crsh/papaja) or in Quarto using the [apaquarto package](https://github.com/wjschne/apaquarto) (APA7-formatted manuscripts)
+- [Overleaf](https://www.overleaf.com/) for online collaboration on LaTeX documents
+- Writing papers in RStudio/Quarto using the [apaquarto package](https://github.com/wjschne/apaquarto)
 
 ### Programming
 
-- OSX command line: <https://gist.github.com/alptugan/9f19da075188283f0a7152232c9a9a39>
-- Linux tips and tricks (by Christophe Pallier): <https://www.pallier.org/chrplr-linux-tips.html>
-- AI-assisted coding: [10 simple rules to maintain scientific rigor](https://www.thetransmitter.org/neuroscientists-using-ai/ai-assisted-coding-10-simple-rules-to-maintain-scientific-rigor/)
+- [MacOS command line index](https://gist.github.com/alptugan/9f19da075188283f0a7152232c9a9a39)
+- [Linux tips and tricks (by Christophe Pallier)](https://www.pallier.org/chrplr-linux-tips.html)
+- [AI-assisted coding: 10 simple rules to maintain scientific rigor](https://www.thetransmitter.org/neuroscientists-using-ai/ai-assisted-coding-10-simple-rules-to-maintain-scientific-rigor/)
+- Free and complete course in `R` programming at [Coursera](https://www.coursera.org/learn/r-programming)
 
 ### M/EEG processing/analysis
 
-- MNE-Python documentation: <https://mne.tools/stable/>
-- Neural data science in Python: <https://neuraldatascience.io>
-- Modelling time-resolved electrophysiological data with Bayesian generalised additive multilevel models (neurogam): <https://lnalborczyk.github.io/neurogam/>
-- 3D brain atlas: <https://neurotorium.org/tool/brain-atlas/>
+- MNE-Python [documentation](https://mne.tools/stable/)
+- Neural data science in Python online [book](https://neuraldatascience.io)
+- Modelling time-resolved electrophysiological data with Bayesian generalised additive multilevel models ([neurogam R package](https://lnalborczyk.github.io/neurogam/))
+- Cool [3D brain atlas](https://neurotorium.org/tool/brain-atlas/)
 
 ### Math and statistical modelling
 
-- The essence of linear algebra: <https://www.youtube.com/watch?v=kjBOesZCoqc>
-- Neuromatch precourses (refreshers on linear algebra, calculus, and statistics): <https://precourse.neuromatch.io/tutorials/W0D3_LinearAlgebra/chapter_title.html>
+- The essence of linear algebra, [video courses](https://www.youtube.com/watch?v=kjBOesZCoqc)
+- [Neuromatch precourses](https://precourse.neuromatch.io/tutorials/W0D3_LinearAlgebra/chapter_title.html) (refreshers on linear algebra, calculus, and statistics)
+- [Distance, Similarity, and Multidimensional Scaling, Self-Organizing Maps](https://pages.mtu.edu/~shanem/psy5220/daily/Day16/MDS.html)
+- Improving your statistical inferences, MOOC (Lakens, [2017](https://www.coursera.org/learn/statistical-inferences))
+- Statistical Rethinking: A Bayesian Course Using `R` and `Stan` (McElreath, [2026](https://www.youtube.com/watch?v=jh3RltVrQ-Q))
+- Introduction to Bayesian statistical modelling in `R` and `Stan` using `brms` (Master/PhD course, in French) (Nalborczyk, [2026](https://lnalborczyk.github.io/IMSB2026/))
 
 ### Creating experiments
 
-- PsychoPy: <https://www.psychopy.org>
-- PsychoPy course: <https://lindeloev.net/psychopy-course/>
+- [PsychoPy software](https://www.psychopy.org)
+- [Nice PsychoPy course](https://lindeloev.net/psychopy-course/)
 
-### What's a PhD?
+### What's in a PhD?
 
-- The illustrated guide to a PhD: <https://matt.might.net/articles/phd-school-in-pictures/>
-- What's the point of the PhD thesis? <https://www.nature.com/articles/535026a>
-- A PhD guide: <https://neurochambers.blogspot.com/2012/05/tough-love-insensitive-guide-to.html>
+- [The illustrated guide to a PhD](https://matt.might.net/articles/phd-school-in-pictures/)
+- [What's the point of the PhD thesis](https://www.nature.com/articles/535026a)
+- [Tough love: An insensitive guide to thriving in your PhD](https://neurochambers.blogspot.com/2012/05/tough-love-insensitive-guide-to.html)
 
 ### Funding opportunities
 
 #### PhD
 
-- ED 356 AMU: <https://ecole-doctorale-356.univ-amu.fr/fr/futur-doctorant/financement>
-- PhD grants from NeuroMarseille: <https://neuro-marseille.org/en/>
+- Tips from the [ED 356 AMU](https://ecole-doctorale-356.univ-amu.fr/fr/futur-doctorant/financement)
+- See the PhD grants from [NeuroMarseille](https://neuro-marseille.org/en/)
 
 #### Postdoc
 
 NB: most postdoc grants are mobility grants.
 
-- Postdoc schemes (world): <https://asntech.github.io/postdoc-funding-schemes/>
-- MSCA (EU or world): <https://marie-sklodowska-curie-actions.ec.europa.eu>
-- Fyssen (FR to world or world to FR, mobility grant): <https://www.fondationfyssen.fr/en/home/>
+- [Postdoc schemes](https://asntech.github.io/postdoc-funding-schemes) (world)
+- [Marie Skłodowska-Curie Actions (MSCA)](https://marie-sklodowska-curie-actions.ec.europa.eu) (FR to EU or world)
+- [Fondation Fyssen](https://www.fondationfyssen.fr/en/home/) (FR to world or world to FR)
