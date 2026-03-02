@@ -1,0 +1,223 @@
+---
+title: "Generalised Helix"
+filters: [shinylive]
+page-layout: full
+
+format:
+  html:
+    embed-resources: false
+    
+# renders to: _site/docs/apps/helix_app/index.html
+output-file: "index.html"
+output-dir: "docs/apps/helix"
+---
+
+The generalised helix below maps each duration $t$ to a 3D point $(x(t), y(t), z(t))$ using an exponentially varying radius, a linearly advancing phase, and an exponential mapping along the vertical axis. The angular position is
+$\theta(t) = \omega t$, and the radius evolves as $r(t) = r_0 \exp(\beta t)$, where $r_{0} \ge 0$ is the initial radius and $\beta$ controls radial expansion ($\beta > 0$) or contraction ($\beta < 0$). The horizontal-plane coordinates are then $x(t) = r(t)\cos\!\big(\theta(t)\big),\ y(t) = r(t)\sin\!\big(\theta(t)\big)$ and the vertical coordinate is given by $z(t) = \exp(\kappa t)$, where $\kappa$ controls how rapidly the helix rises ($\kappa > 0$) or flattens/decays ($\kappa < 0$). In the app, a discrete set of empirical durations $\{t_{i}\}$ is projected onto this curve, and pairwise Euclidean distances are computed between the corresponding points.
+
+```{shinylive-python}
+#| standalone: true
+#| viewerHeight: 1000
+
+from shiny import App, render, ui
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+from matplotlib.gridspec import GridSpec
+import traceback
+
+mpl.rcParams.update({
+    "font.size": 6,
+    "axes.titlesize": 8,
+    "axes.labelsize": 6,
+    "xtick.labelsize": 6,
+    "ytick.labelsize": 6
+    })
+
+#####################
+# UI
+#####################
+
+app_ui = ui.page_fluid(
+    ui.layout_sidebar(
+        ui.sidebar(
+            # ui.input_slider("r0", "Initial radius (r0, usually fixed)", min=0.0, max=2.0, value=0.1, step=0.1),
+            ui.input_slider("r_exp", "Radius growth rate (beta)", min=-1.0, max=1.0, value=-0.2, step=0.1),
+            ui.input_slider(
+                "omega",
+                "Angular velocity (omega)",
+                min=0.0,
+                max=float(np.round(5 * np.pi, 2)),
+                value=float(np.round(2 * np.pi, 2)),
+                step=float(np.round(np.pi / 2, 2))
+                ),
+            ui.input_slider("z_exp", "Z-axis growth rate (kappa)", min=-1.0, max=1.0, value=-0.4, step=0.1)
+            ),
+        ui.output_plot("helix_plot", width="100%", height="800px"),
+        fill = True
+        )
+    )
+
+#####################
+# Helper
+#####################
+
+def set_equal_xy_limits(ax, xvals, yvals, pad=0.05):
+    
+    xmin, xmax = np.min(xvals), np.max(xvals)
+    ymin, ymax = np.min(yvals), np.max(yvals)
+    
+    span = max(xmax - xmin, ymax - ymin)
+    cx = (xmax + xmin) / 2
+    cy = (ymax + ymin) / 2
+
+    span *= (1 + pad)
+    ax.set_xlim(cx - span/2, cx + span/2)
+    ax.set_ylim(cy - span/2, cy + span/2)
+    ax.set_aspect("equal", adjustable="box")
+
+#####################
+# Server
+#####################
+
+def server(input, output, session):
+
+    @output
+    @render.plot
+    
+    def helix_plot():
+        try:
+        
+            # durations (fixed)
+            durations = np.arange(0.4, 2.2 + 1e-9, 0.2)
+    
+            # smooth sequence of durations for plotting
+            dmin, dmax = durations.min(), durations.max()
+            durations_seq = np.linspace(dmin - 0.2, dmax + 0.2, 100)
+    
+            # parameters from input
+            # r0 = float(input.r0())
+            r0 = 0.1
+            r_exp = float(input.r_exp())
+            omega = float(input.omega())
+            z_exp = float(input.z_exp())
+    
+            # smoothed trajectory
+            theta = omega * durations_seq
+            r = r0 * np.exp(r_exp * durations_seq)
+            x = r * np.cos(theta)
+            y = r * np.sin(theta)
+            z = np.exp(z_exp * durations_seq)
+    
+            # points for empirical durations
+            theta_pts = omega * durations
+            r_pts = r0 * np.exp(r_exp * durations)
+            x_pts = r_pts * np.cos(theta_pts)
+            y_pts = r_pts * np.sin(theta_pts)
+            z_pts = np.exp(z_exp * durations)
+    
+            # pairwise distance matrix
+            coords = np.column_stack([x_pts, y_pts, z_pts])
+            diffs = coords[:, None, :] - coords[None, :, :]
+            dmat = np.sqrt(np.sum(diffs**2, axis=2))
+    
+            # figure layout: 3D spans top row, 4 panels bottom row
+            fig = plt.figure(figsize=(14, 9))
+            gs = GridSpec(2, 4, figure=fig, height_ratios=[2, 1], hspace=0.35, wspace=0.35)
+    
+            # 3D plot (top spans all columns)
+            ax3d = fig.add_subplot(gs[0, :], projection="3d")
+            ax3d.plot(x, y, z, linewidth=2)
+            ax3d.scatter(x_pts, y_pts, z_pts, s=30)
+    
+            for xi, yi, zi, d in zip(x_pts, y_pts, z_pts, durations):
+                
+                ax3d.text(xi, yi, zi, f"{d:.2f}")
+    
+            # ax3d.set_title("Generalised helix")
+            ax3d.set_xlabel("x")
+            ax3d.set_ylabel("y")
+            ax3d.set_zlabel("z")
+    
+            # try to keep a reasonable 3D aspect (matplotlib >=3.3)
+            ax3d.set_box_aspect((np.ptp(x), np.ptp(y), np.ptp(z) ) )
+    
+            # helper for 2D projections
+            def draw_2d(ax, a_line, b_line, a_pts, b_pts, a_lab, b_lab, title):
+                
+                ax.plot(a_line, b_line, linewidth=2)
+                ax.scatter(a_pts, b_pts, s=25)
+                
+                for ap, bp, d in zip(a_pts, b_pts, durations):
+                    
+                    ax.text(ap, bp, f"{d:.2f}", ha="center", va="bottom")
+                
+                ax.set_title(title)
+                ax.set_xlabel(a_lab)
+                ax.set_ylabel(b_lab)
+                set_equal_xy_limits(ax, a_line, b_line)
+    
+            # x–y
+            ax_xy = fig.add_subplot(gs[1, 0])
+            draw_2d(ax_xy, x, y, x_pts, y_pts, "x", "y", "Projection: x–y")
+    
+            # x–z
+            ax_xz = fig.add_subplot(gs[1, 1])
+            draw_2d(ax_xz, x, z, x_pts, z_pts, "x", "z", "Projection: x–z")
+    
+            # y–z
+            ax_yz = fig.add_subplot(gs[1, 2])
+            draw_2d(ax_yz, y, z, y_pts, z_pts, "y", "z", "Projection: y–z")
+            
+            # cell centers for imshow
+            n = len(durations)
+            centers = np.arange(n)
+            
+            # distance heatmap
+            ax_hm = fig.add_subplot(gs[1, 3])
+    
+            im = ax_hm.imshow(
+                # reverse rows to mimic R plotting
+                dmat[::-1, :],
+                origin="lower",
+                cmap="viridis",
+                interpolation="nearest",
+                aspect="equal"
+                #extent=(-0.5, n - 0.5, -0.5, n - 0.5)
+                )
+    
+            ax_hm.set_title("Euclidean distances")
+            #ax_hm.set_xticks(np.arange(len(durations) ) )
+            #ax_hm.set_yticks(np.arange(len(durations) ) )
+            #ax_hm.set_xticklabels([f"{d:.1f}" for d in durations], rotation=45, ha="right")
+            #ax_hm.set_yticklabels([f"{d:.1f}" for d in durations[::-1]])
+            
+            ax_hm.set_xticks(centers)
+            ax_hm.set_yticks(centers)
+            
+            ax_hm.set_xticklabels([f"{d:.1f}" for d in durations], rotation=45, ha="right")
+            ax_hm.set_yticklabels([f"{d:.1f}" for d in durations[::-1]])
+            
+            for lab in ax_hm.get_xticklabels():
+                
+                lab.set_rotation(45)
+                lab.set_ha("right")
+                lab.set_rotation_mode("anchor") # keeps the label anchored on its tick
+            
+            # returns the figure
+            plt.close(fig)
+            return fig
+            
+        except Exception:
+            
+            err = traceback.format_exc()
+            fig, ax = plt.subplots(figsize=(10, 4))
+            ax.axis("off")
+            ax.text(0, 1, err, va="top", ha="left", fontsize=8, family="monospace")
+            
+            plt.close(fig)
+            return fig
+
+
+app = App(app_ui, server)
+```

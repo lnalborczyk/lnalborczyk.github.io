@@ -1,21 +1,5 @@
 [
   {
-    "listing": "/blog/index.html",
-    "items": [
-      "/blog/2025-01-07-commonality/index.html",
-      "/blog/2018-07-23-corroboration2/index.html",
-      "/blog/2018-07-12-corroboration1/index.html",
-      "/blog/2018-04-30-bf/index.html",
-      "/blog/2018-01-23-ppc/index.html",
-      "/blog/2018-01-20-glm/index.html",
-      "/blog/2017-10-10-icc/index.html",
-      "/blog/2017-09-30-summersaga/index.html",
-      "/blog/2017-09-22-absenteeism2/index.html",
-      "/blog/2017-08-05-absenteeism1/index.html",
-      "/blog/2016-11-04-aicbic/index.html"
-    ]
-  },
-  {
     "listing": "/publications/index.html",
     "items": [
       "/publications/2025-nalborczyk-burkner/index.html",
@@ -30,6 +14,22 @@
       "/publications/2019-nalborczyk-etal/index.html",
       "/publications/2018-loevenbruck-etal/index.html",
       "/publications/2017-nalborczyk-etal/index.html"
+    ]
+  },
+  {
+    "listing": "/blog/index.html",
+    "items": [
+      "/blog/2025-01-07-commonality/index.html",
+      "/blog/2018-07-23-corroboration2/index.html",
+      "/blog/2018-07-12-corroboration1/index.html",
+      "/blog/2018-04-30-bf/index.html",
+      "/blog/2018-01-23-ppc/index.html",
+      "/blog/2018-01-20-glm/index.html",
+      "/blog/2017-10-10-icc/index.html",
+      "/blog/2017-09-30-summersaga/index.html",
+      "/blog/2017-09-22-absenteeism2/index.html",
+      "/blog/2017-08-05-absenteeism1/index.html",
+      "/blog/2016-11-04-aicbic/index.html"
     ]
   }
 ]
