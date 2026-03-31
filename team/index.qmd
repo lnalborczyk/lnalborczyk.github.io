@@ -6,8 +6,8 @@ title: Team
 
 ::: {.grid}
 ::: {.g-col-12 .g-col-md-3}
-<br /> 
-![](../images/ladislas.jpg){width=100% fig-alt="A portrait of Ladislas Nalborczyk."}
+<br>
+![](../images/ladislas.jpg){.team-photo width=100% fig-alt="A portrait of Ladislas Nalborczyk."}
 :::
 ::: {.g-col-12 .g-col-md-9}
 Ladislas Nalborczyk {#ladislas}
@@ -66,12 +66,14 @@ Position: Researcher in computational cognitive neuroscience
 
 -->
 
-## MSc students
+<br>
+
+## Master students
 
 ::: {.grid}
 ::: {.g-col-12 .g-col-md-3}
-<br /> 
-![](../images/virgile.jpeg){width=100% fig-alt="A missing portrait."}
+<br>
+![](../images/virgile.jpeg){.team-photo width=100% fig-alt="A portrait of Virgile Segaux."}
 :::
 ::: {.g-col-12 .g-col-md-9}
 Virgile Segaux {#virgile}
@@ -79,11 +81,59 @@ Virgile Segaux {#virgile}
 
 Background: Cognitive Science, Engineering, Psychology
 
-Position: MSc student in cognitive science
+Position: Master student in cognitive science
 
 Project: Uncovering the neural dynamics of inner speech from EEG signals
 
 [Mail](mailto:virgile.segaux@grenoble-inp.org){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
+
+:::
+:::
+
+---
+
+::: {.grid}
+::: {.g-col-12 .g-col-md-3}
+<br>
+![](../images/missing.png){.team-photo width=100% fig-alt="A portrait of Justine Coulon."}
+:::
+::: {.g-col-12 .g-col-md-9}
+Justine Coulon {#justine}
+---
+
+Background: Linguistics, Psychology
+
+Position: Master student in Linguistics
+
+Project: Does the corollary discharge provide the sensory content of inner speech?
+
+[Mail](mailto:justine.coulon@etu.univ-amu.fr){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
+
+:::
+:::
+
+---
+
+<br>
+
+## Bachelor students
+
+::: {.grid}
+::: {.g-col-12 .g-col-md-3}
+<br>
+![](../images/keira.jpeg){.team-photo width=100% fig-alt="A portrait of Keira Bryant."}
+:::
+::: {.g-col-12 .g-col-md-9}
+Keira Bryant {#keira}
+---
+
+Background: Linguistics, Cognitive Science
+
+Position: Bachelor student in Linguistics & Cognitive science
+
+Project: Does the corollary discharge provide the sensory content of inner speech?
+
+[Mail](mailto:kb119@wellesley.edu){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
 
 :::
 :::

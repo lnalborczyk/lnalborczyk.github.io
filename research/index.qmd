@@ -1,0 +1,70 @@
+---
+title: Research
+---
+
+Our research sits at the intersection of cognitive neuroscience, experimental psychology, and cognitive/statistical modelling. Across projects, we are interested in how internal cognitive states are generated, structured, and implemented in the brain: how we mentally simulate speech and action, how we represent and experience time, and how we can build better methods to study these processes rigorously. To address these questions, we combine behavioural experiments, psychophysics, electrophysiology, neurostimulation, as well as computational and statistical modelling. A central goal across these lines of work is to link theory, measurement, and analysis more closely, so that we can make stronger inferences about the mechanisms underlying thought and behaviour.
+
+## Inner speech
+
+Inner speech--the mental production of speech--is a pervasive part of everyday cognition. It supports a wide range of functions, including reading, writing, remembering, planning, and self-regulation, yet we still lack a unified account of how it is experienced, why it varies so strongly across individuals, and how it is implemented in the brain. In our work, we study inner speech as a form of mental simulation and investigate the cognitive and neural mechanisms that make it possible. We combine experimental approaches (e.g., psychophysics, EMG, M/EEG, TMS) with computational tools to understand how the brain generates, monitors, and controls internally produced speech.
+
+
+Relevant work:
+
+- Nalborczyk, L., Longcamp, M., Bonnard, M., Serveau, V., Spieser, L., & Alario, F.‑X. (2023). Distinct neural mechanisms support inner speaking and inner hearing. *Cortex, 169*, 161‑173. <https://doi.org/10.1016/j.cortex.2023.09.007>
+- Nalborczyk, L., Debarnot, U., Longcamp, M., Guillot, A., & Alario, F.‑X. (2022). The role of motor inhibition during
+covert speech production. *Frontiers in Human Neuroscience, 16:804832*. <https://doi.org/10.3389/fnhum.2022.804832>
+- Nalborczyk, L., Grandchamp, R., Koster, E.H.W., Perrone‑Bertolotti, M., & Lœvenbruck, H. (2020). Can we decode
+phonetic features in inner speech using surface electromyography? *PLOS ONE, 15*(5): e0233282. <https://doi.org/10.1371/journal.pone.0233282>
+
+---
+
+## Mental and motor imagery
+
+Mental imagery provides a powerful window onto how the mind simulates actions in the absence of overt behaviour. Motor imagery, in particular, allows us to investigate how actions can be prepared, represented, and controlled without being executed. This makes it a useful model for studying the links between action, inhibition, prediction, and conscious experience. In our work, we examine the cognitive and motor-control mechanisms that support imagery, with a particular interest in how imagined actions are prevented from turning into overt movements. More broadly, we use imagery as a way to understand how the brain constructs internal models of action and uses them for cognition.
+
+Relevant work:
+
+- Nalborczyk, L., Longcamp, M., & Alario, F.‑X. (2025). Motor inhibition prevents motor execution during typing imagery: evidence from an action‑mode switching paradigm. *Cognition, 254*, 105997. <https://doi.org/10.1016/j.cognition.2024.105997>
+- Nalborczyk, L., Longcamp, M., Gajdos, T., Servant, M. & Alario, F.‑X. (2024). Towards formal models of inhibitory
+mechanisms involved in motor imagery: A commentary on Bach et al. (2022). *Psychological Research, 1‑4*. <https://doi.org/10.1007/s00426-023-01915-8>
+
+---
+
+## Time perception
+
+Time perception is fundamental to cognition and behaviour. It shapes how we perceive events, coordinate actions, form memories, and interact with dynamic environments, yet its underlying mechanisms remain poorly understood. In our work, we study how durations are represented, distorted, and read out by the brain, from behaviour to neural dynamics. By combining behavioural paradigms, electrophysiology, and computational modelling, we aim to better understand how the brain constructs subjective time.
+
+Relevant work:
+
+- Grasso, C., Nalborczyk, L., & van Wassenhove, V. (2026). Uncovering the representational geometry of durations. *biorXiv*.
+- Nalborczyk, L. & Grasso, C. (2025). Modelling the timing properties of motor imagery. *Timing Research Forum*,
+Tokyo, Japan.
+- Nalborczyk, L. (2023). When randomization hurts. Journal club in *Nature Reviews Psychology, 2*, 131. <https://doi.org/10.1038/s44159-023-00155-2>
+
+---
+
+## Experimental methods
+
+Progress in cognitive science depends not only on good theories, but also on good tools. Many important questions remain difficult to address because our methods are noisy, indirect, or poorly suited to the complexity of mental representations and internal processes. Part of our work therefore focuses on developing new experimental and analytical approaches that make hidden cognitive structure more measurable. This includes methods for estimating internal noise, probing mental representations through data-driven paradigms, and improving the reliability, transparency, and reproducibility of empirical research. Across projects, we view methodological development as a core scientific contribution in its own right.
+
+Relevant work:
+
+- Adl Zarrabi, A., Aucouturier, J‑J., Nalborczyk, L., & Villain, M. (in preparation). Three new analysis methods to
+estimate internal noise in data‑driven experiments, in the absence of double‑pass measurements.
+- Manucci, M., Nalborczyk, L., & Varnet, L. (submitted). Assessing the efficacy of Markov Chain Monte Carlo with
+People to approximate the mental representation of vowels.
+- Beffara Bret, B., Beffara Bret, A., & Nalborczyk, L. (2021). A fully automated, transparent, reproducible, and blind
+protocol for sequential analyses. *Meta‑Psychology, 5*. <https://doi.org/10.15626/MP.2018.869>
+
+---
+
+## Bayesian statistical modelling
+
+Cognitive neuroscience increasingly relies on complex data and rich theoretical models, but standard statistical workflows often fall short when it comes to uncertainty quantification, hierarchical structure, and temporal dynamics. In our work, we develop and promote Bayesian modelling approaches that are better aligned with the kinds of questions cognitive scientists actually ask. We are particularly interested in multilevel models, generalised additive models, and principled workflows for analysing behavioural and neural data. Beyond applications, we also see statistical modelling as part of theory building: a way to formalise assumptions, test competing explanations, and extract more informative conclusions from data.
+
+Relevant work:
+
+- Nalborczyk, L. & Bürkner, P.‑C. (2025). Precise temporal localisation of M/EEG effects with Bayesian generalised additive multilevel models. *biorXiv*. <https://www.biorxiv.org/content/10.1101/2025.08.29.672336v1>, R package: <https://lnalborczyk.github.io/neurogam/>
+- Nalborczyk, L., Batailler, C., Lœvenbruck, H., Vilain, A., & Bürkner, P.‑C. (2019). An introduction to Bayesian multilevel models using brms: A case study of gender effects on vowel variability in standard Indonesian. *Journal of Speech, Language, and Hearing Research, 62*(5), 1225‑1242. <https://doi.org/10.1044/2018_JSLHR-S-18-0006>
+- Nalborczyk, L., Bürkner, P.‑C., & Williams, D. (2019). Pragmatism should not be a substitute for statistical literacy, a commentary on Albers, Kiers, and van Ravenzwaaij (2018). *Collabra: Psychology, 5*(1): 13. <https://doi.org/10.1525/collabra.197>

@@ -20,3 +20,12 @@ p {
 .subtitle {
   text-align: center;
 }
+
+img.team-photo {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  /*object-position: center top;*/
+  border-radius: 50%;
+  display: block;
+}

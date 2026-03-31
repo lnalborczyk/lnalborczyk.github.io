@@ -21,7 +21,7 @@ links:
   - name: "{{< fa brands github >}} R package"
     url: "https://github.com/lnalborczyk/neurogam"
   - name: "{{< ai biorxiv >}} Preprint"
-    url: "https://www.biorxiv.org/content/10.1101/2025.08.29.672336v1"
+    url: "https://www.biorxiv.org/content/10.1101/2025.08.29.672336"
   - name: "{{< fa file >}} PDF"
     url: "paper.pdf"
 ---

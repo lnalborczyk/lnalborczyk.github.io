@@ -68,7 +68,7 @@ There are currently no officially announced PhD positions, but feel free to cont
 <!--
 
 ::: {.callout-note icon=false collapse="true"}
-## Investigatin the impact of inner speech diversity on the representation of (external) speech sounds (5-6 months)
+## Investigating the impact of inner speech diversity on the representation of (external) speech sounds (5-6 months)
 
 **Supervision**: [Ladislas Nalborczyk](../team#ladislas){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
 
