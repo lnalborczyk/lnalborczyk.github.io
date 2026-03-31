@@ -6,7 +6,7 @@ author:
     orcid: 0000-0002-7549-7395
   - name: Ladislas Nalborczyk
     orcid: 0000-0002-7419-9855
-  - name: Virginie van Wassenhowe
+  - name: Virginie van Wassenhove
     orcid: 0000-0002-2569-5502
 date: "2026-03-25"
 journalname: "<br>*BiorXiv*"
