@@ -1,0 +1,1648 @@
+---
+title: "Auditory (voice) imagery"
+filters: [shinylive]
+page-layout: full
+
+format:
+  html:
+    embed-resources: false
+
+# renders to: _site/docs/apps/inner-speech/index.html
+output-file: "index.html"
+output-dir: "docs/apps/inner-speech"
+---
+
+<style>
+/* Remove Quarto page title */
+#title-block-header {
+    display: none;
+}
+
+/* Remove Quarto's default content width/padding */
+main.content {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.page-columns {
+    display: block !important;
+    max-width: none !important;
+}
+
+/* Full-viewport app container */
+.ddm-app-fullscreen {
+    --navbar-height: 86px;
+    --app-scale: 0.8;
+
+    width: 100vw;
+    height: calc(100vh - var(--navbar-height));
+    margin-left: calc(50% - 50vw);
+    overflow: hidden;
+}
+
+/* Make the generated Shinylive cell fill the container */
+.ddm-app-fullscreen .cell,
+.ddm-app-fullscreen .cell-output,
+.ddm-app-fullscreen .shinylive-container,
+.ddm-app-fullscreen .shinylive-wrapper {
+    height: 100%;
+    margin: 0 !important;
+}
+
+/* Zoom out the app while keeping it full width */
+.ddm-app-fullscreen iframe {
+    width: calc(100% / var(--app-scale)) !important;
+    height: calc((100vh - var(--navbar-height)) / var(--app-scale)) !important;
+    transform: scale(var(--app-scale));
+    transform-origin: top left;
+    border: 0;
+}
+</style>
+
+::: {.ddm-app-fullscreen}
+
+```{shinylive-r}
+#| standalone: true
+#| viewerHeight: 1300
+
+## file: app.R
+# Auditory imagery percept visualiser
+# A Shiny + Web Audio API app for matching an external voice to an inner voice percept.
+# Dependencies: shiny, bslib, jsonlite
+
+library(shiny)
+library(bslib)
+library(jsonlite)
+
+`%||%` <- function(x, y) {
+    if (is.null(x) || length(x) == 0) {
+        y
+    } else {
+        x
+    }
+}
+
+# Public Wikimedia Commons audio samples.
+# MP3 transcodes are used for broader browser compatibility than OGG.
+default_sample_urls <- list(
+    female = list(
+        url = "https://upload.wikimedia.org/wikipedia/commons/transcoded/1/1a/En-uk-a_horse.ogg/En-uk-a_horse.ogg.mp3",
+        label = "Female voice · UK English · ‘a horse’",
+        description = "Female UK-English pronunciation of ‘a horse’ from Wikimedia Commons."
+    ),
+    male = list(
+        url = "https://upload.wikimedia.org/wikipedia/commons/transcoded/2/26/En-au-coach_horse.ogg/En-au-coach_horse.ogg.mp3",
+        label = "Male voice · Australian English · ‘coach horse’",
+        description = "Male Australian-English pronunciation of ‘coach horse’ from Wikimedia Commons."
+    )
+)
+
+default_settings <- function() {
+    list(
+        source = "none",
+        source_kind = "none",
+        default_voice = "female",
+        word = "horse",
+        volume = 1,
+        pitch_semitones = 0,
+        speed = 1,
+        low_gain_db = 0,
+        mid_gain_db = 0,
+        high_gain_db = 0,
+        highpass_hz = 20,
+        lowpass_hz = 8000,
+        reverb = 0,
+        echo = 0,
+        noise = 0,
+        compression = 0,
+        pan = 0,
+        closeness = 50,
+        profile_label = ""
+    )
+}
+
+profiles_to_df <- function(x) {
+    if (is.null(x) || length(x) == 0) {
+        return(data.frame())
+    }
+
+    rows <- lapply(x, function(row) {
+        as.data.frame(
+            as.list(unlist(row, recursive = FALSE)),
+            stringsAsFactors = FALSE
+        )
+    })
+
+    cols <- unique(unlist(lapply(rows, names)))
+
+    rows <- lapply(rows, function(row) {
+        missing_cols <- setdiff(cols, names(row))
+
+        for (col in missing_cols) {
+            row[[col]] <- NA
+        }
+
+        row[cols]
+    })
+
+    out <- do.call(rbind, rows)
+    rownames(out) <- NULL
+    out
+}
+
+app_font <- "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+
+ui <- fluidPage(
+    theme = bs_theme(
+        version = 5,
+        bootswatch = "flatly",
+        base_font = app_font,
+        heading_font = app_font,
+        primary = "#5b5cf6"
+    ),
+
+    tags$head(
+        tags$meta(name = "viewport", content = "width=device-width, initial-scale=1"),
+        includeCSS("www/app.css")
+    ),
+
+    tags$script(HTML(sprintf(
+        "window.DEFAULT_SAMPLE_URLS = %s;",
+        jsonlite::toJSON(default_sample_urls, auto_unbox = TRUE)
+    ))),
+
+    div(
+        class = "app-shell",
+
+        div(
+            class = "hero",
+            h1("What does your inner voice sound like?"),
+            p(
+                "Load or record a spoken word, then change the acoustic properties ",
+                "until the external sound matches the voice you experience when ",
+                "you imagine yourself saying it. Audio processing stays in the ",
+                "browser; Shiny only receives the parameter settings."
+            ),
+            h2("Instructions"),
+            p(
+                "Imagine yourself saying the target word. Keep the imagined voice ",
+                "in mind, then adjust the external sound until it resembles your ",
+                "inner percept as closely as possible. There is no correct answer."
+            ),
+            div(
+                class = "badge-row",
+                span(class = "soft-badge", "1 · Choose or record a voice"),
+                span(class = "soft-badge", "2 · Match pitch, loudness, timbre, distance"),
+                span(class = "soft-badge", "3 · Save the percept profile")
+            )
+        ),
+
+        div(
+            class = "app-grid",
+
+            div(
+                div(
+                    class = "panel",
+                    h2("Sound source"),
+                    textInput(
+                        inputId = "target_word",
+                        label = "Target word",
+                        value = "horse",
+                        placeholder = "e.g., horse"
+                    ),
+                    radioButtons(
+                        inputId = "default_voice",
+                        label = "Default sample voice",
+                        choices = c(
+                            "Female voice — UK English, ‘a horse’" = "female",
+                            "Male voice — Australian English, ‘coach horse’" = "male"
+                        ),
+                        selected = "female"
+                    ),
+                    div(
+                        class = "btn-row",
+                        actionButton(
+                            inputId = "load_default",
+                            label = "Use selected default voice",
+                            class = "btn-primary"
+                        ),
+                        actionButton(
+                            inputId = "clear_audio",
+                            label = "Clear",
+                            class = "btn-outline-secondary"
+                        )
+                    ),
+                    # p(
+                    #     class = "mini-note",
+                    #     "The female sample is a single phrase containing ‘horse’. ",
+                    #     "The available male sample is ‘coach horse’, so it contains ",
+                    #     "the target word but is not a single-word recording."
+                    # ),
+                    fileInput(
+                        inputId = "audio_file",
+                        label = "Or upload an audio file",
+                        multiple = FALSE,
+                        accept = c("audio/*", ".wav", ".mp3", ".ogg", ".m4a", ".webm")
+                    ),
+                    div(
+                        class = "btn-row",
+                        actionButton(
+                            inputId = "record_start",
+                            label = "Record myself",
+                            class = "btn-outline-primary"
+                        ),
+                        actionButton(
+                            inputId = "record_stop",
+                            label = "Stop recording",
+                            class = "btn-outline-danger"
+                        )
+                    ),
+                    div(
+                        id = "audio_status",
+                        class = "status-pill",
+                        "No audio loaded yet."
+                    ),
+                    p(
+                        class = "mini-note",
+                        "Recording requires MediaRecorder support and microphone ",
+                        "permission. It works best on localhost or HTTPS."
+                    )
+                ),
+
+                div(
+                    class = "panel",
+                    h2("Playback"),
+                    div(
+                        id = "source_card",
+                        class = "source-card",
+                        strong("No active sound"),
+                        span("Load a default sample, upload a file, or record yourself.")
+                    ),
+                    div(
+                        class = "btn-row",
+                        actionButton(
+                            inputId = "play_original",
+                            label = "Play original",
+                            class = "btn-outline-secondary"
+                        ),
+                        actionButton(
+                            inputId = "play_transformed",
+                            label = "Play transformed",
+                            class = "btn-primary"
+                        ),
+                        actionButton(
+                            inputId = "stop_audio",
+                            label = "Stop",
+                            class = "btn-outline-danger"
+                        )
+                    ),
+                    tags$button(
+                        id = "download_audio",
+                        type = "button",
+                        class = "btn btn-outline-primary",
+                        "Download processed WAV"
+                    ),
+                    # p(
+                    #     class = "mini-note",
+                    #     "Pitch is implemented with browser-native playback-rate ",
+                    #     "processing. This is suitable for percept matching, not for ",
+                    #     "clinical-grade pitch shifting."
+                    # )
+                ),
+
+                div(
+                    class = "panel",
+                    h2("Save this percept"),
+                    textInput(
+                        inputId = "profile_label",
+                        label = "Profile label",
+                        value = "",
+                        placeholder = "e.g., vivid self-voice, distant whisper"
+                    ),
+                    sliderInput(
+                        inputId = "closeness",
+                        label = "How close is this to your inner voice?",
+                        min = 0,
+                        max = 100,
+                        value = 50,
+                        step = 1
+                    ),
+                    actionButton(
+                        inputId = "save_profile",
+                        label = "Save current profile",
+                        class = "btn-primary"
+                    ),
+                    div(
+                        class = "btn-row",
+                        downloadButton(
+                            outputId = "download_csv",
+                            label = "Download profiles CSV",
+                            class = "btn-outline-secondary"
+                        ),
+                        downloadButton(
+                            outputId = "download_json",
+                            label = "Download profiles JSON",
+                            class = "btn-outline-secondary"
+                        )
+                    )
+                )
+            ),
+
+            div(
+                div(
+                    class = "panel",
+                    h2("Acoustic controls"),
+                    h3("Core voice properties"),
+                    div(
+                        class = "control-row",
+                        sliderInput("volume", "Volume", 0, 2, 1, step = 0.05),
+                        sliderInput(
+                            "pitch_semitones",
+                            "Pitch / playback shift, semitones",
+                            -12,
+                            12,
+                            0,
+                            step = 1
+                        ),
+                        sliderInput("speed", "Speed", 0.5, 1.5, 1, step = 0.05),
+                        sliderInput("pan", "Left–right position", -1, 1, 0, step = 0.05)
+                    ),
+                    h3("Equaliser"),
+                    div(
+                        class = "control-row",
+                        sliderInput("low_gain", "Low frequencies, dB", -24, 24, 0, step = 1),
+                        sliderInput("mid_gain", "Mid frequencies, dB", -24, 24, 0, step = 1),
+                        sliderInput("high_gain", "High frequencies, dB", -24, 24, 0, step = 1),
+                        sliderInput("compression", "Compression", 0, 1, 0, step = 0.05)
+                    ),
+                    h3("Clarity, distance, and degradation"),
+                    div(
+                        class = "control-row",
+                        sliderInput(
+                            "highpass_hz",
+                            "Remove low rumble below, Hz",
+                            20,
+                            1000,
+                            20,
+                            step = 10
+                        ),
+                        sliderInput("lowpass_hz", "Muffle above, Hz", 500, 12000, 8000, step = 100),
+                        sliderInput("reverb", "Room / internal reverberation", 0, 1, 0, step = 0.05),
+                        sliderInput("echo", "Echo / repetition", 0, 1, 0, step = 0.05),
+                        sliderInput("noise", "Noise / fuzziness", 0, 0.25, 0, step = 0.005)
+                    )
+                ),
+
+                div(
+                    class = "panel",
+                    h2("Visual feedback"),
+                    tags$canvas(id = "waveform_canvas", class = "audio-canvas"),
+                    tags$canvas(id = "spectrum_canvas", class = "audio-canvas"),
+                    p(
+                        class = "mini-note",
+                        "The top panel shows the waveform of the loaded sound. ",
+                        "The lower panel shows the live frequency profile during playback."
+                    )
+                ),
+
+                # div(
+                #     class = "panel settings-table",
+                #     h2("Current parameter values"),
+                #     tableOutput("current_settings")
+                # ),
+                # 
+                # div(
+                #     class = "panel profiles-table",
+                #     h2("Saved profiles"),
+                #     tableOutput("saved_profiles")
+                # )
+            )
+        )
+    ),
+
+    includeScript("www/app.js")
+)
+
+server <- function(input, output, session) {
+    current_settings <- reactive({
+        input$audio_settings %||% default_settings()
+    })
+
+    saved_profiles <- reactive({
+        profiles_to_df(input$saved_profiles)
+    })
+
+    output$current_settings <- renderTable({
+        settings <- current_settings()
+        data.frame(
+            parameter = names(settings),
+            value = unname(unlist(settings, recursive = FALSE, use.names = FALSE)),
+            check.names = FALSE
+        )
+    }, striped = TRUE, bordered = FALSE, spacing = "s")
+
+    output$saved_profiles <- renderTable({
+        profiles <- saved_profiles()
+
+        if (nrow(profiles) == 0) {
+            return(data.frame(message = "No saved profile yet."))
+        }
+
+        profiles
+    }, striped = TRUE, bordered = FALSE, spacing = "s")
+
+    output$download_csv <- downloadHandler(
+        filename = function() {
+            paste0(
+                "auditory_imagery_profiles_",
+                format(Sys.time(), "%Y%m%d_%H%M%S"),
+                ".csv"
+            )
+        },
+        content = function(file) {
+            profiles <- saved_profiles()
+
+            if (nrow(profiles) == 0) {
+                profiles <- as.data.frame(
+                    as.list(default_settings()),
+                    stringsAsFactors = FALSE
+                )
+            }
+
+            utils::write.csv(profiles, file, row.names = FALSE)
+        }
+    )
+
+    output$download_json <- downloadHandler(
+        filename = function() {
+            paste0(
+                "auditory_imagery_profiles_",
+                format(Sys.time(), "%Y%m%d_%H%M%S"),
+                ".json"
+            )
+        },
+        content = function(file) {
+            profiles <- input$saved_profiles %||% list(default_settings())
+            json <- jsonlite::toJSON(profiles, auto_unbox = TRUE, pretty = TRUE)
+            writeLines(json, con = file)
+        }
+    )
+}
+
+shinyApp(ui = ui, server = server)
+
+
+## file: www/app.css
+:root {
+    --ink: #111827;
+    --muted: #6b7280;
+    --line: rgba(17, 24, 39, 0.09);
+    --surface: rgba(255, 255, 255, 0.82);
+    --surface-solid: #ffffff;
+    --accent: #5b5cf6;
+    --accent-soft: rgba(91, 92, 246, 0.12);
+    --ok: #057a55;
+    --warn: #b45309;
+}
+
+body {
+    background:
+        radial-gradient(circle at 8% 0%, rgba(91, 92, 246, 0.18), transparent 32%),
+        radial-gradient(circle at 95% 6%, rgba(14, 165, 233, 0.16), transparent 30%),
+        linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+    color: var(--ink);
+}
+
+.app-shell {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 28px 18px 48px;
+}
+
+.hero {
+    border: 1px solid var(--line);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(245, 247, 255, 0.78));
+    border-radius: 30px;
+    padding: 34px;
+    box-shadow: 0 26px 80px rgba(31, 41, 55, 0.10);
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-size: clamp(2.1rem, 4vw, 4.4rem);
+    line-height: 0.96;
+    letter-spacing: -0.065em;
+    margin: 0 0 14px;
+    font-weight: 850;
+}
+
+.hero h2,
+.panel h2 {
+    font-weight: 780;
+    letter-spacing: -0.035em;
+}
+
+.hero p {
+    max-width: 920px;
+    color: var(--muted);
+    font-size: 1.08rem;
+    line-height: 1.65;
+    margin-bottom: 18px;
+}
+
+.badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.soft-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border-radius: 999px;
+    padding: 8px 12px;
+    background: var(--accent-soft);
+    color: #3730a3;
+    border: 1px solid rgba(91, 92, 246, 0.18);
+    font-weight: 650;
+    font-size: 0.88rem;
+}
+
+.app-grid {
+    display: grid;
+    grid-template-columns: minmax(320px, 0.88fr) minmax(520px, 1.32fr);
+    gap: 18px;
+    align-items: start;
+}
+
+.panel {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    backdrop-filter: blur(16px);
+    border-radius: 26px;
+    padding: 22px;
+    box-shadow: 0 20px 50px rgba(31, 41, 55, 0.08);
+    margin-bottom: 18px;
+}
+
+.panel h2 {
+    font-size: 1.45rem;
+    margin: 0 0 16px;
+}
+
+.panel h3 {
+    color: #374151;
+    font-size: 1.02rem;
+    margin: 20px 0 10px;
+    font-weight: 730;
+}
+
+.btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 12px 0;
+}
+
+.btn,
+.action-button,
+.shiny-download-link {
+    border-radius: 999px !important;
+    font-weight: 650 !important;
+    padding: 8px 15px !important;
+}
+
+.status-pill {
+    display: inline-flex;
+    border-radius: 999px;
+    padding: 8px 12px;
+    margin: 8px 0 6px;
+    background: #f3f4f6;
+    color: #374151;
+    font-size: 0.9rem;
+    font-weight: 650;
+}
+
+.source-card {
+    display: grid;
+    gap: 5px;
+    border-radius: 18px;
+    padding: 15px;
+    background: var(--surface-solid);
+    border: 1px solid var(--line);
+    margin-bottom: 12px;
+}
+
+.source-card span {
+    color: var(--muted);
+    font-size: 0.94rem;
+}
+
+.mini-note {
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin: 10px 0 0;
+}
+
+.control-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(210px, 1fr));
+    gap: 10px 18px;
+}
+
+.form-group,
+.shiny-input-container {
+    width: 100% !important;
+}
+
+.radio label {
+    color: #374151;
+    font-weight: 550;
+}
+
+.audio-canvas {
+    display: block;
+    width: 100%;
+    height: 170px;
+    border-radius: 20px;
+    background: #0b1020;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    margin-bottom: 12px;
+}
+
+#spectrum_canvas {
+    height: 145px;
+}
+
+.settings-table,
+.profiles-table {
+    overflow-x: auto;
+}
+
+.settings-table table,
+.profiles-table table {
+    font-size: 0.84rem;
+}
+
+.irs--shiny .irs-bar,
+.irs--shiny .irs-single {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+}
+
+.irs--shiny .irs-handle {
+    border-color: var(--accent) !important;
+}
+
+@media (max-width: 1040px) {
+    .app-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 720px) {
+    .app-shell {
+        padding: 14px 10px 34px;
+    }
+
+    .hero,
+    .panel {
+        border-radius: 22px;
+        padding: 20px;
+    }
+
+    .control-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+## file: www/app.js
+(function() {
+    const state = {
+        audioCtx: null,
+        buffer: null,
+        sourceName: null,
+        sourceKind: null,
+        sourceVoice: null,
+        mediaRecorder: null,
+        mediaStream: null,
+        recordedChunks: [],
+        currentSource: null,
+        analyser: null,
+        animationId: null,
+        savedProfiles: []
+    };
+
+    const el = (id) => document.getElementById(id);
+    const $id = (id) => $('#' + id);
+
+    function setStatus(message, type = 'neutral') {
+        const node = el('audio_status');
+
+        if (!node) {
+            return;
+        }
+
+        node.textContent = message;
+        node.style.color = type === 'ok' ? '#057a55' : type === 'warn' ? '#b45309' : '#374151';
+        node.style.background = type === 'ok' ? '#ecfdf5' : type === 'warn' ? '#fffbeb' : '#f3f4f6';
+    }
+
+    function escapeHtml(value) {
+        return String(value)
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#039;');
+    }
+
+    function setSourceCard(title, subtitle) {
+        const card = el('source_card');
+
+        if (!card) {
+            return;
+        }
+
+        card.innerHTML = '<strong>' + escapeHtml(title) + '</strong><span>' + escapeHtml(subtitle) + '</span>';
+    }
+
+    async function ensureAudioContext() {
+        if (!state.audioCtx) {
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+
+            if (!AudioContextClass) {
+                throw new Error('This browser does not support the Web Audio API.');
+            }
+
+            state.audioCtx = new AudioContextClass();
+        }
+
+        if (state.audioCtx.state === 'suspended') {
+            await state.audioCtx.resume();
+        }
+
+        return state.audioCtx;
+    }
+
+    function getSlider(id, fallback) {
+        const node = el(id);
+
+        if (!node || node.value === undefined || node.value === '') {
+            return fallback;
+        }
+
+        const value = parseFloat(node.value);
+        return Number.isFinite(value) ? value : fallback;
+    }
+
+    function getText(id, fallback) {
+        const node = el(id);
+
+        if (!node) {
+            return fallback;
+        }
+
+        return node.value || fallback;
+    }
+
+    function getRadioValue(name, fallback) {
+        const selected = document.querySelector('input[name="' + name + '"]:checked');
+        return selected ? selected.value : fallback;
+    }
+
+    function getDefaultVoiceInfo(voice) {
+        const samples = window.DEFAULT_SAMPLE_URLS || {};
+        return samples[voice] || samples.female || null;
+    }
+
+    function readSettings() {
+        const defaultVoice = getRadioValue('default_voice', 'female');
+        const defaultInfo = getDefaultVoiceInfo(defaultVoice) || {};
+
+        return {
+            source: state.sourceName || 'none',
+            source_kind: state.sourceKind || 'none',
+            source_voice: state.sourceVoice || 'none',
+            default_voice: defaultVoice,
+            default_voice_label: defaultInfo.label || defaultVoice,
+            word: getText('target_word', 'horse'),
+            volume: getSlider('volume', 1),
+            pitch_semitones: getSlider('pitch_semitones', 0),
+            speed: getSlider('speed', 1),
+            low_gain_db: getSlider('low_gain', 0),
+            mid_gain_db: getSlider('mid_gain', 0),
+            high_gain_db: getSlider('high_gain', 0),
+            highpass_hz: getSlider('highpass_hz', 20),
+            lowpass_hz: getSlider('lowpass_hz', 8000),
+            reverb: getSlider('reverb', 0),
+            echo: getSlider('echo', 0),
+            noise: getSlider('noise', 0),
+            compression: getSlider('compression', 0),
+            pan: getSlider('pan', 0),
+            closeness: getSlider('closeness', 50),
+            profile_label: getText('profile_label', '')
+        };
+    }
+
+    function syncSettings() {
+        if (window.Shiny) {
+            Shiny.setInputValue('audio_settings', readSettings(), { priority: 'event' });
+        }
+    }
+
+    function syncProfiles() {
+        if (window.Shiny) {
+            Shiny.setInputValue('saved_profiles', state.savedProfiles, { priority: 'event' });
+        }
+    }
+
+    async function decodeAudioArrayBuffer(arrayBuffer) {
+        const ctx = await ensureAudioContext();
+        const copy = arrayBuffer.slice(0);
+        return await ctx.decodeAudioData(copy);
+    }
+
+    async function loadDefaultSample() {
+        try {
+            const defaultVoice = getRadioValue('default_voice', 'female');
+            const defaultInfo = getDefaultVoiceInfo(defaultVoice);
+
+            if (!defaultInfo || !defaultInfo.url) {
+                throw new Error('No default audio URL is available for this voice.');
+            }
+
+            setStatus('Loading ' + defaultInfo.label + '...', 'neutral');
+
+            const response = await fetch(defaultInfo.url, { mode: 'cors' });
+
+            if (!response.ok) {
+                throw new Error('Could not fetch the default audio file.');
+            }
+
+            const arrayBuffer = await response.arrayBuffer();
+            const buffer = await decodeAudioArrayBuffer(arrayBuffer);
+
+            state.buffer = buffer;
+            state.sourceName = defaultInfo.label;
+            state.sourceKind = 'default_remote_sample';
+            state.sourceVoice = defaultVoice;
+
+            setStatus('Default sample loaded.', 'ok');
+            setSourceCard('Default voice loaded', defaultInfo.description + ' · ' + buffer.duration.toFixed(2) + ' s');
+            drawWaveform(buffer);
+            drawEmptySpectrum();
+            syncSettings();
+        } catch (error) {
+            console.error(error);
+            setStatus('Default sample could not be loaded. Try uploading or recording audio instead.', 'warn');
+        }
+    }
+
+    async function handleUpload(event) {
+        const file = event.target.files && event.target.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        try {
+            setStatus('Decoding uploaded audio...', 'neutral');
+
+            const arrayBuffer = await file.arrayBuffer();
+            const buffer = await decodeAudioArrayBuffer(arrayBuffer);
+
+            state.buffer = buffer;
+            state.sourceName = file.name;
+            state.sourceKind = 'uploaded_file';
+            state.sourceVoice = 'uploaded';
+
+            setStatus('Uploaded audio loaded.', 'ok');
+            setSourceCard('Uploaded audio loaded', file.name + ' · ' + buffer.duration.toFixed(2) + ' s');
+            drawWaveform(buffer);
+            drawEmptySpectrum();
+            syncSettings();
+        } catch (error) {
+            console.error(error);
+            setStatus('Could not decode this audio file in the browser.', 'warn');
+        }
+    }
+
+    async function startRecording() {
+        try {
+            await ensureAudioContext();
+
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) {
+                throw new Error('Recording is not supported by this browser.');
+            }
+
+            state.recordedChunks = [];
+            state.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            state.mediaRecorder = new MediaRecorder(state.mediaStream);
+
+            state.mediaRecorder.ondataavailable = (event) => {
+                if (event.data && event.data.size > 0) {
+                    state.recordedChunks.push(event.data);
+                }
+            };
+
+            state.mediaRecorder.onstop = async () => {
+                try {
+                    const mimeType = state.mediaRecorder.mimeType || 'audio/webm';
+                    const blob = new Blob(state.recordedChunks, { type: mimeType });
+                    const arrayBuffer = await blob.arrayBuffer();
+                    const buffer = await decodeAudioArrayBuffer(arrayBuffer);
+
+                    state.buffer = buffer;
+                    state.sourceName = 'Recorded voice';
+                    state.sourceKind = 'browser_recording';
+                    state.sourceVoice = 'self_recorded';
+
+                    setStatus('Recording loaded.', 'ok');
+                    setSourceCard('Recorded voice loaded', buffer.duration.toFixed(2) + ' s · kept locally in the browser');
+                    drawWaveform(buffer);
+                    drawEmptySpectrum();
+                    syncSettings();
+                } catch (error) {
+                    console.error(error);
+                    setStatus('Recording stopped, but the browser could not decode it.', 'warn');
+                } finally {
+                    stopMediaTracks();
+                }
+            };
+
+            state.mediaRecorder.start();
+            setStatus('Recording... say the word, then click Stop recording.', 'warn');
+        } catch (error) {
+            console.error(error);
+            setStatus(error.message || 'Recording failed.', 'warn');
+        }
+    }
+
+    function stopRecording() {
+        if (state.mediaRecorder && state.mediaRecorder.state !== 'inactive') {
+            state.mediaRecorder.stop();
+            return;
+        }
+
+        stopMediaTracks();
+        setStatus('No active recording to stop.', 'neutral');
+    }
+
+    function stopMediaTracks() {
+        if (state.mediaStream) {
+            state.mediaStream.getTracks().forEach((track) => track.stop());
+        }
+
+        state.mediaStream = null;
+    }
+
+    function stopPlayback() {
+        if (state.currentSource) {
+            try {
+                state.currentSource.stop(0);
+            } catch (error) {
+                // The source may already have ended.
+            }
+
+            state.currentSource = null;
+        }
+
+        if (state.animationId) {
+            cancelAnimationFrame(state.animationId);
+            state.animationId = null;
+        }
+
+        drawEmptySpectrum();
+    }
+
+    function createImpulseResponse(ctx, seconds, decay) {
+        const rate = ctx.sampleRate;
+        const length = Math.max(1, Math.floor(seconds * rate));
+        const impulse = ctx.createBuffer(2, length, rate);
+
+        for (let channel = 0; channel < impulse.numberOfChannels; channel++) {
+            const data = impulse.getChannelData(channel);
+
+            for (let i = 0; i < length; i++) {
+                const t = i / length;
+                data[i] = (Math.random() * 2 - 1) * Math.pow(1 - t, decay);
+            }
+        }
+
+        return impulse;
+    }
+
+    function createNoiseBuffer(ctx, duration) {
+        const length = Math.max(1, Math.floor(ctx.sampleRate * duration));
+        const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        let last = 0;
+
+        for (let i = 0; i < length; i++) {
+            const white = Math.random() * 2 - 1;
+            last = 0.94 * last + 0.06 * white;
+            data[i] = last;
+        }
+
+        return buffer;
+    }
+
+    function processedDuration(buffer, settings) {
+        const rate = Math.max(0.05, Math.pow(2, settings.pitch_semitones / 12) * settings.speed);
+        return buffer.duration / rate + 2.0 + settings.reverb * 2.5 + settings.echo * 1.3;
+    }
+
+    function connectProcessedGraph(ctx, source, destination, settings, duration, withAnalyser = false) {
+        const playbackRate = Math.max(0.05, Math.pow(2, settings.pitch_semitones / 12) * settings.speed);
+        source.playbackRate.value = playbackRate;
+
+        const inputGain = ctx.createGain();
+        inputGain.gain.value = settings.volume;
+
+        const highpass = ctx.createBiquadFilter();
+        highpass.type = 'highpass';
+        highpass.frequency.value = Math.max(20, settings.highpass_hz);
+        highpass.Q.value = 0.7;
+
+        const low = ctx.createBiquadFilter();
+        low.type = 'lowshelf';
+        low.frequency.value = 250;
+        low.gain.value = settings.low_gain_db;
+
+        const mid = ctx.createBiquadFilter();
+        mid.type = 'peaking';
+        mid.frequency.value = 1400;
+        mid.Q.value = 1.0;
+        mid.gain.value = settings.mid_gain_db;
+
+        const high = ctx.createBiquadFilter();
+        high.type = 'highshelf';
+        high.frequency.value = 3800;
+        high.gain.value = settings.high_gain_db;
+
+        const lowpass = ctx.createBiquadFilter();
+        lowpass.type = 'lowpass';
+        lowpass.frequency.value = Math.max(500, settings.lowpass_hz);
+        lowpass.Q.value = 0.8;
+
+        const compressor = ctx.createDynamicsCompressor();
+        compressor.threshold.value = -24;
+        compressor.knee.value = 18;
+        compressor.ratio.value = 1 + settings.compression * 11;
+        compressor.attack.value = 0.01;
+        compressor.release.value = 0.18;
+
+        const dry = ctx.createGain();
+        dry.gain.value = 1;
+
+        const wetReverb = ctx.createGain();
+        wetReverb.gain.value = settings.reverb * 0.75;
+
+        const convolver = ctx.createConvolver();
+        convolver.buffer = createImpulseResponse(
+            ctx,
+            0.35 + settings.reverb * 2.1,
+            2.0 + settings.reverb * 4.0
+        );
+
+        const delay = ctx.createDelay(1.5);
+        delay.delayTime.value = 0.08 + settings.echo * 0.34;
+
+        const feedback = ctx.createGain();
+        feedback.gain.value = settings.echo * 0.48;
+
+        const wetEcho = ctx.createGain();
+        wetEcho.gain.value = settings.echo * 0.62;
+
+        const master = ctx.createGain();
+        master.gain.value = 0.92;
+
+        const pan = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+
+        if (pan) {
+            pan.pan.value = settings.pan;
+        }
+
+        source
+            .connect(inputGain)
+            .connect(highpass)
+            .connect(low)
+            .connect(mid)
+            .connect(high)
+            .connect(lowpass)
+            .connect(compressor);
+
+        compressor.connect(dry).connect(master);
+        compressor.connect(convolver).connect(wetReverb).connect(master);
+        compressor.connect(delay).connect(wetEcho).connect(master);
+        delay.connect(feedback).connect(delay);
+
+        if (settings.noise > 0) {
+            const noiseSource = ctx.createBufferSource();
+            const noiseGain = ctx.createGain();
+            const noiseFilter = ctx.createBiquadFilter();
+
+            noiseSource.buffer = createNoiseBuffer(ctx, Math.max(duration, 1));
+            noiseGain.gain.value = settings.noise;
+            noiseFilter.type = 'lowpass';
+            noiseFilter.frequency.value = 6200;
+
+            noiseSource
+                .connect(noiseFilter)
+                .connect(noiseGain)
+                .connect(master);
+
+            noiseSource.start(0);
+        }
+
+        let outputNode = master;
+
+        if (pan) {
+            master.connect(pan);
+            outputNode = pan;
+        }
+
+        if (withAnalyser) {
+            const analyser = ctx.createAnalyser();
+            analyser.fftSize = 1024;
+            outputNode.connect(analyser).connect(destination);
+            state.analyser = analyser;
+            drawSpectrumLoop();
+        } else {
+            outputNode.connect(destination);
+        }
+    }
+
+    function finishPlaybackAfter(duration) {
+        window.setTimeout(() => {
+            if (state.currentSource) {
+                state.currentSource = null;
+            }
+
+            if (state.animationId) {
+                cancelAnimationFrame(state.animationId);
+                state.animationId = null;
+            }
+
+            drawEmptySpectrum();
+        }, Math.max(500, duration * 1000 + 100));
+    }
+
+    async function playOriginal() {
+        if (!state.buffer) {
+            setStatus('Load or record audio first.', 'warn');
+            return;
+        }
+
+        try {
+            const ctx = await ensureAudioContext();
+            const source = ctx.createBufferSource();
+            const analyser = ctx.createAnalyser();
+
+            stopPlayback();
+
+            source.buffer = state.buffer;
+            analyser.fftSize = 1024;
+            source.connect(analyser).connect(ctx.destination);
+
+            state.currentSource = source;
+            state.analyser = analyser;
+
+            source.onended = () => {
+                state.currentSource = null;
+            };
+
+            source.start(0);
+            setStatus('Playing original audio.', 'ok');
+            drawSpectrumLoop();
+            finishPlaybackAfter(state.buffer.duration);
+        } catch (error) {
+            console.error(error);
+            setStatus('Playback failed.', 'warn');
+        }
+    }
+
+    async function playTransformed() {
+        if (!state.buffer) {
+            setStatus('Load or record audio first.', 'warn');
+            return;
+        }
+
+        try {
+            const ctx = await ensureAudioContext();
+            const settings = readSettings();
+            const duration = processedDuration(state.buffer, settings);
+            const source = ctx.createBufferSource();
+
+            stopPlayback();
+
+            source.buffer = state.buffer;
+            state.currentSource = source;
+
+            source.onended = () => {
+                state.currentSource = null;
+            };
+
+            connectProcessedGraph(ctx, source, ctx.destination, settings, duration, true);
+            source.start(0);
+            setStatus('Playing transformed audio.', 'ok');
+            syncSettings();
+            finishPlaybackAfter(duration);
+        } catch (error) {
+            console.error(error);
+            setStatus('Transformed playback failed.', 'warn');
+        }
+    }
+
+    async function downloadProcessedAudio() {
+        if (!state.buffer) {
+            setStatus('Load or record audio first.', 'warn');
+            return;
+        }
+
+        try {
+            const settings = readSettings();
+            const duration = processedDuration(state.buffer, settings);
+            const sampleRate = state.buffer.sampleRate || 44100;
+            const numberOfChannels = 2;
+            const length = Math.ceil(duration * sampleRate);
+            const OfflineContextClass = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+
+            if (!OfflineContextClass) {
+                throw new Error('Offline rendering is not supported by this browser.');
+            }
+
+            const offline = new OfflineContextClass(numberOfChannels, length, sampleRate);
+            const source = offline.createBufferSource();
+            source.buffer = state.buffer;
+
+            connectProcessedGraph(offline, source, offline.destination, settings, duration, false);
+            source.start(0);
+
+            const rendered = await offline.startRendering();
+            const wavBlob = audioBufferToWavBlob(rendered);
+            const url = URL.createObjectURL(wavBlob);
+            const link = document.createElement('a');
+            const safeWord = String(settings.word || 'inner_voice').replace(/[^a-z0-9_-]+/gi, '_');
+
+            link.href = url;
+            link.download = 'auditory_imagery_' + safeWord + '.wav';
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(url);
+            setStatus('Processed WAV created.', 'ok');
+        } catch (error) {
+            console.error(error);
+            setStatus('Could not render the processed WAV.', 'warn');
+        }
+    }
+
+    function audioBufferToWavBlob(buffer) {
+        const numChannels = buffer.numberOfChannels;
+        const sampleRate = buffer.sampleRate;
+        const bytesPerSample = 2;
+        const length = buffer.length * numChannels * bytesPerSample + 44;
+        const arrayBuffer = new ArrayBuffer(length);
+        const view = new DataView(arrayBuffer);
+        let offset = 0;
+
+        function writeString(value) {
+            for (let i = 0; i < value.length; i++) {
+                view.setUint8(offset++, value.charCodeAt(i));
+            }
+        }
+
+        function writeUint32(value) {
+            view.setUint32(offset, value, true);
+            offset += 4;
+        }
+
+        function writeUint16(value) {
+            view.setUint16(offset, value, true);
+            offset += 2;
+        }
+
+        writeString('RIFF');
+        writeUint32(length - 8);
+        writeString('WAVE');
+        writeString('fmt ');
+        writeUint32(16);
+        writeUint16(1);
+        writeUint16(numChannels);
+        writeUint32(sampleRate);
+        writeUint32(sampleRate * numChannels * bytesPerSample);
+        writeUint16(numChannels * bytesPerSample);
+        writeUint16(16);
+        writeString('data');
+        writeUint32(buffer.length * numChannels * bytesPerSample);
+
+        const channels = [];
+
+        for (let channel = 0; channel < numChannels; channel++) {
+            channels.push(buffer.getChannelData(channel));
+        }
+
+        for (let i = 0; i < buffer.length; i++) {
+            for (let channel = 0; channel < numChannels; channel++) {
+                const sample = Math.max(-1, Math.min(1, channels[channel][i] || 0));
+                view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7fff, true);
+                offset += 2;
+            }
+        }
+
+        return new Blob([arrayBuffer], { type: 'audio/wav' });
+    }
+
+    function clearAudio() {
+        const fileInput = el('audio_file');
+
+        stopPlayback();
+
+        state.buffer = null;
+        state.sourceName = null;
+        state.sourceKind = null;
+        state.sourceVoice = null;
+
+        if (fileInput) {
+            fileInput.value = '';
+        }
+
+        setStatus('Audio cleared.', 'neutral');
+        setSourceCard('No active sound', 'Load a default sample, upload a file, or record yourself.');
+        drawEmptyWaveform();
+        drawEmptySpectrum();
+        syncSettings();
+    }
+
+    function saveProfile() {
+        const settings = readSettings();
+        settings.saved_at = new Date().toISOString();
+        state.savedProfiles.push(settings);
+        syncProfiles();
+        setStatus('Profile saved in this session.', 'ok');
+    }
+
+    function prepareCanvas(canvas, cssHeight) {
+        if (!canvas) {
+            return null;
+        }
+
+        const rect = canvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        const width = Math.max(320, Math.floor(rect.width * dpr));
+        const height = Math.max(120, Math.floor(cssHeight * dpr));
+
+        if (canvas.width !== width || canvas.height !== height) {
+            canvas.width = width;
+            canvas.height = height;
+        }
+
+        return canvas.getContext('2d');
+    }
+
+    function drawEmptyWaveform() {
+        const canvas = el('waveform_canvas');
+        const ctx = prepareCanvas(canvas, 180);
+
+        if (!ctx || !canvas) {
+            return;
+        }
+
+        const w = canvas.width;
+        const h = canvas.height;
+        const grad = ctx.createLinearGradient(0, 0, w, h);
+
+        grad.addColorStop(0, '#0b1020');
+        grad.addColorStop(1, '#111827');
+
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, w, h);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.13)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, h / 2);
+        ctx.lineTo(w, h / 2);
+        ctx.stroke();
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+        ctx.font = Math.round(14 * (window.devicePixelRatio || 1)) + 'px Inter, sans-serif';
+        ctx.fillText('No waveform yet', 22, 34);
+    }
+
+    function drawWaveform(buffer) {
+        const canvas = el('waveform_canvas');
+        const ctx = prepareCanvas(canvas, 180);
+
+        if (!ctx || !canvas || !buffer) {
+            return;
+        }
+
+        const w = canvas.width;
+        const h = canvas.height;
+        const data = buffer.getChannelData(0);
+        const step = Math.ceil(data.length / w);
+        const amp = h / 2;
+        const grad = ctx.createLinearGradient(0, 0, w, h);
+
+        grad.addColorStop(0, '#0b1020');
+        grad.addColorStop(1, '#111827');
+
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, w, h);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.10)';
+        ctx.lineWidth = 1;
+
+        for (let i = 0; i < 5; i++) {
+            const y = (i + 1) * h / 6;
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(w, y);
+            ctx.stroke();
+        }
+
+        const lineGrad = ctx.createLinearGradient(0, 0, w, 0);
+        lineGrad.addColorStop(0, '#a5b4fc');
+        lineGrad.addColorStop(0.5, '#67e8f9');
+        lineGrad.addColorStop(1, '#f0abfc');
+
+        ctx.strokeStyle = lineGrad;
+        ctx.lineWidth = Math.max(2, 2 * (window.devicePixelRatio || 1));
+        ctx.beginPath();
+
+        for (let x = 0; x < w; x++) {
+            let min = 1;
+            let max = -1;
+            const start = x * step;
+            const end = Math.min(start + step, data.length);
+
+            for (let j = start; j < end; j++) {
+                const value = data[j];
+
+                if (value < min) {
+                    min = value;
+                }
+
+                if (value > max) {
+                    max = value;
+                }
+            }
+
+            const yMin = (1 + min) * amp;
+            const yMax = (1 + max) * amp;
+
+            if (x === 0) {
+                ctx.moveTo(x, yMin);
+            }
+
+            ctx.lineTo(x, yMin);
+            ctx.lineTo(x, yMax);
+        }
+
+        ctx.stroke();
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.68)';
+        ctx.font = Math.round(13 * (window.devicePixelRatio || 1)) + 'px Inter, sans-serif';
+        ctx.fillText(buffer.duration.toFixed(2) + ' seconds · ' + buffer.sampleRate + ' Hz', 22, 34);
+    }
+
+    function drawEmptySpectrum() {
+        const canvas = el('spectrum_canvas');
+        const ctx = prepareCanvas(canvas, 150);
+
+        if (!ctx || !canvas) {
+            return;
+        }
+
+        const w = canvas.width;
+        const h = canvas.height;
+
+        ctx.fillStyle = '#0b1020';
+        ctx.fillRect(0, 0, w, h);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+        ctx.font = Math.round(14 * (window.devicePixelRatio || 1)) + 'px Inter, sans-serif';
+        ctx.fillText('Live spectrum during playback', 22, 34);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.10)';
+        ctx.beginPath();
+        ctx.moveTo(0, h - 24);
+        ctx.lineTo(w, h - 24);
+        ctx.stroke();
+    }
+
+    function drawSpectrumLoop() {
+        const analyser = state.analyser;
+        const canvas = el('spectrum_canvas');
+        const ctx = prepareCanvas(canvas, 150);
+
+        if (!analyser || !ctx || !canvas) {
+            return;
+        }
+
+        const w = canvas.width;
+        const h = canvas.height;
+        const data = new Uint8Array(analyser.frequencyBinCount);
+        const dpr = window.devicePixelRatio || 1;
+
+        function draw() {
+            analyser.getByteFrequencyData(data);
+
+            ctx.fillStyle = 'rgba(11, 16, 32, 0.82)';
+            ctx.fillRect(0, 0, w, h);
+
+            const nBars = 72;
+            const barWidth = w / nBars;
+
+            for (let i = 0; i < nBars; i++) {
+                const idx = Math.floor(Math.pow(i / nBars, 1.55) * (data.length - 1));
+                const value = data[idx] / 255;
+                const barHeight = Math.max(2 * dpr, value * (h - 32 * dpr));
+                const x = i * barWidth;
+                const y = h - barHeight - 16 * dpr;
+                const grad = ctx.createLinearGradient(0, y, 0, h);
+
+                grad.addColorStop(0, '#67e8f9');
+                grad.addColorStop(1, '#5b5cf6');
+
+                ctx.fillStyle = grad;
+                ctx.fillRect(x + dpr, y, Math.max(1, barWidth - 2 * dpr), barHeight);
+            }
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.58)';
+            ctx.font = Math.round(12 * dpr) + 'px Inter, sans-serif';
+            ctx.fillText('low frequencies', 18 * dpr, h - 6 * dpr);
+            ctx.fillText('high frequencies', w - 124 * dpr, h - 6 * dpr);
+            state.animationId = requestAnimationFrame(draw);
+        }
+
+        if (state.animationId) {
+            cancelAnimationFrame(state.animationId);
+        }
+
+        draw();
+    }
+
+    function bindEvents() {
+        const controlIds = [
+            'target_word',
+            'default_voice',
+            'profile_label',
+            'volume',
+            'pitch_semitones',
+            'speed',
+            'pan',
+            'low_gain',
+            'mid_gain',
+            'high_gain',
+            'compression',
+            'highpass_hz',
+            'lowpass_hz',
+            'reverb',
+            'echo',
+            'noise',
+            'closeness'
+        ];
+
+        $id('load_default').on('click', loadDefaultSample);
+        $id('clear_audio').on('click', clearAudio);
+        $id('record_start').on('click', startRecording);
+        $id('record_stop').on('click', stopRecording);
+        $id('play_original').on('click', playOriginal);
+        $id('play_transformed').on('click', playTransformed);
+        $id('stop_audio').on('click', stopPlayback);
+        $id('save_profile').on('click', saveProfile);
+        $('#download_audio').on('click', downloadProcessedAudio);
+        $('#audio_file').on('change', handleUpload);
+        $(document).on('change input', controlIds.map((id) => '#' + id).join(','), syncSettings);
+        $(document).on('change input', 'input[name="default_voice"]', syncSettings);
+        $(document).on('shiny:inputchanged', (event) => {
+            if (controlIds.includes(event.name)) {
+                window.setTimeout(syncSettings, 0);
+            }
+        });
+        $(window).on('resize', () => {
+            if (state.buffer) {
+                drawWaveform(state.buffer);
+            } else {
+                drawEmptyWaveform();
+            }
+
+            drawEmptySpectrum();
+        });
+    }
+
+    $(document).ready(() => {
+        bindEvents();
+        drawEmptyWaveform();
+        drawEmptySpectrum();
+        syncSettings();
+        syncProfiles();
+    });
+})();
+
+```
+
+:::
