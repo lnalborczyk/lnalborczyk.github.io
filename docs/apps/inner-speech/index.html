@@ -563,24 +563,37 @@ ui &lt;- fluidPage(
         div(
             class = "hero",
             h1("What does your inner voice sound like?"),
+            # p(
+            #     "Load or record a spoken word, then change the acoustic properties ",
+            #     "until the external sound matches the voice you experience when ",
+            #     "you imagine yourself saying it. Audio processing stays in the ",
+            #     "browser; Shiny only receives the parameter settings. Inspired by
+            #     this visual imagery application: https://aphantasia.com/visualize."
+            # ),
             p(
                 "Load or record a spoken word, then change the acoustic properties ",
                 "until the external sound matches the voice you experience when ",
                 "you imagine yourself saying it. Audio processing stays in the ",
-                "browser; Shiny only receives the parameter settings."
+                "browser; Shiny only receives the parameter settings. Inspired by ",
+                tags$a(
+                    href = "https://aphantasia.com/visualize",
+                    target = "_blank",
+                    rel = "noopener noreferrer",
+                    "this visual imagery application."
+                )
             ),
             h2("Instructions"),
             p(
                 "Imagine yourself saying the target word. Keep the imagined voice ",
                 "in mind, then adjust the external sound until it resembles your ",
                 "inner percept as closely as possible. There is no correct answer."
-            ),
-            div(
-                class = "badge-row",
-                span(class = "soft-badge", "1 · Choose or record a voice"),
-                span(class = "soft-badge", "2 · Match pitch, loudness, timbre, distance"),
-                span(class = "soft-badge", "3 · Save the percept profile")
             )
+            # div(
+            #     class = "badge-row",
+            #     span(class = "soft-badge", "1 · Choose or record a voice"),
+            #     span(class = "soft-badge", "2 · Match pitch, loudness, timbre, distance"),
+            #     span(class = "soft-badge", "3 · Save the percept profile")
+            # )
         ),
 
         div(
