@@ -10,7 +10,13 @@ toc-expand: 2
 - Chat in the [Discord's team server](https://discord.gg/xgzYKDEYhf)
 - Check my availabilities and book me via [Koalendar](https://koalendar.com/e/meet-with-ladislas-nalborczyk)
 
-## Resources
+## Basic survival kit (essential resources)
+
+- Writing in the Sciences, MOOC (Sainani Kristin, [2017](https://www.coursera.org/learn/sciwrite/))
+- Improving your statistical inferences, MOOC (Lakens, [2017](https://www.coursera.org/learn/statistical-inferences))
+- Which neural code for mental representations? Stanislas Dehaene's course at Collège de France [2023](https://www.college-de-france.fr/en/agenda/lecture/which-neural-code-for-mental-representations)
+
+## Further resources
 
 A list of useful resources for a modern, transparent, and reproducible scientific workflow. These resources cover many stages of the scientific process from designing an experimental procedure to writing a report and collaborating with others. This list will be continuously updated.
 
@@ -44,7 +50,7 @@ To counter the pervasive problem of low-powered experimental designs, researcher
 - [Study-swap](https://osf.io/meetings/studyswap/): a research community for sharing resources and collaborations
 - The Psychological Science Accelerator ([2018's paper](https://journals.sagepub.com/doi/10.1177/2515245918797607))
 
-### Writing empirical papers
+### Writing
 
 #### Writing style
 
@@ -60,6 +66,7 @@ To counter the pervasive problem of low-powered experimental designs, researcher
 
 - [Overleaf](https://www.overleaf.com/) for online collaboration on LaTeX documents
 - Writing papers in RStudio/Quarto using the [apaquarto package](https://github.com/wjschne/apaquarto)
+- A LaTeX template for Master theses: <https://github.com/lnalborczyk/master_thesis_template> (you can download the zip and upload it to Overleaf)
 
 ### Programming
 
@@ -73,7 +80,7 @@ To counter the pervasive problem of low-powered experimental designs, researcher
 - MNE-Python [documentation](https://mne.tools/stable/)
 - Neural data science in Python online [book](https://neuraldatascience.io)
 - Modelling time-resolved electrophysiological data with Bayesian generalised additive multilevel models ([neurogam R package](https://lnalborczyk.github.io/neurogam/))
-- Cool [3D brain atlas](https://neurotorium.org/tool/brain-atlas/)
+- A visually appealing [3D brain atlas](https://neurotorium.org/tool/brain-atlas/)
 
 ### Math and statistical modelling
 
@@ -83,6 +90,10 @@ To counter the pervasive problem of low-powered experimental designs, researcher
 - Improving your statistical inferences, MOOC (Lakens, [2017](https://www.coursera.org/learn/statistical-inferences))
 - Statistical Rethinking: A Bayesian Course Using `R` and `Stan` (McElreath, [2026](https://www.youtube.com/watch?v=jh3RltVrQ-Q))
 - Introduction to Bayesian statistical modelling in `R` and `Stan` using `brms` (Master/PhD course, in French) (Nalborczyk, [2026](https://lnalborczyk.github.io/IMSB2026/))
+
+### Epistemology, logic, philosophy of science
+
+- Philosophical Psychology course, Meehl, P. [1989](https://meehl.umn.edu/video).
 
 ### Creating experiments
 
@@ -101,7 +112,7 @@ To counter the pervasive problem of low-powered experimental designs, researcher
 #### PhD
 
 - Tips from the [ED 356 AMU](https://ecole-doctorale-356.univ-amu.fr/fr/futur-doctorant/financement)
-- See the PhD grants from [NeuroMarseille](https://neuro-marseille.org/en/)
+- PhD grants from [NeuroMarseille](https://neuro-marseille.org/en/)
 
 #### Postdoc
 
@@ -110,3 +121,8 @@ NB: most postdoc grants are mobility grants.
 - [Postdoc schemes](https://asntech.github.io/postdoc-funding-schemes) (world)
 - [Marie Skłodowska-Curie Actions (MSCA)](https://marie-sklodowska-curie-actions.ec.europa.eu) (FR to EU or world)
 - [Fondation Fyssen](https://www.fondationfyssen.fr/en/home/) (FR to world or world to FR)
+- [Fondation pour la recherche médicale](https://www.frm.org/fr/programmes)
+
+## Lab AI/LLM policy
+
+See <https://todd.gureckislab.org/2026/03/06/genaipolicy>.

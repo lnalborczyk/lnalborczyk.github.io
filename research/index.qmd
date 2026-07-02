@@ -8,7 +8,6 @@ Our research sits at the intersection of cognitive neuroscience, experimental ps
 
 Inner speech--the mental production of speech--is a pervasive part of everyday cognition. It supports a wide range of functions, including reading, writing, remembering, planning, and self-regulation, yet we still lack a unified account of how it is experienced, why it varies so strongly across individuals, and how it is implemented in the brain. In our work, we study inner speech as a form of mental simulation and investigate the cognitive and neural mechanisms that make it possible. We combine experimental approaches (e.g., psychophysics, EMG, M/EEG, TMS) with computational tools to understand how the brain generates, monitors, and controls internally produced speech.
 
-
 Relevant work:
 
 - Nalborczyk, L., Longcamp, M., Bonnard, M., Serveau, V., Spieser, L., & Alario, F.‑X. (2023). Distinct neural mechanisms support inner speaking and inner hearing. *Cortex, 169*, 161‑173. <https://doi.org/10.1016/j.cortex.2023.09.007>

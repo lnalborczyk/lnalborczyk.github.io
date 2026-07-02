@@ -95,7 +95,7 @@ Project: Uncovering the neural dynamics of inner speech from EEG signals
 ::: {.grid}
 ::: {.g-col-12 .g-col-md-3}
 <br>
-![](../images/missing.png){.team-photo width=100% fig-alt="A portrait of Justine Coulon."}
+![](../images/justine.jpg){.team-photo width=100% fig-alt="A portrait of Justine Coulon."}
 :::
 ::: {.g-col-12 .g-col-md-9}
 Justine Coulon {#justine}
@@ -111,6 +111,8 @@ Project: Does the corollary discharge provide the sensory content of inner speec
 
 :::
 :::
+
+<!--
 
 ---
 
@@ -137,6 +139,8 @@ Project: Does the corollary discharge provide the sensory content of inner speec
 
 :::
 :::
+
+-->
 
 ---
 
