@@ -8,15 +8,29 @@ If you are interested in joining my team within the [LPL (CNRS UMR 7309)](https:
 
 ## Postdoctoral positions
 
-There are currently no officially announced postdoctoral positions, but feel free to contact me at any time to inquire about opportunities. For instance, if you are currently working out of France, you could consider applying to a [MSCA postdoc grant](https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships) (deadline: around September every year) or a [Fyssen postdoc grant](https://www.fondationfyssen.fr/en/study-grants/aim-award/) (deadline: around March every year) in my team.
+<!--
+
+There are currently no officially advertised postdoctoral positions, but you are welcome to contact me at any time to discuss potential opportunities. Researchers currently based outside France may also consider applying to join my team through an [MSCA Postdoctoral Fellowship](https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships) (annual deadline usually around September) or a [Fyssen Foundation postdoctoral fellowship](https://www.fondationfyssen.fr/en/study-grants/aim-award/) (annual deadline usually around March).
+
+-->
+
+A postdoctoral position is expected to open in 2029 to develop a neurocomputational model of inner speech development.
+
+You are also welcome to contact me at any time to discuss other potential opportunities. Researchers currently based outside France may, for example, consider applying to join my team through an [MSCA postdoc grant](https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships) (annual deadline usually around September) or a [Fyssen postdoc grant](https://www.fondationfyssen.fr/en/study-grants/aim-award/) (annual deadline usually around March).
 
 ## PhD positions
 
-There are currently no officially announced PhD positions, but feel free to contact me at any time to inquire about opportunities.
+<!--
+
+There are currently no officially advertised PhD positions, but you are welcome to contact me at any time to discuss potential opportunities.
+
+-->
+
+We are seeking PhD candidates to join the ANR-funded INNERSPEECH project, with an expected start date in late 2026 or early 2027. The project will investigate the cognitive and neural mechanisms underlying the diversity of inner speech experiences through behavioural, EEG, MEG, and 7T fMRI studies.
+
+You are also welcome to contact me at any time to discuss other potential PhD opportunities.
 
 ## Master's degree research internships
-
-<!--
 
 ::: {.callout-note icon=false collapse="true"}
 ## Uncovering the neural dynamics of inner speech from EEG signals (5-6 months)
@@ -40,8 +54,6 @@ There are currently no officially announced PhD positions, but feel free to cont
 
 **Key-words**: Cognitive Neuroscience, Electroencephalography
 :::
-
--->
 
 ::: {.callout-note icon=false collapse="true"}
 ## Does the corollary discharge provide the sensory content of inner speech? (5-6 months)

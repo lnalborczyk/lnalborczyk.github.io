@@ -2,11 +2,11 @@
 title: Research
 ---
 
-Our research sits at the intersection of cognitive neuroscience, experimental psychology, and cognitive/statistical modelling. Across projects, we are interested in how internal cognitive states are generated, structured, and implemented in the brain: how we mentally simulate speech and action, how we represent and experience time, and how we can build better methods to study these processes rigorously. To address these questions, we combine behavioural experiments, psychophysics, electrophysiology, neurostimulation, as well as computational and statistical modelling. A central goal across these lines of work is to link theory, measurement, and analysis more closely, so that we can make stronger inferences about the mechanisms underlying thought and behaviour.
+Our research sits at the intersection of cognitive neuroscience, experimental psychology, and cognitive/statistical modelling. Across projects, we are interested in how internal cognitive states are generated, structured, and implemented in the brain: how we mentally simulate speech and action, how we represent and experience time, and how we can build better methods to study these processes rigorously. To address these questions, we combine behavioural experiments, psychophysics, electrophysiology, neuroimaging, neurostimulation, as well as computational and statistical modelling. A central goal across these lines of work is to link theory, measurement, and analysis more closely, so that we can make stronger inferences about the mechanisms underlying thought and behaviour.
 
 ## Inner speech
 
-Inner speech--the mental production of speech--is a pervasive part of everyday cognition. It supports a wide range of functions, including reading, writing, remembering, planning, and self-regulation, yet we still lack a unified account of how it is experienced, why it varies so strongly across individuals, and how it is implemented in the brain. In our work, we study inner speech as a form of mental simulation and investigate the cognitive and neural mechanisms that make it possible. We combine experimental approaches (e.g., psychophysics, EMG, M/EEG, TMS) with computational tools to understand how the brain generates, monitors, and controls internally produced speech.
+Inner speech (the mental production of speech) is a pervasive part of everyday cognition. It supports a wide range of functions, including reading, writing, remembering, planning, and self-regulation, yet we still lack a unified account of how it is experienced, why it varies so strongly across individuals, and how it is implemented in the brain. In our work, we study inner speech as a form of mental simulation and investigate the cognitive and neural mechanisms that make it possible. We combine experimental approaches (e.g., psychophysics, EMG, M/EEG, fMRI, TMS) with computational tools to understand how the brain generates, monitors, and controls internally produced speech.
 
 Relevant work:
 
@@ -20,7 +20,7 @@ phonetic features in inner speech using surface electromyography? *PLOS ONE, 15*
 
 ## Mental and motor imagery
 
-Mental imagery provides a powerful window onto how the mind simulates actions in the absence of overt behaviour. Motor imagery, in particular, allows us to investigate how actions can be prepared, represented, and controlled without being executed. This makes it a useful model for studying the links between action, inhibition, prediction, and conscious experience. In our work, we examine the cognitive and motor-control mechanisms that support imagery, with a particular interest in how imagined actions are prevented from turning into overt movements. More broadly, we use imagery as a way to understand how the brain constructs internal models of action and uses them for cognition.
+Mental imagery provides a powerful window onto how the mind simulates actions in the absence of overt behaviour. Motor imagery, in particular, allows us to investigate how actions can be prepared, represented, and controlled without being executed. This makes it a useful model for studying the links between action, prediction, and conscious experience. In our work, we examine the cognitive and motor-control mechanisms that support imagery, with a particular interest in how imagined actions are prevented from turning into overt movements. More broadly, we use imagery as a way to understand how the brain constructs internal models of action and uses them for cognition.
 
 Relevant work:
 
@@ -51,8 +51,7 @@ Relevant work:
 
 - Adl Zarrabi, A., Aucouturier, J‑J., Nalborczyk, L., & Villain, M. (in preparation). Three new analysis methods to
 estimate internal noise in data‑driven experiments, in the absence of double‑pass measurements.
-- Manucci, M., Nalborczyk, L., & Varnet, L. (submitted). Assessing the efficacy of Markov Chain Monte Carlo with
-People to approximate the mental representation of vowels.
+- Manucci, M., Nalborczyk, L., & Varnet, L. (2026). Assessing the efficacy of Markov Chain Monte Carlo with People to estimate the mental representation of vowels. *Forum Acusticum 2026*. \hrefa{https://hal.science/hal-05679708}{}
 - Beffara Bret, B., Beffara Bret, A., & Nalborczyk, L. (2021). A fully automated, transparent, reproducible, and blind
 protocol for sequential analyses. *Meta‑Psychology, 5*. <https://doi.org/10.15626/MP.2018.869>
 
@@ -60,7 +59,7 @@ protocol for sequential analyses. *Meta‑Psychology, 5*. <https://doi.org/10.15
 
 ## Bayesian statistical modelling
 
-Cognitive neuroscience increasingly relies on complex data and rich theoretical models, but standard statistical workflows often fall short when it comes to uncertainty quantification, hierarchical structure, and temporal dynamics. In our work, we develop and promote Bayesian modelling approaches that are better aligned with the kinds of questions cognitive scientists actually ask. We are particularly interested in multilevel models, generalised additive models, and principled workflows for analysing behavioural and neural data. Beyond applications, we also see statistical modelling as part of theory building: a way to formalise assumptions, test competing explanations, and extract more informative conclusions from data.
+Cognitive neuroscience increasingly relies on complex data and rich theoretical models, but standard statistical workflows often fall short when it comes to uncertainty quantification, hierarchical structure, and temporal dynamics. In our work, we develop and promote Bayesian modelling approaches that are better aligned with the kinds of questions cognitive scientists actually ask. We are particularly interested in multilevel models, generalised additive models, and principled workflows for analysing behavioural and neural data.
 
 Relevant work:
 
