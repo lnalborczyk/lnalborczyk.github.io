@@ -50,7 +50,7 @@ Progress in cognitive science depends not only on good theories, but also on goo
 Relevant work:
 
 - Adl Zarrabi, A., Aucouturier, J‑J., Nalborczyk, L., & Villain, M. (in preparation). Three new analysis methods to
-estimate internal noise in data‑driven experiments, in the absence of double‑pass measurements.
+estimate internal noise in data‑driven experiments, in the absence of double‑pass measurements. <https://hal.science/hal-05679708>
 - Manucci, M., Nalborczyk, L., & Varnet, L. (2026). Assessing the efficacy of Markov Chain Monte Carlo with People to estimate the mental representation of vowels. *Forum Acusticum 2026*. \hrefa{https://hal.science/hal-05679708}{}
 - Beffara Bret, B., Beffara Bret, A., & Nalborczyk, L. (2021). A fully automated, transparent, reproducible, and blind
 protocol for sequential analyses. *Meta‑Psychology, 5*. <https://doi.org/10.15626/MP.2018.869>

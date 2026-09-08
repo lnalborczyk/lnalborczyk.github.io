@@ -9,12 +9,15 @@ toc-expand: 2
 
 - Chat in the [Discord's team server](https://discord.gg/xgzYKDEYhf)
 - Check my availabilities and book me via [Koalendar](https://koalendar.com/e/meet-with-ladislas-nalborczyk)
+- Free meeting planner: <https://www.when2meet.com>
+- AMU offers a Zoom subscription, use it! When meeting with me, you can use this link (my personal Zoom meeting room): <https://univ-amu-fr.zoom.us/j/7926703860>
 
 ## Basic survival kit (essential resources)
 
 - Writing in the Sciences, MOOC (Sainani Kristin, [2017](https://www.coursera.org/learn/sciwrite/))
 - Improving your statistical inferences, MOOC (Lakens, [2017](https://www.coursera.org/learn/statistical-inferences))
 - Which neural code for mental representations? Stanislas Dehaene's course at Collège de France [2023](https://www.college-de-france.fr/en/agenda/lecture/which-neural-code-for-mental-representations)
+- Build network, find papers, positions, etc, on Bluesky: [Bluesky for scientists](https://docs.google.com/document/d/1aPddaH-d7N53jZm1S3vUrfjVVy5nykPQz6qd7QpPCQE/edit?tab=t.0#heading=h.58mkl21vxs3m)
 
 ## Further resources
 
@@ -93,7 +96,7 @@ To counter the pervasive problem of low-powered experimental designs, researcher
 
 ### Epistemology, logic, philosophy of science
 
-- Philosophical Psychology course, Meehl, P. [1989](https://meehl.umn.edu/video).
+- [Philosophical Psychology course](https://meehl.umn.edu/video), Meehl, P. (1989).
 
 ### Creating experiments
 
@@ -125,4 +128,4 @@ NB: most postdoc grants are mobility grants.
 
 ## Lab AI/LLM policy
 
-See <https://todd.gureckislab.org/2026/03/06/genaipolicy>.
+To be discussed/detailed, but see <https://todd.gureckislab.org/2026/03/06/genaipolicy>.
