@@ -1,7 +1,9 @@
 project:
   type: website
   output-dir: docs
-  post-render: encrypt.r
+  post-render:
+    - encrypt.r
+    - python scripts/clean-sitemap.py
 
 website:
   title: "Ladislas Nalborczyk"

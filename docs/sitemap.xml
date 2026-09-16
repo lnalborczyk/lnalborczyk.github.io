@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://lnalborczyk.github.io/apps/helix/index.html</loc>
@@ -35,10 +35,6 @@
   <url>
     <loc>https://lnalborczyk.github.io/blog/2018-01-23-ppc/index.html</loc>
     <lastmod>2025-01-16T09:39:13.367Z</lastmod>
-  </url>
-  <url>
-    <loc>https://lnalborczyk.github.io/internal/index.html</loc>
-    <lastmod>2026-09-08T16:25:37.513Z</lastmod>
   </url>
   <url>
     <loc>https://lnalborczyk.github.io/publications/2018-loevenbruck-etal/index.html</loc>
@@ -102,7 +98,7 @@
   </url>
   <url>
     <loc>https://lnalborczyk.github.io/index.html</loc>
-    <lastmod>2025-04-02T11:34:52.217Z</lastmod>
+    <lastmod>2026-09-16T14:26:31.864Z</lastmod>
   </url>
   <url>
     <loc>https://lnalborczyk.github.io/blog/index.html</loc>
