@@ -81,10 +81,16 @@ Project: Cognitive and neural mechanisms underlying inner speech diversity
 ![](../images/missing.png){width=100% fig-alt="A missing portrait."}
 :::
 ::: {.g-col-12 .g-col-md-9}
-You?
+Marie Cunchon {#marie}
 ---
 
-...
+Background: Educational Sciences, Cognitive Science
+
+Position: Master student in cognitive science
+
+Project: Does the corollary discharge provide the sensory content of inner speech?
+
+[Mail](mariecunchon25@gmail.com){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
 
 :::
 :::
@@ -123,7 +129,7 @@ Project: Does the corollary discharge provide the sensory content of inner speec
 
 ::: {.callout-note icon=false collapse="true"}
 ## Alumni
-
+- Justine Coulon (2025 -- 2026): Did a 2-month M1 research internship. Now M2 student at Aix-Marseille Univ. (France).
 - Vincent Pauline (2023 -- 2024): MSc student in my previous lab. Now research assistant at Helmoltz AI (Germany).
 - Hermine de Torcy (2023 -- 2024): MSc student in my previous lab. Now PhD student at ULB (Belgium).
 - Maël Delem (2021 -- 2022): MSc student in my previous lab. Now PhD student at Lyon Univ (France).
