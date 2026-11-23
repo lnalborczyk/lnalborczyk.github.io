@@ -33,7 +33,13 @@ editor_options:
 
 ### Mental production of speech (inner speech)
 
+I am a CNRS research scientist in cognitive neuroscience, investigating the phenomenology, diversity, development, and neural mechanisms of inner speech and mental imagery. My research integrates psychophysics, electrophysiology, neuroimaging, and computational modelling to understand how internal experiences emerge from neural representations and sensorimotor processes.
+
+<!--
+
 I am a computational cognitive neuroscientist interested in the conscious experience of inner speech and its neural underpinnings. My research combines experimental (e.g., psychophysics, EMG, M/EEG, TMS) and computational (e.g., mathematical modelling, machine learning) methods to understand how complex patterns of neural activity implement algorithms supporting the mental simulation of speech (inner speech) and other actions (motor imagery).
+
+-->
 
 ### Statistical modelling and slow science
 

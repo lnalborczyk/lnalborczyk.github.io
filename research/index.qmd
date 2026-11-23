@@ -63,6 +63,6 @@ Cognitive neuroscience increasingly relies on complex data and rich theoretical 
 
 Relevant work:
 
-- Nalborczyk, L. & Bürkner, P.‑C. (2025). Precise temporal localisation of M/EEG effects with Bayesian generalised additive multilevel models. *biorXiv*. <https://www.biorxiv.org/content/10.1101/2025.08.29.672336>, R package: <https://lnalborczyk.github.io/neurogam/>
+- Nalborczyk, L. & Bürkner, P.‑C. (2026). From clusters to curves: A model-based alternative to cluster-based permutation tests for the analysis of time-resolved data. *biorXiv*. <https://www.biorxiv.org/content/10.1101/2025.08.29.672336>, R package: <https://lnalborczyk.github.io/neurogam/>
 - Nalborczyk, L., Batailler, C., Lœvenbruck, H., Vilain, A., & Bürkner, P.‑C. (2019). An introduction to Bayesian multilevel models using brms: A case study of gender effects on vowel variability in standard Indonesian. *Journal of Speech, Language, and Hearing Research, 62*(5), 1225‑1242. <https://doi.org/10.1044/2018_JSLHR-S-18-0006>
 - Nalborczyk, L., Bürkner, P.‑C., & Williams, D. (2019). Pragmatism should not be a substitute for statistical literacy, a commentary on Albers, Kiers, and van Ravenzwaaij (2018). *Collabra: Psychology, 5*(1): 13. <https://doi.org/10.1525/collabra.197>

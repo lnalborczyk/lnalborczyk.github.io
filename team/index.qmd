@@ -95,37 +95,27 @@ Project: Does the corollary discharge provide the sensory content of inner speec
 :::
 :::
 
----
-
-<!--
-
----
-
-<br>
-
-## Bachelor students
-
 ::: {.grid}
 ::: {.g-col-12 .g-col-md-3}
-<br>
-![](../images/keira.jpeg){.team-photo width=100% fig-alt="A portrait of Keira Bryant."}
+<br /> 
+![](../images/missing.png){width=100% fig-alt="A missing portrait."}
 :::
 ::: {.g-col-12 .g-col-md-9}
-Keira Bryant {#keira}
+Leo Moreno {#leo}
 ---
 
-Background: Linguistics, Cognitive Science
+Background: Medical Biosciences, Bioinformatics, Cognitive Science
 
-Position: Bachelor student in Linguistics & Cognitive science
+Position: Master student in cognitive science
 
-Project: Does the corollary discharge provide the sensory content of inner speech?
+Project: Uncovering the neural dynamics of inner speech from EEG signals
 
-[Mail](mailto:kb119@wellesley.edu){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
+[Mail](leo.moreno@grenoble-inp.org){.btn .btn-outline-primary .btn role="button" .btn-page-header .btn-xs}
 
 :::
 :::
 
--->
+---
 
 ::: {.callout-note icon=false collapse="true"}
 ## Alumni

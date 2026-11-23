@@ -4,6 +4,9 @@ project:
   post-render:
     - encrypt.r
     - python scripts/clean-sitemap.py
+  resources:
+    - "slides/power_simulation/index.html"
+    - "slides/power_simulation/figures/**"
 
 website:
   title: "Ladislas Nalborczyk"
